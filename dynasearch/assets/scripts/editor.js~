@@ -1,0 +1,406 @@
+
+if (typeof Object.create !== 'function') {
+    Object.create = function (o) {
+        function F() {}
+        F.prototype = o;
+        return new F();
+    };
+}
+
+// Remove items from an array based on another list of items
+Array.prototype.removeItems = function(itemsToRemove) {
+
+    if (!/Array/.test(itemsToRemove.constructor)) {
+        itemsToRemove = [ itemsToRemove ];
+    }
+
+    var j;
+    for (var i = 0; i < itemsToRemove.length; i++) {
+        j = 0;
+        while (j < this.length) {
+            if (this[j] == itemsToRemove[i]) {
+                this.splice(j, 1);
+            } else {
+                j++;
+            }
+        }
+    }
+}
+
+var timer = new BTimer(300, system_tick, []);
+var randab = function(a,b) { return a + (b-a)*Math.random(); };
+
+///////////////////////////////////////////////////////////////
+
+// Handle the total count of Toolbars
+var updatables = [];
+function add_updatable(e)
+{ updatables.push(e); }
+
+var hurricane_frame_max = 100;
+var hurricane_frame_num = 0;
+var hurricane_fractime = 0;
+
+function system_tick(e)
+{
+	hurricane_frame_num += 1;
+	if(hurricane_frame_num > hurricane_frame_max) return;
+
+	hurricane_fractime = hurricane_frame_num / hurricane_frame_max;
+	var o = new Object();
+
+	updatables.forEach(function(el, index, array)
+	{
+		o.index = index;
+		el.update( o );
+	}
+	);
+}
+
+var ___ToolbarCount=0;
+function IncrementToolbarCount(d)
+{ ___ToolbarCount += 1; }
+function GetToolbarCount()
+{ return ___ToolbarCount; }
+
+// Window Class
+var Window = new Class({
+	initialize: function(content, title) {
+		// Increment the total count
+		IncrementToolbarCount(1);
+		
+		// Create the Div with relavent XHTML
+		this.div = document.createElement('div');
+		this.div.trashable = true;
+		this.div.barnum = GetToolbarCount();
+		this.div.setAttribute('id', 'toolbar' + (GetToolbarCount()).toString() + 'div');
+		this.div.setAttribute('class','drag');
+		if(content === undefined) { content = ''; }
+		if(title === undefined) { title = "Untitled Window"; }
+		this.div.innerHTML = '<div class="handle">' + title + '</h4>';
+		this.div.innerHTML += '<div class="resize" style="position:absolute; right:0px; bottom: 0px;z-index:1;"><img src="assets/images/resize_icon.png" style="padding: 0 0; margin: 0 0;"/></div>';
+		this.div.innerHTML += '<div class="infohandle" style="position:absolute; right:0px; top: 0px;"><img class="icon" src="assets/images/icon-info.png" style="padding: 0 0; margin: 0 0;" onmousedown="event.preventDefault();" /></div>';
+		this.div.innerHTML += '<div class="content" id="'+ this.div.barnum +'_content">'+ content +'</div>';
+
+		this.div.getElement('.infohandle').getElement('.icon').parent_div = this.div;
+
+		//Add to the page
+		document.body.appendChild(this.div);
+		
+		var el = this.div;							
+		var dr_alpha = .7;
+		var drag_options = {
+			onStart:function() { el.setOpacity(dr_alpha); },
+			onDrag:function() { update_stuff(el); },
+			onComplete:function() { el.setOpacity(1); },
+			handle: el.getElements('.handle')[0],
+			droppables: '#trashbin',
+			onDrop: function(el, d, event){
+				if(d) {
+					 if(el.trashable) { el.destroy(); }
+				} 
+			},
+			onEnter: function(el, d){
+				el.setAttribute('class','drag_enter');
+			},
+			onLeave: function(el, d){
+				el.setAttribute('class','drag');
+			}
+		};
+		
+		var resize_options = {
+			onStart:function() { el.setOpacity(dr_alpha); },
+			onComplete:function() { el.setOpacity(1); el.getElement('.content').style.height = (el.getSize().y - el.getElement('.handle').getSize().y - 3) + "px"; },
+			handle: el.getElements('.resize')[0]
+		};
+		
+		this.dragobj = el.makeDraggable(drag_options);
+		el.makeResizable(resize_options);
+
+		this.div.classpointer = this;
+		add_updatable(this);
+	},
+	get_width  : function() { return this.div.getSize().x; },
+	get_height : function() { return this.div.getSize().y; },
+	get_x	   : function() { return this.div.getPosition().x; },
+	set_trashable: function(bool) { this.div.trashable = bool; },
+	update : function(o) { },
+});
+
+// Toolbar class
+var Toolbar = new Class({
+	Extends: Window,
+	initialize: function() { 
+		this.parent(undefined,'Toolbar');
+		this.trashable = false;
+		this.div.getElement('.infohandle').destroy();
+	},
+	add_icon: function(icon) { this.div.getElement('#content').appendChild(icon.el); }
+});
+
+// Image Selection Window
+
+// Text Window
+var TextWindow = new Class({
+	Extends: Window,
+	initialize: function() {
+
+
+		this.parent(undefined,'Text Window');
+		this.trashable = false;
+
+		this.div.getElement(".content").innerHTML = "This is some sample text. Press the Info Button to edit me.";
+		this.div.getElement(".content").style.padding = "3px 3px";
+
+		this.div.getElement(".infohandle").getElement(".icon").onmouseup = function()
+			{ 
+				var pd = this.parent_div;
+				var pdc = pd.getElement('.content');			
+				var pdh = pd.getElement('.handle');
+
+				pdc.innerHTML = prompt("Please enter your new text for this box, or press Okay to keep the current text.", pdc.innerHTML);
+
+				pdh.innerHTML = prompt("Please enter your new title for this box, or press Okay to keep the current text.", pdh.innerHTML);
+
+			}
+	},
+	update: function(o) { this.div.getElement('.handle').innerHTML = o.index + hurricane_frame_num; },
+});
+
+var ClockWindow = new Class({
+	Extends: Window,
+	initialize: function() {
+		this.parent(undefined, 'Clock');
+	},
+});
+
+// Map Window
+var MapWindow = new Class({
+	Extends: Window,
+	initialize: function(mapfile) {
+		this.parent(undefined,'Map');
+		if(mapfile === undefined) { mapfile = 'hurricane_map_1.png'; }
+		
+		// Get the map
+		this.el = document.createElement('img');
+		this.canvas = document.createElement('canvas');
+
+		this.image = this.el.image = 'assets/images/' + mapfile;
+		this.el.src = this.el.image;
+
+		this.el.style.width = this.div.getSize().x-3 + "px";
+		this.handle = this.div.getElement('.handle');
+		this.el.style.height = (this.div.getSize().y - this.handle.getSize().y - 3) + "px";
+		
+		this.el.setAttribute('class','map');
+
+		this.div.getElement('.content').appendChild(this.el);
+		this.div.getElement('.content').appendChild(this.canvas);
+		
+		this.el.style.position = this.canvas.style.position = 'absolute';
+		this.el.style.top = this.canvas.style.top = this.handle.getSize().y + 'px';
+		this.el.style.left = this.canvas.style.left = '0px';
+
+		// Prevent image drag
+		this.el.onmousedown = function(e) { e.preventDefault(); }
+
+		this.div.addEvent('resize', function(e){
+			var el = this.getElement('.map');
+			var handle = this.getElement('.handle');
+
+			this.classpointer.canvas.width = el.style.width = this.style.width;
+			this.classpointer.canvas.height = el.style.height = (this.getSize().y - handle.getSize().y - 3) + "px";
+
+			this.classpointer.paint();
+		});		
+
+//		this.painter = new jsGraphics( this.div );
+//		this.div.painter = this.painter;
+
+		this.path_points = [  [0, 95, 20, 94, 21], [0.5, 94, 21, 93, 24] ];
+
+		unisys_parser('http://localhost/hurricane_data/2008-ike.dat', 0, 1, this.div.id);
+		timer.reset();
+		timer.start();
+	},
+	hi: function()
+	{
+		//alert(this.path_points.length);
+	},
+
+	paint: function()
+	{
+		this.canvas.width = this.el.getSize().x;
+		this.canvas.height = this.el.getSize().y;
+
+		var ctx = this.canvas.getContext('2d');
+		this.handle.innerHTML = this.el.getSize().x + ' ' + this.el.getSize().y;
+
+		ctx.strokeStyle = 'rgba(0,0,' + parseInt(hurricane_fractime * 255) + ', 0.5);';
+
+		var yc = this.handle.getSize().y;
+		var w = this.canvas.getSize().x;
+		var h = this.canvas.getSize().y;
+		var map_left	= 100;
+		var map_right	= 75;
+		var map_top		= 33;
+		var map_bottom	= 17.3;
+
+	//	alert(this.path_points.length);
+		for(var i=0; i < this.path_points.length; i+=1)
+		{	
+			var p = this.path_points[i];
+			var t = p[0];
+			if(t < hurricane_fractime)
+			{
+				var x0 = w*(p[1] - map_left) / (map_right - map_left);
+				var y0 = h*(p[2] - map_top) / (map_bottom - map_top);
+
+				var x1 = w*(p[3] - map_left) / (map_right - map_left);
+				var y1 = h*(p[4] - map_top) / (map_bottom - map_top);
+
+				//if(hurricane_frame_num == 4 && i == 4)
+				//alert('draw: ' + x0 + ' ' + y0 + ' ' + x1 + ' ' + y1 );
+
+				ctx.lineWidth = 2;
+				ctx.beginPath();
+				ctx.moveTo(x0, y0 );
+				ctx.lineTo(x1, y1 );
+//				ctx.moveTo(parseInt(x0), parseInt(y0) );
+//				ctx.lineTo(parseInt(x1), parseInt(y1) );
+				ctx.stroke();
+			}
+		}
+
+/*
+		this.painter.clear();
+		this.painter.setColor("#0000ee"); // green
+		this.painter.setStroke(1);
+		var yc = this.handle.getSize().y;
+		var w = this.div.getSize().x;
+		var h = this.div.getSize().y - yc;
+		var map_left	= 100;
+		var map_right	= 75;
+		var map_top		= 33;
+		var map_bottom= 17;
+		for(var i=0; i < this.path_points.length; i+=1)
+		{	
+			var p = this.path_points[i];
+			var t = p[0];
+			if(t < hurricane_fractime)
+			{
+				var x0 = w*(p[1] - map_left) / (map_right - map_left);
+				var y0 = h*(p[2] - map_top) / (map_bottom - map_top);
+				var x1 = w*(p[3] - map_left) / (map_right - map_left);//w * hurricane_fractime;
+				var y1 = h*(p[4] - map_top) / (map_bottom - map_top);//h * hurricane_fractime;
+
+				y0 += yc; y1 += yc;
+
+				this.painter.drawLine(x0,y0,x1,y1); // co-ordinates related to the document
+			}
+		}
+		this.painter.paint();
+*/
+	},
+
+	update: function(o) 
+	{
+		this.paint();
+	},
+});
+
+
+//////////////////////////////////////////
+// ICONS
+//////////////////////////////////////////
+
+var newdiv;
+// Icon to go on the toolbar
+var ToolbarIcon = new Class({
+	initialize: function(_image, type, draggable) {
+		
+		// Setup the image
+		this.image = 'assets/images/'+_image;
+		this.el = document.createElement('img');
+		
+		this.el.candrag = draggable !== undefined;
+		
+		this.el.onmousedown = function(event) 
+		{ 
+			if(this.candrag)
+			{
+				// Create the new toolbar and the dragging functionality.
+				var tb2;
+				
+				if( type == 'map_window') tb2 = new MapWindow();
+				else if( type == 'text_window') tb2 = new TextWindow();
+				else if( type == 'clock_window') tb2 = new ClockWindow();
+
+				newdiv = tb2.div;
+				newdiv.style.top = event.pageY + "px"; 
+				newdiv.style.left = event.pageX + "px";
+				
+				// A bit of a hack...
+				document.onmousemove = function(e) { 
+					newdiv.style.top = e.pageY + "px"; 
+					newdiv.style.left = e.pageX + "px"; 
+					this.onmouseup = function(e) { this.onmousemove = null; } 
+				};
+				
+				// Cancel whatever else was going to happen. Dragging the image most likely.
+				event.preventDefault(); 
+			}
+			else { event.preventDefault(); }
+		};
+		this.el.src = this.image;
+	}
+});
+
+var ToolbarIcon_Trashbin = new Class({
+	Extends: ToolbarIcon,
+	initialize: function() {
+		this.parent('trash_icon.png', 'trash');
+		this.el.id = 'trashbin';
+	}
+});
+
+var ToolbarIcon_TextWindow = new Class({
+	Extends: ToolbarIcon,
+	initialize: function() {
+		this.parent('window_icon_1.png', 'text_window', true);
+	}
+});
+
+var ToolbarIcon_MapWindow = new Class({
+	Extends: ToolbarIcon,
+	initialize: function() {
+		this.parent('map_icon.png', 'map_window', true);
+	}
+});
+
+var ToolbarIcon_ClockWindow = new Class({
+	Extends: ToolbarIcon,
+	initialize: function() {
+		this.parent('clock-icon.png', 'clock_window', true);
+	}
+});
+
+window.addEvent('domready', function(){
+
+	var ifr = document.createElement("div");
+	ifr.style.display = 'none';
+	ifr.innerHTML = '<img id="HM" src="assets/images/hurricane_map_1.png" />';
+	document.body.appendChild(ifr);
+
+ 	var tb = new Toolbar();
+	tb.add_icon(new ToolbarIcon_Trashbin());
+	tb.add_icon(new ToolbarIcon_MapWindow());
+	tb.add_icon(new ToolbarIcon_TextWindow());
+	tb.add_icon(new ToolbarIcon_ClockWindow());
+});
+
+function update_stuff(el)
+{
+	var content = 'Location: ' + el.getPosition()['x'] + ' , ' + el.getPosition()['y'] + '<br/>';
+	content += 'Size: ' + el.getSize().x + ' , ' + el.getSize().y;
+}

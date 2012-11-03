@@ -1,0 +1,221 @@
+// These functions are used by questEditor.php to facilitate building custom surveys
+
+// Flag used to determine which option is selected
+var option = -1;
+
+// Used to name radio questions fed into database
+var totalQuestions = 0;
+var totalElem = 0;
+var elem = 0;
+
+// Holds html of final result
+var frontR = new Array();
+var elemId = new Array();
+
+var sectionSet = 0;
+
+function constructQuestion(){
+	
+	document.getElementById('questInfo').innerHTML = "<p>Please select the Item you would like to create:</p><blockquote><input id='qtype' name='type' type='radio' value='0' onclick='setOption(0)'/>Section<br/><input id='qtype' name='type' type='radio' value='1' onclick='setOption(1)'/>Radio Button Question<br/><input id='qtype' name='type' type='radio' value='2' onclick='setOption(2)'/>Text Question<br/><input id='qtype' name='type' type='radio' value='3' onclick='setOption(3)'/>Line of Text<br/></blockquote><input type='submit' id='questSub' name='questSub' value='Next' onclick='buildQuestion()'/><input type='submit' id='questSave' name='questSave' value='Save' onclick='saveQuestion()'/>";
+}
+
+function setOption(choice){
+    option = choice;
+}
+
+function buildQuestion(){
+	
+	// User wants to create a subsection
+	if(option == 0){
+		document.getElementById('questInfo').innerHTML = "<p>Please enter a title:</p><blockquote><input type='text' id='newTitle' name='newTitle'/><br/></blockquote><input type='submit' id='questSub' name='questSub' value='Next' onclick='setTitle()'/>";
+	}
+	// User wants to create a radio question
+	else if(option == 1){
+	    document.getElementById('questInfo').innerHTML = "<p>Please enter the question test:</p><blockquote><input type='text' id='radioTitle' name='radioTitle'/></blockquote>";
+		document.getElementById('questInfo').innerHTML += "<p>Please enter the number of buttons (integer value):</p><blockquote><input type='text' id='radioNum' name='radioNum'/></blockquote><input type='submit' id='questSub' name='questSub' value='Next' onclick='setRadioQuest()'/>";
+	}
+	// Wants to create a text based button
+	else if(option == 2){
+	    document.getElementById('questInfo').innerHTML = "<p>Please enter the question test:</p><blockquote><input type='text' id='textTitle' name='textTitle'/></blockquote>";
+		document.getElementById('questInfo').innerHTML += "<p>Please enter the length of the test field (integer value):</p><blockquote><input type='text' id='textNum' name='textNum'/></blockquote><input type='submit' id='questSub' name='questSub' value='Save' onclick='saveTextQuest()'/>";
+	}
+	// Want to create a line of text (additional instructions, etc)
+	else if(option == 3){
+		document.getElementById('questInfo').innerHTML = "<p>Please enter the line of text:</p><blockquote><input type='text' size='15' id='textLine' name='textLine'/></blockquote><input type='submit' id='questSub' name='questSub' value='Save' onclick='saveTextLine()'/>";
+	}
+	option = -1;
+	
+}
+
+// Sets subsection title for new section
+function setTitle(){
+	var title = document.getElementById('newTitle').value;
+	if(sectionSet == 1){
+	   frontR[totalElem] = '</div>';
+	   elemId[totalElem] = elem;
+	   totalElem++;
+	}
+	frontR[totalElem] = '<h3 class="toggler">' + title + '</h3><div class="element">' ;
+	elemId[totalElem] = elem;
+	totalElem++;
+	elem++;
+	sectionSet = 1;
+	writeQuestionaire();
+	constructQuestion();
+}
+
+// Forms radio question
+function setRadioQuest(){
+    var questText = document.getElementById('radioTitle').value;
+	var x = parseInt(document.getElementById('radioNum').value);
+	var i = 0;
+	
+	frontR[totalElem] = '<blockquote><p>' + questText + '</p><blockquote>';
+	elemId[totalElem] = elem;
+    totalElem += 1;
+	document.getElementById('questInfo').innerHTML = "";
+    for(i=0; i<x; i++){
+		document.getElementById('questInfo').innerHTML += "<p>Please enter the value for answer " + i + "</p><blockquote><input type='text' id='a" + i + "' name='a" + i + "'/>";
+	}
+    document.getElementById('questInfo').innerHTML += "<input type='submit' id='questSub' name='questSub' value='Next' onclick='saveRadio(" + x + ")'/>";
+	
+}
+
+// Saves radio question
+function saveRadio(x){
+   var i = 0;
+   var elName = '';
+   
+   for(i=0; i<x; i++){
+	   elName = 'a' + i;
+       frontR[totalElem] = '<input type="radio" id="q' + totalQuestions + '" name="q' + totalQuestions + '" value="' + i + '" />' + $(elName).value + '&#160;&#160;&#160;&#160;&#160;';
+	   elemId[totalElem] = elem;
+	   totalElem += 1;
+   }
+   frontR[totalElem] = '</blockquote></blockquote>';
+   elemId[totalElem] = elem;
+   elem++;
+   totalElem += 1;
+   totalQuestions += 1;
+   writeQuestionaire();
+   constructQuestion();
+}
+
+
+function saveTextQuest(){
+    var questText = document.getElementById('textTitle').value;
+	var x = parseInt(document.getElementById('textNum').value);
+	
+	frontR[totalElem] = '<blockquote><p>' + questText + '</p><blockquote><input type="text" size="' + x +'" id="q' + totalQuestions +'" name="q' + totalQuestions +'"  /></blockquote></blockquote>';
+	elemId[totalElem] = elem;
+    totalQuestions += 1;
+	totalElem += 1;
+	elem++;
+	writeQuestionaire();
+    constructQuestion();
+}
+
+
+// Save text line
+function saveTextLine(){
+    var questText = document.getElementById('textLine').value;
+    frontR[totalElem] = '<p>' + questText + '</p>';
+	elemId[totalElem] = elem;
+	totalElem += 1;
+	elem++;
+	writeQuestionaire();
+    constructQuestion();
+}
+
+function insertRandom(toAdd){
+   while(toAdd.search('id="RandomQuestion"') != -1){
+      toAdd = toAdd.replace('id="RandomQuestion"', 'id="q'+totalQuestions+'"');
+   }
+   while(toAdd.search('name="RandomQuestion"') != -1){
+      toAdd = toAdd.replace('name="RandomQuestion"', 'name="q'+totalQuestions+'"');
+   }
+   //alert(toAdd);
+   frontR[totalElem] = toAdd;
+   elemId[totalElem] = elem;
+   totalElem += 1;
+   totalQuestions += 1;
+   elem++;
+   writeQuestionaire();
+   constructQuestion();
+}
+
+function saveQuestion(){
+   if(sectionSet == 1){
+	   frontR[totalElem] = '</div>';
+	   totalElem++;
+   }
+   frontR[totalElem] = '<input type="hidden" id="numQuest" name="numQuest" value="' + totalQuestions + '"/>';
+   totalElem++;
+   writeQuestionaire();
+   document.getElementById('newQuest').innerHTML += "<p>Please a title for the questionairre:</p><blockquote><input type='text' size='15' id='title' name='title'/></blockquote><input type='submit' id='save' name='save' value='Save'/>";
+}
+
+function writeQuestionaire(){
+   var x = 0;
+   lastElem = -1;
+   document.getElementById('newQuest').innerHTML = "";
+   toReturn = "";
+   toSave = "";
+   // Append front items
+   for(x=0; x < totalElem; x++){
+	   if( (lastElem != elemId[x]) && (elemId[x] != -2) ){
+		   lastElem = elemId[x];
+		   toReturn += "<img src='./assets/images/delete.png' alt='Delete Button' height='16px' width='16px' onclick='deleteElem(" + elemId[x] + ")'/>";
+	   }
+	   toReturn += frontR[x];
+	   toSave += frontR[x];
+   }
+   if(sectionSet == 1){
+      toReturn += "</div>";
+   }
+   document.getElementById('newQuest').innerHTML=toReturn;
+   document.getElementById('newQuest').innerHTML += "<input type='hidden' value='" + toSave + "' id='toSave' name='toSave' />";
+   
+}
+
+function deleteElem(y){
+   for(x=0; x < totalElem; x++){
+      if(elemId[x] == y){
+	     frontR[x] = "";
+		 elemId[x] = -2;
+	  }
+   }
+   // If blank, create new arrays
+   var empty = 0;
+   for(x=0; x < totalElem; x++){
+	   if( elemId[x] != -2 ){
+	      empty = 1;
+	   }
+   }
+   if( empty == 0 ){
+	  
+      frontR = new Array();
+	  elemId = new Array();
+	  sectionSet = 0;
+	  totalQuestions = 0;
+	  totalElem = 0;
+	  elem = 0;
+   }
+   writeQuestionaire();
+}
+
+
+window.addEvent('domready', function() {
+	var dragElement = $('drag_me');
+	var dragContainer = $('drag_cont');
+	var dragHandle = $('drag_me_handle');
+	
+    var myDrag = new Drag.Move(dragElement, {
+	    // Drag.Move options
+		//droppables: dropElement,
+		container: dragContainer,
+		// Drag options
+		handle: dragHandle,
+	});
+	
+});

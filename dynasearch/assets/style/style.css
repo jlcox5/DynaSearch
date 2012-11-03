@@ -1,0 +1,210 @@
+
+* {
+	margin : 0;
+	padding: 0;
+}
+
+body {
+	background: #bbb; /* Off-white isn't so intense on the eyes for long periods of time. */
+	font: 17px Helvetica, Arial, sans-serif;
+}
+
+#maincontainer {
+	margin: 0 auto;
+	padding: 40px 40px;
+	
+	background: #eee;
+	color: #000;
+	width: 1200px;
+}
+
+h1 {
+	font-size: 40px;	
+}
+
+a {
+	color: #373777;
+	text-decoration: none;
+	font-weight: bolder;
+}
+
+input {
+	margin: 2px 0;
+	font-size: 25px;
+}
+
+#login_form {
+	margin-left: 20px;
+}
+
+#two_column_opening {
+	width: 90%;
+	margin: 0 auto;
+}
+
+.user_bar_div {
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	background-color:#555;
+	color:#CCCCCC;
+	padding: 5px 5px;
+	font-size:smaller;
+}
+
+.user_bar_div a {
+	color: #fff;
+}
+
+.user_nav_div {
+   position: fixed;
+   right: 0;
+   bottom: 0;
+	background-color:#555;
+	color:#CCCCCC;
+	font-size:smaller;
+   width:50%;
+   height:25px;
+}
+
+.user_nav_div ul {
+   margin:  0;
+   padding: 0;
+   list-style-type: none;
+   height:inherit;
+}
+
+.user_nav_div ul li {
+   padding-left:  50px;
+   padding-right: 50px;
+   display:       inline;
+   position:      relative;
+   vertical-align:middle;
+}
+
+.user_nav_div ul li ul {
+   bottom: 100%;
+   position: absolute;
+   left: 0px;
+   width:100%;
+   display: none;
+}
+
+.user_nav_div ul li:hover ul {
+   display: block;
+}
+
+.user_nav_div ul li ul li {
+   padding:0;
+   margin:0;
+}
+
+.user_nav_div ul li ul li a {
+   display: block;
+   text-decoration: none;
+   padding: 5px;
+   border: 1px solid #555;
+   border-bottom: 0;
+   text-align: center;
+
+	background-color:#777;
+	color:#CCCCFF;
+}
+
+.help_frame_invisible {
+   display: none;
+}
+
+.help_frame_visible, #help_frame_inner {
+   display: block;
+   position: fixed;
+   top: 10%;
+   bottom: 10%;
+   left: 10%;
+   right: 10%;
+   min-width:80%;
+   min-height:80%;
+}
+
+
+#help_frame_inner {
+   display: inherit;
+}
+
+#help_frame_exit_button {
+   float: right;
+   top: -1em;
+   display:inherit;
+   position:relative;
+	background-color:#555;
+	color:#CCCCCC;
+	font-size:smaller;
+   height:1em;
+}
+
+.unselectable::selection {
+   background-color: transparent;
+}
+.unselectable {
+    -moz-user-select: -moz-none;
+    -khtml-user-select:    none;
+    -webkit-user-select:   none;
+    -o-user-select:        none;
+    user-select:           none;
+}
+
+.obj {
+   z-index: inherit;
+}
+
+.hiddenQuestRep{
+   display:none;
+}
+
+.toolbarIcon{
+   width: 48px;
+   height: 48px;
+   padding: 10px;
+}
+
+.sectionBody {
+   position: relative;
+   left    : 3em;
+}
+
+.hbutton {
+   margin-left:   0.5em;
+   float: right;
+}
+
+.hquesttitle {
+   margin: 0.1em;
+   margin-bottom: 0;
+   border: 1px solid black;
+   padding: 0.1em;
+   padding-bottom: 0;
+   float: left;
+}
+
+.menuCreate {
+   margin-left: 0.2em;
+   margin-right: 0.2em;
+}
+
+/*
+.infohandle {
+border: 1px solid #000;
+}
+*/
+
+/*
+.content {
+border: 1px solid #000;
+}
+*/
+
+/*
+.resize {
+border: 1px solid #000;
+}
+*/

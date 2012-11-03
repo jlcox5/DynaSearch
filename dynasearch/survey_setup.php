@@ -1,0 +1,230 @@
+<?php
+
+include("assets/php/config.php");
+include("assets/php/std_api.php");
+mysql_connect($DB_HOST, $DB_USER, $DB_PASS) or die("Unable to connect.");
+mysql_select_db($DB_NAME) or die("Unable to select database.");
+
+$page_title = "Survey Page Layout Editor";
+
+$template_style_array  = array("style.css", "survey_setup.css");
+$template_script_array = array("ajax-core.js", "survey_setup_js.js");
+
+include('assets/php/db_util.php');
+/*
+// Everyone is always running a session. 
+// TODO: IS THIS A BAD IDEA?
+if(!isset($_SESSION)) {	session_start(); }
+
+function redirect($page_name)
+{
+	$host  = $_SERVER['HTTP_HOST'];
+	$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+	header("Location: http://$host$uri/$page_name");	
+}
+*/
+require_once('assets/php/std_api.php');
+
+if(isset($_POST['fileop'])) {
+	if($_POST['fileop'] == 'save') {
+			$short = $_POST['shortname'];
+			$name = $_POST['fullname'];
+			$experiment_string = $_POST['data'];
+			
+			// See if this entry already exists...
+			$res = query_db("SELECT COUNT(*) as \"count\" from t_experiments where ExperimentShortName='". $short ."'");
+			$res = mysql_fetch_array($res, MYSQL_BOTH);
+			if($res[0] == '1')
+				{ query_db("DELETE from t_experiments where ExperimentShortName='". $short ."';");	}
+	
+			query_db("INSERT INTO t_experiments (`ExperimentShortName`, `ExperimentName`, `ExperimentString`) VALUES ('". $short ."', '". $name ."', '". $experiment_string ."')");
+			redirect('survey_setup.php?fileop=load&file='.$short);
+	}// End Save
+}
+include('assets/php/standard.php');
+
+function strToHex($string)
+{
+    $hex='';
+    for ($i=0; $i < strlen($string); $i++)
+    {
+        $hex .= dechex(ord($string[$i]));
+    }
+    return $hex;
+}
+
+function hexToStr($hex)
+{
+    $string='';
+    for ($i=0; $i < strlen($hex)-1; $i+=2)
+    {
+        $string .= chr( hexdec($hex[$i].$hex[$i+1]) );
+    }
+	return $string;
+}
+
+?>
+
+
+<?php
+// Load/Save
+
+// Survey Setup Code
+$current_survey_name = 'New Experiment';
+if( isset($_POST['fileop']) ) {
+
+	if(isset($_POST['file']))
+	{
+		if($_POST['fileop'] == 'load') {
+			if( strlen($_POST['file']) > 0)
+			{
+				$res = query_db("select * from t_experiments where ExperimentShortName='". $_POST["file"] ."';");
+				
+				if( is_string($res) ) 
+				{  
+					//printf('isstring');
+					// Fail.
+				}
+				else 
+				{
+					// Load the Experiment
+					$res = mysql_fetch_array($res, MYSQL_BOTH);
+					
+					$current_survey_name = $res['ExperimentName'];
+					$experiment_short_name = $res['ExperimentShortName'];
+					
+				}		
+			}
+		}// End Load
+	}
+}
+?>
+
+<body id="body">
+    <div id="maincontainer">
+    <div id="wrapper" style="width:70%; margin: auto auto;">
+	
+	<h1>Experiment Editor</h1><br/>
+	<h2>Currently Editing... "<span id="survey_name" onClick="edit_survey_name(this);"><?php echo $current_survey_name; ?></span>"</h2><br/>
+   <h1 style="visibility:hidden;" id="exp_short_name"><?php echo $experiment_short_name; ?></h1>	
+	<button onClick="prompt_new_experiment();">New Survey</button>	
+	<button onClick="save_experiment();">Save Survey</button>	
+	<br/>
+	<select id="load_select_list">
+	<?php
+	
+	$exps = query_db("SELECT * FROM `t_experiments`");
+	while($row = mysql_fetch_array($exps, MYSQL_BOTH))
+	{
+//		var_dump($row);
+		echo '<option value="'. $row['ExperimentShortName'] .'">'. $row['ExperimentName'] .'</option>';
+	}
+	
+	// Added by Jon - List all active surveys
+   $return = mysql_query("SELECT Name FROM sur_question;");
+   $_SESSION['SurveyList'] = '<select name="qChoice" id="qChoice">';
+   while($qNames = mysql_fetch_array($return)){
+      $toPrint = $qNames['Name'];
+      $_SESSION['SurveyList'] = $_SESSION['SurveyList'].'<option value="'.$toPrint.'">'.$toPrint.'</option>';
+   }
+   $_SESSION['SurveyList'] = $_SESSION['SurveyList'].'</select>';
+	?>
+	
+	<?php
+	// Added by Jon - Display all instruction pages
+	$instFiles = '<select name="instChoice" id="instChoice">';
+	if($handle = opendir('./expResources/instructPages')){
+   	while(false !== ($file = readdir($handle))){
+      	if($file !== '.' && $file !== '..'){
+            $instFiles = $instFiles.'<option value="'.$file.'">'.$file.'</option>';
+         }
+      }
+   }
+	$instFiles = $instFiles.'</select>';
+	?>
+	
+   <?php
+	// Added by Jon - Display all advisory pages
+	$advFiles = '<select name="advChoice" id="advChoice">';
+	if($handle = opendir('./expResources/advisory')){
+   	while(false !== ($file = readdir($handle))){
+      	if($file !== '.' && $file !== '..'){
+            $advFiles = $advFiles.'<option value="'.$file.'">'.$file.'</option>';
+         }
+      }
+   }
+	$advFiles = $advFiles.'</select>';
+	?>
+	
+	</select>
+	<button onClick="if(confirm('Are you sure you would like to discard all changes since the last save and load a new file?')){load_file();}">Load</button>
+	
+	<br/><br/>
+	<a href="#" onClick="add_info_page();">    <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;"> Add Information Page</a>
+	<a href="#" onClick="add_training_page();"><img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;"> Add Training Screen</a>
+	<a href="#" onClick="add_survey_page();">  <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;"> Add Survey Screen</a>
+	<p></p>
+	<p>Active Surveys: <?php echo($_SESSION['SurveyList']); ?> Active Instruction Pages: <?php echo($instFiles); ?> </p>  
+	<p>Active Advisories: <?php echo($advFiles); ?> </p>
+
+	<!--- Our Sortables List --->
+	<div id="page_list">
+	</div>
+	
+	</div>
+	</div>
+	
+		<?php
+		echo '<script type="text/javascript">
+		window.addEvent(\'domready\', function(){
+		';
+		if( isset($_POST['fileop']) ) {
+			if(isset($_POST['file'])) {
+				if($_POST['fileop'] == 'load') {
+                              //echo $_POST['file'];
+					$r = query_db("select ExperimentName, ExperimentShortName, ExperimentString from t_experiments where ExperimentShortName='". $_POST["file"] ."';");
+					$row = mysql_fetch_array($r, MYSQL_BOTH);
+					
+					$barstrings = explode('$', $row['ExperimentString']);				
+					for($rownum=0;$rownum<count($barstrings);++$rownum)
+					{
+						$attribs = explode('&', $barstrings[$rownum]);
+						$pagetype = hexToStr(substr($attribs[0],5));
+						
+						if($pagetype == 'Information Page')
+						{
+							$page_source = hexToStr(substr($attribs[3],4));
+							$page_title = hexToStr(substr($attribs[2],6));
+						
+							echo 'add_info_page_sourced("'. $page_title .'","'. $page_source .'");';
+						}
+						else if($pagetype == 'Training Screen')
+						{
+							$page_source = hexToStr(substr($attribs[3],4));
+							$page_title = hexToStr(substr($attribs[2],6));
+							//$adv = hexToStr(substr($attribs[4],7));
+						
+							echo 'add_training_page_sourced("'. $page_title .'","'. $page_source .'");';
+							//echo 'add_training_page_sourced("'. $page_title .'","'. $page_source .');';
+						}
+						else if($pagetype == 'Survey Page')
+						{
+							$page_source = hexToStr(substr($attribs[3],4));
+							$page_title = hexToStr(substr($attribs[2],6));
+							$survName = hexToStr(substr($attribs[4],7));
+							if($survName == ''){
+   							$survName = 'undefined';
+						   }
+						
+							echo 'add_survey_page_sourced("'. $page_title .'","'. $page_source .'","'.$survName.'");';
+						}				
+					}
+					
+				}
+			}
+		}
+	echo '});</script>';
+	?>
+	
+</body>
+</html>

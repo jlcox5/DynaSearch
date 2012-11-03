@@ -1,0 +1,53 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* make sure the draggable element has "position: absolute"  */
+#drag_me {
+	width: auto;
+	height: auto;
+	background-color: #B3C6FF;
+	position: absolute;
+	top: 0;
+	left: 0;
+	border: 1px;
+	padding: 5px;
+}
+
+#drag_me_handle {
+	width: 100%;
+	height: auto;
+	background-color: #5588ff;
+	border: 1px;
+}
+
+#drag_cont {
+	/*background-color: #ccc;*/ 
+	height: 1000px; 
+	width: auto;
+	position: relative;
+	margin-top: 0px;
+	margin-left: 0px;
+}
+
+#drag_me_handle span {
+	display: block;
+	padding: 5px;
+}
+
+.indicator {
+	width: 100%;
+	height: auto;
+	background-color: #0066FF;
+	border-bottom: 1px solid #eee;
+}
+ 
+.indicator span {
+	padding: 10px;
+	display: block;
+}
+ 
+.draggable {
+	width: 200px;
+	height: 200px;
+	background-color: blue;
+}

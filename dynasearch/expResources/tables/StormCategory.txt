@@ -1,0 +1,5 @@
+Parameter,12hr,24hr,36hr,48hr,
+Distance,10miles,20miles,50miles,60miles,
+Saffir Simpson Category,1,2,3,4,
+Size,110miles,90miles,50miles,50miles,
+Forward Speed,12.5mph,13.6mph,15.7mph,12.2mph,

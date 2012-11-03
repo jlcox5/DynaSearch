@@ -1,0 +1,19 @@
+div.slider {
+    width: 42%;
+	background: url(../images/slider.png) 0 center repeat-x;
+	cursor: pointer;
+}
+div.slider div.knob {
+	background: url(../images/button.png);
+	width: 12px;
+	height: 12px;
+}
+div#fontSize {
+	height: 50px;
+}
+
+div.advanced {
+	width: 400px;
+	margin: 5px 0;
+	background: url(images/slider.png) 0 center repeat-x;
+}
