@@ -105,7 +105,11 @@ if( isset($_POST['fileop']) ) {
     <div id="wrapper" style="width:70%; margin: auto auto;">
 	
 	<h1>Experiment Editor</h1><br/>
-	<h2>Currently Editing... "<span id="survey_name" onClick="edit_survey_name(this);"><?php echo $current_survey_name; ?></span>"</h2><br/>
+	<h2>Currently Editing: 
+<!--" <span id="survey_name" onClick="edit_survey_name(this);"><?php echo $current_survey_name; ?></span>" -->
+        <input type="text" id="survey_name" value="<?php echo $current_survey_name; ?>">
+        </h2>
+        <!-- <button onClick="edit_survey_name(this);">Save Name</button> --> <br/>
    <h1 style="visibility:hidden;" id="exp_short_name"><?php echo $experiment_short_name; ?></h1>	
 	<button onClick="prompt_new_experiment();">New Survey</button>	
 	<button onClick="save_experiment();">Save Survey</button>	
@@ -160,9 +164,9 @@ if( isset($_POST['fileop']) ) {
 	<button onClick="if(confirm('Are you sure you would like to discard all changes since the last save and load a new file?')){load_file();}">Load</button>
 	
 	<br/><br/>
-	<a href="#" onClick="add_info_page();">    <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;"> Add Information Page</a>
-	<a href="#" onClick="add_training_page();"><img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;"> Add Training Screen</a>
-	<a href="#" onClick="add_survey_page();">  <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;"> Add Survey Screen</a>
+	<a href="#" onClick="add_info_page('','');">    <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;"> Add Information Page</a>
+	<a href="#" onClick="add_training_page('','');"><img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;"> Add Training Screen</a>
+	<a href="#" onClick="add_survey_page('','','');">  <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;"> Add Survey Screen</a>
 	<p></p>
 	<p>Active Surveys: <?php echo($_SESSION['SurveyList']); ?> Active Instruction Pages: <?php echo($instFiles); ?> </p>  
 	<p>Active Advisories: <?php echo($advFiles); ?> </p>
@@ -196,7 +200,7 @@ if( isset($_POST['fileop']) ) {
 							$page_source = hexToStr(substr($attribs[3],4));
 							$page_title = hexToStr(substr($attribs[2],6));
 						
-							echo 'add_info_page_sourced("'. $page_title .'","'. $page_source .'");';
+							echo 'add_info_page("'. $page_title .'","'. $page_source .'");';
 						}
 						else if($pagetype == 'Training Screen')
 						{
@@ -204,7 +208,7 @@ if( isset($_POST['fileop']) ) {
 							$page_title = hexToStr(substr($attribs[2],6));
 							//$adv = hexToStr(substr($attribs[4],7));
 						
-							echo 'add_training_page_sourced("'. $page_title .'","'. $page_source .'");';
+							echo 'add_training_page("'. $page_title .'","'. $page_source .'");';
 							//echo 'add_training_page_sourced("'. $page_title .'","'. $page_source .');';
 						}
 						else if($pagetype == 'Survey Page')
@@ -216,7 +220,7 @@ if( isset($_POST['fileop']) ) {
    							$survName = 'undefined';
 						   }
 						
-							echo 'add_survey_page_sourced("'. $page_title .'","'. $page_source .'","'.$survName.'");';
+							echo 'add_survey_page("'. $page_title .'","'. $page_source .'","'.$survName.'");';
 						}				
 					}
 					

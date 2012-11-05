@@ -701,11 +701,7 @@ var Toolbar = new Class({
 		save_button.innerHTML = 'Save';
 		save_button.onclick = function() { save_all(); };
 		this.div.adopt(save_button);
-		/* 
-                 * Changed by Jordan
-		 * Leave the z-index out so that each new window is added in front
-                 */
-		//this.div.style.zIndex=1000;
+		this.div.style.zIndex=1000;
 		var load_button = document.createElement('input');
 		load_button.type = 'submit';
 		//load_button.onclick = function() { document.forms["main_editor"].submit(); }
@@ -972,7 +968,7 @@ var MapWindow = new Class({
 		this.el.style.position = this.canvas.style.position = 'absolute';
 		this.el.style.top = this.canvas.style.top = this.handle.getSize().y + 'px';
 		this.el.style.left = this.canvas.style.left = '0px';
-		                
+		
 		if(typeof editing != 'undefined') {
 		this.div.getElement(".infohandle").getElement(".icon").onmouseup = function()
 		{ 
@@ -1278,32 +1274,6 @@ function mkParam(name,value){
 window.testing123 = function(){
    //alert('test');
 }
-/*
-window.addEvent('domready',function() {
-      var btn = document.createElement("button");
-      btn.innerHTML="test";
-      btn.onclick=function(){
-         var spyEQ    = document.getElementById('spyObj').mkSpyEQ();
-         //var trygetEQ = document.getElementById('spyObj').Packages.java.awt.Toolkit.getDefaultToolkit().getSystemEventQueue();
-
-      };
-      var btndiv = document.createElement("div");
-      btndiv.appendChild(btn);
-      btndiv.style.position="fixed";
-      btndiv.style.top="50%";
-      btndiv.style.left="50%";
-      document.body.appendChild(btndiv);
-});
-*/
-
-//var SpyEQ;
-//window.addEvent('domready',function() {
-//   SpyEQ = document.getElementById('spyObj').mkSpyEQ();
-//});
-
-//window.addEvent('domready',function() {
-//      window.SLReady = true;
-//});
 
 var clickif = /^DS_.*/;
 function registerAppletClick(cid, ctime, comp){
@@ -1397,38 +1367,12 @@ var ObjectWindow = new Class({
                 object.appendChild(mkParam('scriptable','true'));
             return object;
          }
-// <WEBGL> - by Jordan
-         function mkWebGLStr(src,name,dir){
-
-            var object = document.createElement("div");
-                object.class = 'webgl';
-                object.id    = 'webglobj';
-                object.innerHTML = "";
-
-                // Create Canvas to render WebGL context on
-                var c = document.createElement('canvas');
-                c.setAttribute('class','webgl');
-                c.setAttribute('id','webgl_canvas');
-                object.appendChild(c);
-
-                // Run WebGL script
-                var s = document.createElement('script');
-                s.setAttribute('type','text/javascript');
-                s.setAttribute('src',src);
-//alert(src);
-                object.appendChild(s);
-
-                object.standby   = "[Loading]... Please wait...";
-            return object;
-         }
-// </WEBGL>
          function mkClsStr(src,name,dir){
             //var ClsStr = "<iframe><object classid='java:" + name + ".class' type='application/x-java-applet' class='obj' id='javaobj'>"
             //           + "<param name='codebase' value='" + dir + "'/>" 
             //           + "<param name='scriptable' value='true'/>" 
             //           + "</object></iframe>";
             //return ClsStr;
-
             var object = document.createElement("object");
                 object.class = 'obj';
                 object.id    = 'javaobj';
@@ -1477,13 +1421,6 @@ var ObjectWindow = new Class({
                      //owThis.contentObject.style.position='relative';
                      //owThis.objType = "jar";
                      break;
-// <WEBGL> - Jordan - registers .js files as webgl scripts
-                  case 'js':
-                     owThis.styleObject = owThis.contentObject = mkWebGLStr(objSrc,name,srcDir);
-                     content.appendChild(owThis.contentObject);
-                     owThis.objType = "webgl";
-                     break;
-// </WEBGL>
                   case 'class':
                      //content.innerHTML = mkClsStr(objSrc,name,srcDir);
                      //owThis.contentObject = mkClsStr(objSrc,name,srcDir);
@@ -1874,9 +1811,8 @@ var TableWindow = new Class({
 
 var Legend = new Class({
 	Extends: Window,
-	initialize: function(experiment, file)
+	initialize: function(experiment)
 	{
-		this.file = file == null ? 'legend.txt' : file;
 		this.type='legend';
 		this.parent(undefined,'Legend');
 		if (true)//typeof editing != 'undefined')
@@ -1890,9 +1826,9 @@ var Legend = new Class({
 			
 			
 			//alert(this.div.id);
-			table_parser(experiment, this.file, this.div.id);
+			//table_parser(experiment, this.file, this.div.id);
 
-			var data = table_data[this.file];
+			//var data = table_data[this.file];
 			
 			// Top Row
 			var tr = new Element('tr');
@@ -1904,26 +1840,13 @@ var Legend = new Class({
 			td.innerHTML = '<center>Current Location</center>';
 			
 			// Other Rows
-			for(var i = 0; i < data.length; i += 1) {
+			for(var i=0; i<3; i+=1){
    			var tr = new Element('tr');
 			   this.table.adopt(tr);
-			   for(var j = 0; j < data[i].length; j += 1) {
+			   for(var j=0; j<6; j+=1){
 			      var td = new Element('td');
 			      tr.adopt(td);
-
-// Setup attributtes as css string and append
-var styleString = 'font-size:' + 16*(window.scaleW/55.0) + 'px;';
-                 // "";
-
-
-
-td.setAttribute("class", "legend_cell");
-td.setAttribute("style", styleString);
-//td.style.fill = '#000000';
-
-td.innerHTML = '<center>' + data[i][j] + '</center>';
-			      //td.style.fontSize = 16*(window.scaleW/55.0);
-/*
+			      td.style.fontSize = 16*(window.scaleW/55.0);
 			      if(j == 0){
    			      if(i == 0){ td.innerHTML = '<center>Past Track</center>'; }
    			      if(i == 1){ td.innerHTML = '<center>Forecast Track</center>'; }
@@ -1932,13 +1855,11 @@ td.innerHTML = '<center>' + data[i][j] + '</center>';
 			      else{
    			       td.innerHTML = '<center>' + j + ' Day</center>';
 			      }
-*/
 		      }
 	      }
 			
 					
 		   if(typeof editing != 'undefined') {
-
 		      this.div.getElement(".infohandle").getElement(".icon").onmouseup = function(){ 
 				   var pd = this.parentNode.parentNode.getElement('.content');
                var pdh = this.parentNode.parentNode.getElement('.handle');
@@ -2150,14 +2071,14 @@ var ToolbarIcon_ext_TableWindow = new Class({
 	}
 });
 
-
+/*
 var ToolbarIcon_Legend = new Class({
 	Extends: ToolbarIcon,
 	initialize: function() {
 		this.parent('legend-icon.png', 'legend', true);
 	}
 });
-
+*/
 
 function update_stuff(el)
 {
@@ -2256,19 +2177,9 @@ var save_all = function()
 			'file_path': filepath,
 			'data_string': save_string
 			}, 
-		onComplete: function(r) { } 
+		onComplete: function(r) {} 
 	}).send();
 }
-
-/*function loadToolBar(){
-      var tb = new Toolbar();
-   	tb.add_icon(new ToolbarIcon_Trashbin());
-   	tb.add_icon(new ToolbarIcon_MapWindow());
-   	tb.add_icon(new ToolbarIcon_TextWindow());
-   	tb.add_icon(new ToolbarIcon_ClockWindow());
-   	tb.add_icon(new ToolbarIcon_TableWindow());
-   	tb.add_icon(new ToolbarIcon_Legend());
-}*/
 
 window.addEvent('domready', function()
 {
@@ -2289,7 +2200,7 @@ window.addEvent('domready', function()
    	tb.add_icon(new ToolbarIcon_ClockWindow());
    	tb.add_icon(new ToolbarIcon_TableWindow());
    	tb.add_icon(new ToolbarIcon_ext_TableWindow());
-   	tb.add_icon(new ToolbarIcon_Legend());
+   	//tb.add_icon(new ToolbarIcon_Legend());
    		
    }
    

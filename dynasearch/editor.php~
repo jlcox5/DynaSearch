@@ -2,7 +2,7 @@
 $page_title = "Editor";
 
 $template_style_array  = array("style.css", "editor.css");
-$template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js", "timer.js",  "hurricane-unisys-parser.js", "editor.js", "canvas3dapi/c3dapi.js");
+$template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js", "timer.js",  "hurricane-unisys-parser.js", "editor.js");
 
 include('assets/php/standard.php');
 
