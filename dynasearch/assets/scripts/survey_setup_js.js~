@@ -691,7 +691,7 @@ var load_file = function()
 }
 
 
-
+/*
 // Take in a bar div and prompt for a new title for that bar's page
 var edit_page_title = function(bar)
 {

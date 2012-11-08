@@ -1,0 +1,16 @@
+Files Updated By Jordan for:
+  - Inclusion of WebGL script capabilities
+  - User and Administrator Interface improvements
+
+
+Modified Files:
+assets/scripts/survey_setup_js.js
+assets/scripts/editor.js
+assets/scripts/timer.js
+assets/scripts/questEditor.js
+assets/style/editor.css
+assets/style/survey_setup.css
+
+
+Added Files:
+assets/scripts/canvas3dapi

@@ -18,8 +18,12 @@ var cCol;
 var curAdv;
 
 function submitPageWithInput(){
-   document.getElementById("pageFinished").value = 'true';
-   document.forms[0].submit();
+
+   // Check if user really wants to submit
+   if ( confirm('Are you sure you want to leave this page?') ) {
+      document.getElementById("pageFinished").value = 'true';
+      document.forms[0].submit();
+   }
 }
 
 function startPageTimer(pageTime, j, id){
@@ -50,6 +54,7 @@ function startTimer(event){
 	   var today = new Date();
 	   startTime = today.getTime();
 	   id = event.target.id;
+//alert(id);
 	   id = (event.tdid==undefined)?event.target.id:event.tdid;
    }
 }
@@ -102,9 +107,20 @@ function endTimer(event){
 	   document.getElementById('clickData').innerHTML += "<input type='hidden' id='clickNum" + clickNum + "' name='clickNum" + clickNum + "' value= " + clickNum + " /> <input type='hidden' id='elemId" + clickNum + "' name='elemId" + clickNum + "' value= " + id + " /> <input type='hidden' id='clickTime" + clickNum + "' name='clickTime" + clickNum + "' value= " + newTime/1000 + "/>";
 	   document.getElementById('totalClicks').innerHTML=  "<input type='hidden' id='totalClicks' name='totalClicks' value=" + clickNum + " />";
     }
+	
+	// WebGL - Detect clicks, added by Jordan
+	else if (id.substring(0,12) == 'webgl_canvas') {
+		clickNum = clickNum + 1;
+		var today = new Date();
+		endTime = today.getTime();
+		var newTime = endTime - startTime;
+		document.getElementById('clickData').innerHTML += "<input type='hidden' id='clickNum" + clickNum + "' name='clickNum" + clickNum + "' value= " + clickNum + " /> <input type='hidden' id='elemId" + clickNum + "' name='elemId" + clickNum + "' value= " + id + " /> <input type='hidden' id='clickTime" + clickNum + "' name='clickTime" + clickNum + "' value= " + newTime/1000 + "/>";
+		document.getElementById('totalClicks').innerHTML=  "<input type='hidden' id='totalClicks' name='totalClicks' value=" + clickNum + " />";
+    }
+
     //else{
     //   alert("event not handled : " + event.target.id + " : " + id);
-   // }
+    //}
 	 //document.configSize.submit();
    }
 }

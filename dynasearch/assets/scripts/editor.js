@@ -1877,79 +1877,89 @@ var Legend = new Class({
 	initialize: function(experiment, file)
 	{
 		this.file = file == null ? 'legend.txt' : file;
+		this.experiment = experiment;
 		this.type='legend';
 		this.parent(undefined,'Legend');
+		this.table = new Element('table');
+		this.tableTitle = "Current Location";
+
 		if (true)//typeof editing != 'undefined')
 		{	
 			// If we get here, the user is performing an actual experiment
 			// Insert the actual table
-			this.table = new Element('table');
-			this.table.setAttribute('class', 'dynaview_table');
-			this.table.setAttribute('id', "mapLegend");
-			this.border='1';
-			
-			
-			//alert(this.div.id);
-			table_parser(experiment, this.file, this.div.id);
-
-			var data = table_data[this.file];
-			
-			// Top Row
-			var tr = new Element('tr');
-			this.table.adopt(tr);
-			var td = new Element('td');
-			td.setAttribute('colspan', '6');
-			tr.adopt(td);
-			tr.style.fontSize = 16*(window.scaleW/55.0);
-			td.innerHTML = '<center>Current Location</center>';
-			
-			// Other Rows
-			for(var i = 0; i < data.length; i += 1) {
-   			var tr = new Element('tr');
-			   this.table.adopt(tr);
-			   for(var j = 0; j < data[i].length; j += 1) {
-			      var td = new Element('td');
-			      tr.adopt(td);
-
-// Setup attributtes as css string and append
-var styleString = 'font-size:' + 16*(window.scaleW/55.0) + 'px;';
-                 // "";
-
-
-
-td.setAttribute("class", "legend_cell");
-td.setAttribute("style", styleString);
-//td.style.fill = '#000000';
-
-td.innerHTML = '<center>' + data[i][j] + '</center>';
-			      //td.style.fontSize = 16*(window.scaleW/55.0);
-/*
-			      if(j == 0){
-   			      if(i == 0){ td.innerHTML = '<center>Past Track</center>'; }
-   			      if(i == 1){ td.innerHTML = '<center>Forecast Track</center>'; }
-   			      if(i == 2){ td.innerHTML = '<center>Uncertainty Cone</center>'; }
-			      }
-			      else{
-   			       td.innerHTML = '<center>' + j + ' Day</center>';
-			      }
-*/
-		      }
-	      }
-			
-					
-		   if(typeof editing != 'undefined') {
-
-		      this.div.getElement(".infohandle").getElement(".icon").onmouseup = function(){ 
-				   var pd = this.parentNode.parentNode.getElement('.content');
-               var pdh = this.parentNode.parentNode.getElement('.handle');
-				   pdh.innerHTML = prompt("Please enter your new title for this box, or press Okay to keep the current text.", pdh.innerHTML);
-				   
-	         }
-         }
-			
-			this.content.adopt(this.table);
+			this.fromFile(this.file);
 			
 		}
+			
+			
+			
+		if (typeof editing != 'undefined')
+		{
+
+			var myself = this;
+			this.div.getElement(".infohandle").getElement(".icon").onmouseup = function()
+			{ 
+				// Set handle text
+				var pd = this.parentNode.parentNode.getElement('.content');
+				var pdh = this.parentNode.parentNode.getElement('.handle');
+				pdh.innerHTML = prompt("Please enter your new title for this box, or press Okay to keep the current text.", pdh.innerHTML);
+
+				// Set Table title
+				myself.tableTitle = prompt("Please enter your new title for the legend, or press Okay to keep the current text.", myself.tableTitle);
+
+				// Set Table content file
+				var file = "";
+				file = prompt("Please enter the name of the table file that you wish to use.", myself.file);
+				myself.fromFile(file);
+
+			}
+		}
+	},
+	fromFile : function(file)
+	{
+		if(file != null) this.file = file;
+
+		this.table.setAttribute('class', 'dynaview_table');
+		this.table.setAttribute('id', "mapLegend");
+		this.border='1';
+
+		// Clear table
+		this.table.innerHTML = "";
+			
+		// Parse table file
+		table_parser(this.experiment, this.file, this.div.id);
+		var data = table_data[this.file];
+			
+		// Top Row - Table Title
+		var tr = new Element('tr');
+		var td = new Element('td');
+		td.setAttribute('colspan', '6');
+		tr.adopt(td);
+		tr.style.fontSize = 16*(window.scaleW/55.0);
+		td.innerHTML = '<center>' + this.tableTitle + '</center>';
+		this.table.adopt(tr);
+			
+		// Each Row
+		for(var i = 0; i < data.length; i += 1) {
+   			var tr = new Element('tr');
+
+			// Each Cell
+			for(var j = 0; j < data[i].length; j += 1) {
+				var td = new Element('td');
+
+				// Setup attributtes as css string and append
+				var styleString = 'font-size:' + 16*(window.scaleW/55.0) + 'px;';
+				td.setAttribute("class", "legend_cell");
+				td.setAttribute("style", styleString);
+
+				td.innerHTML = '<center>' + data[i][j] + '</center>';
+
+				tr.adopt(td);
+			}
+			this.table.adopt(tr);
+
+		}
+		this.content.adopt(this.table);
 	},
 });
 

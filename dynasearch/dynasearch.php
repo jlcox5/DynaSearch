@@ -8,7 +8,7 @@
 $page_title = "DynaSearch";
 
 $template_style_array  = array("style.css", "editor.css");
-$template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js", "timer.js", "hurricane-unisys-parser.js", "editor.js");
+$template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js", "timer.js", "hurricane-unisys-parser.js", "editor.js", "canvas3dapi/c3dapi.js");
 
 	  
 	//Button hit
@@ -26,12 +26,12 @@ $template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js"
 			   $clickNum = $_POST[$var_clickNum];
 		      $clickTime = $_POST[$var_clickTime];
 		      $elemId = $_POST[$var_elemId ];
-			   echo $var_clickNum;
+			   /*echo $var_clickNum;
 			   echo $var_clickTime;
 			   echo $var_elemId;
 			   echo $clickNum;
 			   echo $clickTime;
-			   echo $elemId;
+			   echo $elemId;*/
 		       mysql_query("INSERT INTO sur_clicks SET UserName='$username', SessionNumber=0, ObjClicked='$elemId', ClickLength='$clickTime', ClickNumber='$clickNum';");
 			   redirect("advance.php");
 			}

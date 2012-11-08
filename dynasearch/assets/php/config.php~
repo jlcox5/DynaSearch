@@ -2,9 +2,9 @@
 #These items will be included into every page.
 
 $DB_HOST = "localhost";
-$DB_NAME = "EMDSS";
+$DB_NAME = "emdss";
 $DB_USER = "root";
-$DB_PASS = "search";
+$DB_PASS = "YES";
 
 $SOFTWARE_VERSION = "0.01a";
 

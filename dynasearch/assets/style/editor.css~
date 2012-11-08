@@ -6,7 +6,7 @@
 
 .drag {
 	width: 250px;
-	height: 250px;
+	height: 375px;
 	background: #dddddd;
 	color: #111111;
 	border: 1px #000000 solid;
@@ -16,7 +16,7 @@
 
 .drag_enter {
 	width: 250px;
-	height: 250px;
+	height: 300px;
 	background: #222222;
 	color: #eeeeee;
 	border: 1px #000000 solid;
@@ -36,7 +36,18 @@
 	height: 95%;	
 }
 
-.content {
+.dynaview_table {
 	width: 100%;
 	height: 100%;
+	border: 1px solid #000;
 }
+
+/* WebGL Style - added by Jordan*/
+.webgl {
+	width : 100%;
+	height: 100%;
+	background: #FF0000;
+	
+}
+
+

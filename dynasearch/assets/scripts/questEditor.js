@@ -1012,14 +1012,37 @@ var TextQuest = new Class(
       var innerBQ = document.createElement("blockquote");
       var para    = document.createElement("p");
           para.innerHTML = this.text;
-      var input   = document.createElement("input");
-          input.type = "text";
-          input.required = forreal;
-          input.size = 96;
-          if(this.fieldLength > 0) input.maxlength = this.fieldLength;
-          input.maxlength = this.fieldLength;
-          input.name =
-          input.id   = "q" + this.id;
+
+// Edited by Jordan
+      var input; //   = document.createElement("input"); // DONT NEED THIS
+
+      // This did nothing |
+      //                  V
+      //if(this.fieldLength > 0) input.maxlength = this.fieldLength; // DONT NEED THIS
+      //input.maxlength = this.fieldLength; // DONT NEED THIS
+      //input.name = // DONT NEED THIS
+
+      if ((this.fieldLength > 80) || (this.fieldLength == 0)) {
+         // For longer fields and unbounded, use a textarea
+         input = document.createElement("textarea");
+         input.rows = "2";
+         input.cols = "80";
+      } else {
+         // Between 1 and 80 characters, use text line
+         input   = document.createElement("input");
+         input.type = "text";
+      }
+
+      // If length is nonzero, we need a maximum bound
+      if (this.fieldLength > 0) {
+         input.setAttribute("maxlength", this.fieldLength);
+      }
+
+      // Attributes independent of field length
+      //input.size = 96; // DONT NEED THIS
+      input.size = this.fieldLength;
+      input.required = forreal;
+      input.id   = "q" + this.id;
 
       innerBQ.appendChild(input);
 

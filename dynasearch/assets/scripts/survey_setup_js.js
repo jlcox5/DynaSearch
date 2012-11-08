@@ -726,7 +726,7 @@ var edit_advisory_number = function(bar)
 {
 	bar.getChildren('.advisory_number')[0].innerHTML = prompt('Please enter the number of the advisory.', bar.getChildren('.advisory_number')[0].innerHTML);
 };
-
+*/
 
 window.addEvent('domready', function(){
 	so = $('page_list').sortables_obj = new Sortables( $('page_list_ol'), {clone:true, opacity: 0.5, handle:'.drag_handle'} );

@@ -1,0 +1,43 @@
+
+.page_bar {
+	/*height: 25px;*/
+	width: 800px;
+	/*overflow: visible;*/
+	background-color: #FFFFCC;
+	color:#000000;
+	margin: 5px 5px;
+	padding: 2px;
+	/*display: block;*/
+	display: table;
+}
+
+.page_bar_item {
+	padding-right: 10px;
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.content {
+	display: table;
+}
+
+.drag_handle {
+	background-color:#003366;
+	float: left;
+	width: 25px;
+	height: 25px;
+	margin-right: 5px;
+	/*display: table-cell;
+	vertical-align: middle;*/
+}
+
+.bar_button {
+	height: 100%;
+	padding-top: 5px;
+	margin-right: 10px;
+	display: table-cell;
+	vertical-align: middle;
+	/*position: absolute;
+	top: 50%;
+	margin-top: -12.5px;*/
+}
