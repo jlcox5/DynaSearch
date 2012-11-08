@@ -1,20 +1,22 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2011.5.25)  18 MAY 2012 15:59
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.11.7)  7 NOV 2012 18:01
 entering extended mode
- %&-line parsing enabled.
-**manual.tex
-(./manual.tex
-LaTeX2e <2009/09/24>
-Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
-yphenation, farsi, arabic, croatian, bulgarian, ukrainian, russian, czech, slov
-ak, danish, dutch, finnish, french, basque, ngerman, german, german-x-2009-06-1
-9, ngerman-x-2009-06-19, ibycus, monogreek, greek, ancientgreek, hungarian, san
-skrit, italian, latin, latvian, lithuanian, mongolian2a, mongolian, bokmal, nyn
-orsk, romanian, irish, coptic, serbian, turkish, welsh, esperanto, uppersorbian
-, estonian, indonesian, interlingua, icelandic, kurmanji, slovenian, polish, po
-rtuguese, spanish, galician, catalan, swedish, ukenglish, pinyin, loaded.
-(./ij4uq.cls (/usr/share/texmf-texlive/tex/latex/base/article.cls
+**C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/manual.tex
+(C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/manual.tex
+LaTeX2e <2011/06/27>
+Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
+abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
+croatian, czech, danish, dutch, esperanto, estonian, farsi, finnish, french, ga
+lician, german, german-x-2009-06-19, greek, gujarati, hindi, hungarian, iceland
+ic, indonesian, interlingua, irish, italian, kannada, kurmanji, lao, latin, lat
+vian, lithuanian, malayalam, marathi, mongolian, mongolianlmc, monogreek, ngerm
+an, ngerman-x-2009-06-19, nynorsk, oriya, panjabi, pinyin, polish, portuguese, 
+romanian, russian, sanskrit, serbian, slovak, slovenian, spanish, swedish, swis
+sgerman, tamil, telugu, turkish, turkmen, ukenglish, ukrainian, uppersorbian, u
+senglishmax, welsh, loaded.
+(C:\Users\jlcox\Documents\GitHub\DynaSearch\dynasearch\manual\ij4uq.cls
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\article.cls"
 Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
-(/usr/share/texmf-texlive/tex/latex/base/size10.clo
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\size10.clo"
 File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
@@ -29,16 +31,16 @@ File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
 )
-(/usr/share/texmf-texlive/tex/latex/base/latexsym.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\latexsym.sty"
 Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
 \symlasy=\mathgroup4
 LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
 (Font)                  U/lasy/m/n --> U/lasy/b/n on input line 47.
 )
-(/usr/share/texmf-texlive/tex/latex/amsfonts/amssymb.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\amssymb.sty"
 Package: amssymb 2009/06/22 v3.00
 
-(/usr/share/texmf-texlive/tex/latex/amsfonts/amsfonts.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\amsfonts.sty"
 Package: amsfonts 2009/06/22 v3.00 Basic AMSFonts support
 \@emptytoks=\toks14
 \symAMSa=\mathgroup5
@@ -46,24 +48,24 @@ Package: amsfonts 2009/06/22 v3.00 Basic AMSFonts support
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 96.
 ))
-(/usr/share/texmf-texlive/tex/latex/amsmath/amsmath.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\ams\math\amsmath.sty"
 Package: amsmath 2000/07/18 v2.13 AMS math features
 \@mathmargin=\skip43
 
 For additional information on amsmath, use the `?' option.
-(/usr/share/texmf-texlive/tex/latex/amsmath/amstext.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\ams\math\amstext.sty"
 Package: amstext 2000/06/29 v2.01
 
-(/usr/share/texmf-texlive/tex/latex/amsmath/amsgen.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\ams\math\amsgen.sty"
 File: amsgen.sty 1999/11/30 v2.0
 \@emptytoks=\toks15
 \ex@=\dimen103
 ))
-(/usr/share/texmf-texlive/tex/latex/amsmath/amsbsy.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\ams\math\amsbsy.sty"
 Package: amsbsy 1999/11/29 v1.2d
 \pmbraise@=\dimen104
 )
-(/usr/share/texmf-texlive/tex/latex/amsmath/amsopn.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\ams\math\amsopn.sty"
 Package: amsopn 1999/12/14 v2.01 operator names
 )
 \inf@bad=\count87
@@ -104,7 +106,7 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
 LaTeX Info: Redefining \[ on input line 2666.
 LaTeX Info: Redefining \] on input line 2667.
 )
-(/usr/share/texmf-texlive/tex/latex/amscls/amsthm.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\ams\classes\amsthm.sty"
 Package: amsthm 2004/08/06 v2.20
 \thm@style=\toks20
 \thm@bodyfont=\toks21
@@ -116,52 +118,52 @@ Package: amsthm 2004/08/06 v2.20
 \thm@headsep=\skip48
 \dth@everypar=\toks25
 )
-(/usr/share/texmf-texlive/tex/latex/graphics/graphicx.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphicx.sty"
 Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
 
-(/usr/share/texmf-texlive/tex/latex/graphics/keyval.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\keyval.sty"
 Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
 \KV@toks@=\toks26
 )
-(/usr/share/texmf-texlive/tex/latex/graphics/graphics.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphics.sty"
 Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
 
-(/usr/share/texmf-texlive/tex/latex/graphics/trig.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\trig.sty"
 Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
 )
-(/etc/texmf/tex/latex/config/graphics.cfg
-File: graphics.cfg 2009/08/28 v1.8 graphics configuration of TeX Live
+("C:\Program Files\MiKTeX 2.9\tex\latex\00miktex\graphics.cfg"
+File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
 )
 Package graphics Info: Driver file: dvips.def on input line 91.
 
-(/usr/share/texmf-texlive/tex/latex/graphics/dvips.def
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\dvips.def"
 File: dvips.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
 ))
 \Gin@req@height=\dimen112
 \Gin@req@width=\dimen113
 )
-(/usr/share/texmf-texlive/tex/latex/graphics/epsfig.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\epsfig.sty"
 Package: epsfig 1999/02/16 v1.7a (e)psfig emulation (SPQR)
 \epsfxsize=\dimen114
 \epsfysize=\dimen115
 )
-(/usr/share/texmf-texlive/tex/latex/base/fontenc.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\fontenc.sty"
 Package: fontenc 2005/09/27 v1.99g Standard LaTeX package
 
-(/usr/share/texmf-texlive/tex/latex/base/t1enc.def
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\t1enc.def"
 File: t1enc.def 2005/09/27 v1.99g Standard LaTeX file
 LaTeX Font Info:    Redeclaring font encoding T1 on input line 43.
 ))
-(/usr/share/texmf-texlive/tex/latex/pclnfss/arial.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\pclnfss\arial.sty"
 Package: arial 
 )
-(/usr/share/texmf-texlive/tex/latex/psnfss/palatino.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\palatino.sty"
 Package: palatino 2005/04/12 PSNFSS-v9.2a (SPQR) 
 )
-(/usr/share/texmf-texlive/tex/latex/psnfss/times.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\times.sty"
 Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
 )
-(/usr/share/texmf-texlive/tex/latex/fancyhdr/fancyhdr.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\fancyhdr\fancyhdr.sty"
 \fancy@headwidth=\skip49
 \f@ncyO@elh=\skip50
 \f@ncyO@erh=\skip51
@@ -172,17 +174,17 @@ Package: times 2005/04/12 PSNFSS-v9.2a (SPQR)
 \f@ncyO@olf=\skip56
 \f@ncyO@orf=\skip57
 )
-(/usr/share/texmf-texlive/tex/latex/sectsty/sectsty.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\sectsty\sectsty.sty"
 Package: sectsty 2002/02/25 v2.0.2 Commands to change all sectional heading sty
 les
 )
-(/usr/share/texmf-texlive/tex/latex/appendix/appendix.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\appendix\appendix.sty"
 Package: appendix 2009/09/02 v1.2b extra appendix facilities
 \c@@pps=\count99
 \c@@ppsavesec=\count100
 \c@@ppsaveapp=\count101
 )
-(/usr/share/texmf-texlive/tex/latex/tools/bm.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\tools\bm.sty"
 Package: bm 2004/02/26 v1.1c Bold Symbol Support (DPC/FMi)
 \symboldoperators=\mathgroup7
 \symboldletters=\mathgroup8
@@ -191,11 +193,11 @@ Package: bm 2004/02/26 v1.1c Bold Symbol Support (DPC/FMi)
 LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 138.
 LaTeX Info: Redefining \bm on input line 204.
 )
-(/usr/share/texmf-texlive/tex/latex/caption/caption.sty
-Package: caption 2009/10/09 v3.1k Customizing captions (AR)
+("C:\Program Files\MiKTeX 2.9\tex\latex\caption\caption.sty"
+Package: caption 2012/02/19 v3.2f Customizing captions (AR)
 
-(/usr/share/texmf-texlive/tex/latex/caption/caption3.sty
-Package: caption3 2009/10/09 v3.1k caption3 kernel (AR)
+("C:\Program Files\MiKTeX 2.9\tex\latex\caption\caption3.sty"
+Package: caption3 2012/01/12 v1.4b caption3 kernel (AR)
 \captionmargin=\dimen116
 \captionmargin@=\dimen117
 \captionwidth=\dimen118
@@ -205,7 +207,7 @@ Package: caption3 2009/10/09 v3.1k caption3 kernel (AR)
 )
 \c@ContinuedFloat=\count102
 )
-(/usr/share/texmf-texlive/tex/latex/changebar/changebar.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\changebar\changebar.sty"
 Package: changebar 2005/09/18 v3.5c Indicate changes with marginal bars
 \cb@nextpoint=\count103
 \cb@topleft=\count104
@@ -222,86 +224,82 @@ Package: changebar 2005/09/18 v3.5c Indicate changes with marginal bars
 \cb@odd@right=\dimen125
 \cb@even@left=\dimen126
 \cb@even@right=\dimen127
+\cb@writexy=\write3
+\cb@readxy=\read1
 \changebarwidth=\skip58
 \deletebarwidth=\skip59
 \changebarsep=\skip60
 \c@changebargrey=\count112
-\cb@write=\write3
-\cb@read=\read1
-\openout3 = `manual.cb'.
-
+\cb@write=\write4
+\cb@read=\read2
 )
-(/usr/share/texmf-texlive/tex/latex/datetime/datetime.sty
-Package: datetime 2007/08/20 v2.55 Date Time Package
+("C:\Program Files\MiKTeX 2.9\tex\latex\datetime\datetime.sty"
+Package: datetime 2010/09/21 v2.58 Date Time Package
 
-(/usr/share/texmf-texlive/tex/latex/fmtcount/fmtcount.sty
-Package: fmtcount 2009/10/02 v1.31
+("C:\Program Files\MiKTeX 2.9\tex\latex\fmtcount\fmtcount.sty"
+Package: fmtcount 2012/10/24 v2.02
 
-(/usr/share/texmf-texlive/tex/latex/base/ifthen.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\ifthen.sty"
 Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
 )
-\c@padzeroesN=\count113
+("C:\Program Files\MiKTeX 2.9\tex\latex\etoolbox\etoolbox.sty"
+Package: etoolbox 2011/01/03 v2.1 e-TeX tools for LaTeX
 
-(/usr/share/texmf-texlive/tex/latex/fmtcount/fc-english.def
-File: fc-english 2007/05/26
+("C:\Program Files\MiKTeX 2.9\tex\latex\misc\etex.sty"
+Package: etex 1998/03/26 v2.0 eTeX basic definition package (PEB)
+\et@xins=\count113
 )
-(/usr/share/texmf-texlive/tex/latex/fmtcount/fc-UKenglish.def
-File: fc-UKenglish 2007/06/14
+\etb@tempcnta=\count114
 )
-(/usr/share/texmf-texlive/tex/latex/fmtcount/fc-british.def
-File: fc-british 2007/06/14
-)
-(/usr/share/texmf-texlive/tex/latex/fmtcount/fc-USenglish.def
-File: fc-USenglish 2007/06/14
-)
-(/usr/share/texmf-texlive/tex/latex/fmtcount/fc-spanish.def
-File: fc-spanish.def 2007/05/26
-)
-(/usr/share/texmf-texlive/tex/latex/fmtcount/fc-portuges.def
-File: fc-portuges.def 2007/05/26
-)
-(/usr/share/texmf-texlive/tex/latex/fmtcount/fc-french.def
-File: fc-french.def 2007/05/26
-)
-(/usr/share/texmf-texlive/tex/latex/fmtcount/fc-german.def
-File: fc-german.def 2007/06/14
-)
-(/usr/share/texmf-texlive/tex/latex/fmtcount/fc-italian.def
-File: fc-italian.def 2009/10/02 Italian support for fmtcount (Edoardo Pasca)
-)
-No configuration file fmtcount.cfg found.
-\@DT@modctr=\count114
-\@ordinalctr=\count115
-\@orgargctr=\count116
-\@strctr=\count117
-\@tmpstrctr=\count118
-\@DT@loopN=\count119
-\@DT@X=\count120
-)
-\@day=\count121
-\@month=\count122
-\@year=\count123
+("C:\Program Files\MiKTeX 2.9\tex\latex\fmtcount\fcprefix.sty"
+Package: fcprefix 2012/09/28
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\fmtcount\fcnumparser.sty"
+Package: fcnumparser 2012/09/28
+\fc@digit@counter=\count115
+))
+\c@padzeroesN=\count116
+\fc@tmpcatcode=\count117
+\@DT@modctr=\count118
+\@ordinalctr=\count119
+\@orgargctr=\count120
+\@strctr=\count121
+\@tmpstrctr=\count122
+\@DT@loopN=\count123
+\@DT@X=\count124
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\fmtcount\fc-english.def"
+File: fc-english.def 2012/06/18
+))
+\@day=\count125
+\@month=\count126
+\@year=\count127
+\c@HOUR=\count128
+\c@HOURXII=\count129
+\c@MINUTE=\count130
+\c@TOHOUR=\count131
+\c@TOMINUTE=\count132
+\c@SECOND=\count133
+\currenthour=\count134
+\currentminute=\count135
+\currentsecond=\count136
 Package datetime Info: No datetime.cfg file found, using default settings on in
-put line 167.
-\@dtctr=\count124
-\dayofyear=\count125
-\dayofweek=\count126
-LaTeX Info: Redefining \today on input line 428.
-\c@HOUR=\count127
-\c@HOURXII=\count128
-\c@MINUTE=\count129
-\c@TOHOUR=\count130
-\c@TOMINUTE=\count131
+put line 292.
+\@dtctr=\count137
+\dayofyear=\count138
+\dayofweek=\count139
+LaTeX Info: Redefining \today on input line 724.
 \dt@a=\toks27
 \dt@b=\toks28
-) (/usr/share/texmf-texlive/tex/latex/tools/enumerate.sty
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\tools\enumerate.sty"
 Package: enumerate 1999/03/05 v3.00 enumerate extensions (DPC)
 \@enLab=\toks29
 )
-(/usr/share/texmf-texlive/tex/latex/fancybox/fancybox.sty
-Package: fancybox 2000/09/19 1.3
+("C:\Program Files\MiKTeX 2.9\tex\latex\fancybox\fancybox.sty"
+Package: fancybox 2010/05/15 1.4
 
-Style option: `fancybox' v1.3 <2000/09/19> (tvz)
+Style option: `fancybox' v1.4 <2010/05/15> (tvz)
 \@fancybox=\box28
 \shadowsize=\dimen128
 \@Sbox=\box29
@@ -309,131 +307,188 @@ Style option: `fancybox' v1.3 <2000/09/19> (tvz)
 \the@fancyput=\toks31
 \this@fancyput=\toks32
 \EndVerbatimTokens=\toks33
-\Verbatim@Outfile=\write4
-\Verbatim@Infile=\read2
-) (/usr/share/texmf-texlive/tex/latex/base/fontenc.sty
+\Verbatim@Outfile=\write5
+\Verbatim@Infile=\read3
+) ("C:\Program Files\MiKTeX 2.9\tex\latex\base\fontenc.sty"
 Package: fontenc 2005/09/27 v1.99g Standard LaTeX package
 
-(/usr/share/texmf-texlive/tex/latex/base/ot1enc.def
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\ot1enc.def"
 File: ot1enc.def 2005/09/27 v1.99g Standard LaTeX file
 LaTeX Font Info:    Redeclaring font encoding OT1 on input line 43.
 ))
-(/usr/share/texmf-texlive/tex/latex/lineno/lineno.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\lineno\lineno.sty"
 Package: lineno 2005/11/02 line numbers on paragraphs v4.41
-\linenopenalty=\count132
+\linenopenalty=\count140
 \output=\toks34
-\linenoprevgraf=\count133
+\linenoprevgraf=\count141
 \linenumbersep=\dimen129
 \linenumberwidth=\dimen130
-\c@linenumber=\count134
-\c@pagewiselinenumber=\count135
-\c@LN@truepage=\count136
-\c@internallinenumber=\count137
-\c@internallinenumbers=\count138
+\c@linenumber=\count142
+\c@pagewiselinenumber=\count143
+\c@LN@truepage=\count144
+\c@internallinenumber=\count145
+\c@internallinenumbers=\count146
 \quotelinenumbersep=\dimen131
 \bframerule=\dimen132
 \bframesep=\dimen133
 \bframebox=\box30
 LaTeX Info: Redefining \\ on input line 3056.
 )
-(/usr/share/texmf-texlive/tex/latex/tools/longtable.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\tools\longtable.sty"
 Package: longtable 2004/02/01 v4.11 Multi-page Table package (DPC)
 \LTleft=\skip61
 \LTright=\skip62
 \LTpre=\skip63
 \LTpost=\skip64
-\LTchunksize=\count139
+\LTchunksize=\count147
 \LTcapwidth=\dimen134
 \LT@head=\box31
 \LT@firsthead=\box32
 \LT@foot=\box33
 \LT@lastfoot=\box34
-\LT@cols=\count140
-\LT@rows=\count141
-\c@LT@tables=\count142
-\c@LT@chunks=\count143
+\LT@cols=\count148
+\LT@rows=\count149
+\c@LT@tables=\count150
+\c@LT@chunks=\count151
 \LT@p@ftn=\toks35
 )
-(/usr/share/texmf-texlive/tex/latex/natbib/natbib.sty
-Package: natbib 2009/07/16 8.31 (PWD, AO)
+("C:\Program Files\MiKTeX 2.9\tex\latex\natbib\natbib.sty"
+Package: natbib 2010/09/13 8.31b (PWD, AO)
 \bibhang=\skip65
 \bibsep=\skip66
 LaTeX Info: Redefining \cite on input line 694.
-\c@NAT@ctr=\count144
+\c@NAT@ctr=\count152
 )
-(/usr/share/texmf-texlive/tex/latex/units/nicefrac.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\units\nicefrac.sty"
 Package: nicefrac 1998/08/04 v0.9b Nice fractions
 \L@UnitsRaiseDisplaystyle=\skip67
 \L@UnitsRaiseTextstyle=\skip68
 \L@UnitsRaiseScriptstyle=\skip69
 LaTeX Info: Redefining \nicefrac on input line 131.
 )
-(/usr/share/texmf-texlive/tex/latex/overpic/overpic.sty
-Package: overpic 1999/07/04 v0.52  Overwriting eps pictures
+("C:\Program Files\MiKTeX 2.9\tex\latex\overpic\overpic.sty"
+Package: overpic 2010/09/13 v0.53  Overwriting graphics
 
-Package: overpic v0.52 <1999/07/04> (RN)
-(/usr/share/texmf-texlive/tex/latex/eepic/epic.sty
+Package: overpic v0.53 <2010/09/13> (RN)
+("C:\Program Files\MiKTeX 2.9\tex\latex\eepic\epic.sty"
 Enhancements to Picture Environment. Version 1.2 - Released June 1, 1986
-\@@multicnt=\count145
-\d@lta=\count146
+\@@multicnt=\count153
+\d@lta=\count154
 \@delta=\dimen135
 \@@delta=\dimen136
-\@gridcnt=\count147
-\@joinkind=\count148
+\@gridcnt=\count155
+\@joinkind=\count156
 \@dotgap=\dimen137
 \@ddotgap=\dimen138
-\@x@diff=\count149
-\@y@diff=\count150
+\@x@diff=\count157
+\@y@diff=\count158
 \x@diff=\dimen139
 \y@diff=\dimen140
 \@dotbox=\box35
-\num@segments=\count151
-\num@segmentsi=\count152
-\@datafile=\read3
+\num@segments=\count159
+\num@segmentsi=\count160
+\@datafile=\read4
 )
 overpic: relative positioning in percent
-) (/usr/share/texmf-texlive/tex/latex/pstricks/pstricks.sty
-Package: pstricks 2008/11/26 v0.40 LaTeX wrapper for `PSTricks' (RN,HV)
+) ("C:\Program Files\MiKTeX 2.9\tex\latex\pstricks\pstricks.sty"
+Package: pstricks 2011/10/31 v0.52 LaTeX wrapper for `PSTricks' (RN,HV)
 
-(/usr/share/texmf-texlive/tex/generic/pstricks/pstricks.tex
-`PSTricks' v1.29  <2009/05/19> (tvz)
+("C:\Program Files\MiKTeX 2.9\tex\generic\pstricks\base\pstricks.tex"
+("C:\Program Files\MiKTeX 2.9\tex\generic\xkeyval\pst-xkey.tex"
+File: pst-xkey.tex 2005/11/25 v1.6 PSTricks specialization of xkeyval (HA)
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\xkeyval\xkeyval.sty"
+Package: xkeyval 2008/08/13 v2.6a package option processing (HA)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\xkeyval\xkeyval.tex"
+\XKV@toks=\toks36
+\XKV@tempa@toks=\toks37
+\XKV@depth=\count161
+File: xkeyval.tex 2008/08/13 v2.6a key=value parser (HA)
+)))
+("C:\Program Files\MiKTeX 2.9\tex\generic\pstricks\base\pst-fp.tex"
+`pst-fp' v0.05, 2010/01/17 (hv)
+\pstFP@xs=\count162
+\pstFP@xia=\count163
+\pstFP@xib=\count164
+\pstFP@xfa=\count165
+\pstFP@xfb=\count166
+\pstFP@rega=\count167
+\pstFP@regb=\count168
+\pstFP@regs=\count169
+\pstFP@times=\count170
+)
+\psLoopIndex=\count171
+
+`PSTricks' v2.27  <2012/03/11> (tvz)
 \pst@dima=\dimen141
 \pst@dimb=\dimen142
 \pst@dimc=\dimen143
 \pst@dimd=\dimen144
 \pst@dimg=\dimen145
 \pst@dimh=\dimen146
+\pst@dimm=\dimen147
+\pst@dimn=\dimen148
+\pst@dimo=\dimen149
+\pst@dimp=\dimen150
 \pst@hbox=\box36
-\pst@boxg=\box37
-\pst@cnta=\count153
-\pst@cntb=\count154
-\pst@cntc=\count155
-\pst@cntd=\count156
-\pst@cntg=\count157
-\pst@cnth=\count158
-\pst@toks=\toks36
-(/usr/share/texmf-texlive/tex/generic/pstricks/pstricks.con)
-\psunit=\dimen147
-\psxunit=\dimen148
-\psyunit=\dimen149
-\pslinewidth=\dimen150
-\pst@customdefs=\toks37
-\pslinearc=\dimen151
-\everypsbox=\toks38
-\psframesep=\dimen152
-\pslabelsep=\dimen153
-\pst@shift=\dimen154
-\theoverlaybox=\box38
+\pst@ibox=\box37
+\pst@boxg=\box38
+\pst@cnta=\count172
+\pst@cntb=\count173
+\pst@cntc=\count174
+\pst@cntd=\count175
+\pst@cntg=\count176
+\pst@cnth=\count177
+\pst@cntm=\count178
+\pst@cntn=\count179
+\pst@cnto=\count180
+\pst@cntp=\count181
+\@zero=\count182
+\pst@toks=\toks38
+("C:\Program Files\MiKTeX 2.9\tex\generic\pstricks\base\pstricks.con")
+\psunit=\dimen151
+\psxunit=\dimen152
+\psyunit=\dimen153
+\pst@C@@rType=\count183
+\pslinewidth=\dimen154
+\psk@startLW=\dimen155
+\psk@endLW=\dimen156
+\pst@customdefs=\toks39
+\pslinearc=\dimen157
+\pst@symbolStep=\dimen158
+\pst@symbolWidth=\dimen159
+\pst@symbolLinewidth=\dimen160
+\everypsbox=\toks40
+\psframesep=\dimen161
+\pslabelsep=\dimen162
+\pst@shift=\dimen163
+\theoverlaybox=\box39
 )
-File: pstricks.tex 2009/05/19 v1.29 `PSTricks' (tvz,hv)
+File: pstricks.tex 2012/03/11 v2.27 `PSTricks' (tvz,hv)
 
-(/usr/share/texmf/tex/latex/xcolor/xcolor.sty
+("C:\Program Files\MiKTeX 2.9\tex\generic\pstricks\base\pst-fp.tex")
+File: pst-fp.tex 2012/03/11 v2.27 `PST-fp' (hv)
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\xcolor\xcolor.sty"
 Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
 
-(/etc/texmf/tex/latex/config/color.cfg
+("C:\Program Files\MiKTeX 2.9\tex\latex\00miktex\color.cfg"
 File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
 )
-Package xcolor Info: Driver file: dvips.def on input line 225.
+Package xcolor Info: Driver file: pdftex.def on input line 225.
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\pdftex-def\pdftex.def"
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\infwarerr.sty"
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ltxcmds.sty"
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count184
+)
 Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
 Package xcolor Info: Model `RGB' extended on input line 1353.
 Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
@@ -443,37 +498,37 @@ Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
 Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
 ))
-(/usr/share/texmf-texlive/tex/latex/setspace/setspace.sty
-Package: setspace 2000/12/01 6.7 Contributed and Supported LaTeX2e package
-
-Package: `setspace' 6.7 <2000/12/01>
-) (/usr/share/texmf-texlive/tex/latex/sttools/stfloats.sty
-Package: stfloats 1999/10/22
-\@dblbotnum=\count159
-\c@dblbotnumber=\count160
+("C:\Program Files\MiKTeX 2.9\tex\latex\setspace\setspace.sty"
+Package: setspace 2011/12/19 v6.7a set line spacing
 )
-(/usr/share/texmf-texlive/tex/latex/type1cm/type1cm.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\sttools\stfloats.sty"
+Package: stfloats 2012/05/29 v1.1 Improve float mechanism and baselineskip sett
+ings
+\@dblbotnum=\count185
+\c@dblbotnumber=\count186
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\type1cm\type1cm.sty"
 Package: type1cm 2002/09/05 v0.04 BlueSky/Y&Y Type1 CM font definitions (DPC, p
 atched RF)
 )
-(/usr/share/texmf/tex/latex/cm-super/type1ec.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\cm-super\type1ec.sty"
 Package: type1ec 2002/09/07 v1.1 Type1 EC font definitions (for CM-Super fonts)
 
 
-(/usr/share/texmf-texlive/tex/latex/base/t1cmr.fd
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\t1cmr.fd"
 File: t1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 ))
-(/usr/share/texmf-texlive/tex/latex/textfit/textfit.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\textfit\textfit.sty"
 Package: textfit 1994/04/15
-\mags@f@r=\count161
-\desired@size=\dimen155
-\r@mainder=\count162
-\m@gstepcount=\count163
-\m@gsteplimit=\count164
-\m@gstepvalue=\count165
-\m@gstepdimen=\dimen156
+\mags@f@r=\count187
+\desired@size=\dimen164
+\r@mainder=\count188
+\m@gstepcount=\count189
+\m@gsteplimit=\count190
+\m@gstepvalue=\count191
+\m@gstepdimen=\dimen165
 )
-(/usr/share/texmf-texlive/tex/latex/was/upgreek.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\was\upgreek.sty"
 Package: upgreek 2003/02/12 v2.0 (WaS)
 Package upgreek Info: Using Euler Roman for upright Greek on input line 31.
 \symugrf@m=\mathgroup11
@@ -485,159 +540,236 @@ Package Changebar Warning: You didn't specify the option `color';
 (Changebar)                your command \cbcolor will be ignored on input line 
 61.
 
-(/usr/share/texmf-texlive/tex/latex/psnfss/pifont.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\pifont.sty"
 Package: pifont 2005/04/12 PSNFSS-v9.2a Pi font support (SPQR) 
 LaTeX Font Info:    Try loading font information for U+pzd on input line 63.
 
-(/usr/share/texmf-texlive/tex/latex/psnfss/upzd.fd
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\upzd.fd"
 File: upzd.fd 2001/06/04 font definitions for U/pzd.
 )
 LaTeX Font Info:    Try loading font information for U+psy on input line 64.
 
-(/usr/share/texmf-texlive/tex/latex/psnfss/upsy.fd
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\upsy.fd"
 File: upsy.fd 2001/06/04 font definitions for U/psy.
 ))
-\c@tnote=\count166
-\c@fnote=\count167
-\c@cnote=\count168
-\c@email=\count169
-\c@author=\count170
-\c@corrauthor=\count171
-\@emailauthor=\toks39
-\c@affn=\count172
-\c@theo=\count173
-\c@defi=\count174
-\c@axio=\count175
-\c@rema=\count176
-\c@exam=\count177
-\c@algo=\count178
+\c@tnote=\count192
+\c@fnote=\count193
+\c@cnote=\count194
+\c@email=\count195
+\c@author=\count196
+\c@corrauthor=\count197
+\@emailauthor=\toks41
+\c@affn=\count198
+\c@theo=\count199
+\c@defi=\count200
+\c@axio=\count201
+\c@rema=\count202
+\c@exam=\count203
+\c@algo=\count204
+Package caption Info: We need package `newfloat' on input line 681.
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\caption\newfloat.sty"
+Package: newfloat 2011/11/16 v1.0a Defining new floating environments (AR)
+))
+("C:\Program Files\MiKTeX 2.9\tex\latex\caption\subcaption.sty"
+Package: subcaption 2012/01/12 v1.1d Sub-captions (AR)
+\c@subfigure=\count205
+\c@subtable=\count206
 )
-(/usr/share/texmf-texlive/tex/latex/subfig/subfig.sty
-Package: subfig 2005/06/28 ver: 1.3 subfig package
-\c@KVtest=\count179
-\sf@farskip=\skip70
-\sf@captopadj=\dimen157
-\sf@capskip=\skip71
-\sf@nearskip=\skip72
-\c@subfigure=\count180
-\c@subfigure@save=\count181
-\c@lofdepth=\count182
-\c@subtable=\count183
-\c@subtable@save=\count184
-\c@lotdepth=\count185
-\sf@top=\skip73
-\sf@bottom=\skip74
-)
-(/usr/share/texmf-texlive/tex/latex/base/fixltx2e.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\fixltx2e.sty"
 Package: fixltx2e 2006/09/13 v1.1m fixes to LaTeX
 LaTeX Info: Redefining \em on input line 420.
 LaTeX Info: The control sequence `\[' is already robust on input line 471.
 LaTeX Info: The control sequence `\]' is already robust on input line 472.
 )
-(/usr/share/texmf-texlive/tex/latex/placeins/placeins.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\placeins\placeins.sty"
 Package: placeins 2005/04/18  v 2.2
 )
 
 LaTeX Warning: Unused global option(s):
     [article].
 
-(./manual.aux)
-\openout1 = `manual.aux'.
+(C:\Users\jlcox\Documents\GitHub\DynaSearch\dynasearch\manual\manual.aux)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 29.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Try loading font information for OT1+ptm on input line 27.
- (/usr/share/texmf-texlive/tex/latex/psnfss/ot1ptm.fd
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1ptm.fd"
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 Package caption Info: Begin \AtBeginDocument code.
-Package caption3 Info: subfig package 1.2 or 1.3 is loaded.
-LaTeX Info: Redefining \subref on input line 27.
 Package caption Info: longtable package is loaded.
 
-(/usr/share/texmf-texlive/tex/latex/caption/ltcaption.sty
-Package: ltcaption 2008/03/28 v1.2 longtable captions (AR)
+("C:\Program Files\MiKTeX 2.9\tex\latex\caption\ltcaption.sty"
+Package: ltcaption 2011/09/12 v1.3 longtable captions (AR)
 )
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Try loading font information for OT1+phv on input line 79.
 
-(/usr/share/texmf-texlive/tex/latex/psnfss/ot1phv.fd
+("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count207
+\scratchdimen=\dimen166
+\scratchbox=\box40
+\nofMPsegments=\count208
+\nofMParguments=\count209
+\everyMPshowfont=\toks42
+\MPscratchCnt=\count210
+\MPscratchDim=\dimen167
+\MPnumerator=\count211
+\makeMPintoPDFobject=\count212
+\everyMPtoPDFconversion=\toks43
+)
+LaTeX Font Info:    Try loading font information for OT1+phv on input line 82.
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1phv.fd"
 File: ot1phv.fd 2001/06/04 scalable font definitions for OT1/phv.
 )
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <10> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 79.
-LaTeX Font Info:    Try loading font information for T1+ppl on input line 79.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 82.
+LaTeX Font Info:    Try loading font information for T1+ppl on input line 82.
 
-(/usr/share/texmf-texlive/tex/latex/psnfss/t1ppl.fd
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\t1ppl.fd"
 File: t1ppl.fd 2001/06/04 font definitions for T1/ppl.
 )
-LaTeX Font Info:    Calculating math sizes for size <13> on input line 79.
-LaTeX Font Info:    Calculating math sizes for size <9.09996> on input line 79.
+LaTeX Font Info:    Calculating math sizes for size <13> on input line 82.
+LaTeX Font Info:    Calculating math sizes for size <9.09996> on input line 82.
 
-LaTeX Font Info:    Calculating math sizes for size <11> on input line 79.
+LaTeX Font Info:    Calculating math sizes for size <11> on input line 82.
 
-Overfull \hbox (75.32726pt too wide) in paragraph at lines 79--79
+Overfull \hbox (75.32726pt too wide) in paragraph at lines 82--82
  [] 
  []
 
-File: figures/login.eps Graphic file (type eps)
-<figures/login.eps>
+<figures/login.png, id=1, 1283.79625pt x 333.245pt>
+File: figures/login.png Graphic file (type png)
+ <use figures/login.png>
+Package pdftex.def Info: figures/login.png used on input line 97.
+(pdftex.def)             Requested size: 289.07999pt x 75.0379pt.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 95.
-File: figures/size_reg.eps Graphic file (type eps)
- <figures/size_reg.eps>
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 98.
+
+<figures/size_reg.png, id=3, 1280.785pt x 590.205pt>
+File: figures/size_reg.png Graphic file (type png)
+
+<use figures/size_reg.png>
+Package pdftex.def Info: figures/size_reg.png used on input line 109.
+(pdftex.def)             Requested size: 289.07999pt x 133.20465pt.
+
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [1
+Non-PDF special ignored!
+Non-PDF special ignored!
+Non-PDF special ignored!
+Non-PDF special ignored!
 
 
-]
-File: figures/instruction_page.eps Graphic file (type eps)
- <figures/instruction_page.eps>
+Non-PDF special ignored!
+Non-PDF special ignored!
+
+{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map} <C:/Users/jlcox/Documents/
+GitHub/DynaSearch/dynasearch/manual/figures/login.png>] <figures/instruction_pa
+ge.png, id=17, 1281.78876pt x 845.1575pt>
+File: figures/instruction_page.png Graphic file (type png)
+
+<use figures/instruction_page.png>
+Package pdftex.def Info: figures/instruction_page.png used on input line 122.
+(pdftex.def)             Requested size: 289.07999pt x 190.60359pt.
+
+<figures/training_page.png, id=18, 1441.385pt x 889.3225pt>
+File: figures/training_page.png Graphic file (type png)
+
+<use figures/training_page.png>
+Package pdftex.def Info: figures/training_page.png used on input line 134.
+(pdftex.def)             Requested size: 289.07999pt x 178.34985pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 127.
- [2]
-File: figures/training_page.eps Graphic file (type eps)
- <figures/training_page.eps>
-File: figures/survey_page.eps Graphic file (type eps)
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 138.
+[2 <C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/figures/size_r
+eg.png> <C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/figures/i
+nstruction_page.png>]
+<figures/survey_page.png, id=24, 1282.7925pt x 503.8825pt>
+File: figures/survey_page.png Graphic file (type png)
 
-<figures/survey_page.eps>
-Underfull \vbox (badness 1067) has occurred while \output is active []
+<use figures/survey_page.png>
+Package pdftex.def Info: figures/survey_page.png used on input line 146.
+(pdftex.def)             Requested size: 361.34999pt x 141.93958pt.
 
- [3]
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 168.
+Underfull \vbox (badness 3396) has occurred while \output is active []
 
+ [3 <C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/figures/train
+ing_page.png> <C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/fig
+ures/survey_page.png>]
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 171.
 
-(/usr/share/texmf-texlive/tex/latex/psnfss/ot1pcr.fd
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd"
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
-File: figures/toolbar.eps Graphic file (type eps)
- <figures/toolbar.eps>
-Missing character: There is no Ã in font ptmr7t!
-Missing character: There is no • in font ptmr7t!
+<figures/toolbar.png, id=30, 254.9525pt x 380.42125pt>
+File: figures/toolbar.png Graphic file (type png)
 
-[4]
-File: figures/place.eps Graphic file (type eps)
- <figures/place.eps> [5]
-File: figures/place.eps Graphic file (type eps)
- <figures/place.eps> [6]
+<use figures/toolbar.png>
+Package pdftex.def Info: figures/toolbar.png used on input line 177.
+(pdftex.def)             Requested size: 144.54pt x 215.6814pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[4] <figures/webgl.png, id=36, 510.90875pt x 383.4325pt>
+File: figures/webgl.png Graphic file (type png)
+
+<use figures/webgl.png>
+Package pdftex.def Info: figures/webgl.png used on input line 197.
+(pdftex.def)             Requested size: 289.07999pt x 216.94984pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[5 <C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/figures/toolba
+r.png>] <figures/table_uncovered.png, id=41, 460.72125pt x 388.45125pt>
+File: figures/table_uncovered.png Graphic file (type png)
+
+<use figures/table_uncovered.png>
+Package pdftex.def Info: figures/table_uncovered.png used on input line 217.
+(pdftex.def)             Requested size: 144.54pt x 121.86488pt.
+
+<figures/table_covered.png, id=42, 544.0325pt x 458.71375pt>
+File: figures/table_covered.png Graphic file (type png)
+
+<use figures/table_covered.png>
+Package pdftex.def Info: figures/table_covered.png used on input line 223.
+(pdftex.def)             Requested size: 144.54pt x 121.87354pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[6 <C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/figures/webgl.
+png>]
 File: figures/place.eps Graphic file (type eps)
  <figures/place.eps>
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[7] [8]
+[7 <C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/figures/table_
+uncovered.png> <C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/fi
+gures/table_covered.png>] [8
+Non-PDF special ignored!]
+File: figures/place.eps Graphic file (type eps)
+ <figures/place.eps> [9
+Non-PDF special ignored!]
 File: figures/place.eps Graphic file (type eps)
  <figures/place.eps>
 File: figures/place.eps Graphic file (type eps)
@@ -645,7 +777,13 @@ File: figures/place.eps Graphic file (type eps)
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[9]
+[10
+Non-PDF special ignored!] [11
+Non-PDF special ignored!]
+Missing character: There is no Ã in font ptmr7t!
+Missing character: There is no • in font ptmr7t!
+File: figures/place.eps Graphic file (type eps)
+ <figures/place.eps>
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no • in font ptmr7t!
 File: figures/place.eps Graphic file (type eps)
@@ -653,40 +791,52 @@ File: figures/place.eps Graphic file (type eps)
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[10]
-Missing character: There is no Ã in font ptmr7t!
-Missing character: There is no • in font ptmr7t!
-File: figures/place.eps Graphic file (type eps)
- <figures/place.eps>
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[11]
+[12
+Non-PDF special ignored!]
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no • in font ptmr7t!
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no • in font ptmr7t!
- [12] [13]
+ [13
+Non-PDF special ignored!] [14]
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no • in font ptmr7t!
- [14]
+ [15]
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no • in font ptmr7t!
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no • in font ptmr7t!
- [15] [16]
+ [16] [17]
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no ž in font ptmr7t!
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no ž in font ptmr7t!
- (./manual.bbl) [17] [18] (./manual.aux) ) 
+
+(C:\Users\jlcox\Documents\GitHub\DynaSearch\dynasearch\manual\manual.bbl)
+[18] [19]
+(C:\Users\jlcox\Documents\GitHub\DynaSearch\dynasearch\manual\manual.aux) ) 
 Here is how much of TeX's memory you used:
- 7510 strings out of 493849
- 102866 string characters out of 1152846
- 210273 words of memory out of 3000000
- 10566 multiletter control sequences out of 15000+50000
- 46332 words of font info for 156 fonts, out of 3000000 for 9000
- 714 hyphenation exceptions out of 8191
- 43i,18n,45p,937b,385s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 8988 strings out of 494045
+ 124636 string characters out of 3148387
+ 223044 words of memory out of 3000000
+ 12017 multiletter control sequences out of 15000+200000
+ 60348 words of font info for 175 fonts, out of 3000000 for 9000
+ 715 hyphenation exceptions out of 8191
+ 44i,18n,74p,1025b,534s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/
+Program Files/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:/Program Files/MiKT
+eX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/f
+onts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type
+1/urw/courier/ucrr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/helvetic/
+uhvb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/uplb8a.pfb><C:
+/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/uplbi8a.pfb><C:/Program File
+s/MiKTeX 2.9/fonts/type1/urw/palatino/uplri8a.pfb><C:/Program Files/MiKTeX 2.9/
+fonts/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/t
+imes/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
 
-Output written on manual.dvi (18 pages, 50300 bytes).
+Output written on manual.pdf (19 pages, 906859 bytes).
+PDF statistics:
+ 124 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 46 words of extra memory for PDF output out of 10000 (max. 10000000)
+

@@ -8,7 +8,9 @@
 %\count0=115
 
 % Added by author
-\usepackage{subfig}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
 \usepackage{stfloats}
 \usepackage{fixltx2e}
 \usepackage{placeins}
@@ -28,7 +30,7 @@
 
 \volume{Volume 1, Number 1, \myyear\today}
 \title{DynaSearch User's Manual}
-\titlehead{Hurricane prediction visualization}
+\titlehead{DynaSearch User's Manual}
 \authorhead{Cox, Malloy, House, \& Lindell}
 
 % For authors with the same post address, uncomment the following
@@ -36,6 +38,7 @@
 
 \corrauthor[1]{Jonathan Cox}
 \author[1]{Chris Malloy}
+\author[1]{Jordan Gestring}
 \author[1]{Donald House}
 \author[2]{Michael Lindell}
 \corremail{jlcox@g.clemson.edu}
@@ -83,7 +86,7 @@
 
 \section{Introduction}
 
-DynaSearch is a system that allows you to create experiments designed to test how users collect information. This is done by allowing users to click on specific buttons or areas of a window in order to display certain pieces of data. In order to accomplish this, DynaSearch provides you with the tools necessary build these pages in a web based environment. The rest of this document will explain these tools in greater detail, but in order to provide you with a picture of the end product, a short example of what can be created is detailed below. 
+DynaSearch is a web based system that allows the end user to create and run a variety of user studies.  The basic toolset supports the construction of studies designed to test how users collect and process information by recording the order and duration of mouse clicks on a set of pre-designed page elements, such as text boxes.  In addition, DynaSearch supports more complex user studies by allowing end users to write and embedd their own custom experiements through the use of Java Applets, HTLM5, WebGL, and D3.  The rest of this document will explain these tools in greater detail, but in order to provide you with a picture of the end product, a short example of what can be created is detailed below.
 
 \subsection{A Short Example}
 
@@ -91,7 +94,7 @@ DynaSearch is a system that allows you to create experiments designed to test ho
 
 \begin{figure}[h!]
  \centering
- \includegraphics[width=4.0in]{figures/login.eps}
+ \includegraphics[width=4.0in]{figures/login.png}
  \caption{Users will start an experiment by logging into the DynaSearch system through the login screen.}
  \label{fig:login}
 \end{figure}
@@ -103,20 +106,20 @@ All users should be provided with a user name and password so that they may logi
 
 \begin{figure}[h!]
  \centering
- \includegraphics[width=4.0in]{figures/size_reg.eps}
+ \includegraphics[width=4.0in]{figures/size_reg.png}
  \caption{Users must first register the size of their screen.}
  \label{fig:sizereg}
 \end{figure}
 \FloatBarrier
 
 
-In order to ensure that all users see screen elements of the exact same size, regardless of screen size and resolution, a size registration must first be performed. This is done by holding a real life credit card up to the screen and sliding the edges of the picture until it is the same size as an actual card. This screen is shown in \ref{fig:sizereg}.
+In order to ensure that all users see screen elements of the exact same size, regardless of screen size and resolution, a size registration must first be performed. This is done by holding a physical credit card up to the screen and sliding the edges of the Google credit card image until it is the same size as the physical card. This screen is shown in \ref{fig:sizereg}.
 
 \subsubsection{The Instruction Screen}
 
 \begin{figure}[h!]
  \centering
- \includegraphics[width=4.0in]{figures/instruction_page.eps}
+ \includegraphics[width=4.0in]{figures/instruction_page.png}
  \caption{The instruction screen displays information for the users.}
  \label{fig:inst}
 \end{figure}
@@ -128,25 +131,25 @@ Users can be supplied with supplemental information using the instruction screen
 
 \begin{figure}[h!]
  \centering
- \includegraphics[width=4.0in]{figures/training_page.eps}
+ \includegraphics[width=4.0in]{figures/training_page.png}
  \caption{The training screen records information based on user clicks.}
  \label{fig:train}
 \end{figure}
 \FloatBarrier
 
-The training screen records the order and duration of user clicks. The user clicks on the screen in order to uncover certain pieces of information, whether it is a cell of a table or information drawn over an image. A sample training screen is displayed in \ref{fig:train}.
+The training screen records the order and duration of participant clicks. The participant clicks on the screen in order to uncover certain pieces of information, whether it is a cell of a table or information drawn over an image. A sample training screen is displayed in \ref{fig:train}.  Training screens can include a timer which will force participants to move to the next portion of the experiment after a defined period of time.  Training screens also support embedded Java applets, HTML 5 pages that utilize WebGL, and D3.  This will be explained in greater detail in the section of the manual that covers building training pages.
 
 \subsubsection{The Survey Screen}
 
 \begin{figure}[h!]
  \centering
- \includegraphics[width=5.0in]{figures/survey_page.eps}
+ \includegraphics[width=5.0in]{figures/survey_page.png}
  \caption{The survey screen allows the users to answer specific questions.}
  \label{fig:survey}
 \end{figure}
 \FloatBarrier
 
-The survey screen allows the users to respond to specific questions designed by you. There are currently three question types available for use. A sample survey screen is displayed in \ref{fig:survey}.
+The survey screen allows the participants to respond to specific questions designed by the end user. There are currently two question types available for use.  These are radio button questions and free response questions.  In addition, frequently used questions can be stored and inserted into questionnaires as needed.  A sample survey screen is displayed in \ref{fig:survey}.
 
 \subsubsection{Complete Example}
 
@@ -156,62 +159,97 @@ The survey screen allows the users to respond to specific questions designed by 
 \section{Administrative Tools}
 
 \subsection{A Quick Overview}
-From this point forward, the term "you" will refer to the individual creating the experiments, and the term "user" refers to the research participants. 
+From this point forward, the "you" will refer to the individual creating the experiments, and "user" refers to the research participants. 
 
-The DynaSearch system allows for the creation of surveys that can contain three types of pages. The first is the instruction page. Here, basic HTML is displayed that can be used to convey specific instructions to users or as a means of supplying them with supplemental information. The second is the training page. This page can be composed of text boxes, tables, and images that are all hidden when the page first loads. It is can also contain applet windows where experiment designers can load custom built applications.  In order for users to see hidden information and interact with the applet windows, they must click on the desired element. The order and duration of these clicks is tracked by a database typically hosted on the web server. The last type of page is a questionnaire which provides users the opportunity to give feedback, or as a way to test the users on previously displayed information.
+The DynaSearch system allows for the creation of user studies that can be composed of three different types of pages. The first is the instruction page. Here, basic HTML is displayed that can be used to convey specific instructions to users or as a means of supplying them with supplemental information. The second is the training page. This page can be composed of text boxes, tables, and images that are all hidden on the page's initial load.  In order for users to see hidden information and interact with any of these elements, they must click on it. The order and duration of these clicks is tracked by a database typically hosted on the web server. The training page can also house custom applets that offer a wider variety of interactions.  The last type of page is a questionnaire which allows users the opportunity to provide feedback.  Additionally, it can serve as a way to test the users on previously displayed information.
 
-In order to create these pages, accounts with administrator access are taken to an administrator page where links to the different editors are listed. Instruction pages, training pages, and questionnaire pages can be created in any order. The survey creation tool should not be used until all of the pages for a given experiment have been completed.
+Accounts with administrator access are given access to the \textbf{Administrator's Page} where links to the different editors are listed. Instruction pages, training pages, and questionnaire pages can be created in any order. The survey creation tool defines an experiement by linking pages together, and should not be used until all of the pages for a given experiment have been completed.
 
 The remainder of this section will explain the use and operation of these editors. For more information regarding the database, please refer to Appendix A. For more information on the file system, please see Appendix B.
 
 \subsubsection{Instruction Pages}
-To create an instruction page, just create a text file that contains the information desired and place it in the \newline \texttt{DynaSearch/expResources/instructPages/} directory located in the DynaSearch file system. Because this data will be inserted between the $<$b\texttt{body}$>$ tags of the template instruction page, any additional HTML tags maybe used as desired by the administrator. These files will automatically be available from the Survey Setup editor page. 
+To create an instruction page, just create a text file that contains the information desired and place it in the \newline \texttt{DynaSearch/expResources/instructPages/} directory located in the DynaSearch file system. Because this data will be inserted between the $<\texttt{body}>$ tags of the template instruction page, any additional HTML tags and scripting maybe used as desired. These files will automatically be available from the Survey Setup editor page. 
 
 \subsubsection{Training Pages}
 
 \begin{figure}[h!]
  \centering
- \includegraphics[width=2.0in]{figures/toolbar.eps}
- \caption{The icons represent the trash bin, text window, applet window, image window, clock, table window, and interactive table window, respectively.}
+ \includegraphics[width=2.0in]{figures/toolbar.png}
+ \caption{The icons represent the trash bin, text window, visible text window, applet window, image window, clock, table window, interactive table window, and legend window respectively.}
  \label{fig:tool}
 \end{figure}
 \FloatBarrier
 
-To access the training page, select the Training Page Editor link from the administra.torÕs page. This will take you to a blank training editor page with the toolbar window located in the upper left window. With the exception of the trash can, each of the icons on the toolbar allow for the creation of a different window. The toolbar window is displayed in \ref{fig:tool}. The toolbar window and any other created window can be moved by clicking and dragging on the title handle of the window.
+To access the training page, select the \textbf{Training Page Editor} link from the \textbf{Administrator's Page}. This will take you to a blank training editor page with the toolbar window located in the upper left window. With the exception of the trash can, each of the icons on the toolbar allow for the creation of a different window. The toolbar window is displayed in \ref{fig:tool}. The toolbar window and any other created window can be moved by clicking and dragging on the title handle of the window.
 
 \paragraph{The Trash Bin}
 
-The trash bin allows you to delete unwanted windows. Simply click on the title bar of the window you wish to remove, and drag it over the trash can. When you release it, it will be deleted.
+The Trash Bin allows you to delete unwanted windows. Simply click on the title bar of the window you wish to remove, and drag it over the trash can. When you release it, it will be deleted.
 
 \paragraph{The Text Window}
-The text window is used to display paragraphs or sections of text to the user. These will be hidden during a training session until the user clicks on the section containing the text. The title of the window and the text inside can both be modified by clicking on the blue icon in the top right corner of the window. It can be resized by clicking and dragging on the white box in the bottom right corner of the window.
+The Text Window is used to display paragraphs or sections of text to the user. These will be hidden during a user study until the user clicks on the section containing the text. The title of the window and the text inside can both be modified by clicking on the blue icon in the top right corner of the window. It can be resized by clicking and dragging on the white box in the bottom right corner of the window.
 
-\paragraph{The Applet Window}
-
-\paragraph{The Image Window}
-
-\paragraph{The Clock Window}
-The clock window determines how long a page will be available to a user. By clicking on the blue icon, you can specify the number of minutes that each user should receive. The default time is 20 minutes. If no clock window is created, then the window will be available to the user until they click on the Done button. Please note that the clock window will not actually be displayed while the experiment is being run. 
-
-\paragraph{The Table Window}
+\paragraph{The Visible Text Window}
+The Visible Text Window is similar to the Text Window, with the exception that the text will always be visible to users.  The contents will not be hidden during the course of a user study.
 
 \begin{figure}[h!]
  \centering
- \includegraphics[width=5.0in]{figures/place.eps}
- \caption{Table Window}
- \label{fig:table}
+ \includegraphics[width=4.0in]{figures/webgl.png}
+ \caption{The Applet Window will let you embed various scripts and applets to extend the user study.}
+ \label{fig:webgl}
 \end{figure}
 \FloatBarrier
 
-The table window displays table information as seen in \ref{fig:table}. Clicking on the blue icon will allow the user to change both the table name and the file from which the table data is stored. These text files are stored in the directory \texttt{DynaSearch/expResources/tables}. The first row and column will always be visible. Columns are separated by commas, and the rows are separated by new lines. To resize the table, click on the white box in the bottom right corner of the table window. You must resize the table manually in order to test that the table displays the information correctly. 
-In order to distinguish which table a user is clicking on from the entries in the database, the tables in an experiment should have unique table names.
+\paragraph{The Applet Window}
+The Applet Window lets you embed Java applets as well as HTML5 and JavaScript code that can include WebGL or D3 scripts into the Training Page.  To assign an applet, HTML5, or JavaScript file to the Applet Window, click on the blue icon in the top right corner of the window and provide the file name in the prompt that appears.  The files should be stored in the \texttt{DynaSearch/assets/userObjects/} directory located in the DynaSearch file system.  An example of the Applet Window can be seen in \ref{fig:webgl}.
+
+
+\paragraph{The Image Window}
+The Image Window allows you to display a static image.  The chosen image will always be displayed unless a Legend Window is associated with with it.  Please see the section covering the Legend Window for more information.  To select the image to be displayed, click on the blue icon in the top right corner of the window and provide the file name in the prompt that appears.   The files should be stored in the \texttt{DynaSearch/assets/images/} directory located in the DynaSearch file system.
+
+\paragraph{The Clock Window}
+The clock window determines how long a page will be available to a user. By clicking on the blue icon, you can specify the number of minutes that each user should receive. The default time is 20 minutes. If no clock window is created, then the window will be available to the user until they click on the Done button. Please note that the clock window will not actually be displayed while the experiment is being run.
+
+\begin{figure}[h!]
+ \centering
+ \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \includegraphics[width=2.0in]{figures/table_uncovered.png}
+    \caption{In training page editor}
+    \label{fig:tableUN}
+ \end{subfigure}
+ \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \includegraphics[width=2.0in]{figures/table_covered.png}
+    \caption{Durring user study}
+    \label{fig:tableCV}
+ \end{subfigure}
+ \caption{Table Window}
+ \label{fig:tableWindow}
+\end{figure}
+
+%\begin{figure}[]
+ %\centering
+ %\includegraphics[width=2.0in]{figures/table_covered.png}
+ %\caption{Table Window Covered}
+ %\label{fig:table_cv}
+%\end{figure}
+\FloatBarrier
 
 \paragraph{The Interactive Table Window}
 
-\paragraph{Loading}
+The Interactive Table Window displays information in a table format, as demonstrated in \ref{fig:tableWindow}.  The first row and column will always be visible, while the other fields will be covered by a white box.  When clicked, the box will become transparent, allowing users to see the data values underneath.  Clicking on the blue icon will allow the user to change both the table name and the file in which the table data is stored. These text files are stored in the directory \texttt{DynaSearch/expResources/tables}.  Columns are separated by commas, and the rows are separated by new lines. To resize the table, click and drag on the white box in the bottom right corner of the table window. You must resize the table manually in order to test that the information contained is displayed correctly.
+
+In order to distinguish which table a user is clicking on from the entries in the database, the tables in an experiment should have unique table names.
+
+\paragraph{The Table Window}
+
+The Table Window behaves in the same manner as the Interactive Table Window with the exception that the data is visible at all times during the course of a user study.  Because of this, no click data is recorded for this type of table.
+
+\paragraph{Loading A Training Page}
 To load a previously saved training screen, pick the training file from the drop down menu that you wish to work with and hit the Load button. Note that to save any changes made to this training screen, you must hit the Save button before navigating away from the page.
 
-\paragraph{Saving}
+\paragraph{Saving A Training Page}
 The Save button will prompt you to enter a name to save the file as. The extension .txt will automatically be added to the name you supply, so it is not necessary to include that in the file name. For example, if you want the file name to be test1.txt, enter only test1.
 
 \subsubsection {Questionnaire Editor}
