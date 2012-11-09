@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.11.7)  7 NOV 2012 18:01
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.11.7)  9 NOV 2012 14:17
 entering extended mode
 **C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/manual.tex
 (C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/manual.tex
@@ -690,14 +690,14 @@ Package pdftex.def Info: figures/instruction_page.png used on input line 122.
 File: figures/training_page.png Graphic file (type png)
 
 <use figures/training_page.png>
-Package pdftex.def Info: figures/training_page.png used on input line 134.
+Package pdftex.def Info: figures/training_page.png used on input line 132.
 (pdftex.def)             Requested size: 289.07999pt x 178.34985pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 138.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 136.
 [2 <C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/figures/size_r
 eg.png> <C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/figures/i
 nstruction_page.png>]
@@ -707,15 +707,13 @@ File: figures/survey_page.png Graphic file (type png)
 <use figures/survey_page.png>
 Package pdftex.def Info: figures/survey_page.png used on input line 146.
 (pdftex.def)             Requested size: 361.34999pt x 141.93958pt.
-
-Underfull \vbox (badness 3396) has occurred while \output is active []
-
  [3 <C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/figures/train
 ing_page.png> <C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/fig
 ures/survey_page.png>]
 LaTeX Font Info:    Try loading font information for OT1+pcr on input line 171.
 
- ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd"
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd"
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
 <figures/toolbar.png, id=30, 254.9525pt x 380.42125pt>
@@ -757,18 +755,34 @@ Package pdftex.def Info: figures/table_covered.png used on input line 223.
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [6 <C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/figures/webgl.
-png>]
-File: figures/place.eps Graphic file (type eps)
- <figures/place.eps>
+png>] <figures/question_toolbar.png, id=47, 548.0475pt x 529.98pt>
+File: figures/question_toolbar.png Graphic file (type png)
+
+<use figures/question_toolbar.png>
+Package pdftex.def Info: figures/question_toolbar.png used on input line 261.
+(pdftex.def)             Requested size: 180.67499pt x 174.71602pt.
+
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [7 <C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/figures/table_
 uncovered.png> <C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/fi
-gures/table_covered.png>] [8
-Non-PDF special ignored!]
+gures/table_covered.png>]
+<figures/question_edit.png, id=54, 250.9375pt x 95.35625pt>
+File: figures/question_edit.png Graphic file (type png)
+
+<use figures/question_edit.png>
+Package pdftex.def Info: figures/question_edit.png used on input line 271.
+(pdftex.def)             Requested size: 180.67499pt x 68.65935pt.
+ [8 <C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/figures/quest
+ion_toolbar.png> <C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/
+figures/question_edit.png>]
 File: figures/place.eps Graphic file (type eps)
- <figures/place.eps> [9
+ <figures/place.eps>
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[9] [10
 Non-PDF special ignored!]
 File: figures/place.eps Graphic file (type eps)
  <figures/place.eps>
@@ -777,13 +791,8 @@ File: figures/place.eps Graphic file (type eps)
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[10
-Non-PDF special ignored!] [11
+[11
 Non-PDF special ignored!]
-Missing character: There is no Ã in font ptmr7t!
-Missing character: There is no • in font ptmr7t!
-File: figures/place.eps Graphic file (type eps)
- <figures/place.eps>
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no • in font ptmr7t!
 File: figures/place.eps Graphic file (type eps)
@@ -795,31 +804,40 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 Non-PDF special ignored!]
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no • in font ptmr7t!
+File: figures/place.eps Graphic file (type eps)
+ <figures/place.eps>
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[13
+Non-PDF special ignored!]
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no • in font ptmr7t!
- [13
-Non-PDF special ignored!] [14]
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no • in font ptmr7t!
- [15]
+ [14
+Non-PDF special ignored!] [15]
+Missing character: There is no Ã in font ptmr7t!
+Missing character: There is no • in font ptmr7t!
+ [16]
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no • in font ptmr7t!
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no • in font ptmr7t!
- [16] [17]
+ [17] [18]
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no ž in font ptmr7t!
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no ž in font ptmr7t!
 
 (C:\Users\jlcox\Documents\GitHub\DynaSearch\dynasearch\manual\manual.bbl)
-[18] [19]
+[19] [20]
 (C:\Users\jlcox\Documents\GitHub\DynaSearch\dynasearch\manual\manual.aux) ) 
 Here is how much of TeX's memory you used:
- 8988 strings out of 494045
- 124636 string characters out of 3148387
+ 8999 strings out of 494045
+ 124938 string characters out of 3148387
  223044 words of memory out of 3000000
- 12017 multiletter control sequences out of 15000+200000
+ 12026 multiletter control sequences out of 15000+200000
  60348 words of font info for 175 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
  44i,18n,74p,1025b,534s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -834,9 +852,9 @@ s/MiKTeX 2.9/fonts/type1/urw/palatino/uplri8a.pfb><C:/Program Files/MiKTeX 2.9/
 fonts/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/t
 imes/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
 
-Output written on manual.pdf (19 pages, 906859 bytes).
+Output written on manual.pdf (20 pages, 1025524 bytes).
 PDF statistics:
- 124 PDF objects out of 1000 (max. 8388607)
+ 131 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 46 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 56 words of extra memory for PDF output out of 10000 (max. 10000000)
 

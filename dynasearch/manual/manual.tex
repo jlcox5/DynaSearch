@@ -127,8 +127,6 @@ In order to ensure that all users see screen elements of the exact same size, re
 
 Users can be supplied with supplemental information using the instruction screen. A sample instruction screen is displayed in \ref{fig:inst}. 
 
-\subsubsection{The Training Screen}
-
 \begin{figure}[h!]
  \centering
  \includegraphics[width=4.0in]{figures/training_page.png}
@@ -136,6 +134,8 @@ Users can be supplied with supplemental information using the instruction screen
  \label{fig:train}
 \end{figure}
 \FloatBarrier
+
+\subsubsection{The Training Screen}
 
 The training screen records the order and duration of participant clicks. The participant clicks on the screen in order to uncover certain pieces of information, whether it is a cell of a table or information drawn over an image. A sample training screen is displayed in \ref{fig:train}.  Training screens can include a timer which will force participants to move to the next portion of the experiment after a defined period of time.  Training screens also support embedded Java applets, HTML 5 pages that utilize WebGL, and D3.  This will be explained in greater detail in the section of the manual that covers building training pages.
 
@@ -250,28 +250,45 @@ The Table Window behaves in the same manner as the Interactive Table Window with
 To load a previously saved training screen, pick the training file from the drop down menu that you wish to work with and hit the Load button. Note that to save any changes made to this training screen, you must hit the Save button before navigating away from the page.
 
 \paragraph{Saving A Training Page}
-The Save button will prompt you to enter a name to save the file as. The extension .txt will automatically be added to the name you supply, so it is not necessary to include that in the file name. For example, if you want the file name to be test1.txt, enter only test1.
+The Save button will prompt you to enter a name to save the file as. The extension .txt will automatically be added to the name you supply, so it is not necessary to include that in the file name. For example, if you want the file name to be test1.txt, enter only test1.  This data is written to the specified file in the directory \texttt{DynaSearch/expResourses/advisory}.
+
+
 
 \subsubsection {Questionnaire Editor}
 
 \begin{figure}[h!]
  \centering
- \includegraphics[width=5.0in]{figures/place.eps}
+ \includegraphics[width=2.5in]{figures/question_toolbar.png}
  \caption{Questionnaire Toolbar}
  \label{fig:questTool}
 \end{figure}
 \FloatBarrier
 
-The Questionnaire Editor allows you to create a questionnaire that can be taken by users as they progress through an experiment. There are five basic building blocks that can be incorporated into each type of questionnaire, four of which are accessed through the toolbar displayed in \ref{fig:questTool} and the last of which is selected from the drop down menu on the page. Each of these is described in greater detail below. 
-The information submitted by the users is kept in a file with the same name as the user's id, and is stored in the directory DynaSearch/userData. For more information on the file system, please refer to Appendix B.
+The Questionnaire Editor allows you to create a questionnaire that can be taken by users as they progress through an experiment. There are four basic building blocks that can be incorporated into a questionnaire, all of which are accessed through the toolbar displayed in \ref{fig:questTool}. In addition, the toolbar allows you to name, load, save and clear the questionnaire currently being edited.
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=2.5in]{figures/question_edit.png}
+ \caption{Moving a Question}
+ \label{fig:questEdit}
+\end{figure}
+\FloatBarrier
+
+Questionnaires are built as a two tier hierarchy.  The top teir of this hierarchy can be composed of any of the building blocks, while the second tier is composed of the set of radio questions, text questions, and text that are nested under each section.  Sections are used to better organize questionnaires, and allow the users to control what questions are displayed at any time by expanding and collapsing when a user clicks on the desired section title bar.  
+
+Questionnaire elements can be placed as desired throughout the questionnaire by using the controls located above each element as shown in \ref{fig:questEdit}.  To place an element within a specific section, select the desired section from the dropdown menu.  Please note that sections cannot be embedded within other sections.  To move a question or section up or down, use the up and down arrow buttons respectively.  Note that if an element is within a section, the arrow keys will only move it within that section. If the element is not within another section, then it will navigate through the top tier.  To remove a question or section from the questionnaire completely, hit the \textbf{X} button.  \textbf{Be aware that if you delete a section that contains other elements, those other elements will also be deleted}.
+
+When a questionnaire is completed by a user, their responses are kept in a file with the same name as the user's id and stored in the directory \texttt{DynaSearch/userData}. For more information on the file system, please refer to Appendix B.
+
+ Each of the building blocks and editing operations are described in greater detail below.
+
 
 \paragraph{Section}
+To create a section, hit the Section button from the toolbar and provide the desired name for the section at the given prompt.  Sections allow you to segement a questionnaire into pieces.  When users are taking a questionnaire, these sections can be collapsed or expanded by clicking on the section title bar.  Sections are for orgazational purposes only and do not affect the user output in any way.  At this time, sections are not able to contain other sections.
 
-The Section option allows you to split the questionnaire into different sections. Only one questionnaire section is open at a time. Each section is accessed by clicking on the section header bar. Note that this will only be visible to the user. The questionnaire will remain expanded while in administrator mode. 
-To create a section header, click on the Section radio button, and then hit Next.A prompt for the title will appear. After you enter a title and select the Next button, the section header will be visible on the page. To remove a section header, simply click on the red minus symbol above the upper right corner of the element.
 
-\paragraph{Radio Buttion Question}
-To create a radio button question, select the Radio Button Question option from the toolbar and hit Next. DynaSearch will display a prompt for the question as well as the number of radio button choices. After you fill this information out and again hit the Next button, DynaSearch will prompt you to provide the specific value for each radio button option. 
+\paragraph{Radio Button Question}
+To create a radio button question, select the Radio Button Question button from the toolbar. DynaSearch will display a prompt for the question as well as the number of radio button choices. After you fill this information out and again hit the Next button, DynaSearch will prompt you to provide the specific value for each radio button option. 
 Note that DynaSearch will record the information as the index value you choose, and not the value you enter. To remove a radio button, simply click on the red minus symbol above the upper right corner of the element.
 
 \paragraph{Text Question}
@@ -279,13 +296,12 @@ The Text Question option allows for the creation of a free response question. By
 After this information is filled out, the question can be added to the screen by hitting the Next button. To remove a text question, simply click on the red minus symbol above the upper right corner of the element.
 
 \paragraph{Line of Text}
-The Line of Text option allows you to provide users with additional instructions or information. After selecting this option and hitting the Next button, DynaSearch will prompt you to enter in the text that should be displayed. To add the information to the page, click the Next button again. To remove a line of text, simply click on the red minus symbol above the upper right corner of the element. 
-
-\paragraph{Drop Down Question List}
-The administrator may place a prewritten radio or text question from the Questionnaire Catalog by selecting the appropriate question designator from the drop down menu on the page. For more information regarding the Questionnaire Catalog, please see the appropriate section of this guide. To remove a question added by the drop down list, simply click on the red minus symbol above the right corner of the element. 
+The Line of Text option allows you to provide users with additional instructions or information. After selecting this option and hitting the Next button, DynaSearch will prompt you to enter in the text that should be displayed. To add the information to the page, click the Next button again. To remove a line of text, simply click on the red minus symbol above the upper right corner of the element.
 
 \paragraph{Save}
 To save a questionnaire, hit the Save button. DynaSearch will prompt you to create a title for the questionnaire at the bottom of the page. After you enter the title, click the Save button on the bottom of the page.
+
+\paragraph{Load}
 
 \subsubsection{Questionnaire Catalog}
 
