@@ -22,4 +22,66 @@ function redirect($page_name)
 	header("Location: http://$host$uri/$page_name");	
 }
 
+
+function getExpPageArray($index) {
+   $username = $_SESSION['username'];
+   // Pull user data from database
+   $result = query_db('select * from t_user where User_ID=\''. $username .'\'');
+   $row = mysql_fetch_array($result, MYSQL_BOTH);
+
+   // Pull experiment data from database
+   $result = query_db('select * from t_experiments where ExperimentShortName=\''. $row['experiment'] .'\'');
+   $row = mysql_fetch_array($result, MYSQL_BOTH);
+   
+   // Pull Experiment string from experiment data
+   $expstr = $row['ExperimentString'];
+
+   // Split experiment string up by page
+   $exparr = explode('$',$expstr);
+   for($i=0; $i<count($exparr);$i++)
+   {
+      // Split page into page's properties
+      $properties = explode('&', $exparr[$i]);
+        
+      for($j=0;$j < count($properties);$j++)
+      {
+         // Split property into key and value
+         $item = explode('=',$properties[$j]);
+
+         if(($item[0] == 'page') && ($items[1] == $index))
+         {
+            // This is the desired page, return its string
+            return $properties;          
+         }
+      }
+   }
+
+   // If page was not found, return empty array
+   return array();
+}
+
+
+function getExpPageProperty($index, $key)
+{
+
+   $properties = getExpPageArray($index);
+
+//return $properties[1];
+   // Go through each property for the page
+   for($i = 0; $i < count($properties); $i++)
+   {
+      // Pull out key and value from property
+      $item = explode('=',$properties[$i]);
+
+      if ($item[0] == $key)
+      {
+         // Found key, return value
+         return $item[1];
+      }				
+   }
+
+   // If key was not found, return null
+   return 'uh oh';
+}
+
 ?>

@@ -67,6 +67,7 @@
       <li><a href="editor.php">Training Page Editor</a></li>
       <li><a href="questEditor.php">Questionnaire Editor</a></li>
       <li><a href="randQuestEditor.php">Questionnaire Catalog</a></li>
+      <li><a href="questDisplay.php">Questionnaire Viewer</a></li>
       <li><a href="survey_setup.php">Experiment Editor</a></li>
 		</p>
         </div>

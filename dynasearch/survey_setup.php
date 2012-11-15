@@ -101,134 +101,148 @@ if( isset($_POST['fileop']) ) {
 ?>
 
 <body id="body">
-    <div id="maincontainer">
-    <div id="wrapper" style="width:70%; margin: auto auto;">
+   <div id="maincontainer">
+      <div id="wrapper" style="width:70%; margin: auto auto;">
 	
-	<h1>Experiment Editor</h1><br/>
-	<h2>Currently Editing: 
-<!--" <span id="survey_name" onClick="edit_survey_name(this);"><?php echo $current_survey_name; ?></span>" -->
-        <input type="text" id="survey_name" value="<?php echo $current_survey_name; ?>">
-        </h2>
-        <!-- <button onClick="edit_survey_name(this);">Save Name</button> --> <br/>
-   <h1 style="visibility:hidden;" id="exp_short_name"><?php echo $experiment_short_name; ?></h1>	
-	<button onClick="prompt_new_experiment();">New Survey</button>	
-	<button onClick="save_experiment();">Save Survey</button>	
-	<br/>
-	<select id="load_select_list">
-	<?php
+         <h1>Experiment Editor</h1><br/>
+         <h2>Currently Editing: 
+            <input type="text" id="survey_name" value="<?php echo $current_survey_name; ?>">
+         </h2>
+
+         <br/>
+
+         <h1 style="display:none;" id="exp_short_name"><?php echo $experiment_short_name; ?></h1>
 	
-	$exps = query_db("SELECT * FROM `t_experiments`");
-	while($row = mysql_fetch_array($exps, MYSQL_BOTH))
-	{
-//		var_dump($row);
-		echo '<option value="'. $row['ExperimentShortName'] .'">'. $row['ExperimentName'] .'</option>';
-	}
+         <!-- Buttons -->
+         <button onClick="prompt_new_experiment();">New Survey</button>	
+         <button onClick="save_experiment();">Save Survey</button>	
+         <br/>
+         <select id="load_select_list">
+         <?php
+            $exps = query_db("SELECT * FROM `t_experiments`");
+            while($row = mysql_fetch_array($exps, MYSQL_BOTH))
+            {
+               //var_dump($row);
+               echo '<option value="'. $row['ExperimentShortName'] .'">'. $row['ExperimentName'] .'</option>';
+            }
+         ?>
+         </select>
+
+         <button onClick="if(confirm('Are you sure you would like to discard all changes since the last save and load a new file?')){load_file();}">Load</button>
+         <br/>
+         <br/>
+         Exempt from resize?<input type="checkbox" name="exemptResize">
+
+         <!-- To add items to the list -->
+         <br/><br/>
+         <a href="#" onClick="add_info_page('','');">    <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;"> Add Information Page</a>
+         <a href="#" onClick="add_training_page('','');"><img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;"> Add Training Screen</a>
+         <a href="#" onClick="add_survey_page('','','');">  <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;"> Add Survey Screen</a>
+         <p></p>
+
+         <!-- Invisible selects. These are cloned to create drop downs for each list item-->
+         <?php
+            // Added by Jon - List all active surveys
+            $return = mysql_query("SELECT Name FROM sur_question;");
+            $_SESSION['SurveyList'] = '<select name="qChoice" id="qChoice" style="display:none;">';
+            while($qNames = mysql_fetch_array($return)){
+               $toPrint = $qNames['Name'];
+               $_SESSION['SurveyList'] = $_SESSION['SurveyList'].'<option value="'.$toPrint.'">'.$toPrint.'</option>';
+            }
+            $_SESSION['SurveyList'] = $_SESSION['SurveyList'].'</select>';
+
+            // Added by Jon - List all instruction pages
+            $instFiles = '<select name="instChoice" id="instChoice" style="display:none;">';
+            if($handle = opendir('./expResources/instructPages'))
+            {
+               while(false !== ($file = readdir($handle)))
+               {
+                  if($file !== '.' && $file !== '..')
+                  {
+                     $instFiles = $instFiles.'<option value="'.$file.'">'.$file.'</option>';
+                  }
+               }
+            }
+            $instFiles = $instFiles.'</select>';
+
+            // Added by Jon - List all advisory pages
+            $advFiles = '<select name="advChoice" id="advChoice" style="display:none;">';
+            if($handle = opendir('./expResources/advisory'))
+            {
+               while(false !== ($file = readdir($handle)))
+               {
+                  if($file !== '.' && $file !== '..')
+                  {
+                     $advFiles = $advFiles.'<option value="'.$file.'">'.$file.'</option>';
+                  }
+               }
+            }
+            $advFiles = $advFiles.'</select>';
+         ?>
+
+         <p><?php echo($_SESSION['SurveyList']); ?> <?php echo($instFiles); ?> <?php echo($advFiles); ?> </p>
+
+         <!--- Our Sortables List --->
+         <div id="page_list">
+         </div>
 	
-	// Added by Jon - List all active surveys
-   $return = mysql_query("SELECT Name FROM sur_question;");
-   $_SESSION['SurveyList'] = '<select name="qChoice" id="qChoice">';
-   while($qNames = mysql_fetch_array($return)){
-      $toPrint = $qNames['Name'];
-      $_SESSION['SurveyList'] = $_SESSION['SurveyList'].'<option value="'.$toPrint.'">'.$toPrint.'</option>';
-   }
-   $_SESSION['SurveyList'] = $_SESSION['SurveyList'].'</select>';
-	?>
-	
-	<?php
-	// Added by Jon - Display all instruction pages
-	$instFiles = '<select name="instChoice" id="instChoice">';
-	if($handle = opendir('./expResources/instructPages')){
-   	while(false !== ($file = readdir($handle))){
-      	if($file !== '.' && $file !== '..'){
-            $instFiles = $instFiles.'<option value="'.$file.'">'.$file.'</option>';
-         }
-      }
-   }
-	$instFiles = $instFiles.'</select>';
-	?>
+      </div>
+   </div>
 	
    <?php
-	// Added by Jon - Display all advisory pages
-	$advFiles = '<select name="advChoice" id="advChoice">';
-	if($handle = opendir('./expResources/advisory')){
-   	while(false !== ($file = readdir($handle))){
-      	if($file !== '.' && $file !== '..'){
-            $advFiles = $advFiles.'<option value="'.$file.'">'.$file.'</option>';
+      echo '<script type="text/javascript">
+            window.addEvent(\'domready\', function(){
+            ';
+      if( isset($_POST['fileop']) )
+      {
+         if(isset($_POST['file']))
+         {
+            if($_POST['fileop'] == 'load')
+            {
+               //echo $_POST['file'];
+               $r = query_db("select ExperimentName, ExperimentShortName, ExperimentString from t_experiments where ExperimentShortName='". $_POST["file"] ."';");
+               $row = mysql_fetch_array($r, MYSQL_BOTH);
+					
+               $barstrings = explode('$', $row['ExperimentString']);				
+               for($rownum=0;$rownum<count($barstrings);++$rownum)
+               {
+                  $attribs = explode('&', $barstrings[$rownum]);
+                  $pagetype = hexToStr(substr($attribs[0],5));
+
+                  if($pagetype == 'Information Page')
+                  {
+                     $page_source = hexToStr(substr($attribs[3],4));
+                     $page_title = hexToStr(substr($attribs[2],6));
+						
+                     echo 'add_info_page("'. $page_title .'","'. $page_source .'");';
+                  }
+                  else if($pagetype == 'Training Screen')
+                  {
+                     $page_source = hexToStr(substr($attribs[3],4));
+                     $page_title = hexToStr(substr($attribs[2],6));
+                     //$adv = hexToStr(substr($attribs[4],7));
+
+                     echo 'add_training_page("'. $page_title .'","'. $page_source .'");';
+                     //echo 'add_training_page_sourced("'. $page_title .'","'. $page_source .');';
+                  }
+                  else if($pagetype == 'Survey Page')
+                  {
+                     $page_source = hexToStr(substr($attribs[3],4));
+                     $page_title = hexToStr(substr($attribs[2],6));
+                     $survName = hexToStr(substr($attribs[4],7));
+                     if($survName == '')
+                     {
+                        $survName = 'undefined';
+                     }
+		
+                     echo 'add_survey_page("'. $page_title .'","'. $page_source .'","'.$survName.'");';
+                  }
+               }
+            }
          }
       }
-   }
-	$advFiles = $advFiles.'</select>';
-	?>
-	
-	</select>
-	<button onClick="if(confirm('Are you sure you would like to discard all changes since the last save and load a new file?')){load_file();}">Load</button>
-	
-	<br/><br/>
-	<a href="#" onClick="add_info_page('','');">    <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;"> Add Information Page</a>
-	<a href="#" onClick="add_training_page('','');"><img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;"> Add Training Screen</a>
-	<a href="#" onClick="add_survey_page('','','');">  <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;"> Add Survey Screen</a>
-	<p></p>
-	<p>Active Surveys: <?php echo($_SESSION['SurveyList']); ?> Active Instruction Pages: <?php echo($instFiles); ?> </p>  
-	<p>Active Advisories: <?php echo($advFiles); ?> </p>
-
-	<!--- Our Sortables List --->
-	<div id="page_list">
-	</div>
-	
-	</div>
-	</div>
-	
-		<?php
-		echo '<script type="text/javascript">
-		window.addEvent(\'domready\', function(){
-		';
-		if( isset($_POST['fileop']) ) {
-			if(isset($_POST['file'])) {
-				if($_POST['fileop'] == 'load') {
-                              //echo $_POST['file'];
-					$r = query_db("select ExperimentName, ExperimentShortName, ExperimentString from t_experiments where ExperimentShortName='". $_POST["file"] ."';");
-					$row = mysql_fetch_array($r, MYSQL_BOTH);
-					
-					$barstrings = explode('$', $row['ExperimentString']);				
-					for($rownum=0;$rownum<count($barstrings);++$rownum)
-					{
-						$attribs = explode('&', $barstrings[$rownum]);
-						$pagetype = hexToStr(substr($attribs[0],5));
-						
-						if($pagetype == 'Information Page')
-						{
-							$page_source = hexToStr(substr($attribs[3],4));
-							$page_title = hexToStr(substr($attribs[2],6));
-						
-							echo 'add_info_page("'. $page_title .'","'. $page_source .'");';
-						}
-						else if($pagetype == 'Training Screen')
-						{
-							$page_source = hexToStr(substr($attribs[3],4));
-							$page_title = hexToStr(substr($attribs[2],6));
-							//$adv = hexToStr(substr($attribs[4],7));
-						
-							echo 'add_training_page("'. $page_title .'","'. $page_source .'");';
-							//echo 'add_training_page_sourced("'. $page_title .'","'. $page_source .');';
-						}
-						else if($pagetype == 'Survey Page')
-						{
-							$page_source = hexToStr(substr($attribs[3],4));
-							$page_title = hexToStr(substr($attribs[2],6));
-							$survName = hexToStr(substr($attribs[4],7));
-							if($survName == ''){
-   							$survName = 'undefined';
-						   }
-						
-							echo 'add_survey_page("'. $page_title .'","'. $page_source .'","'.$survName.'");';
-						}				
-					}
-					
-				}
-			}
-		}
-	echo '});</script>';
-	?>
+      echo '});</script>';
+   ?>
 	
 </body>
 </html>
