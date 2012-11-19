@@ -104,6 +104,11 @@
       <input type="hidden" name="saveQuest" value="">
       <input type="hidden" name="questName" value="">
    </form>
+<!--
+<form id="POST_load" method="post">
+   <input type="hidden" name="loadQuest" value="">
+</form>
+-->
 
    <div id="drag_cont">
       <div id="maincontainer">

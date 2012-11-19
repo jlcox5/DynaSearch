@@ -24,4 +24,17 @@ function query_db($query)
 	return $result;
 }
 
+/*
+if (!empty($_GET))
+{
+$field = mysql_real_escape_string($_GET['field']);
+$table = mysql_real_escape_string($_GET['table']);
+$condition = mysql_real_escape_string($_GET['condition']);
+
+$query = "SELECT " . $field . " FROM " . $table . " WHERE " . $condition;
+
+$returnString = query_db($query);
+echo $returnString;
+}
+*/
 ?>

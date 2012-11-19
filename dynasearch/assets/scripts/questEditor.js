@@ -14,6 +14,16 @@ function hexEncode(str){
 }
 */
 
+var MAIN_CREATE = 00;
+var MAIN_LOAD = 01;
+var MAIN_SAVE = 02;
+var MAIN_RENAME = 03;
+var SECTION = 10;
+var RADIO_BUTTON = 20;
+var TEXT_QUESTION = 30;
+var LINE_OF_TEXT = 40;
+
+
 function hexEncode(str){
    return str.split("").map(function(strchar){return strchar.charCodeAt(0).toString(16);}).join('.');
 }
@@ -259,6 +269,11 @@ function parseItem(root){
    }
 }
 
+function appendQuestions(root) {
+   for(var i=0; i < root.childNodes.length; ++i)
+      theQuest.push(parseItem(root.childNodes[i]));
+}
+
 function parseQuestionnaireString(stringRep){
    var questDoc;
    if( window.DOMParser ){
@@ -272,11 +287,12 @@ function parseQuestionnaireString(stringRep){
 
    var root = questDoc.documentElement;
 
-   theQuest = new Questionnaire();
-   theQuest.setName(hexDecode(root.attributes['name'].value));
+   return root;
+   //theQuest = new Questionnaire();
+   //theQuest.setName(hexDecode(root.attributes['name'].value));
 
-   for(var i=0; i < root.childNodes.length; ++i)
-      theQuest.push(parseItem(root.childNodes[i]));
+  // for(var i=0; i < root.childNodes.length; ++i)
+//      theQuest.push(parseItem(root.childNodes[i]));
 }
 
 
@@ -334,9 +350,11 @@ function constructHeader(){
 */
 
 function constructHeader(){
+   // Create Header Div
    var header    = dce('div');
        header.id = 'qheader';
 
+   // Create Title
    var title = dce('span');
        title.innerHTML = theQuest.getName();
        title.className = 'hquesttitle';
@@ -347,62 +365,109 @@ function constructHeader(){
           menuState = 3;
           Update();
        }
-
    header.appendChild(title);
 
-   {
-      var button = dce('input');
-          button.id    = 'hbutton';
-          button.className = 'hbutton';
-          button.alt   =
-          button.title = 'Clear';
-          button.type  = 'image';
-          button.src   = './assets/images/glyph_clear.png';
-          button.onclick = function(){
-             //CLEAR
-             theQuest = new Questionnaire();
-             Update();
-          }
-      header.appendChild(button);
+   var tag = '';
+
+   switch (menuState) {
+      case MAIN_CREATE :
+         // Load Button
+         var button = dce('input');
+         button.id    = 'loadButton';
+         button.className = 'hbutton';
+         //button.alt   =
+         button.title = 'Load';
+         button.type  = 'image';
+         button.src   = './assets/images/glyph_load.png';
+         button.onclick = function(){
+            //LOAD
+            menuState = 1;
+            Update();
+         }
+         header.appendChild(button);
+
+         // Save Button
+         button = dce('input');
+         button.id    = 'saveButton';
+         button.className = 'hbutton';
+         //button.alt   =
+         button.title = 'Save';
+         button.type  = 'image';
+         button.src   = './assets/images/glyph_save.png';
+         button.onclick = function(){
+            //SAVE
+            /*
+            menuState = 2;
+            Update();
+            */
+            document.forms['POST_save'].elements['saveQuest'].value = theQuest.genString();
+            document.forms['POST_save'].elements['questName'].value = theQuest.getName();
+            document.forms['POST_save'].submit();
+         }
+         header.appendChild(button);
+
+         // Clear Button
+         button = dce('input');
+         button.id    = 'clearButton';
+         button.className = 'hbutton';
+         //button.alt   =
+         button.title = 'Clear';
+         button.type  = 'image';
+         button.src   = './assets/images/glyph_clear.png';
+         button.onclick = function(){
+            //CLEAR
+            theQuest = new Questionnaire();
+            Update();
+         }
+         header.appendChild(button);
+
+         // Tag
+         tag = 'Create:'
+         break;
+
+      case MAIN_LOAD :
+      case MAIN_SAVE :
+         break;
+
+      case MAIN_RENAME :
+         // Tag
+         tag = 'Rename:'
+         break;
+
+      case SECTION :
+         // Tag
+         tag = 'Create Section:'
+         break;
+
+      case RADIO_BUTTON :
+         // Tag
+         tag = 'Create Radio Button:'
+         break;
+
+      case TEXT_QUESTION :
+         // Tag
+         tag = 'Create Text Question:'
+         break;
+
+      case LINE_OF_TEXT :
+         // Tag
+         tag = 'Create Line of Text:'
+         break;
+
+      default:
+         alert("Invalid menu state: (" + menuState + ") ! Resetting.");
+         menuState = 0;
+         menu = constructMenu();
+         break;
    }
-   {
-      var button = dce('input');
-          button.id    = 'hbutton';
-          button.className = 'hbutton';
-          button.alt   =
-          button.title = 'Save';
-          button.type  = 'image';
-          button.src   = './assets/images/glyph_save.png';
-          button.onclick = function(){
-             //SAVE
-             /*
-             menuState = 2;
-             Update();
-             */
-             document.forms['POST_save'].elements['saveQuest'].value = theQuest.genString();
-             document.forms['POST_save'].elements['questName'].value = theQuest.getName();
-             document.forms['POST_save'].submit();
-          }
-      header.appendChild(button);
-   }
-   {
-      var button = dce('input');
-          button.id    = 'hbutton';
-          button.className = 'hbutton';
-          button.alt   =
-          button.title = 'Load';
-          button.type  = 'image';
-          button.src   = './assets/images/glyph_load.png';
-          button.onclick = function(){
-             //LOAD
-             menuState = 1;
-             Update();
-          }
-      header.appendChild(button);
-   }
+
+   var lineBreak = dce('br');
+   lineBreak.clear = 'all';
+   header.appendChild(lineBreak);
    header.appendChild(dce('br'));
+
    var label = dce('span');
-       label.innerHTML = 'Create: ';
+       label.innerHTML = tag;
        label.style.fontWeight = 'bold';
        label.style.fontSize = '120%';
    header.appendChild(label);
@@ -433,6 +498,7 @@ function cancelButton(fun){
 
    return cancelbutton;
 }
+
 function submitButton(fun){
    var submitbutton = dce('input');
        submitbutton.type      = 'image';
@@ -477,19 +543,21 @@ function constructMenu(){
          break;
       case 01:
          //MAIN -- LOAD
+
          var form = dce('form');
              form.method = 'post';
              form.id     = 'loadForm';
          var label = dce('span');
              label.innerHTML = 'Load: ';
          form.appendChild(label);
-         /*
-         var loadquestfield = dce('input');
-             loadquestfield.type      = 'text';
-             loadquestfield.name      = 'loadQuest';
-             loadquestfield.maxlength = 128;
-             loadquestfield.onkeypress = function(){};
-             */
+
+         // Current Questionaire
+         var currentQuest = dce('input');
+             currentQuest.type = "hidden";
+             currentQuest.value = theQuest.genString();
+             currentQuest.name = 'currentQuest';
+         form.appendChild(currentQuest);
+
          var loadquestfield = dce('select');
              loadquestfield.required  = true;
              loadquestfield.form = 'loadForm';
@@ -553,6 +621,7 @@ function constructMenu(){
          break;
       //SECTION
       case 10:
+
          var label = dce('p');
              label.innerHTML = 'Please enter a title for the new section:';
          var textField = dce('input');
@@ -1093,13 +1162,25 @@ var sectionSet = 0;
 
 function constructQuestion(){
 
-   var questStr = document.forms['To_Load'].elements['questStr'].value.trim();
-   if(questStr != ""){
-      //var questStr = document.forms['To_Load'].elements['questStr'].value;
-      parseQuestionnaireString(questStr);
+   // Load the current Questionnaire
+   var currentQuestStr = document.forms['To_Load'].elements['currentQuestStr'].value.trim();
+   if(currentQuestStr != ""){
+      var root = parseQuestionnaireString(currentQuestStr);
+      theQuest = new Questionnaire();
+      theQuest.setName(hexDecode(root.attributes['name'].value));
+      appendQuestions(root);
    }else{
       theQuest = new Questionnaire();
    }
+
+   // Append Questions
+   var questStr = document.forms['To_Load'].elements['questStr'].value.trim();
+   if(questStr != ""){
+      //var questStr = document.forms['To_Load'].elements['questStr'].value;
+      var root = parseQuestionnaireString(questStr);
+      appendQuestions(root);
+   }
+
    Update();
 	
 	//document.getElementById('questInfo').innerHTML = "<p>Please select the Item you would like to create:</p><blockquote><input id='qtype' name='type' type='radio' value='0' onclick='setOption(0)'/>Section<br/><input id='qtype' name='type' type='radio' value='1' onclick='setOption(1)'/>Radio Button Question<br/><input id='qtype' name='type' type='radio' value='2' onclick='setOption(2)'/>Text Question<br/><input id='qtype' name='type' type='radio' value='3' onclick='setOption(3)'/>Line of Text<br/></blockquote><input type='submit' id='questSub' name='questSub' value='Next' onclick='buildQuestion()'/><input type='submit' id='questSave' name='questSave' value='Save' onclick='saveQuestion()'/>";
