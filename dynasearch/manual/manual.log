@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.11.7)  12 NOV 2012 16:39
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.11.7)  14 NOV 2012 11:24
 entering extended mode
 **C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/manual.tex
 (C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/manual.tex
@@ -785,10 +785,17 @@ File: figures/place.eps Graphic file (type eps)
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[9] [10
+[9]
+File: figures/place.eps Graphic file (type eps)
+ <figures/place.eps> [10
+Non-PDF special ignored!
 Non-PDF special ignored!]
+Missing character: There is no Ã in font ptmr7t!
+Missing character: There is no • in font ptmr7t!
 File: figures/place.eps Graphic file (type eps)
  <figures/place.eps>
+Missing character: There is no Ã in font ptmr7t!
+Missing character: There is no • in font ptmr7t!
 File: figures/place.eps Graphic file (type eps)
  <figures/place.eps>
 
@@ -798,49 +805,31 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 Non-PDF special ignored!]
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no • in font ptmr7t!
-File: figures/place.eps Graphic file (type eps)
- <figures/place.eps>
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[12
-Non-PDF special ignored!]
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no • in font ptmr7t!
-File: figures/place.eps Graphic file (type eps)
- <figures/place.eps>
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[13
-Non-PDF special ignored!]
+ [12
+Non-PDF special ignored!] [13]
+Missing character: There is no Ã in font ptmr7t!
+Missing character: There is no • in font ptmr7t!
+ [14]
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no • in font ptmr7t!
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no • in font ptmr7t!
- [14
-Non-PDF special ignored!] [15]
-Missing character: There is no Ã in font ptmr7t!
-Missing character: There is no • in font ptmr7t!
- [16]
-Missing character: There is no Ã in font ptmr7t!
-Missing character: There is no • in font ptmr7t!
-Missing character: There is no Ã in font ptmr7t!
-Missing character: There is no • in font ptmr7t!
- [17] [18]
+ [15] [16]
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no ž in font ptmr7t!
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no ž in font ptmr7t!
 
 (C:\Users\jlcox\Documents\GitHub\DynaSearch\dynasearch\manual\manual.bbl)
-[19] [20]
+[17] [18]
 (C:\Users\jlcox\Documents\GitHub\DynaSearch\dynasearch\manual\manual.aux) ) 
 Here is how much of TeX's memory you used:
- 8999 strings out of 494045
- 124938 string characters out of 3148387
- 223044 words of memory out of 3000000
- 12026 multiletter control sequences out of 15000+200000
+ 8998 strings out of 494045
+ 124920 string characters out of 3148387
+ 224044 words of memory out of 3000000
+ 12025 multiletter control sequences out of 15000+200000
  60348 words of font info for 175 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
  44i,18n,74p,1025b,534s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -855,9 +844,9 @@ s/MiKTeX 2.9/fonts/type1/urw/palatino/uplri8a.pfb><C:/Program Files/MiKTeX 2.9/
 fonts/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/t
 imes/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
 
-Output written on manual.pdf (20 pages, 1025650 bytes).
+Output written on manual.pdf (18 pages, 1022489 bytes).
 PDF statistics:
- 131 PDF objects out of 1000 (max. 8388607)
+ 124 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  56 words of extra memory for PDF output out of 10000 (max. 10000000)
 

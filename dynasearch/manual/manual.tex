@@ -283,15 +283,17 @@ When a questionnaire is completed by a user, their responses are kept in a text 
  Each of the building blocks and editing operations are described in greater detail below.
 
 \paragraph{Section}
-To create a section, hit the Section button from the toolbar and provide the desired name for the section at the given prompt.  Sections allow you to segement a questionnaire into pieces.  When users are taking a questionnaire, these sections can be collapsed or expanded by clicking on the section's title bar.  Sections are for orgazational purposes only and do not affect the user output in any way.  At this time, sections are not able to contain other sections.  To remove or change the position of the radio button question, use the navication controls located above the question as described above. \textbf{Be aware that if you delete a section that contains other elements, those other elements will also be deleted.}
+To create a section, hit the Section button from the Question Constructor toolbox and provide the desired name for the section at the given prompt.  When both fields have completed, you can insert the question into the questionnaire by hitting the check mark button at the bottom of the prompt.  Sections allow you to segement a questionnaire into pieces.  When users are taking a questionnaire, these sections can be collapsed or expanded by clicking on the section's title bar.  Sections are for orgazational purposes only and do not affect the user output in any way.
+
+ At this time, sections are not able to contain other sections.  To remove or change the position of the radio button question, use the navication controls located above the question as described above. \textbf{Be aware that if you delete a section that contains other elements, those other elements will also be deleted.}
 
 \paragraph{Radio Button Question}
-To create a radio button question, select the Radio Button Question button from the toolbar. DynaSearch will display a prompt for the question as well a text box for the first answer.  As soon as a value is typed in an answer box, a new box will be created underneath it.  In this way, the question can have as many choices as are needed.  The final empty box will not be displayed to the user when they take the questionnaire.  When all of the answers for the question have been given, you can insert the question into the questionnaire by hitting the check mark button at the bottom of the prompt. The cancel button, represented as circle with a slash through it, will cancel the question creation and take you back to the main toolbar.
+To create a radio button question, select the Radio Button Question button from the Question Constructor toolbox. DynaSearch will display a prompt for the question as well a text box for the first answer.  As soon as a value is typed in an answer box, a new box will be created underneath it.  In this way, the question can have as many choices as are needed.  The final empty box will not be displayed to the user when they take the questionnaire.  When all of the answers for the question have been given, you can insert the question into the questionnaire by hitting the check mark button at the bottom of the prompt.
 
 To remove or change the position of the radio button question after it has been inserted into the questionnaire, use the navigation controls located above the question as described above.  Note that DynaSearch will record the information as the index value of the choice selected by the user, and not the value you enter. 
 
 \paragraph{Text Question}
-To create a text question, select the Text Question button from the toolbar.  DynaSearch will display a prompt for the question as well as the max number of characters that should be allowed for the response.   For a free response question, use the number zero.  If the number of characters given is too large for the width of the screen, the text box created will have a tab on the lower right corner that can be dragged to increase its size.
+To create a text question, select the Text Question button from the Question Constructor toolbox.  DynaSearch will display a prompt for the question as well as the max number of characters that should be allowed for the response.   For a free response question, use the number zero.  If the number of characters given is too large for the width of the screen, the text box created will have a tab on the lower right corner that can be dragged to increase its size.  When both fields have completed, you can insert the question into the questionnaire by hitting the check mark button at the bottom of the prompt.
 
 To remove or change the position of the text question after it has been inserted into the questionnaire, use the navigation controls located above the question as described above. 
 
@@ -299,34 +301,38 @@ To remove or change the position of the text question after it has been inserted
 The Line of Text option allows you to provide users with additional instructions or information. After selecting this option and hitting the Next button, DynaSearch will prompt you to enter in the text that should be displayed. To add the information to the page, click the Next button again. To remove a line of text, simply click on the red minus symbol above the upper right corner of the element.
 
 \paragraph{Save}
-To save a questionnaire, hit the Save button. DynaSearch will prompt you to create a title for the questionnaire at the bottom of the page. After you enter the title, click the Save button on the bottom of the page.
+To save a questionnaire, hit the save button located at the top of the Question Constructor toolbox.  The icon for the save button resembles a piece of paper with the arrow pointing into it.  DynaSearch will save the questionnaire using the name given in the box at the top left corner of the toolbox.  The default name for a questionnaire is \textbf{anonymous}.  Please be aware that currently, DynaSearch will overwrite previous questionnaires of the same name without warning.
 
 \paragraph{Load}
+To load a questionnaire, hit the load button located at the top of the Question Constructor toolbox. The icon for the load button resembles a piece of paper with the arrow leaving it.  DynaSearch will then display a prompt that allows you to select the questionnaire you wish to load from a dropdown box.  Load the selected questionnaire by hitting the button represented by the check mark.
 
-\subsubsection{Questionnaire Catalog}
+\paragraph{Clear}
+The clear button allows you to clear the current questionnaire being edited.  The icon for the clear button resembles a trash can and is located at the top of the Question Contrstructor toolbox.  Please note that DynaSearch will \textbf{not} automatically save any work done before clearning the questionnaire from the editor.
 
-\begin{figure}[h!]
- \centering
- \includegraphics[width=5.0in]{figures/place.eps}
- \caption{Questionnaire Catalog Toolbar}
- \label{fig:questCatTool}
-\end{figure}
-\FloatBarrier
+%\subsubsection{Questionnaire Catalog}
 
-The Questionnaire Catalog can be used to create questions that will be used multiple times throughout several questionnaires. You can create two question types from this screen through the toolbar shown in \ref{fig:questCatTool}. They are the radio question and text question types.
+%\begin{figure}[h!]
+% \centering
+% \includegraphics[width=5.0in]{figures/place.eps}
+% \caption{Questionnaire Catalog Toolbar}
+% \label{fig:questCatTool}
+%\end{figure}
+%\FloatBarrier
 
-\paragraph{Radio Button Question}
-To create a radio button question, select the Radio Button Question option from the toolbar and hit Next. DynaSearch will display a prompt for the question as well as the number of radio button choices. After you fill this information out and again hit the Next button, DynaSearch will prompt you to provide the specific values for each radio button option. 
-After you fill the values, hit Next to save the question. A text box on the page will appear where a question designator can be created. This will be used to identify the question from the Question Editor screen via the Drop Down Question List. 
-Note that DynaSearch will record the information as the index value you choose, and not the value you enter.
+%The Questionnaire Catalog can be used to create questions that will be used multiple times throughout several questionnaires. You can create two question types from this screen through %the toolbar shown in \ref{fig:questCatTool}. They are the radio question and text question types.
 
-\paragraph{Text Question}
-The Text Question option allows for the creation of a free response question. By se.lecting this option and clicking on the Next button, you will be prompted to provide the question for the text, as well as the number of characters that should be displayed on the screen for a response. Please note that the user may enter a response that is larger than this value, and that the entire response will be saved. This number only dictates how much of the response is displayed on the screen at one time. 
-After you fill this information out and again hit the Next button, DynaSearch will prompt you to provide the specific values for each radio button option. After you fill the values, hit Next to save the question. A text box on the page will appear where a question designator can be created. This will be used to identify the question from the Question Editor screen via the Drop Down Question List.
+%\paragraph{Radio Button Question}
+%To create a radio button question, select the Radio Button Question option from the toolbar and hit Next. DynaSearch will display a prompt for the question as well as the number of radio %button choices. After you fill this information out and again hit the Next button, DynaSearch will prompt you to provide the specific values for each radio button option. 
+%After you fill the values, hit Next to save the question. A text box on the page will appear where a question designator can be created. This will be used to identify the question from the %Question Editor screen via the Drop Down Question List. 
+%Note that DynaSearch will record the information as the index value you choose, and not the value you enter.
 
-\subsubsection{Questionnaire Viewer}
-You can use this screen to view previously created questionnaires. To view a questionnaire, select the questionnaire from the drop down list, and click the Load button. 
-It is important to note that once a questionnaire is saved in the Questionnaire Editor, it can not be reloaded and changed in anyway without accessing the saved questionnaire directly in the sur questions database table and modifying the Value field. However, it can be completely overwritten by a new questionnaire.
+%\paragraph{Text Question}
+%The Text Question option allows for the creation of a free response question. By se.lecting this option and clicking on the Next button, you will be prompted to provide the question for the %text, as well as the number of characters that should be displayed on the screen for a response. Please note that the user may enter a response that is larger than this value, and that the %entire response will be saved. This number only dictates how much of the response is displayed on the screen at one time. 
+%After you fill this information out and again hit the Next button, DynaSearch will prompt you to provide the specific values for each radio button option. After you fill the values, hit Next to %save the question. A text box on the page will appear where a question designator can be created. This will be used to identify the question from the Question Editor screen via the Drop %Down Question List.
+
+%\subsubsection{Questionnaire Viewer}
+%You can use this screen to view previously created questionnaires. To view a questionnaire, select the questionnaire from the drop down list, and click the Load button. 
+%It is important to note that once a questionnaire is saved in the Questionnaire Editor, it can not be reloaded and changed in anyway without accessing the saved questionnaire directly in the %sur questions database table and modifying the Value field. However, it can be completely overwritten by a new questionnaire.
 
 \subsubsection{Experiment Editor}
 
@@ -338,7 +344,7 @@ It is important to note that once a questionnaire is saved in the Questionnaire 
 \end{figure}
 \FloatBarrier
 
-The Experiment Editor allows you to combine any number of instruction pages, train.ing pages, and questionnaires into a single experiment. The interface shown in \ref{fig:eeInterface} will allow you to select and assemble the various elements required. To change the title of a new experiment, click on the current title. It is located at the top of the screen and is surrounded by quotes with a default value of, "New Experiment".
+The Experiment Editor allows you to combine any number of instruction pages, training pages, and questionnaires into a single experiment. The interface shown in \ref{fig:eeInterface} will allow you to select and assemble the various elements required. To change the title of a new experiment, click on the current title. It is located at the top of the screen and is surrounded by quotes with a default value of, "New Experiment".
 
 \paragraph{Add Information Page}
 
@@ -378,7 +384,7 @@ To change the sequence of a page, click and drag the blue box on the left hand s
 \end{figure}
 \FloatBarrier
 
-The Add Survey Page button will allow you to insert a new questionnaire into the cur.rent experiment. When this button is clicked, a new survey page is inserted into the current list of pages, as is shown in \ref{fig:surveyInsert}. The default title of the page is New Page. You can modify this by clicking on the current title, at which point DynaSearch will prompt you to enter a new one. The second parameter is the file name. Its default value is listed as (unassigned). This is the name of the file that the questionnaire will be saved to in the experimentÕs directory. The extension of any filename given should be .txt.
+The Add Survey Page button will allow you to insert a new questionnaire into the current experiment. When this button is clicked, a new survey page is inserted into the current list of pages, as is shown in \ref{fig:surveyInsert}. The default title of the page is New Page. You can modify this by clicking on the current title, at which point DynaSearch will prompt you to enter a new one. The second parameter is the file name. Its default value is listed as (unassigned). This is the name of the file that the questionnaire will be saved to in the experiments directory. The extension of any filename given should be .txt.
 
 The final parameter in the list is the name of the questionnaire that you would like to use. This should be the name of the saved questionnaire that was created using the Questionnaire Editor. A list of all of the available questionnaires is under the drop down listed entitled Active Surveys. 
 To change the sequence of a page, click and drag the blue box on the left hand side of the pageÕs label up or down to slide it into the desired location. To remove a page from your list of pages, select the red minus sign on the right hand side of its label.
