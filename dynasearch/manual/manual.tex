@@ -338,66 +338,69 @@ The clear button allows you to clear the current questionnaire being edited.  Th
 
 \begin{figure}[h!]
  \centering
- \includegraphics[width=5.0in]{figures/place.eps}
+ \includegraphics[width=5.0in]{figures/experiment_editor.png}
  \caption{Experiment Editor Interface}
  \label{fig:eeInterface}
 \end{figure}
 \FloatBarrier
 
-The Experiment Editor allows you to combine any number of instruction pages, training pages, and questionnaires into a single experiment. The interface shown in \ref{fig:eeInterface} will allow you to select and assemble the various elements required. To change the title of a new experiment, click on the current title. It is located at the top of the screen and is surrounded by quotes with a default value of, "New Experiment".
+The Experiment Editor allows you to combine any number of instruction pages, training pages, and questionnaires into a single experiment. The interface shown in \ref{fig:eeInterface} will allow you to select and assemble the various elements required. To change the title of a new experiment, click on the current title. It is located at the top of the screen in the text box labeled \textbf{Currently Editing}.  The default value is "New Experiment".
+
+The remaining elements of the page are described in greater detail below.
+
+\paragraph{New Experiment}
+To start building a new experiment, click on the \textbf{New Experiment} button. Doing this will clear any work that has been done, so it is important to save previous work before continuing.
+
+\paragraph{Save Experiment}
+To save an experiment that you have been working on, click on the \textbf{Save Experiment} button. DynaSearch will automatically create a folder in the directory \texttt{DynaSearch/hurricane\textunderscore data} with the same name as that of the experiment.  This directory will be used to store the experiment's files and is explained in greater detail in Appendix B.
+
+\paragraph{Load Experiment}
+To load a previously saved experiment, select the experiment that you wish to load from the drop down menu and then click on the Load button.  How experiments are saved is explained in greater detail in Appendix A.
+
+\paragraph{Exempt Resize}
+If the experiment does not require that the training page elements be displayed at the exact same physical size regardless of monitor size or resolution, check this box.
 
 \paragraph{Add Information Page}
 
 \begin{figure}[h!]
  \centering
- \includegraphics[width=5.0in]{figures/place.eps}
+ \includegraphics[width=5.0in]{figures/add_instruction.png}
  \caption{Information Page Inserted}
  \label{fig:infoInsert}
 \end{figure}
 \FloatBarrier
 
-The Add Information Page button will allow you to insert a new information page into the current experiment. When this button is clicked, a new page is inserted into the current list of pages, as is shown in \ref{fig:infoInsert}. The default title of the page is New Page. You can modify this by clicking on the current title, at which point DynaSearch will prompt you to enter a new one. The default file associated with this page is set to (unassigned), which can also be changed by clicking on it. Please be sure to enter the full file name of the instruction page that you wish to use. A list of the currently available instruction pages can be found by selecting the drop down list entitled Active Instruction Pages. The files listed are those that are stored in the DynaSearch/expResources/instructPages directory.
+The \textbf{Add Information Page} link will allow you to insert a new information page into the current experiment. When this link is clicked, a new information page label is inserted into the current list of pages, as is shown in \ref{fig:infoInsert}.  To assign a title to the page, click on the box labed "Title" and insert the desired text.  The drop down box lists the current files that can be used as instruction pages.  The file used will be the one currently selected from the drop down menu.  The files available for the instruction pages are located in the \texttt{DynaSearch/expResources/instructPages} directory.
 
-To change the sequence of a page, click and drag the blue box on the left hand side of the pageÕs label up or down to slide it into the desired location. To remove a page from your list of pages, select the red minus sign on the right hand side of its label.
+To change the sequence of the pages, click and drag the blue box on the left hand side of a page label up or down to slide it into the desired location. To remove a page from your list of pages, select the red minus sign on the right hand side of its label.
 
 \paragraph{Add Training Page}
 
 \begin{figure}[h!]
  \centering
- \includegraphics[width=5.0in]{figures/place.eps}
+ \includegraphics[width=5.0in]{figures/add_training.png}
  \caption{Training Page Inserted}
  \label{fig:trainInsert}
 \end{figure}
 \FloatBarrier
 
-The Add Training Page button will allow you to insert a new training page into the cur.rent experiment. When this button is clicked, a new training page is inserted into the current list of pages, as is shown in \ref{fig:trainInsert}. The default title of the page is New Page. You can modify this by clicking on the current title, at which point DynaSearch will prompt you to enter a new one. The default file associated with this page is set to (unas.signed), which can also be changed by clicking on it. Please be sure to enter the full file name of the training page that you wish to use. A list of the currently available training pages can be found by examining the drop down list entitled Active Advisories. The files listed are those that are stored in the DynaSearch/expResources/advisory directory.
+The \textbf{Add Training Page} link will allow you to insert a new training page into the current experiment. When this button is clicked, a new training page is inserted into the current list of pages, as is shown in \ref{fig:trainInsert}.  To assign a title to the page, click on the box labed "Title" and insert the desired text.  The drop down box lists the current training pages that are available.  The training page currently selected in the drop down box will be the one used during the experiement.  The training pages available for use are located in the  directory \texttt{DynaSearch/expResources/advisory}.
 
-To change the sequence of a page, click and drag the blue box on the left hand side of the pageÕs label up or down to slide it into the desired location. To remove a page from your list of pages, select the red minus sign on the right hand side of its label.
+To change the sequence of a page, click and drag the blue box on the left hand side of the page label up or down to slide it into the desired location. To remove a page from your list of pages, select the red minus sign on the right hand side of its label.
 
 \paragraph{Add Survey Page}
 
 \begin{figure}[h!]
  \centering
- \includegraphics[width=5.0in]{figures/place.eps}
+ \includegraphics[width=5.0in]{figures/add_survey.png}
  \caption{Survey Page Inserted}
  \label{fig:surveyInsert}
 \end{figure}
 \FloatBarrier
 
-The Add Survey Page button will allow you to insert a new questionnaire into the current experiment. When this button is clicked, a new survey page is inserted into the current list of pages, as is shown in \ref{fig:surveyInsert}. The default title of the page is New Page. You can modify this by clicking on the current title, at which point DynaSearch will prompt you to enter a new one. The second parameter is the file name. Its default value is listed as (unassigned). This is the name of the file that the questionnaire will be saved to in the experiments directory. The extension of any filename given should be .txt.
+The \textbf{Add Survey Page} link will allow you to insert a new questionnaire into the current experiment. When this button is clicked, a new questionnaire page is inserted into the current list of pages, as is shown in \ref{fig:surveyInsert}.   To assign a title to the page, click on the box labed "Title" and insert the desired text.  The drop down box lists the current questionnaires  that are available.  The questionnaire currently selected in the drop down box will be the one used during the experiement.  The questionnaire data will be copied to a text file and stored in the experiment's directory.  This is explained in greater detail in Appendix B.
 
-The final parameter in the list is the name of the questionnaire that you would like to use. This should be the name of the saved questionnaire that was created using the Questionnaire Editor. A list of all of the available questionnaires is under the drop down listed entitled Active Surveys. 
-To change the sequence of a page, click and drag the blue box on the left hand side of the pageÕs label up or down to slide it into the desired location. To remove a page from your list of pages, select the red minus sign on the right hand side of its label.
-
-\paragraph{New Survey}
-To start a new survey, click on the New Survey. Doing this will clear any work that has been done, so it is important to save previous work before continuing.
-
-\paragraph{Save Survey}
-To save a survey that you have been working on, click on the Save Survey button. DynaSearch will then use the experiment name and automatically create a folder in the directory DynaSearch/hurricane data. This is explained in greater detail in Appendix B.
-
-\paragraph{Load Survey}
-To load a previously saved survey, select the survey that you wish to load from the drop down menu and then click on the Load button. 
-Appendix A.
+To change the sequence of a page, click and drag the blue box on the left hand side of the page label up or down to slide it into the desired location. To remove a page from your list of pages, select the red minus sign on the right hand side of its label.
 
 \section{Appendix A: Database Information}
 The tables listed below are used for the DynaSearch system. Any other tables you find in the database are legacy items from the original EMDSS application on which this website was based. The tables have no dependency on each other. Because of this, the resulting structure is very simple and easy to maintain. The tables are explained in greater detail below. The database used for DynaSearch is MySQL 5.1. The entire system was built using version 2.0 of wampServer.
