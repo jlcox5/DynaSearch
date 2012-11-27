@@ -557,13 +557,13 @@ var save_experiment = function()
 
    // Add size check data to string
    // TODO - record boolean and default X/Y scale
-   var changeSize = false;
+   /*var changeSize = false;
    var scaleX = 50, 
        scaleY = 50;
-   final_str += 'type=' + str_tohex('dynamicSize') + 
+   final_str += 'type=' + str_to_hex('dynamicSize') + 
                 'changeSize=' + changeSize
                 'scaleX=' + scaleY
-                'scaleY=' + scaleX;
+                'scaleY=' + scaleX;*/
 
 
    // Add experiment Pages to string   
@@ -582,7 +582,7 @@ var save_experiment = function()
          // Edited by Jordan - Now reads from text Input and Select
          var page_title = String( c[0].getFirst('#page_title').getProperty('value') );
          var page_src   = String( c[1].getFirst('#page_source').getSelected().getProperty('value') );
-         var survName    = String( c[2].getFirst('#survey_name').getSelected().getProperty('value') );
+         var survName    = "";//String( c[2].getFirst('#survey_name').getSelected().getProperty('value') );
 
 
          final_str += 'type=' + str_to_hex(type) + '&page=' + i + '&title=' + str_to_hex(page_title) + '&src=' + str_to_hex(page_src) + '&advnum='+ str_to_hex(survName);

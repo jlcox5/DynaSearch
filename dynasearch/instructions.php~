@@ -3,7 +3,6 @@
    include("assets/php/std_api.php");
    require_once("assets/php/db_util.php");
    
-/*
    function strToHex($string)
 {
     $hex='';
@@ -22,7 +21,7 @@ function hexToStr($hex)
         $string .= chr( hexdec($hex[$i].$hex[$i+1]) );
     }
 	return $string;
-}*/
+}
    
    // Are we supposed to be here?
    if(isset($_SESSION['page_sig'])) {

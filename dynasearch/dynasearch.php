@@ -43,26 +43,6 @@ $template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js"
        }
 	}
 
-function strToHex($string)
-{
-    $hex='';
-    for ($i=0; $i < strlen($string); $i++)
-    {
-        $hex .= dechex(ord($string[$i]));
-    }
-    return $hex;
-}
-
-function hexToStr($hex)
-{
-    $string='';
-    for ($i=0; $i < strlen($hex)-1; $i+=2)
-    {
-        $string .= chr( hexdec($hex[$i].$hex[$i+1]) );
-    }
-	return $string;
-}
-
     // Are we supposed to be here?
    if(isset($_SESSION['page_sig'])) {
    	if($_SESSION['page_sig'] != 'dynaview.php') {

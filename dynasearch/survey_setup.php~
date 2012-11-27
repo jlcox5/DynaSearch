@@ -122,7 +122,7 @@ if( isset($_POST['fileop']) ) {
             $exps = query_db("SELECT * FROM `t_experiments`");
             while($row = mysql_fetch_array($exps, MYSQL_BOTH))
             {
-//	      	var_dump($row);
+               //var_dump($row);
                echo '<option value="'. $row['ExperimentShortName'] .'">'. $row['ExperimentName'] .'</option>';
             }
          ?>

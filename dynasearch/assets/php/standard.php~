@@ -83,9 +83,8 @@
       $useradmin_str = '<li>[Admin]<ul><li><a href="admin.php" onclick="handleExit();">Admin Page</a></li>'
                      .                '<li><a href="editor.php" onclick="handleExit();">--Training Page Editor</a></li>'
                      .                '<li><a href="questEditor.php" onclick="handleExit();">--Questionaire Editor</a></li>'
-                     .                '<li><a href="randQuestEditor.php" onclick="handleExit();">--Questionaire Catalog</a></li>'
-                     .                '<li><a href="questDisplay.php" onclick="handleExit();">--Questionaire Viewer</a></li>'
                      .                '<li><a href="survey_setup.php" onclick="handleExit();">--Experiment Editor</a></li>'
+                     .                '<li><a href="questDisplay.php" onclick="handleExit();">--User Output</a></li>'
                      .           '</ul></li>';
    }else{
       $useradmin_str = '<li>[User]<ul><li><a href="" onclick="openHelpFrame();return false;">Help</a></li></ul></li>';
@@ -152,7 +151,7 @@
          }
       }
 */
-      $pagename = getExpPageProperty(0,'type');
+      $pagename = hexToStr( getExpPageProperty(0,'type') );
       $expuserpage_str = $expuserpage_str
                        . '      <li><a href="' . '" onclick="handleExit();">' . $pagename . '</a></li>';
 

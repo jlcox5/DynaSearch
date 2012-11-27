@@ -72,7 +72,7 @@ function getExpPageProperty($index, $key)
    {
       // Pull out key and value from property
       $item = explode('=',$properties[$i]);
-return $item[0];
+
       if ($item[0] == $key)
       {
          // Found key, return value

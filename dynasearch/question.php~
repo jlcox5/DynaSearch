@@ -109,7 +109,6 @@
       $row = mysql_fetch_array($result, MYSQL_BOTH);
       $current_position = $row['current_position'];
    
-/*
       $expshortname = $row['experiment'];
       // Find out where we should go now.
       $result = query_db('select * from t_experiments where ExperimentShortName=\''. $expshortname .'\'');
@@ -156,9 +155,9 @@ $questName = hexToStr($item2[1]);
 			}
 		}
 	}
-*/
-      $questName = hexToStr( getExpPageProperty($current_position-1, "src") );
 
+      $questName = hexToStr( getExpPageProperty($current_position-1, "src") );
+echo $questName;
       // Current Questionaire
       $query = "SELECT Value FROM sur_question WHERE Name='".mysql_real_escape_string($questName)."'";
       $result  = mysql_query($query);

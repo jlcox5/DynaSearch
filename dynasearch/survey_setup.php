@@ -42,7 +42,7 @@ if(isset($_POST['fileop'])) {
 	}// End Save
 }
 include('assets/php/standard.php');
-
+/*
 function strToHex($string)
 {
     $hex='';
@@ -62,7 +62,7 @@ function hexToStr($hex)
     }
 	return $string;
 }
-
+*/
 ?>
 
 

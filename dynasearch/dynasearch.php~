@@ -8,7 +8,7 @@
 $page_title = "DynaSearch";
 
 $template_style_array  = array("style.css", "editor.css");
-$template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js", "hurricane-unisys-parser.js", "editor.js", "canvas3dapi/c3dapi.js");
+$template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js", "timer.js", "hurricane-unisys-parser.js", "editor.js", "canvas3dapi/c3dapi.js");
 
 	  
 	//Button hit
@@ -42,7 +42,7 @@ $template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js"
          redirect("advance.php");
        }
 	}
-
+/*
 function strToHex($string)
 {
     $hex='';
@@ -61,7 +61,7 @@ function hexToStr($hex)
         $string .= chr( hexdec($hex[$i].$hex[$i+1]) );
     }
 	return $string;
-}
+}*/
 
     // Are we supposed to be here?
    if(isset($_SESSION['page_sig'])) {

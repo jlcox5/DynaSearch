@@ -53,32 +53,37 @@
 <?php
 
    if(isset($_POST['saveQuest']) && isset($_POST['questName'])){
-       $text  = $_POST['saveQuest'];
-       $title = $_POST['questName'];
+      //
+      $text  = $_POST['saveQuest'];
+      $title = $_POST['questName'];
 
-       $sqltext  = mysql_real_escape_string($text);
-       $sqltitle = mysql_real_escape_string($title);
-       $response = mysql_query("SELECT id FROM sur_question WHERE Name='".mysql_real_escape_string($sqltitle)."';");
-       $assoc = mysql_fetch_array($response);
-       if(isset($assoc['id'])){
-          $sql   = mysql_query("UPDATE sur_question SET Value='".$sqltext."' WHERE Name='".$sqltitle."';");
-       }else{
-          $sql   = mysql_query("INSERT INTO sur_question SET Name='".$sqltitle."', Value='".$sqltext."';");
-       }
-       $currentQuest = $text;
+      // SQL Injection Protection
+      $sqltext  = mysql_real_escape_string($text);
+      $sqltitle = mysql_real_escape_string($title);
+      $response = mysql_query("SELECT id FROM sur_question WHERE Name='".mysql_real_escape_string($sqltitle)."';");
+      $assoc = mysql_fetch_array($response);
+      if(isset($assoc['id'])){
+         $sql   = mysql_query("UPDATE sur_question SET Value='".$sqltext."' WHERE Name='".$sqltitle."';");
+      }else{
+         $sql   = mysql_query("INSERT INTO sur_question SET Name='".$sqltitle."', Value='".$sqltext."';");
+      }
+
+      // Reload Saved Questionnaire
+      $currentQuest = $text;
 
    } else if(isset($_POST['loadQuest'])){
 
       // Current Questionaire
       $currentQuest = $_POST['currentQuest'];
 
-      // Questions to load
+      // Questions to load (append)
       $query = "SELECT Value FROM sur_question WHERE Name='".mysql_real_escape_string($_POST['loadQuest'])."'";
       $result  = mysql_query($query);
       if($result){
          $assoc = mysql_fetch_assoc($result);
          $loadQuest  = $assoc['Value'];
       }
+echo $loadQuest;
    }
 ?>
 
@@ -104,11 +109,6 @@
       <input type="hidden" name="saveQuest" value="">
       <input type="hidden" name="questName" value="">
    </form>
-<!--
-<form id="POST_load" method="post">
-   <input type="hidden" name="loadQuest" value="">
-</form>
--->
 
    <div id="drag_cont">
       <div id="maincontainer">
@@ -123,7 +123,7 @@
                      <div id="newQuest">
 
 <!-- 
-      </div>
+      </div>php
       <div id="randQuestList">
          <?php
             $return = mysql_query("SELECT * FROM sur_randquestion;");

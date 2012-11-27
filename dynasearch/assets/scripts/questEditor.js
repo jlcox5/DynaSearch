@@ -885,13 +885,16 @@ function updateMenu(){
    draggables();
 }
 
-function updateQuestionnaire(){
-   theQuest.draw();
+function updateQuestionnaire(forReal){
+   theQuest.draw(forReal);
 }
 
-function Update(){
-   updateQuestionnaire();
-   updateMenu();
+function Update(forReal){
+   if(forReal == undefined) forReal = false;
+   updateQuestionnaire(forReal);
+   if (!forReal) {
+      updateMenu();
+   }
 }
 
 
@@ -1160,7 +1163,7 @@ var elemId = new Array();
 var sectionSet = 0;
 */
 
-function constructQuestion(){
+function constructQuestion(forReal){
 
    // Load the current Questionnaire
    var currentQuestStr = document.forms['To_Load'].elements['currentQuestStr'].value.trim();
@@ -1181,7 +1184,7 @@ function constructQuestion(){
       appendQuestions(root);
    }
 
-   Update();
+   Update(forReal);
 	
 	//document.getElementById('questInfo').innerHTML = "<p>Please select the Item you would like to create:</p><blockquote><input id='qtype' name='type' type='radio' value='0' onclick='setOption(0)'/>Section<br/><input id='qtype' name='type' type='radio' value='1' onclick='setOption(1)'/>Radio Button Question<br/><input id='qtype' name='type' type='radio' value='2' onclick='setOption(2)'/>Text Question<br/><input id='qtype' name='type' type='radio' value='3' onclick='setOption(3)'/>Line of Text<br/></blockquote><input type='submit' id='questSub' name='questSub' value='Next' onclick='buildQuestion()'/><input type='submit' id='questSave' name='questSave' value='Save' onclick='saveQuestion()'/>";
 

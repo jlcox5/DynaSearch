@@ -22,6 +22,25 @@ function redirect($page_name)
 	header("Location: http://$host$uri/$page_name");	
 }
 
+   function strToHex($string)
+   {
+      $hex='';
+      for ($i=0; $i < strlen($string); $i++)
+      {
+         $hex .= dechex(ord($string[$i]));
+      }
+      return $hex;
+   }
+
+   function hexToStr($hex)
+   {
+      $string='';
+      for ($i=0; $i < strlen($hex)-1; $i+=2)
+      {
+         $string .= chr( hexdec($hex[$i].$hex[$i+1]) );
+      }
+	   return $string;
+   }
 
 function getExpPageArray($index) {
    $username = $_SESSION['username'];

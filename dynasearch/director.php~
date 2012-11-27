@@ -6,6 +6,7 @@ require_once('assets/php/config.php');
 mysql_connect($DB_HOST, $DB_USER, $DB_PASS) or die("Unable to connect.");
 mysql_select_db($DB_NAME) or die("Unable to select database.");
 
+/*
 function strToHex($string)
 {
     $hex='';
@@ -25,41 +26,7 @@ function hexToStr($hex)
     }
    return $string;
 }
-
-function getExpData($key)
-{
-   $username = $_SESSION['username'];
-   // Pull user data from database
-   $result = query_db('select * from t_user where User_ID=\''. $username .'\'');
-   $row = mysql_fetch_array($result, MYSQL_BOTH);
-
-   // Pull experiment data from database
-   $result = query_db('select * from t_experiments where ExperimentShortName=\''. $row['experiment'] .'\'');
-   $row = mysql_fetch_array($result, MYSQL_BOTH);
-   
-   // Pull Experiment string from experiment data
-   $expstr = $row['ExperimentString'];
-
-   // Split experiment string up by page
-   $exparr = explode('$',$expstr);
-   for($i=0; $i<count($exparr);$i++)
-   {
-      // Split page into page's properties
-      $properties = explode('&', $exparr[$i]);
-         
-      for($j=0;$j < count($properties);$j++)
-      {
-         // Split property into key and value
-         $item = explode('=',$properties[$j]);
-
-         if($item[0] == $key)
-         {
-            // If this is the desired key, return its value
-            return $items[1];          
-         }
-      }
-   }
-}
+*/
 
 if(isset($_SESSION['logged_in'])) {
    if($_SESSION['logged_in'] == 'true') {
@@ -124,7 +91,7 @@ if(isset($_SESSION['logged_in'])) {
       //echo '<br/>';
       
       $expstr = $row['ExperimentString'];
-
+         redirect('logOut.php');
       $exparr = explode('$',$expstr);
       for($i=0; $i<count($exparr);$i++)
       {

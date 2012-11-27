@@ -6,6 +6,7 @@ require_once('assets/php/config.php');
 mysql_connect($DB_HOST, $DB_USER, $DB_PASS) or die("Unable to connect.");
 mysql_select_db($DB_NAME) or die("Unable to select database.");
 
+/*
 function strToHex($string)
 {
     $hex='';
@@ -25,6 +26,7 @@ function hexToStr($hex)
     }
    return $string;
 }
+*/
 
 if(isset($_SESSION['logged_in'])) {
    if($_SESSION['logged_in'] == 'true') {
