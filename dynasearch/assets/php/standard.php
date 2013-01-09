@@ -84,7 +84,9 @@
                      .                '<li><a href="editor.php" onclick="handleExit();">--Training Page Editor</a></li>'
                      .                '<li><a href="questEditor.php" onclick="handleExit();">--Questionaire Editor</a></li>'
                      .                '<li><a href="survey_setup.php" onclick="handleExit();">--Experiment Editor</a></li>'
-                     .                '<li><a href="questDisplay.php" onclick="handleExit();">--Participant Data</a></li>'
+                     .                '<li><a href="adminAssets.php" onclick="handleExit();">--Manage Assets</a></li>'
+                     .                '<li><a href="userAdmin.php" onclick="handleExit();">--Manage Participants</a></li>'
+                     .                '<li><a href="userOutput.php" onclick="handleExit();">--Participant Results</a></li>'
                      .           '</ul></li>';
    }else{
       $useradmin_str = '<li>[User]<ul><li><a href="" onclick="openHelpFrame();return false;">Help</a></li></ul></li>';

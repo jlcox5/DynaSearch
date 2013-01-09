@@ -1,0 +1,237 @@
+<?php
+
+   require_once('assets/php/std_api.php');
+   include("assets/php/config.php");
+   include('assets/php/db_util.php');
+
+   mysql_connect($DB_HOST, $DB_USER, $DB_PASS) or die("Unable to connect.");
+   mysql_select_db($DB_NAME) or die("Unable to select database.");
+
+   $page_title = "Manage Participants";
+   $username = $_SESSION['username'];
+
+   $template_style_array  = array("style.css");
+   $template_script_array = array("ajax-core.js", "userAdmin.js");
+   
+   // Save
+   if( isset($_POST['save']) )
+   {
+
+      $pId = $_POST['participantId'];
+
+      if( isset($_POST['participantName']) )
+      {
+         $pName = $_POST['participantName'];
+      }
+
+      if( isset($_POST['participantPassword']) )
+      {
+         $pPassword = $_POST['participantPassword'];
+      }
+
+      if( isset($_POST['participantExp']) )
+      {
+         $pCurrExp = $_POST['participantExp'];
+      }
+
+      if( isset($_POST['resetProgress']) )
+      {
+
+         $pProgress = 0;
+      }
+      else
+      {
+         $pProgress = $_POST['participantProgress'];
+         
+      }
+
+      $query = "INSERT INTO t_user " .
+               "(User_ID, Admin_ID, Name, UPassword, User_Type, Current_Experiment_ID, current_position) " .
+               "VALUES " .
+               "('$pId', '$username', '$pName', '$pPassword', 'U', $pCurrExp, $pProgress) " .
+               "ON DUPLICATE KEY UPDATE " .
+               "Name=Values(Name), UPassword=Values(UPassword) , Current_Experiment_ID=Values(Current_Experiment_ID) , current_position=Values(current_position)"  . 
+               ";";
+
+      mysql_query($query);
+   }
+
+   $pId = $_POST["participantId"];
+
+   include('assets/php/standard.php');
+?>
+
+<body id="body">
+   <div id="maincontainer">
+      <div id="wrapper" style="width:70%; margin: auto auto;">
+   
+         <h1>Manage Participants</h1><br/>
+         <br/>
+
+         <!-- User Select -->
+         <form action="userAdmin.php" method="post">
+            <select name="participantId">
+   <?php 
+      // Retrieve Admin's users
+      $query  = "SELECT * FROM t_user WHERE Admin_ID='$username';";
+      $result = mysql_query($query);
+      while( $row = mysql_fetch_array($result, MYSQL_BOTH) )
+      {
+         $optionUserId   = $row['User_ID'];
+         $optionUserName = $row['Name'];
+
+         if ($optionUserId == $pId)
+         {
+            $selected = 'selected="selected"';
+         }
+         else
+         {
+            $selected = '';
+         }
+
+         echo '<option value="' . $optionUserId . '" ' . $selected . ' >' .
+                 $optionUserName . ' (' . $optionUserId . ')' .
+              '</option>';
+      }
+
+   ?>
+            </select>
+
+            <input type="submit" name="load" value="Load"/>
+            <input type="submit" name="add" value="Add"/>
+         </form>
+
+
+         <!-- User Data -->
+   <?php
+      if( isset($_POST["participantId"]) )
+      {
+
+         if( isset($_POST["add"]) )
+         {
+            // Add participant
+            $participantId = "";
+
+            $participantName     = "";
+            $participantPassword = "";
+            $pExpId = "";
+            $pProgress = 0;
+         }
+         else
+         {
+            $participantId = $_POST["participantId"];
+
+            $query  = "SELECT * FROM t_user WHERE User_ID='$participantId';";
+            $result = mysql_query($query);
+            $row    = mysql_fetch_array($result, MYSQL_BOTH);
+
+            $participantName     = $row["Name"];
+            $participantPassword = $row["UPassword"];
+            $pExpId = $row["Current_Experiment_ID"];
+            $pProgress = $row["current_position"];
+         }
+
+         echo '<form action="userAdmin.php" method="post">';
+
+
+         // Name
+         echo '<h2>Name : ' . 
+                 '<input type="text" name="participantName" value="' .$participantName . '" required="required" />' .
+              '</h2>' ;
+         echo '<br/>' ;
+
+
+         // Login
+         echo '<h2>Login : ' . 
+                 '<input id="pId" type="text" name="participantId" value="' .$participantId . '" required="required" onchange="checkAvailability();" ';
+         if( isset($_POST["add"]) )
+         {
+            echo '/>';
+         }
+         else
+         {
+            echo 'hidden="hidden" />' .
+                 '<span>' . $participantId . '</span>';
+         }
+
+         echo '<span id="availabilityTag"></span>' .
+              '</h2>' ;
+         echo '<br/>' ;
+
+
+         // Password
+         echo '<h2>Password : ' . 
+                 '<input type="text" name="participantPassword" value="' .$participantPassword . '" required="required" />' .
+              '</h2>' ;
+         echo '<br/>' ;
+
+
+         // Current Experiment
+         echo '<h2>Current Experiment : ';
+
+         // Experiment Select
+         echo '<select id="pExps" name="participantExp"  required="required"' . 
+              ( (isset($_POST["add"])) ? ('') : ('hidden="hidden"') ) .
+              ' >';
+         $query  = "SELECT * FROM t_experiments WHERE Admin_ID='$username';";
+         $result = mysql_query($query);
+         while( $row = mysql_fetch_array($result, MYSQL_BOTH) )
+         {
+            $optionExpId   = $row["id"];
+            $optionExpName = $row["ExperimentName"];
+
+            if ($optionExpId == $pExpId)
+            {
+               $selected = 'selected="selected"';
+               $pExpName = $optionExpName;
+            }
+            else
+            {
+               $selected = '';
+            }
+
+            echo '<option value="' . $optionExpId . '" ' . $selected . ' >' .
+                    $optionExpName .
+                 '</option>';
+         }
+         echo '</select>';
+
+         if( !isset($_POST["add"]) )
+         {
+            echo '<span id="expDisplay">' . 
+                    ( $pExpName . ' (' . $pExpId . ')' ) . 
+                    '<input type="button" value="Change" onclick="changeExp();"/>' .
+                 '</span>';
+         }
+
+         // 
+         //echo '<>';
+
+         echo '</h2>';
+
+         echo '<br/>' ;
+
+
+         // Experiment Progress
+         echo '<h2>Experiment Progress : ' . 
+                 ( ($pProgress < 1) ? ('Not Started') : ('Page ' . $pProgress) ) .
+              '</h2>' .
+              '<input type="number" name="participantProgress" value="' . $pProgress . '" hidden="hidden" />' .
+              '<input type="checkbox" name="resetProgress">Reset Progress</input>';
+
+         echo '<br/>' ;
+         echo '<br/>' ;
+
+         // Buttons
+         echo '<input id="saveButton" type="submit" name="save" value="Save" /> ' .
+              '<input type="reset" name="reset" value="Discard" />';
+
+         echo '</form>';
+      }
+   ?>
+
+      </div>
+   </div>
+   
+</body>
+</html>

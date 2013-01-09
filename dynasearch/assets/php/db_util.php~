@@ -24,17 +24,28 @@ function query_db($query)
 	return $result;
 }
 
-/*
-if (!empty($_GET))
-{
-$field = mysql_real_escape_string($_GET['field']);
-$table = mysql_real_escape_string($_GET['table']);
-$condition = mysql_real_escape_string($_GET['condition']);
+   if( isset($_POST['query']) )
+   {
+      $table  = $_POST['table'];
+      $params = $_POST['params'];
+      $ret = $_POST['ret'];
 
-$query = "SELECT " . $field . " FROM " . $table . " WHERE " . $condition;
+      $query = "SELECT * FROM $table WHERE";
 
-$returnString = query_db($query);
-echo $returnString;
-}
-*/
+      for($i = 0; $i < count($params); $i = $i + 2)
+      {
+         $field = $params[$i];
+         $value = mysql_escape_string($params[$i + 1]);
+         $query = "$query $field='$value'";
+      }
+
+      $query = $query . ";";
+
+      $result = query_db($query);
+      $row = mysql_fetch_array($result, MYSQL_BOTH);
+ 
+      echo $row[$ret];
+      //echo $params[0];
+      //return false;
+   }
 ?>
