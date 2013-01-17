@@ -5,6 +5,7 @@ $template_style_array  = array("style.css", "editor.css");
 $template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js", "timer.js",  "hurricane-unisys-parser.js", "editor.js", "canvas3dapi/c3dapi.js");
 
 include('assets/php/standard.php');
+include('assets/php/admin_dir.php');
 
 if(isset($_POST['expLoad'])){
    $exp_name = $_POST['instChoice'];
@@ -49,11 +50,56 @@ if(isset($_SESSION['scaleH'])){
 ?>
 
 
+<div onclick="openAssetPopup('images');">test popup</div>
+
+<?php 
+   for($i = 0; $i < count($assets); $i++)
+   {
+      $currAsset = &$assets[$i];
+
+      echo '<div id="' . $currAsset["Tag"] . 'Popup" class="assetPopup">' . 
+              '';
+
+      $assetOptions = &$currAsset["Options"];
+      $assetOptionCount = count($assetOptions);
+      if ( $assetOptionCount > 0)
+      {
+
+         echo '<select id="'. $currAsset["Tag"] .'PopupSelect">';
+         for ($j = 0; $j < $assetOptionCount; $j++)
+         {
+            echo $assetOptions[$j];
+         }
+         echo '</select>';
+         //$disable = '';
+
+      }
+      else
+      {
+         echo 'No Assets Uploaded';
+         $disable = 'disabled="disabled"';
+      }
+
+      echo    '<br>' .
+              '<input type="button" value="Cancel" onclick="dismissAssetPopup(\'' . $currAsset["Tag"] . '\');" />' .
+              '<input type="button" value="Select" onclick="selectAsset(\'' . $currAsset["Tag"] . '\');" ' . $disable .' />' .
+           '</div>';
+   }
+?>
+
 <form action="editor.php" id="main_editor" name="main_editor" method="post">
 
 <div id='holdCanvas'></div>
 <?php 
 echo '<script type="text/javascript"> var pageadvnum = '. $adv_num .'; var experiment_shortname = "'. $exp_name .'"; var editing=true;';
+
+   // Setup directory variables
+   for($i = 0; $i < count($assets); $i++)
+   {
+      $currAsset = &$assets[$i];
+      echo $currAsset["Tag"] . 'AssetDir = "' . $currAsset["Path"] . '/";';
+   }
+
 if($exp_name != 'DefaultExperiment'){
    $exists_already = file_exists('expResources/advisory/'.$exp_name);
    if($exists_already)
@@ -69,6 +115,8 @@ else{
    }
 }
 echo '</script>'; ?>
+
+
 <div id="test"></div>
                      <tr><td><div id="timerInfo"></div></td></tr>
                      <tr><td><div id="clickData"></div></td></tr>

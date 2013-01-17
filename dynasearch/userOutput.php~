@@ -7,10 +7,65 @@
    mysql_connect($DB_HOST, $DB_USER, $DB_PASS) or die("Unable to connect.");
    mysql_select_db($DB_NAME) or die("Unable to select database.");
 
-   $page_title = "Manage Participants";
+
+   // Download Data
+   if( isset($_POST["download"]) )
+   {
+      if( isset($_POST["fileType"]) )
+      {
+         $fileType = $_POST["fileType"];
+      }
+      else
+      {
+         $fileType = "txt"; 
+      }
+
+      $filename = $_POST['pId'] . '_' . $_POST['expId'];
+
+      if($_POST["resultType"] == "quest")
+      {
+         $filename .= "_quest";
+         $rawData   = $_POST['questResults'];
+      }
+      else
+      {
+         $filename .= "_click";
+         $rawData = $_POST['clickResults'];
+      }
+
+      // Format data based on file type
+      switch ($fileType)
+      {
+         case "txt":
+            $data = $rawData;
+            $filename .= ".txt";
+            break;
+
+         case "csv":
+            $data = $rawData;
+            $filename .= ".csv";
+            break;
+
+          case "excel":
+            $data = $rawData;
+            $filename .= ".xls";
+            break;
+
+      }
+
+      // Begin Download
+      header("Content-Disposition: attachment; filename=\"" . $filename . "\"");
+      header("Content-Type: application/force-download");
+      header("Content-Length: " . strlen($data));
+      print $data;
+      //header("Connection: close");
+      exit;
+   }
+
+   $page_title = "Manage Participant Data";
    $username = $_SESSION['username'];
 
-   $template_style_array  = array("style.css");
+   $template_style_array  = array("style.css", "userOutput.css");
    $template_script_array = array("ajax-core.js", "userOutput.js");
    
 
@@ -36,12 +91,6 @@
       $optionExpName = $row['ExperimentName'];
 
       $adminExps[$optionExpId] = $optionExpName;
-   }
-
-   // View Mode
-   if( isset($_POST['viewMode']) )
-   {
-      $viewMode = $_POST['viewMode'];
    }
 
 
@@ -89,12 +138,34 @@
          <br/>
 
          <form action="userOutput.php" method="post">
-            <!-- View Mode -->
-            <label for="viewMode">View by : </label>
-            <select id="viewMode" name="viewMode" onchange="changeViewMode();">
-               <option value="participant">Participant</option>
-               <option value="experiment">Experiment</option>
-            </select>
+
+            <!-- View Mode Select-->
+   <?php
+
+      // View Mode
+      if( isset($_POST['viewMode']) )
+      {
+         $viewMode = $_POST['viewMode'];
+      }
+      else
+      {
+         $viewMode = "participant";
+      }
+
+      echo '<select id="viewMode" name="viewMode" onchange="changeViewMode();">';
+      if( $viewMode == "participant" )
+      {
+         echo '<option value="participant" selected="selected">Participant</option>' .
+              '<option value="experiment">Experiment</option>';
+      }
+      else
+      {
+         echo '<option value="participant">Participant</option>' .
+              '<option value="experiment" selected="selected">Experiment</option>';
+      }
+      echo '</select>';
+   ?>
+
 
             <!-- Participant Select-->
    <?php
@@ -191,34 +262,50 @@
          }
          else
          {
-            echo '<h2>Experiment Name : </h2>' .
+            echo '<h2>Experiment Name : ' . $expName . '</h2>' .
                  '<br/>';
 
             echo '<h2>Experiment Participants : ' .
-                    '<select name="pId">' . 
-                    '</select>' . 
+                    '<select name="pId">';
+
+            $query = "SELECT * FROM t_user_output WHERE Experiment_ID='$expId';";
+            $result = mysql_query($query);
+            while( $row = mysql_fetch_array($result, MYSQL_BOTH) )
+            {
+               $optionUserId = $row['User_ID'];
+               $optionUserName = $adminUsers[$optionUserId];
+
+               echo '<option value="' . $optionUserId . '">' .
+                       $optionUserName . ' (' . $optionUserId . ')' .
+                    '</option>';
+            }
+
+            echo    '</select>' . 
                  '</h2>';
+
          }
 
          echo '<br/>';
 
+         if (isset($_POST["pId"]) && isset($_POST["expId"]))
+         {
+
          // Results
          echo '<h2>Questionaire Results :</h2>';
-         echo $questResults;
+         //echo $questResults;
          $pages = explode("&", $questResults);
 
          for( $i = 0; $i < count($pages); ++$i )
          {
-//echo $pages[$i];
-            $pageTitle = strtok($pages[$i], ":,");
+            $pageTitle = strtok($pages[$i], ":");
 
             echo '<table>' . 
                     '<tr>' .
-                       '<th>' . $pageTitle . '</th>' .
+                       '<th colspan="2">' . $pageTitle . '</th>' .
                     '</tr>';
 
-            $questNum = 0;
-            while( ($content = strtok(":,")) )
+            $questNum = 1;
+            while( ($content = strtok(",")) )
             {
                echo '<tr><td>' . $questNum . '</td><td>' . $content . '</td></tr>';
                ++ $questNum;
@@ -229,7 +316,61 @@
          echo '<br/>';
 
          echo '<h2>Click Results :</h2>';
-         echo $clickResults;
+         //echo $clickResults;
+         $pages = explode("&", $clickResults);
+
+         for( $i = 0; $i < count($pages); ++$i )
+         {
+            $pageTitle = strtok($pages[$i], ":");
+
+            echo '<table>' . 
+                    '<tr>' .
+                       '<th colspan="3">' . $pageTitle . '</th>' .
+                    '</tr>' .
+                    '<tr>' .
+                       '<th>#</th><th>Object</th><th>Duration</th>' .
+                    '</tr>';
+
+            $clickNum = 1;
+            while( ($content = strtok(",")) )
+            {
+               $details = explode("/", $content);
+               echo '<tr><td>' . $clickNum . '</td><td>' . $details[0] . '</td><td>' . $details[1] . '</td></tr>';
+               ++ $clickNum;
+            }
+            echo '</table>';
+         }
+
+         echo '<br/>';
+
+         // Download
+         echo '<input type="text" name="questResults" value="' . $questResults . '" />' .
+              '<input type="text" name="clickResults" value="' . $clickResults . '" />';
+
+         echo 'Download: <select name="resultType">' .
+                 '<option value="quest">Questionaire Results</option>' .
+                 '<option value="click">Click Results</option>' .
+              '</select>';
+
+
+         echo ' as <select name="fileType">';
+
+         echo '<option value="' . 'txt' . '">' .
+                 'Plain Text (.' . 'txt' . ')' .
+              '</option>';
+
+         echo '<option value="' . 'csv' . '">' .
+                 'Comma-Seperated Values (.' . 'csv' . ')' .
+              '</option>';
+
+         echo '<option value="' . 'xls' . '">' .
+                 'MS Excel (.' . 'xls' . ')' .
+              '</option>';
+
+         echo '</select>' .
+              '<input type="submit" name="download" value="Download">';
+         echo '<br/>';
+}
       }
 
    ?>

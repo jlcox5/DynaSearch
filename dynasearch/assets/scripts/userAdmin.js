@@ -49,20 +49,28 @@ var checkAvailability = function() {
 }
 
 var changeExp = function() {
-   var expDisplay = $("expDisplay");
-   expDisplay.setProperty('style', "display:none;");
 
-   var expSelect = $("pExps");
-   expSelect.removeProperty("hidden");
-   //alert("change");
+   var conf = confirm("Are you sure you want to assign a different experiment?\n\nIf you save this change, the participants progress will be reset.");
+
+   if (conf) {
+      var expDisplay = $("expDisplay");
+      expDisplay.setProperty('style', "display:none;");
+
+      var expSelect = $("pExps");
+      expSelect.removeProperty("hidden");
+
+      var pProgress = $("pProgress");
+      pProgress.setProperty("value", "0");
+   }
 }
 
 var resetExpInfo = function() {
+
    var expDisplay = $("expDisplay");
    expDisplay.removeProperty('style');
 
    var expSelect = $("pExps");
    expSelect.setProperty("hidden", "hidden");
-   //alert("change");
+
 }
 

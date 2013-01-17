@@ -1,0 +1,15 @@
+
+.form-bordered {
+   border : 1px solid black;
+   padding : 5px;
+}
+
+.form-label {
+   background : #eee;
+   position : relative;
+   top : -20px;
+   left : 20px;
+   font-size : 24px;
+   height : 24px;
+   padding : 0px 5px;
+}

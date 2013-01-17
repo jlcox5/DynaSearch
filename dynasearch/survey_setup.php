@@ -25,6 +25,8 @@ function redirect($page_name)
 */
 require_once('assets/php/std_api.php');
 
+   $username = $_SESSION['username'];
+
 if(isset($_POST['fileop'])) {
 	if($_POST['fileop'] == 'save') {
 			$short = $_POST['shortname'];
@@ -32,37 +34,25 @@ if(isset($_POST['fileop'])) {
 			$experiment_string = $_POST['data'];
 			
 			// See if this entry already exists...
+/*
 			$res = query_db("SELECT COUNT(*) as \"count\" from t_experiments where ExperimentShortName='". $short ."'");
 			$res = mysql_fetch_array($res, MYSQL_BOTH);
 			if($res[0] == '1')
 				{ query_db("DELETE from t_experiments where ExperimentShortName='". $short ."';");	}
+*/
 	
-			query_db("INSERT INTO t_experiments (`ExperimentShortName`, `ExperimentName`, `ExperimentString`) VALUES ('". $short ."', '". $name ."', '". $experiment_string ."')");
+   $query = "INSERT INTO t_experiments (ExperimentShortName, Admin_ID, ExperimentName, ExperimentString) " .
+            "VALUES ('$short', '$username', '$name', '$experiment_string')" .
+            "ON DUPLICATE KEY UPDATE " .
+            "ExperimentShortName=Values(ExperimentShortName), Admin_ID=Values(Admin_ID), ExperimentName=Values(ExperimentName), ExperimentString=Values(ExperimentString)"  . 
+            ";";
+
+			query_db($query);
 			redirect('survey_setup.php?fileop=load&file='.$short);
 	}// End Save
 }
 include('assets/php/standard.php');
-/*
-function strToHex($string)
-{
-    $hex='';
-    for ($i=0; $i < strlen($string); $i++)
-    {
-        $hex .= dechex(ord($string[$i]));
-    }
-    return $hex;
-}
 
-function hexToStr($hex)
-{
-    $string='';
-    for ($i=0; $i < strlen($hex)-1; $i+=2)
-    {
-        $string .= chr( hexdec($hex[$i].$hex[$i+1]) );
-    }
-	return $string;
-}
-*/
 ?>
 
 
@@ -119,7 +109,10 @@ if( isset($_POST['fileop']) ) {
          <br/>
          <select id="load_select_list">
          <?php
-            $exps = query_db("SELECT * FROM `t_experiments`");
+             
+            $query = "SELECT * FROM t_experiments where Admin_ID='$username'";
+
+            $exps = query_db($query);
             while($row = mysql_fetch_array($exps, MYSQL_BOTH))
             {
                //var_dump($row);
@@ -131,7 +124,7 @@ if( isset($_POST['fileop']) ) {
          <button onClick="if(confirm('Are you sure you would like to discard all changes since the last save and load a new file?')){load_file();}">Load</button>
          <br/>
          <br/>
-         Exempt from resize?<input type="checkbox" name="exemptResize">
+         <input type="checkbox" name="exemptResize"> Require Custom Scaling ()
 
          <!-- To add items to the list -->
          <br/><br/>

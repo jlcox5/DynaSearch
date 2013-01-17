@@ -100,6 +100,8 @@
             <input type="submit" name="load" value="Load"/>
             <input type="submit" name="add" value="Add"/>
          </form>
+         <br/>
+         <br/>
 
 
          <!-- User Data -->
@@ -216,7 +218,7 @@
          echo '<h2>Experiment Progress : ' . 
                  ( ($pProgress < 1) ? ('Not Started') : ('Page ' . $pProgress) ) .
               '</h2>' .
-              '<input type="number" name="participantProgress" value="' . $pProgress . '" hidden="hidden" />' .
+              '<input id="pProgress" type="number" name="participantProgress" value="' . $pProgress . '" hidden="hidden" />' .
               '<input type="checkbox" name="resetProgress">Reset Progress</input>';
 
          echo '<br/>' ;

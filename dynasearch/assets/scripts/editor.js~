@@ -1,3 +1,42 @@
+// Popup functions
+
+var currentPopup,
+    currentObj,
+    popupCallback;
+
+var setupAssetPopups = function() {
+   
+}
+
+var openAssetPopup = function(assetType, callback) {
+   //currentObj = object;
+   popupCallback = callback;
+
+   var assetPopup = $(assetType + 'Popup');
+   assetPopup.setProperty('style', 'display:inline-block;');
+   //alert(assetType + 'Popup');
+}
+
+var selectAsset = function(assetType) {
+
+   var assetSelect = $(assetType + 'PopupSelect');
+   var asset = assetSelect.getSelected().get('value') + '';
+
+           //currentObj.def_imgbase = asset;
+            //currentObj.img.src = currentObj.def_imgsrc  = "admins/jgestring/assets/images/"+currentObj.def_imgbase.trim();
+   popupCallback(asset);
+
+   var assetPopup = $(assetType + 'Popup');
+   assetPopup.setProperty('style', 'display:none;');
+
+}
+
+var dismissAssetPopup = function(assetType) {
+   var assetPopup = $(assetType + 'Popup');
+   assetPopup.setProperty('style', 'display:none;');
+}
+
+
 var curAdvisory = 1;
 
 function dce(type){ return document.createElement(type); }
@@ -140,24 +179,31 @@ var table_data = []
 var table_parser = function(experiment, file, receiver)
 {
 	//filepath = 'hurricane_data/' + experiment + '/' + file;
-	filepath = 'expResources/tables/'+file;
+	//filepath = 'expResources/tables/'+file;
+	filepath = tablesAssetDir + file;
 	//alert(filepath);
-	var req = new Request({
-		url: filepath,
-		async: false,
-		onComplete: function(response) 
-		{ 
-			var lines = response.split('\n');
-			var result = [];
-			for(var l=0; l < lines.length; l+=1)
-			{
-				// And split into an array of tokens
-				result[l] = lines[l].split(',');
-				result[l].splice(result[l].length-1);
-			}			
-			table_data[file] = result;
-		},
-	}).send();
+   var req = new Request({
+      url        : filepath,
+      async      : false,
+      onComplete : function(response) {
+         var result = [];
+
+         if (response != undefined) {
+            var lines = response.split('\n');
+
+         } else {
+            var lines = [];
+         }
+
+         for(var l=0; l < lines.length; l+=1) {
+            // And split into an array of tokens
+            result[l] = lines[l].split(',');
+            result[l].splice(result[l].length-1);
+         }			
+         table_data[file] = result;
+
+      },
+   }).send();
 }
 
 var mkProperTable = function(tab){
@@ -820,6 +866,16 @@ var ImageWindow = new Class({
 				var pdc = pd.getElement('.content');			
 				var pdh = pd.getElement('.handle');
 
+var cb = function(asset) {
+            me.def_imgbase = asset;
+            me.img.src = me.def_imgsrc  = imagesAssetDir+me.def_imgbase.trim();
+
+            me.tableLink = prompt("Please enter an associated table ID.",me.tableLink);
+}
+
+openAssetPopup('images', cb);
+
+/*
             //var img = pd.getElementById("theImage");
             //me.img.src = prompt("Please enter the server local filename of the image to source.", me.img.src);
             me.def_imgbase = prompt("Please enter the server local filename of the image to source.", me.def_imgbase);
@@ -827,7 +883,7 @@ var ImageWindow = new Class({
             //var eventID = prompt("Please enter an associated event name.",me.img.src.split('/').pop().trim());
             //me.eventID = prompt("Please enter an associated event name.",me.img.src.split('/').pop().trim());
             me.tableLink = prompt("Please enter an associated table ID.",me.tableLink);
-
+*/
             //me.createEventListener();
 			}
 		}
@@ -1779,97 +1835,112 @@ var InteractiveTableWindow = new Class({
 });
 
 var TableWindow = new Class({
-	Extends: Window,
-	initialize: function(experiment, file)
-	{
-		this.file = file == null ? 'advisory1.txt' : file;
-		this.type='table';
-		this.parent(undefined,'Table');
-		if (true)//typeof editing != 'undefined')
-		{	
-			// If we get here, the user is performing an actual experiment
-			// Insert the actual table
-			this.table  = new Element('table');
-			this.table.setAttribute('class', 'dynaview_table');
-			this.table.setAttribute('id', file+"_");
-			this.border = '1';
-			//this.table.setAttribute('fontSize',16*(window.scaleW/55.0))+"px";
+   Extends: Window,
+   initialize: function(experiment, file)
+   {
+      this.file = file == null ? 'advisory1.txt' : file;
+      this.type='table';
+      this.parent(undefined,'Table');
+      if (true)//typeof editing != 'undefined')
+      {	
+         // If we get here, the user is performing an actual experiment
+         // Insert the actual table
+         this.table  = new Element('table');
+         this.table.setAttribute('class', 'dynaview_table');
+         this.table.setAttribute('id', file+"_");
+         this.border = '1';
+         //this.table.setAttribute('fontSize',16*(window.scaleW/55.0))+"px";
 			
 			
-			//alert(this.div.id);
-			table_parser(experiment, this.file, this.div.id);
+         //alert(this.div.id);
+         table_parser(experiment, this.file, this.div.id);
 
-			var data = table_data[this.file];
+         var data = table_data[this.file];
 			
-			for(var i=0; i < data.length; i+=1)
-			{
-				var tr = new Element('tr');
-				this.table.adopt(tr);
-				tr.style.fontSize = 16*(window.scaleW/55.0);
+         for(var i=0; i < data.length; i+=1)
+         {
+            var tr = new Element('tr');
+            this.table.adopt(tr);
+            tr.style.fontSize = 16*(window.scaleW/55.0);
 				
-				for(var j=0; j < data[i].length;j+=1)
-				{
-					var td = new Element('td');
-					tr.adopt(td);
-					td.style.fontSize = 16*(window.scaleW/55.0);
-					td.innerHTML = '<center>' + data[i][j] + '</center>';
-				}
-			}
+            for(var j=0; j < data[i].length;j+=1)
+            {
+               var td = new Element('td');
+               tr.adopt(td);
+               td.style.fontSize = 16*(window.scaleW/55.0);
+               td.innerHTML = '<center>' + data[i][j] + '</center>';
+            }
+         }
 			
 					
-		   if(typeof editing != 'undefined') {
-		      this.div.getElement(".infohandle").getElement(".icon").onmouseup = function(){ 
-				   var pd = this.parentNode.parentNode.getElement('.content');
+         if(typeof editing != 'undefined')
+         {
+            this.div.getElement(".infohandle").getElement(".icon").onmouseup = function()
+            { 
+               var pd = this.parentNode.parentNode.getElement('.content');
                var pdh = this.parentNode.parentNode.getElement('.handle');
-				   var file = "";
+               var file = "";
                var pdChild = pd.getChildren();
                pdChild = pdChild[0];
                var i;
                var curFile = "";
-               for(var i=0; i < updatables.length; i+=1){		
-		            var w = updatables[i];
-		            if(w.type == 'table'){
-   		            if(pd === w.content){
-      		            curFile = w.file;
-   		            }
-		            }
-	            }
+               for(var i=0; i < updatables.length; i+=1)
+               {		
+                  var w = updatables[i];
+                  if(w.type == 'table')
+                  {
+                     if(pd === w.content)
+                     {
+                        curFile = w.file;
+                     }
+                  }
+               }
                
-            
-				   file = prompt("Please enter the name of the table file that you wish to use.", curFile);
-				   pdh.innerHTML = prompt("Please enter your new title for this box, or press Okay to keep the current text.", pdh.innerHTML);
+            /*
+               file = prompt("Please enter the name of the table file that you wish to use.", curFile);
+               pdh.innerHTML = prompt("Please enter your new title for this box, or press Okay to keep the current text.", pdh.innerHTML);
 				   
 				
-			      for(var i=0; i < updatables.length; i+=1){		
-		            w = updatables[i];
-		            if(w.type == 'table'){
-   		            if(pd === w.content){
-      		            w.file = file;
-      		            //pdChild = new Element('table');
-			               pdChild.setAttribute('class', 'dynaview_table');
-			               pdChild.setAttribute('id', w.file+"_");
-			               pdChild.innerHTML = "";
-      		            table_parser(experiment, w.file, pdChild.id);
-      		              var data = table_data[w.file];
-			                 for(var i=0; i < data.length; i+=1){
-				                 var tr = new Element('tr');
-				                 pdChild.adopt(tr);
-				                 for(var j=0; j < data[i].length;j+=1){
-					                 var td = new Element('td');
-					                 tr.adopt(td);
-					                 td.innerHTML = '<center>' + data[i][j] + '</center>';
-				                 }
-			                 }
-   		            }
-			         }
-		         }
-	         }
+               for(var i=0; i < updatables.length; i+=1)
+               {		
+                  w = updatables[i];
+                  if(w.type == 'table'){
+                     if(pd === w.content){
+                        w.file = file;
+                        //pdChild = new Element('table');
+                        pdChild.setAttribute('class', 'dynaview_table');
+                        pdChild.setAttribute('id', w.file+"_");
+                        pdChild.innerHTML = "";
+                        table_parser(experiment, w.file, pdChild.id);
+                        var data = table_data[w.file];
+                        for(var i=0; i < data.length; i+=1){
+                           var tr = new Element('tr');
+                           pdChild.adopt(tr);
+                           for(var j=0; j < data[i].length;j+=1){
+                              var td = new Element('td');
+                              tr.adopt(td);
+                              td.innerHTML = '<center>' + data[i][j] + '</center>';
+                           }
+                        }
+                     }
+                  }
+               }
+*/
+
+var cb = function(asset) {
+            me.def_imgbase = asset;
+            me.img.src = me.def_imgsrc  = imagesAssetDir+me.def_imgbase.trim();
+
+            me.tableLink = prompt("Please enter an associated table ID.",me.tableLink);
+}
+
+openAssetPopup('tables', cb);
+            }
          }
-			
-			this.content.adopt(this.table);
-			
-		}
-	},
+		
+         this.content.adopt(this.table);		
+      }
+   },
 });
 
 var Legend = new Class({
@@ -1951,7 +2022,6 @@ var Legend = new Class({
 				var styleString = 'font-size:' + 16*(window.scaleW/55.0) + 'px;';
 				td.setAttribute("class", "legend_cell");
 				td.setAttribute("style", styleString);
-				//td.style.fill = '#000000';
 
 				td.innerHTML = '<center>' + data[i][j] + '</center>';
 
@@ -1961,7 +2031,6 @@ var Legend = new Class({
 
 		}
 		this.content.adopt(this.table);
-
 	},
 });
 

@@ -10,10 +10,10 @@
    $page_title = "Manage Assets";
    $username = $_SESSION['username'];
 
-   $template_style_array  = array("style.css");
+   $template_style_array  = array("style.css", "adminAssets.css");
    $template_script_array = array("ajax-core.js");
 
-
+/*
    // Extensible Settings:
    $assetSettings = array(
       array("AssetName" => "Images",
@@ -53,6 +53,8 @@
       $assetDirs[ $assetTag ] = $assetBaseDir . $assetTag;
    }
 
+*/
+   include('assets/php/admin_dir.php');
 
    // Upload
    if( isset($_POST['upload']) )
@@ -93,6 +95,7 @@
 
          <!-- Asset Lists -->
    <?php 
+/*
       foreach($assets as $key => $value)
       {
          echo '<td style="padding:10px;">' . 
@@ -132,13 +135,40 @@
 
          echo '</td>';
       }
+*/
+      for($i = 0; $i < count($assets); $i++)
+      {
+         $currAsset = &$assets[$i];
 
+         echo '<td style="padding:10px;">' . 
+                 '<h2>' . $currAsset["Name"] . '</h2>';
+
+         $assetOptions = &$currAsset["Options"];
+         $assetOptionCount = count($assetOptions);
+         if ( $assetOptionCount > 0)
+         {
+            echo '<select name="'. $currAsset["Tag"] .'Select" size="'.($assetOptionCount + 1).'">';
+            for ($j = 0; $j < $assetOptionCount; $j++)
+            {
+               echo $assetOptions[$j];
+            }
+            echo '</select>';
+         }
+         else
+         {
+            echo 'No Assets Uploaded';
+         }
+
+         echo '</td>';
+      }
    ?>
          <br/>
          <br/>
 
          <!-- Upload Form --> 
-         <form action="adminAssets.php" method="post" enctype="multipart/form-data">
+         <form class="form-bordered" action="adminAssets.php" method="post" enctype="multipart/form-data">
+            <span class="form-label">Upload Assets</span>
+<br/>
             <label for="assetFile">Asset : </label>
             <input type="file" name="assetFile" required="required" />
             <br/>
@@ -146,9 +176,10 @@
             <label for="assetType">Asset Type : </label>
             <select name="assetType">
    <?php 
-      foreach($assets as $key => $value)
+      for($i = 0; $i < count($assets); $i++)
       {
-         echo '<option value="'.$key.'">'.$value .'</option>';
+         $currAsset = &$assets[$i];
+         echo '<option value="'. $currAsset["Tag"] .'">'. $currAsset["Name"] .'</option>';
       }
    ?>
             </select>
