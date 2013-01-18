@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.11.7)  20 NOV 2012 16:17
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2012.11.7)  18 JAN 2013 15:59
 entering extended mode
 **C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/manual.tex
 (C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/manual.tex
@@ -707,13 +707,15 @@ File: figures/survey_page.png Graphic file (type png)
 <use figures/survey_page.png>
 Package pdftex.def Info: figures/survey_page.png used on input line 146.
 (pdftex.def)             Requested size: 361.34999pt x 141.93958pt.
+
+Underfull \vbox (badness 1275) has occurred while \output is active []
+
  [3 <C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/figures/train
 ing_page.png> <C:/Users/jlcox/Documents/GitHub/DynaSearch/dynasearch/manual/fig
 ures/survey_page.png>]
 LaTeX Font Info:    Try loading font information for OT1+pcr on input line 171.
 
-
-("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd"
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd"
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
 <figures/toolbar.png, id=30, 254.9525pt x 380.42125pt>
@@ -850,7 +852,7 @@ s/MiKTeX 2.9/fonts/type1/urw/palatino/uplri8a.pfb><C:/Program Files/MiKTeX 2.9/
 fonts/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/t
 imes/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
 
-Output written on manual.pdf (17 pages, 1374057 bytes).
+Output written on manual.pdf (17 pages, 1373186 bytes).
 PDF statistics:
  129 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

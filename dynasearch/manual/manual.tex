@@ -86,7 +86,7 @@
 
 \section{Introduction}
 
-DynaSearch is a web based system that allows the end user to create and run a variety of user studies.  The basic toolset supports the construction of studies designed to test how users collect and process information by recording the order and duration of mouse clicks on a set of pre-designed page elements, such as text boxes.  In addition, DynaSearch supports more complex user studies by allowing end users to write and embedd their own custom experiements through the use of Java Applets, HTLM5, WebGL, and D3.  The rest of this document will explain these tools in greater detail, but in order to provide you with a picture of the end product, a short example of what can be created is detailed below.
+DynaSearch is a web based system that allows the end user to create and run a variety of user studies.  The basic toolset supports the construction of studies designed to test how users collect and process information by recording the order and duration of mouse clicks on a set of pre-designed page elements, such as text boxes.  In addition, DynaSearch supports more complex user studies by allowing end users to write and embedd their own custom experiements through the use of Java Applets, HTLM5, WebGL, Processing, and D3.  The rest of this document will explain these tools in greater detail, but in order to provide you with an overall picture of the product, a simple example of what can be created is detailed below.
 
 \subsection{A Short Example}
 
@@ -100,7 +100,7 @@ DynaSearch is a web based system that allows the end user to create and run a va
 \end{figure}
 \FloatBarrier
 
-All users should be provided with a user name and password so that they may login to the system. The login screen is displayed in \ref{fig:login}.
+All users should be provided with a user name and password so that they may login to the system. User accounts can be created and edited within the Manage Participants window. The login screen is displayed in \ref{fig:login}.
 
 \subsubsection{The Size Registration Screen}
 
@@ -113,7 +113,7 @@ All users should be provided with a user name and password so that they may logi
 \FloatBarrier
 
 
-In order to ensure that all users see screen elements of the exact same size, regardless of screen size and resolution, a size registration must first be performed. This is done by holding a physical credit card up to the screen and sliding the edges of the Google credit card image until it is the same size as the physical card. This screen is shown in \ref{fig:sizereg}.
+In order to ensure that all users see screen elements of the exact same size, regardless of screen size and resolution, a size registration may be required by an experiement. This is done by holding a physical credit card up to the screen and sliding the edges of the Google credit card image until it is the same size as the physical card. This screen is shown in Fig. \ref{fig:sizereg}.
 
 \subsubsection{The Instruction Screen}
 
@@ -125,7 +125,7 @@ In order to ensure that all users see screen elements of the exact same size, re
 \end{figure}
 \FloatBarrier
 
-Users can be supplied with supplemental information using the instruction screen. A sample instruction screen is displayed in \ref{fig:inst}. 
+Users can be supplied with supplemental information using the instruction screen. A sample instruction screen is displayed in Fig. \ref{fig:inst}.  Instruction pages can be as simple as plain text.  However, they are read as HTML files and can be expanded to include any valid HTML tags as well as script components.
 
 \begin{figure}[h!]
  \centering
@@ -137,7 +137,7 @@ Users can be supplied with supplemental information using the instruction screen
 
 \subsubsection{The Training Screen}
 
-The training screen records the order and duration of participant clicks. The participant clicks on the screen in order to uncover certain pieces of information, whether it is a cell of a table or information drawn over an image. A sample training screen is displayed in \ref{fig:train}.  Training screens can include a timer which will force participants to move to the next portion of the experiment after a defined period of time.  Training screens also support embedded Java applets, HTML 5 pages that utilize WebGL, and D3.  This will be explained in greater detail in the section of the manual that covers building training pages.
+The training screen records the order and duration of participant clicks. The participant clicks on the screen in order to uncover certain pieces of information, whether it is a cell of a table or information drawn over an image. A sample training screen is displayed in Fig. \ref{fig:train}.  Training screens can include a timer which will force participants to move to the next portion of the experiment after a defined period of time.  Training screens also support embedded Java applets, HTML 5 pages that utilize WebGL, Processing, and D3.  This will be explained in greater detail in the section of the manual that covers building training pages.
 
 \subsubsection{The Survey Screen}
 
@@ -149,9 +149,9 @@ The training screen records the order and duration of participant clicks. The pa
 \end{figure}
 \FloatBarrier
 
-The survey screen allows the participants to respond to specific questions designed by the end user. There are currently two question types available for use.  These are radio button questions and free response questions.  In addition, frequently used questions can be stored and inserted into questionnaires as needed.  A sample survey screen is displayed in \ref{fig:survey}.
+The survey screen allows the participants to respond to specific questions designed by the end user. There are currently two question types available for use.  These are radio button questions and free response questions. A sample survey screen is displayed in Fig. \ref{fig:survey}.
 
-\subsubsection{Complete Example}
+%% \subsubsection{Complete Example}
 
 
 %% \section{Introduction} %for journal use above \firstsection{..} instead
@@ -159,7 +159,7 @@ The survey screen allows the participants to respond to specific questions desig
 \section{Administrative Tools}
 
 \subsection{A Quick Overview}
-From this point forward, the "you" will refer to the individual creating the experiments, and "user" refers to the research participants. 
+From this point forward, "you" will refer to the individual creating the experiments, and "user" refers to the research participants. 
 
 The DynaSearch system allows for the creation of user studies that can be composed of three different types of pages. The first is the instruction page. Here, basic HTML is displayed that can be used to convey specific instructions to users or as a means of supplying them with supplemental information. The second is the training page. This page can be composed of text boxes, tables, and images that are all hidden on the page's initial load.  In order for users to see hidden information and interact with any of these elements, they must click on it. The order and duration of these clicks is tracked by a database typically hosted on the web server. The training page can also house custom applets that offer a wider variety of interactions.  The last type of page is a questionnaire which allows users the opportunity to provide feedback.  Additionally, it can serve as a way to test the users on previously displayed information.
 
