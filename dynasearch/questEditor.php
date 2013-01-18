@@ -52,6 +52,8 @@
 
 <?php
 
+   $currentQuest = "";
+
    if(isset($_POST['saveQuest']) && isset($_POST['questName'])){
       //
       $text  = $_POST['saveQuest'];

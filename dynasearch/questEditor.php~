@@ -83,7 +83,7 @@
          $assoc = mysql_fetch_assoc($result);
          $loadQuest  = $assoc['Value'];
       }
-echo $loadQuest;
+
    }
 ?>
 
