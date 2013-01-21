@@ -161,11 +161,13 @@ The survey screen allows the participants to respond to specific questions desig
 \subsection{A Quick Overview}
 From this point forward, "you" will refer to the individual creating the experiments, and "user" refers to the research participants. 
 
-The DynaSearch system allows for the creation of user studies that can be composed of three different types of pages. The first is the instruction page. Here, basic HTML is displayed that can be used to convey specific instructions to users or as a means of supplying them with supplemental information. The second is the training page. This page can be composed of text boxes, tables, and images that are all hidden on the page's initial load.  In order for users to see hidden information and interact with any of these elements, they must click on it. The order and duration of these clicks is tracked by a database typically hosted on the web server. The training page can also house custom applets that offer a wider variety of interactions.  The last type of page is a questionnaire which allows users the opportunity to provide feedback.  Additionally, it can serve as a way to test the users on previously displayed information.
+The DynaSearch system allows for the creation of user studies that can be composed of three different types of pages. The first is the instruction page. Here, basic HTML is displayed that can be used to convey specific instructions to users or as a means of supplying them with supplemental information. The second is the training page. This page can be composed of text boxes, tables, and images that are all covered on the page's initial load.  In order for users to reveal the covered information and interact with any of these elements, they must click on it. The order and duration of these clicks is tracked by a database typically hosted on the web server. The training page can also house custom applets that offer a wider variety of interactions.  The last type of page is a questionnaire which gives users the opportunity to provide feedback.  Additionally, it can serve as a way to test the users on previously displayed information.
 
 Accounts with administrator access are given access to the \textbf{Administrator's Page} where links to the different editors are listed. Instruction pages, training pages, and questionnaire pages can be created in any order. The survey creation tool defines an experiement by linking pages together, and should not be used until all of the pages for a given experiment have been completed.
 
-The remainder of this section will explain the use and operation of these editors. For more information regarding the database, please refer to Appendix A. For more information on the file system, please see Appendix B.
+In addition to these editors, other pages have been provided to manage the assests used in an experiment, such as images or scripts, as well as to create users and access the data resulting from the experiments.   Assets used in the experienments can be managed through the Manage Assets page.  The creation and editing of participant accounts can be completed through the Manage Participants page, while their experimental results can be accessed through the Participant Results page.
+
+The remainder of this section will explain the use and operation of these editors and pages. For more information regarding the database, please refer to Appendix A. For more information on the file system, please see Appendix B.
 
 \subsubsection{Instruction Pages}
 To create an instruction page, just create a text file that contains the information desired and place it in the \newline \texttt{DynaSearch/expResources/instructPages/} directory located in the DynaSearch file system. Because this data will be inserted between the $<\texttt{body}>$ tags of the template instruction page, any additional HTML tags and scripting maybe used as desired. These files will automatically be available from the Survey Setup editor page. 
@@ -201,11 +203,11 @@ The Visible Text Window is similar to the Text Window, with the exception that t
 \FloatBarrier
 
 \paragraph{The Applet Window}
-The Applet Window lets you embed Java applets as well as HTML5 and JavaScript code that can include WebGL or D3 scripts into the Training Page.  To assign an applet, HTML5, or JavaScript file to the Applet Window, click on the blue icon in the top right corner of the window and provide the file name in the prompt that appears.  The files should be stored in the \texttt{DynaSearch/assets/userObjects/} directory located in the DynaSearch file system.  An example of the Applet Window can be seen in \ref{fig:webgl}.
+The Applet Window lets you embed Java applets as well as HTML5 and JavaScript code that can include WebGL, Processing, or D3 scripts into the Training Page.  To assign an applet, HTML5, or JavaScript file to the Applet Window, click on the blue icon in the top right corner of the window and select the desired asset from the displayed dropdown menu.  Make sure that the asset has been uploaded using the \textbf{Asset Manager} before trying to load it into a applet object.  An example of the Applet Window can be seen in \ref{fig:webgl}.
 
 
 \paragraph{The Image Window}
-The Image Window allows you to display a static image.  The chosen image will always be displayed unless a Legend Window is associated with with it.  Please see the section covering the Legend Window for more information.  To select the image to be displayed, click on the blue icon in the top right corner of the window and provide the file name in the prompt that appears.   The files should be stored in the \texttt{DynaSearch/assets/images/} directory located in the DynaSearch file system.
+The Image Window allows you to display a static image.  The chosen image will always be displayed unless a Legend Window is associated with with it.  Please see the section covering the Legend Window for more information.  To select the image to be displayed, click on the blue icon in the top right corner of the window and and select the desired asset from the displayed dropdown menu.  Make sure that the asset has been uploaded using the \textbf{Asset Manager} before trying to load it into a image object.
 
 \paragraph{The Clock Window}
 The clock window determines how long a page will be available to a user. By clicking on the blue icon, you can specify the number of minutes that each user should receive. The default time is 20 minutes. If no clock window is created, then the window will be available to the user until they click on the Done button. Please note that the clock window will not actually be displayed while the experiment is being run.
@@ -238,7 +240,9 @@ The clock window determines how long a page will be available to a user. By clic
 
 \paragraph{The Interactive Table Window}
 
-The Interactive Table Window displays information in a table format, as demonstrated in \ref{fig:tableWindow}.  The first row and column will always be visible, while the other fields will be covered by a white box.  When clicked, the box will become transparent, allowing users to see the data values underneath.  Clicking on the blue icon will allow the user to change both the table name and the file in which the table data is stored. These text files are stored in the directory \texttt{DynaSearch/expResources/tables}.  Columns are separated by commas, and the rows are separated by new lines. To resize the table, click and drag on the white box in the bottom right corner of the table window. You must resize the table manually in order to test that the information contained is displayed correctly.
+The Interactive Table Window displays information in a table format, as demonstrated in \ref{fig:tableWindow}.  The first row and column will always be visible, while the other fields will be covered by a white box.  When clicked, the box will become transparent, allowing users to see the data values underneath.  Clicking on the blue icon will allow the user to change both the table name and the file in which the table data is stored. These text files are uploaded using the \textbf{Asset Manager}.  
+
+When constructing the table files, columns are separated by commas, and the rows are separated by new lines. To resize the table, click and drag on the white box in the bottom right corner of the table window. You must resize the table manually in order to test that the information contained is displayed correctly.
 
 In order to distinguish which table a user is clicking on from the entries in the database, the tables in an experiment should have unique table names.
 
@@ -250,7 +254,7 @@ The Table Window behaves in the same manner as the Interactive Table Window with
 To load a previously saved training screen, pick the training file from the drop down menu that you wish to work with and hit the Load button. Note that to save any changes made to this training screen, you must hit the Save button before navigating away from the page.
 
 \paragraph{Saving A Training Page}
-The Save button will prompt you to enter a name to save the file as. The extension .txt will automatically be added to the name you supply, so it is not necessary to include that in the file name. For example, if you want the file name to be test1.txt, enter only test1.  This data is written to the specified file in the directory \texttt{DynaSearch/expResourses/advisory}.
+The Save button will prompt you to enter a name to save the file as. The extension .txt will automatically be added to the name you supply, so it is not necessary to include that in the file name. For example, if you want the file name to be \texttt{test1.txt}, enter only \texttt{test1}.  This data is written to the specified file in the directory \texttt{DynaSearch/expResourses/advisory}.
 
 
 
@@ -264,7 +268,7 @@ The Save button will prompt you to enter a name to save the file as. The extensi
 \end{figure}
 \FloatBarrier
 
-The Questionnaire Editor allows you to create a questionnaire that can be taken by users as they progress through an experiment. There are four basic building blocks that can be incorporated into a questionnaire, all of which are accessed through the toolbar displayed in \ref{fig:questTool}. In addition, the toolbar allows you to name, load, save and clear the questionnaire currently being edited.
+The Questionnaire Editor allows you to create a questionnaire that can be taken by users as they progress through an experiment. There are four basic building blocks that can be incorporated into a questionnaire, all of which are accessed through the toolbar displayed in Fig. \ref{fig:questTool}. In addition, the toolbar allows you to name, load, save, and clear the questionnaire currently being edited.
 
 \begin{figure}[h!]
  \centering
@@ -276,24 +280,24 @@ The Questionnaire Editor allows you to create a questionnaire that can be taken 
 
 Questionnaires are built as a two tier hierarchy.  The top teir of this hierarchy can be composed of any of the building blocks, while the second tier can be composed of a set of radio button questions, text questions, and text that are nested under each section.  Sections are used to better organize questionnaires, and allow the users to control what questions are displayed at any time by expanding and collapsing the nested questions when a user clicks on the desired section's title bar.  
 
-Questionnaire elements can be placed as desired throughout the questionnaire by using the controls located above each element as shown in \ref{fig:questEdit}.  To place an element within a specific section, select the desired section from the dropdown menu.  Please note that sections cannot be embedded within other sections.  To move a question or section up or down, use the up and down arrow buttons respectively.  Note that if an element is within a section, the arrow keys will only move it within that section. If the element is not located within a section, then it will navigate through the top tier.  To remove a question or section from the questionnaire completely, hit the \textbf{X} button.  \textbf{Be aware that if you delete a section that contains other elements, those other elements will also be deleted.}
+Questionnaire elements can be placed as desired throughout the questionnaire by using the controls located above each element as shown in Fig. \ref{fig:questEdit}.  To place an element within a specific section, select the desired section from the dropdown menu.  Please note that sections cannot be embedded within other sections.  To move a question or section up or down, use the up and down arrow buttons respectively.  Note that if an element is within a section, the arrow keys will only move it within that section. If the element is not located within a section, then it will navigate through the top tier.  To remove a question or section from the questionnaire completely, hit the \textbf{X} button.  \textbf{Be aware that if you delete a section that contains other elements, those other elements will also be deleted.}
 
-When a questionnaire is completed by a user, their responses are kept in a text file with the same name as the user's id and stored in the directory \texttt{DynaSearch/userData}. For more information on the file system, please refer to Appendix B.
+When a questionnaire is completed by a user, their responses are kept in a text file with the same name as the user's id and stored in the database table \textbf{t_user_output}. For more information on the database tables, please refer to Appendix A.
 
  Each of the building blocks and editing operations are described in greater detail below.
 
 \paragraph{Section}
-To create a section, hit the Section button from the Question Constructor toolbox and provide the desired name for the section at the given prompt.  When both fields have completed, you can insert the question into the questionnaire by hitting the check mark button at the bottom of the prompt.  Sections allow you to segement a questionnaire into pieces.  When users are taking a questionnaire, these sections can be collapsed or expanded by clicking on the section's title bar.  Sections are for orgazational purposes only and do not affect the user output in any way.
+To create a section, hit the Section button from the Question Constructor toolbox and provide the desired name for the section at the given prompt.  When both fields have been completed, you can insert the question into the questionnaire by hitting the check mark button at the bottom of the prompt.  Sections allow you to segement a questionnaire into pieces.  When users are taking a questionnaire, these sections can be collapsed or expanded by clicking on the section's title bar.  Sections are for orgazational purposes only and do not affect the user output in any way.
 
- At this time, sections are not able to contain other sections.  To remove or change the position of the radio button question, use the navication controls located above the question as described above. \textbf{Be aware that if you delete a section that contains other elements, those other elements will also be deleted.}
+At this time, sections are not able to contain other sections.  To remove or change the position of the radio button question, use the navigation controls located above the question as described above. \textbf{Be aware that if you delete a section that contains other elements, those other elements will also be deleted.}
 
 \paragraph{Radio Button Question}
-To create a radio button question, select the Radio Button Question button from the Question Constructor toolbox. DynaSearch will display a prompt for the question as well a text box for the first answer.  As soon as a value is typed in an answer box, a new box will be created underneath it.  In this way, the question can have as many choices as are needed.  The final empty box will not be displayed to the user when they take the questionnaire.  When all of the answers for the question have been given, you can insert the question into the questionnaire by hitting the check mark button at the bottom of the prompt.
+To create a radio button question, select the Radio Button Question button from the Question Constructor toolbox. DynaSearch will display a prompt for the question as well a text box for the first answer.  As soon as a value is typed in an answer box, a new box will be created underneath it.  In this way, the question can have as many choices as are needed.  The final empty box will not be displayed to the user when they take the questionnaire.  When all of the possible answers for the questions have been given, you can insert the question into the questionnaire by hitting the check mark button at the bottom of the prompt.
 
-To remove or change the position of the radio button question after it has been inserted into the questionnaire, use the navigation controls located above the question as described above.  Note that DynaSearch will record the information as the index value of the choice selected by the user, and not the value you enter. 
+To remove or change the position of the radio button question after it has been inserted into the questionnaire, use the navigation controls located above the question as described above.  Note that DynaSearch will record the index value of the choice selected by the user, not the value you enter. 
 
 \paragraph{Text Question}
-To create a text question, select the Text Question button from the Question Constructor toolbox.  DynaSearch will display a prompt for the question as well as the max number of characters that should be allowed for the response.   For a free response question, use the number zero.  If the number of characters given is too large for the width of the screen, the text box created will have a tab on the lower right corner that can be dragged to increase its size.  When both fields have completed, you can insert the question into the questionnaire by hitting the check mark button at the bottom of the prompt.
+To create a text question, select the Text Question button from the Question Constructor toolbox.  DynaSearch will display a prompt for the question as well as the max number of characters that should be allowed for the response.   For a free response question, use the number zero.  If the number of characters given is too large for the width of the screen, the text box created will have a tab on the lower right corner that can be dragged to increase its size.  When both fields have been completed, you can insert the question into the questionnaire by hitting the check mark button at the bottom of the prompt.
 
 To remove or change the position of the text question after it has been inserted into the questionnaire, use the navigation controls located above the question as described above. 
 
@@ -308,31 +312,6 @@ To load a questionnaire, hit the load button located at the top of the Question 
 
 \paragraph{Clear}
 The clear button allows you to clear the current questionnaire being edited.  The icon for the clear button resembles a trash can and is located at the top of the Question Contrstructor toolbox.  Please note that DynaSearch will \textbf{not} automatically save any work done before clearning the questionnaire from the editor.
-
-%\subsubsection{Questionnaire Catalog}
-
-%\begin{figure}[h!]
-% \centering
-% \includegraphics[width=5.0in]{figures/place.eps}
-% \caption{Questionnaire Catalog Toolbar}
-% \label{fig:questCatTool}
-%\end{figure}
-%\FloatBarrier
-
-%The Questionnaire Catalog can be used to create questions that will be used multiple times throughout several questionnaires. You can create two question types from this screen through %the toolbar shown in \ref{fig:questCatTool}. They are the radio question and text question types.
-
-%\paragraph{Radio Button Question}
-%To create a radio button question, select the Radio Button Question option from the toolbar and hit Next. DynaSearch will display a prompt for the question as well as the number of radio %button choices. After you fill this information out and again hit the Next button, DynaSearch will prompt you to provide the specific values for each radio button option. 
-%After you fill the values, hit Next to save the question. A text box on the page will appear where a question designator can be created. This will be used to identify the question from the %Question Editor screen via the Drop Down Question List. 
-%Note that DynaSearch will record the information as the index value you choose, and not the value you enter.
-
-%\paragraph{Text Question}
-%The Text Question option allows for the creation of a free response question. By se.lecting this option and clicking on the Next button, you will be prompted to provide the question for the %text, as well as the number of characters that should be displayed on the screen for a response. Please note that the user may enter a response that is larger than this value, and that the %entire response will be saved. This number only dictates how much of the response is displayed on the screen at one time. 
-%After you fill this information out and again hit the Next button, DynaSearch will prompt you to provide the specific values for each radio button option. After you fill the values, hit Next to %save the question. A text box on the page will appear where a question designator can be created. This will be used to identify the question from the Question Editor screen via the Drop %Down Question List.
-
-%\subsubsection{Questionnaire Viewer}
-%You can use this screen to view previously created questionnaires. To view a questionnaire, select the questionnaire from the drop down list, and click the Load button. 
-%It is important to note that once a questionnaire is saved in the Questionnaire Editor, it can not be reloaded and changed in anyway without accessing the saved questionnaire directly in the %sur questions database table and modifying the Value field. However, it can be completely overwritten by a new questionnaire.
 
 \subsubsection{Experiment Editor}
 
@@ -370,7 +349,7 @@ If the experiment does not require that the training page elements be displayed 
 \end{figure}
 \FloatBarrier
 
-The \textbf{Add Information Page} link will allow you to insert a new information page into the current experiment. When this link is clicked, a new information page label is inserted into the current list of pages, as is shown in \ref{fig:infoInsert}.  To assign a title to the page, click on the box labed "Title" and insert the desired text.  The drop down box lists the current files that can be used as instruction pages.  The file used will be the one currently selected from the drop down menu.  The files available for the instruction pages are located in the \texttt{DynaSearch/expResources/instructPages} directory.
+The \textbf{Add Information Page} link will allow you to insert a new information page into the current experiment. When this link is clicked, a new information page label is inserted into the current list of pages, as is shown in \ref{fig:infoInsert}.  To assign a title to the page, click on the box labed "Title" and insert the desired text.  The drop down box lists the current files that can be used as instruction pages.  The file used will be the one currently selected from the drop down menu.
 
 To change the sequence of the pages, click and drag the blue box on the left hand side of a page label up or down to slide it into the desired location. To remove a page from your list of pages, select the red minus sign on the right hand side of its label.
 
@@ -384,7 +363,7 @@ To change the sequence of the pages, click and drag the blue box on the left han
 \end{figure}
 \FloatBarrier
 
-The \textbf{Add Training Page} link will allow you to insert a new training page into the current experiment. When this button is clicked, a new training page is inserted into the current list of pages, as is shown in \ref{fig:trainInsert}.  To assign a title to the page, click on the box labed "Title" and insert the desired text.  The drop down box lists the current training pages that are available.  The training page currently selected in the drop down box will be the one used during the experiement.  The training pages available for use are located in the  directory \texttt{DynaSearch/expResources/advisory}.
+The \textbf{Add Training Page} link will allow you to insert a new training page into the current experiment. When this button is clicked, a new training page is inserted into the current list of pages, as is shown in \ref{fig:trainInsert}.  To assign a title to the page, click on the box labed "Title" and insert the desired text.  The drop down box lists the current training pages that are available.  The training page currently selected in the drop down box will be the one used during the experiement.
 
 To change the sequence of a page, click and drag the blue box on the left hand side of the page label up or down to slide it into the desired location. To remove a page from your list of pages, select the red minus sign on the right hand side of its label.
 
@@ -398,9 +377,63 @@ To change the sequence of a page, click and drag the blue box on the left hand s
 \end{figure}
 \FloatBarrier
 
-The \textbf{Add Survey Page} link will allow you to insert a new questionnaire into the current experiment. When this button is clicked, a new questionnaire page is inserted into the current list of pages, as is shown in \ref{fig:surveyInsert}.   To assign a title to the page, click on the box labed "Title" and insert the desired text.  The drop down box lists the current questionnaires  that are available.  The questionnaire currently selected in the drop down box will be the one used during the experiement.  The questionnaire data will be copied to a text file and stored in the experiment's directory.  This is explained in greater detail in Appendix B.
+The \textbf{Add Survey Page} link will allow you to insert a new questionnaire into the current experiment. When this button is clicked, a new questionnaire page is inserted into the current list of pages, as is shown in Fig. \ref{fig:surveyInsert}.   To assign a title to the page, click on the box labed "Title" and insert the desired text.  The drop down box lists the current questionnaires  that are available.  The questionnaire currently selected in the drop down box will be the one used during the experiement.  The questionnaire data will be copied to a text file and stored in the experiment's directory.  This is explained in greater detail in Appendix B.
 
 To change the sequence of a page, click and drag the blue box on the left hand side of the page label up or down to slide it into the desired location. To remove a page from your list of pages, select the red minus sign on the right hand side of its label.
+
+\subsubsection {Manage Assets}
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=5.0in]{figures/manage_assets.png}
+ \caption{Asset Manager}
+ \label{fig:manageAsset}
+\end{figure}
+\FloatBarrier
+
+The asset manager allows you to upload images, table files, applets, and scripted components to your training pages.  Please note that applets and script components are grouped together.  The available assets for each type can be viewed from the dropdown menu underneath the corresponding category.  To upload a new asset, click on the \textbf{Choose File} button and select the desired file.  When the file has been selected, choose which category the asset belongs to from the drop down menu.  Finally, upload the file by clicking on the \textbf{Upload} button.
+
+\paragraph{Images}
+Dynasearch supports most major image formats.
+
+\paragraph{Tables}
+The tables are just text files that are formatted so that columns are separated by commas and the rows are separated by new lines.
+
+\paragraph{Applets}
+Applets can be Java Applets, or HTML 5 code that embeds WebGL, Processing, or D3.
+
+
+\subsubsection {Manage Participants}
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=5.0in]{figures/manage_part.png}
+ \caption{Participant Manager}
+ \label{fig:managePart}
+\end{figure}
+\FloatBarrier
+
+The participant manager allows administrators the ability to create and modify users.  To modify an exisiting user select their name from the drop down list and click on the button labeled \textbf{load}.  All of their information should be entered into the form, as show in Fig. \ref{fig:managePart}.  Please note that administrators will only be able to change users that they have created.  This is important when mulitple administrators use the same system.
+
+To assign a user to a specific experiment, select the desired experiment from the drop down box and click on the button labeled \textbf{Save}.  The user's progress in the designated experiment is shown next to the label \textbf{Experiment Progress}.  If a user's progress needs to be reset, check the box labeled \textbf{Reset Progress} and save the user's profile.
+
+
+\subsubsection {Results Manager}
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=5.0in]{figures/part_results.png}
+ \caption{Results Manager}
+ \label{fig:partResults}
+\end{figure}
+\FloatBarrier
+
+The results for each study can be viewed and downloaded from the \testbf{Results Manger}, as shown in Fig. \ref{fig:partResults}.  To do this, select the desired user from the dropdown list and then hit the button labaled \testbf{Load}.  Then, select the experiment you wish to review the results of and again hit the button labeled \textbf{Load}.
+
+This will show a set of tables that display both the questionnaire data as well as the click data.  To download this, choose whether to download the click data or the questionnaire results, select the format desired (currently only plain text is supported), and hit the button labeled \textbf{Download}.  The details of the formats are specified below.
+
+\paragraph{Plain Text}
+
 
 \section{Appendix A: Database Information}
 The tables listed below are used for the DynaSearch system. Any other tables you find in the database are legacy items from the original EMDSS application on which this website was based. The tables have no dependency on each other. Because of this, the resulting structure is very simple and easy to maintain. The tables are explained in greater detail below. The database used for DynaSearch is MySQL 5.1. The entire system was built using version 2.0 of wampServer.
