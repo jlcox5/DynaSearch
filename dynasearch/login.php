@@ -35,11 +35,14 @@ Please provide your login information:
 </table>
 </form>
 <br/> <br/>
-<a href="#">Having trouble logging in?</a>
+
+<!-- Commented out on 21JAN13 by Jon -->
+<!-- <a href="#">Having trouble logging in?</a> -->
 
 </td>
 <td>
-DynaSearch is a system for (...)
+<!-- Commented out on 21JAN13 by Jon -->
+<!-- DynaSearch is a system for (...) -->
 </td>
 </table> <!-- End main page columns  -->
 </div>

@@ -664,10 +664,12 @@ var Window = new Class({
 			this.div.innerHTML += '<div class="infohandle" style="position:absolute; right:0px; top: 0px;"><img class="icon" src="assets/images/icon-info.png" style="padding: 0 0; margin: 0 0;" onmousedown="event.preventDefault();" /></div>';
 			this.div.getElement('.infohandle').getElement('.icon').parent_div = this.div;
 
-         this.div.getElement('.infohandle').style.zIndex="10";
-         this.div.getElement('.resize').style.zIndex="10";
-			this.div.innerHTML += '<iframe class="resizeShim"     style="position:absolute; right:0px; bottom: 0px; width: 15px; height: 15px; background: none; border:none; z-index:9;"/>';
-			this.div.innerHTML += '<iframe class="infohandleShim" style="position:absolute; right:0px; top: 0px;    width: 33px; height: 33px; background: none; border:none; z-index:9;"/>';
+	     // Changed zIndex to 0 and commented out the interHTML to have the infoIcons layer correctly...  Not sure what the iframe stuff is there for but it
+		 //  seems to be ok for now.  If wierd behavior creeps up, be sure to come back to this.  Jon 21JAN13
+         this.div.getElement('.infohandle').style.zIndex="0";
+         this.div.getElement('.resize').style.zIndex="0";
+			//this.div.innerHTML += '<iframe class="resizeShim"     style="position:absolute; right:0px; bottom: 0px; width: 15px; height: 15px; background: none; border:none; z-index:9;"/>';
+			//this.div.innerHTML += '<iframe class="infohandleShim" style="position:absolute; right:0px; top: 0px;    width: 33px; height: 33px; background: none; border:none; z-index:9;"/>';
 		}
 		this.div.innerHTML += '<div class="content" id="'+ this.div.barnum +'_content">'+ content +'</div>';
 
@@ -814,11 +816,12 @@ var ImageWindow = new Class({
       this.img.style.overflow="visible";
       this.img.style.display="inline";
       this.img.id = "theImage";
+	  this.div.style.height = this.img.getSize().y + "px";
 
       var This = this;
       this.resizeCB = function(){
          //This.div.getElement(".content").style.height = This.img.getSize().y + "px";
-         This.div.style.height = This.img.getSize().y + This.getHandleOffsetY() + "px";
+         This.div.style.height = This.img.getSize().y + This.getHandleOffsetY() + 5 +"px";
       };
 
       //var eventID = this.img.src.split('/').pop().trim();
@@ -918,6 +921,9 @@ var TextWindow = new Class({
 
 				pdc.innerHTML = prompt("Please enter your new text for this box, or press Okay to keep the current text.", pdc.innerHTML);
 				pdh.innerHTML = prompt("Please enter your new title for this box, or press Okay to keep the current text.", pdh.innerHTML);
+				while(pdh.innerHTML == ''){
+				   pdh.innerHTML = prompt("A title is required for this element.  Please enter a title here.", pdh.innerHTML);;
+				}
 			}
 		}
 
@@ -1683,7 +1689,9 @@ var InteractiveTableWindow = new Class({
          
             file = prompt("Please enter the name of the table file that you wish to use.", myself.file);
             pdh.innerHTML = prompt("Please enter your new title for this box, or press Okay to keep the current text.", pdh.innerHTML);
-
+			while(pdh.innerHTML == ''){
+			   pdh.innerHTML = prompt("A title is required for this element.  Please enter a title here.", pdh.innerHTML);;
+			}
             myself.fromFile(file);
          
             /*
@@ -1958,6 +1966,9 @@ file = asset;
                }
 
                pdh.innerHTML = prompt("Please enter your new title for this box, or press Okay to keep the current text.", pdh.innerHTML);
+			   	while(pdh.innerHTML == ''){
+				   pdh.innerHTML = prompt("A title is required for this element.  Please enter a title here.", pdh.innerHTML);;
+				}
 
 }
 
@@ -2001,6 +2012,9 @@ var Legend = new Class({
 				var pd = this.parentNode.parentNode.getElement('.content');
 				var pdh = this.parentNode.parentNode.getElement('.handle');
 				pdh.innerHTML = prompt("Please enter your new title for this box, or press Okay to keep the current text.", pdh.innerHTML);
+				while(pdh.innerHTML == ''){
+				   pdh.innerHTML = prompt("A title is required for this element.  Please enter a title here.", pdh.innerHTML);;
+				}
 
 				// Set Table title
 				myself.tableTitle = prompt("Please enter your new title for the legend, or press Okay to keep the current text.", myself.tableTitle);

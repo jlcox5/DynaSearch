@@ -36,9 +36,10 @@
             Hurricane Evacuation Decision Making.
          </p>
          <br/>
+		 <!-- Commented out on 21JAN13 by Jon 
          <br/>
-         <a href="assets/officials_guide.pdf" target="_blank">Official’s Guide for Hurricane Evacuation Decision Making</a>
-         <br/>
+         <a href="assets/officials_guide.pdf" target="_blank">Official’s Guide for Hurricane Evacuation Decision Making</a> 
+         <br/> -->
          <br/>
 
          <div id="shade"></div>
@@ -47,6 +48,9 @@
             <li><a href="editor.php">Training Page Editor</a></li>
             <li><a href="questEditor.php">Questionnaire Editor</a></li>
             <li><a href="survey_setup.php">Experiment Editor</a></li>
+			<li><a href="adminAssets.php">Asset Manager</a></li>
+			<li><a href="userAdmin.php">Participant Manager</a></li>
+			<li><a href="userOutput.php">View Results</a></li>
          </p>       
       </div>
    </div>
