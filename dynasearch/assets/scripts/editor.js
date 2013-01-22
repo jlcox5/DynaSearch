@@ -108,7 +108,9 @@ path_points = [];
 past_path_points = [];
 tracking_parser = function(file, adv)
 {
-	filepath = 'expResources/tracking/' + file;
+    // Changed by Jon, but completely useless with current capabilities
+	//filepath = 'expResources/tracking/' + file;
+	filepath = window.assetBaseDir + file;
 
 	var req = new Request({
 		url: filepath,
@@ -157,7 +159,9 @@ var map_top		= 0;
 var map_bottom	= 0;
 geo_parser = function(file)
 {
-	filepath = 'expResources/images/' + file;
+    // Changed by Jon, but probably useless
+	//filepath = 'expResources/images/' + file;
+	filepath = window.assetBaseDir + file;
 	
 	var req = new Request({
 		url: filepath,
@@ -180,7 +184,7 @@ var table_parser = function(experiment, file, receiver)
 {
 	//filepath = 'hurricane_data/' + experiment + '/' + file;
 	//filepath = 'expResources/tables/'+file;
-	filepath = tablesAssetDir + file;
+	filepath = window.assetBaseDir + file;
 	//alert(filepath);
    var req = new Request({
       url        : filepath,
@@ -273,7 +277,11 @@ cell : function(args,tab){
 var ext_table_parser = function(experiment, file, receiver)
 {
 	//filepath = 'hurricane_data/' + experiment + '/' + file;
-	filepath = 'expResources/tables/'+file;
+	
+	// Changed by Jon
+	//filepath = 'expResources/tables/'+file;
+	filepath = window.assetBaseDir +file;
+	
 	//alert(filepath);
 	var req = new Request({
 		url: filepath,
@@ -1018,7 +1026,10 @@ var MapWindow = new Class({
 		this.el = document.createElement('img');
 		this.canvas = document.createElement('canvas');
 
-		this.image = this.el.image = 'expResources/images/' + this.mapfile;
+		
+		
+		//this.image = this.el.image = 'expResources/images/' + this.mapfile;
+		this.image = this.el.image = window.assetBaseDir + this.mapfile;
 		this.el.src = this.el.image;
 		
 
@@ -1062,8 +1073,12 @@ var MapWindow = new Class({
 				advisory = prompt("Please specify an advisory: ",  curAdvisory);
 				curAdvisory = advisory;
 				
-				pd.src = 'expResources/images/' + map;
-				pdChild.image = 'expResources/images/' + map;
+				// Changed by Jon, probably not needed
+				//pd.src = 'expResources/images/' + map;
+				//pdChild.image = 'expResources/images/' + map;
+				
+				pd.src = window.assetBaseDir + map;
+				pdChild.image = window.assetBaseDir + map;
 				pdChild.src =pdChild.image;
 				
 			   for(var i=0; i < updatables.length; i+=1){		

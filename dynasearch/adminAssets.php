@@ -85,6 +85,8 @@
          echo "Stored in: " . $assetFilepath . "<br>";
 
       }
+	  // Added so assets automatically show in list after uploaded.  Need to comment out for debugging. - Jon 22JAN13
+	  redirect('adminAssets.php');
    }
    
 
@@ -141,7 +143,9 @@
          echo '</td>';
       }
 */
-      for($i = 0; $i < count($assets); $i++)
+      // I added the minus 1 because training pages should never be uploaded, always created through the editor.  If this ever changes,
+	  // then it can be removed.  - Jon 22JAN13
+      for($i = 0; $i < count($assets)-1; $i++)
       {
          $currAsset = &$assets[$i];
 
@@ -163,7 +167,6 @@
          {
             echo 'No Assets Uploaded';
          }
-
          echo '</td>';
       }
    ?>
@@ -181,7 +184,10 @@
             <label for="assetType">Asset Type : </label>
             <select name="assetType">
    <?php 
-      for($i = 0; $i < count($assets); $i++)
+   
+      // I added the minus 1 because training pages should never be uploaded, always created through the editor.  If this ever changes,
+	  // then it can be removed.  - Jon 22JAN13
+      for($i = 0; $i < count($assets)-1; $i++)
       {
          $currAsset = &$assets[$i];
          echo '<option value="'. $currAsset["Tag"] .'">'. $currAsset["Name"] .'</option>';
