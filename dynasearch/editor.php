@@ -16,6 +16,11 @@ else{
    $exp_name = 'DefaultExperiment';
    $adv_num = 5;
 }
+
+	$assetBaseDir = "admins/" . $username . "/assets/training/";
+	 echo '<script language="javascript"> <!-- 
+	     window.assetBaseDir = "' . $assetBaseDir . '"; //--></script>';
+	 echo "first: ".$assetBaseDir;
 //echo "Load: ".$exp_name;
 ?>
 
@@ -30,14 +35,19 @@ if(isset($_SESSION['scaleW'])){
 if(isset($_SESSION['scaleH'])){
  echo '<script language="javascript"> <!--
 		window.scaleH = '.$_SESSION['scaleH'].'; //--></script>';
-}	 
+}
 ?>
 
 <?php
 	// Added by Jon - Display all saved editor pages
+	$assetBaseDir = "admins/" . $username . "/assets/training/";
+	 echo '<script language="javascript"> <!-- 
+	     window.assetBaseDir = "' . $assetBaseDir . '"; //--></script>';
+	 echo "second: ".$assetBaseDir;
+	
 	echo '<script language="javascript"> <!--
 	   window.editorFiles = "<select name=\"instChoice\" id=\"instChoice\">"; //--></script>';
-	   if($handle = opendir('./expResources/advisory')){
+	   if($handle = opendir($assetBaseDir)){
    	   while(false !== ($file = readdir($handle))){
       	   if($file !== '.' && $file !== '..'){
          	   echo '<script language="javascript"> <!--
@@ -93,6 +103,8 @@ if(isset($_SESSION['scaleH'])){
 <?php 
 echo '<script type="text/javascript"> var pageadvnum = '. $adv_num .'; var experiment_shortname = "'. $exp_name .'"; var editing=true;';
 
+   $assetBaseDir = "./admins/" . $username . "/assets/training/";
+
    // Setup directory variables
    for($i = 0; $i < count($assets); $i++)
    {
@@ -101,17 +113,17 @@ echo '<script type="text/javascript"> var pageadvnum = '. $adv_num .'; var exper
    }
 
 if($exp_name != 'DefaultExperiment'){
-   $exists_already = file_exists('expResources/advisory/'.$exp_name);
+   $exists_already = file_exists($assetBaseDir.$exp_name);
    if($exists_already)
    {
-      echo 'load_all("expResources/advisory/'.$exp_name.'");';   
+      echo 'load_all('.$assetBaseDir.$exp_name.');';   
    }
 }
 else{
-   $exists_already = file_exists('expResources/advisory/'.$exp_name.'_training_adv_' . $adv_num . '.txt');
+   $exists_already = file_exists($assetBaseDir.$exp_name.'_training_adv_' . $adv_num . '.txt');
    if($exists_already)
    {
-      echo 'load_all("expResources/advisory/'.$exp_name.'_training_adv_' . $adv_num . '.txt");';   
+      echo 'load_all('.$assetBaseDir.$exp_name.'_training_adv_' . $adv_num . '.txt");';   
    }
 }
 echo '</script>'; ?>

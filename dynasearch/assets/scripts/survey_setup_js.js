@@ -77,7 +77,7 @@ var add_info_page = function(title, source)
    // Content - Source Select
    span = new Element('span');
    span.setAttribute('class', 'page_bar_item');
-        var srcSelect = $('instChoice').clone();
+   var srcSelect = $('instChoice').clone();
    srcSelect.setAttribute("id", "page_source");
    srcSelect.setAttribute("style","display:inline;");
    var selectedOption = srcSelect.getFirst('option[value=' + source + ']');

@@ -2294,6 +2294,7 @@ var save_all = function()
 	var windows_added_so_far = 0;
 	
 	var pos = new Array();
+	alert("Starting!");
 	
 	for(var i=0; i < updatables.length; i+=1)
 	{		
@@ -2368,7 +2369,11 @@ var save_all = function()
 	
 	// Send var myHTMLRequest = new Request.HTML({url:'load/'}).get({'user_id': 25});
 	//var filepath = 'expResources/advisory/'+experiment_shortname+'_training_adv_'+pageadvnum+'.txt';
-	var filepath = 'expResources/advisory/'+saveName+'.txt';
+	//$assetBaseDir = "./admins/" . $username . "/assets/";
+	//var filepath = 'expResources/advisory/'+saveName+'.txt';
+	var filepath = window.assetBaseDir + saveName + '.txt';
+	alert(filepath);
+	 
 	//alert("just before: " + filepath);
 	var req = new Request({
 		url: 'assets/php/save_training.php', 
@@ -2380,6 +2385,8 @@ var save_all = function()
 			}, 
 		onComplete: function(r) { } 
 	}).send();
+	
+	alert(req);
 }
 
 /*function loadToolBar(){

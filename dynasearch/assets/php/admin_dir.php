@@ -28,6 +28,21 @@
       array("Name" => "Applets",
             "Extensions" => array(),
             "MaxFileSize" => 512,
+            "Options" => array() ),
+			
+      array("Name" => "Instructions",
+            "Extensions" => array(),
+            "MaxFileSize" => 512,
+            "Options" => array() ),
+			
+	  array("Name" => "Text",
+            "Extensions" => array(),
+            "MaxFileSize" => 512,
+            "Options" => array() ),
+			
+       array("Name" => "Training",
+            "Extensions" => array(),
+            "MaxFileSize" => 512,
             "Options" => array() )
    );
 

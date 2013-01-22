@@ -55,6 +55,9 @@
 
 */
    include('assets/php/admin_dir.php');
+   
+   // Set Directory - Added by Jon 21JAN13
+   $assetBaseDir = "./admins/" . $username . "/assets/";
 
    // Upload
    if( isset($_POST['upload']) )
@@ -73,7 +76,9 @@
 
          //if (file_exists())
          $assetType = $_POST['assetType'];
-         $assetFilepath = $assetDirs[$assetType] . "/" . $_FILES["assetFile"]["name"];
+		 // Modified by Jon 21JAN13
+         //$assetFilepath = $assetDirs[$assetType] . "/" . $_FILES["assetFile"]["name"];
+		 $assetFilepath =  $assetBaseDir . $assetType . "/" . $_FILES["assetFile"]["name"];
 
          move_uploaded_file($_FILES["assetFile"]["tmp_name"],
                             $assetFilepath);

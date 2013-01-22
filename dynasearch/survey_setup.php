@@ -24,6 +24,7 @@ function redirect($page_name)
 }
 */
 require_once('assets/php/std_api.php');
+include('assets/php/admin_dir.php');
 
    $username = $_SESSION['username'];
 
@@ -146,7 +147,7 @@ if( isset($_POST['fileop']) ) {
 
             // Added by Jon - List all instruction pages
             $instFiles = '<select name="instChoice" id="instChoice" style="display:none;">';
-            if($handle = opendir('./expResources/instructPages'))
+            if($handle = opendir("./admins/" . $username . "/assets/instructions/"))
             {
                while(false !== ($file = readdir($handle)))
                {
@@ -160,7 +161,7 @@ if( isset($_POST['fileop']) ) {
 
             // Added by Jon - List all advisory pages
             $advFiles = '<select name="advChoice" id="advChoice" style="display:none;">';
-            if($handle = opendir('./expResources/advisory'))
+            if($handle = opendir("./admins/" . $username . "/assets/training/"))
             {
                while(false !== ($file = readdir($handle)))
                {
