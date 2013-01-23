@@ -1,0 +1,87 @@
+[Friday Mar 30 8:35:17 2012] -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+[Friday Mar 30 8:35:17 2012]          STAR WARS: The Old Republic v1.00.0.1 uninstaller ran
+[Friday Mar 30 8:35:17 2012] -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+[Friday Mar 30 8:35:17 2012] CallParameters=[]
+[Friday Mar 30 8:35:17 2012] System Default Language ID=1033
+[Friday Mar 30 8:35:17 2012] Supported OS Language=en
+[Friday Mar 30 8:35:17 2012] Program Location from registry=C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic
+[Friday Mar 30 8:35:17 2012] Language string code from registry=en
+[Friday Mar 30 8:35:17 2012] Start Menu path from registry=C:\ProgramData\Microsoft\Windows\Start Menu\Programs\EA\BioWare\Star Wars - The Old Republic
+[Friday Mar 30 8:35:17 2012] User admin status: Admin
+[Friday Mar 30 8:35:20 2012] Uninstall
+[Friday Mar 30 8:35:20 2012] un.DoUninstall
+[Friday Mar 30 8:35:20 2012] Deleting shortcut "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\EA\BioWare\Star Wars - The Old Republic\Star Wars - The Old Republic.lnk"
+[Friday Mar 30 8:35:20 2012] Deleting shortcut "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\EA\BioWare\Star Wars - The Old Republic\Uninstall Star Wars - The Old Republic.lnk"
+[Friday Mar 30 8:35:20 2012] Deleting shortcut "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\EA\BioWare\Star Wars - The Old Republic\View License.lnk"
+[Friday Mar 30 8:35:20 2012] Deleting shortcut "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\EA\BioWare\Star Wars - The Old Republic\SWTOR Customer Support.lnk"
+[Friday Mar 30 8:35:20 2012] Deleting shortcut "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\EA\BioWare\Star Wars - The Old Republic\View Readme.lnk"
+[Friday Mar 30 8:35:20 2012] Game Explorer: checking for product registry entry
+[Friday Mar 30 8:35:20 2012] - removing Game Explorer entry: {561DE051-CA68-4859-8673-70E0F8E63AA4}
+[Friday Mar 30 8:35:20 2012] Deleting key SOFTWARE\BioWare\Star Wars-The Old Republic
+[Friday Mar 30 8:35:20 2012] Deleting key (if empty) SOFTWARE\BioWare
+[Friday Mar 30 8:35:20 2012] Deleting Add/Remove registry entry - {3B11D799-48E0-48ED-BFD7-EA655676D8BB}
+[Friday Mar 30 8:35:20 2012] Removing Windows Firewall exception "C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\launcher.exe"
+[Friday Mar 30 8:35:20 2012]  - unknown error; R1=Ok ; R2=
+[Friday Mar 30 8:35:20 2012] Removing Windows Firewall exception "C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\swtor\retailclient\swtor.exe"
+[Friday Mar 30 8:35:20 2012]  - unknown error; R1=Ok ; R2=
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\launcher.exe'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\patcher_update.exe'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\launcher.settings.xml'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\SWTORLaunch.dll'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\SWTOR_GDF.dll'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\patcher.version'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\ReqChk.dll'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\TORLog.dll'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\ProcChk.dll'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\launcher.settings'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\icudt.dll'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\libcef.dll'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\avcodec-53.dll'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\avformat-53.dll'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\avutil-51.dll'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\chrome.pak'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\Third Party Notices.doc'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\Third Party Notices.rtf'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\assets_fr_fr_main.version'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\movies_en_us.version'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\movies_de_de.version'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\movies_fr_fr.version'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\retailclient_swtor.version'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\assets_swtor_main.version'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\assets_en_us_main.version'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\assets_de_de_main.version'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\*.version'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\docs'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\he500'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\logs'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\patch'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\Uninstall'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\he600'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\he700'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\he601'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\he701'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\he501'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\html'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\he602'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\he603'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\ui'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\Assets'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\Movies'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\EULAs'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\readmes'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\locales'
+[Friday Mar 30 8:35:20 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\SWTOR'
+[Friday Mar 30 8:35:21 2012] Delete 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic\EUALAs'
+[Friday Mar 30 8:35:21 2012] Removing C:\Users\jlcox\AppData\Local\swtor
+[Friday Mar 30 8:35:21 2012] Delete C:\Program Files\Common Files\BioWare\Uninstall Star Wars - The Old Republic.exe
+[Friday Mar 30 8:35:21 2012] Removing (if empty) SM Full Path - 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\EA\BioWare\Star Wars - The Old Republic'
+[Friday Mar 30 8:35:21 2012] Removing (if empty) install folder - 'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic'
+[Friday Mar 30 8:35:21 2012] Removing (if empty) uninstaller folder - 'C:\Program Files\Common Files\BioWare'
+[Friday Mar 30 8:35:21 2012] Checking for leftover files
+[Friday Mar 30 8:35:21 2012]  'C:\Program Files\Electronic Arts\BioWare\Star Wars - The Old Republic' not empty
+[Friday Mar 30 8:35:22 2012]  User selected to delete extra files
+[Friday Mar 30 8:35:27 2012] un.onGUIEnd
+[Friday Mar 30 8:35:27 2012] -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+[Friday Mar 30 8:35:27 2012] |           STAR WARS: The Old Republic uninstaller finished
+[Friday Mar 30 8:35:27 2012] -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
