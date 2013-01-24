@@ -1,8 +1,9 @@
 <?php		
    include("assets/php/config.php");
    include("assets/php/std_api.php");
-	require_once('assets/php/db_util.php');
+   require_once('assets/php/db_util.php');
 
+   $username = $_SESSION['username'];
    // Check if dynamic resizing is requested
    $result = query_db('select * from t_user where User_ID=\''. $username .'\'');
    $row = mysql_fetch_array($result, MYSQL_BOTH);

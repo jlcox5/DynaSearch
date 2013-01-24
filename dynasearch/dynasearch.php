@@ -43,13 +43,13 @@ $template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js"
                   "SET ClickOutput=IFNULL(CONCAT(ClickOutput, '$resultStr'), '$resultStr') " .
                   "WHERE User_ID='$username' AND Experiment_ID='$userExpId';";
          mysql_query($query);
-         //redirect("advance.php");
+         redirect("advance.php");
       }
       else
       {
          $username = $_SESSION['username'];
          mysql_query("INSERT INTO sur_clicks SET UserName='$username', SessionNumber=0, ObjClicked='NULL', ClickLength=-1, ClickNumber=-1;");
-         //redirect("advance.php");
+         redirect("advance.php");
       }
    }
 
