@@ -19,6 +19,8 @@ $template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js"
 	   if(isset($_POST['clickNum1']) && isset($_POST['clickTime1']) && isset($_POST['elemId1'])){
          $totalClicks = $_POST['totalClicks'];
          $username = $_SESSION['username'];
+         $userExpId = $_SESSION['userExpId'];
+         $resultString = 'PageName' . ':';
 	 		for($x=1 ; $x <= $totalClicks; $x+=1){
 			   $var_clickNum = 'clickNum'.$x;
 			   $var_clickTime = 'clickTime'.$x;
@@ -32,14 +34,22 @@ $template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js"
 			   echo $clickNum;
 			   echo $clickTime;
 			   echo $elemId;*/
-		       mysql_query("INSERT INTO sur_clicks SET UserName='$username', SessionNumber=0, ObjClicked='$elemId', ClickLength='$clickTime', ClickNumber='$clickNum';");
-			   redirect("advance.php");
+                       $resultString .= $elemId . '/' . $clickTime;
+
+            if($x < $totalClicks){
+               $resultString = $resultString . ", ";    // NEW
+            }
+         $query = "UPDATE t_user_output " .
+                  "SET ClickOutput=IFNULL(CONCAT(ClickOutput, '$resultString'), '$resultString') " .
+                  "WHERE User_ID='$username' AND Experiment_ID='$userExpId';";
+		       mysql_query($query);
+			 //  redirect("advance.php");
 			}
 	   }
 	   else{
     	 $username = $_SESSION['username'];
          mysql_query("INSERT INTO sur_clicks SET UserName='$username', SessionNumber=0, ObjClicked='NULL', ClickLength=-1, ClickNumber=-1;");
-         redirect("advance.php");
+         //redirect("advance.php");
        }
 	}
 
