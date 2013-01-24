@@ -69,8 +69,7 @@ if(isset($_SESSION['scaleH'])){
    {
       $currAsset = &$assets[$i];
 
-      echo '<div id="' . $currAsset["Tag"] . 'Popup" class="assetPopup">' . 
-              '';
+      echo '<div id="' . $currAsset["Tag"] . 'Popup" class="assetPopup">' . '';
 
       $assetOptions = &$currAsset["Options"];
       $assetOptionCount = count($assetOptions);
@@ -106,7 +105,7 @@ if(isset($_SESSION['scaleH'])){
 echo '<script type="text/javascript"> var pageadvnum = '. $adv_num .'; var experiment_shortname = "'. $exp_name .'"; var editing=true;';
 
    //$assetBaseDir = "./admins/" . $username . "/assets/training/";
-   echo 'assetDir = " ' . $assetBaseDir . ' ";';
+   echo 'assetDir = "' . $assetBaseDir . '";';
 
 
 if($exp_name != 'DefaultExperiment'){

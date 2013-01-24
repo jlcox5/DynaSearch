@@ -1,5 +1,4 @@
 var changeViewMode = function() {
-/*
    var viewMode    = $("viewMode").value;
    var userSelect  = $("userSelect");
    var expSelect   = $("expSelect");
@@ -21,13 +20,6 @@ var changeViewMode = function() {
       userSelect.setProperty('disabled', 'disabled');
       break;
    }
-*/
-   
 
-   loadForm();
 
-}
-
-var loadForm = function() {
-   $('outputForm').submit();
 }

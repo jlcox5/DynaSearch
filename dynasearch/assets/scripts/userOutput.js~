@@ -1,8 +1,8 @@
 var changeViewMode = function() {
-/*
    var viewMode    = $("viewMode").value;
    var userSelect  = $("userSelect");
    var expSelect   = $("expSelect");
+   var loadButton  = $("loadButton");
 
    switch (viewMode) {
    case "participant":
@@ -21,11 +21,7 @@ var changeViewMode = function() {
       userSelect.setProperty('disabled', 'disabled');
       break;
    }
-*/
-$('outputForm').submit();
 
-}
+   loadButton.setProperty('style', '');
 
-var loadForm = function() {
-   $('outputForm').submit();
 }

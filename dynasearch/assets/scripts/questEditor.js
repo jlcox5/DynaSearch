@@ -109,6 +109,7 @@ var Questionnaire = new Class(
       return str + "</questionnaire>";
    },
    genElement:  function(forreal){
+      alert(this.elements);
       if(forreal == undefined) forreal = false;
       var quest = document.createElement('div');
           quest.id = "accordion";

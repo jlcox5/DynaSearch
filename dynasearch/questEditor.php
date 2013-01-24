@@ -53,6 +53,7 @@
 <?php
 
    $currentQuest = "";
+   $loadQuest = "";
 
    if(isset($_POST['saveQuest']) && isset($_POST['questName'])){
       //
