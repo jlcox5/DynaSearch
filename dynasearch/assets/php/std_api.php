@@ -14,6 +14,8 @@ if(isset($_SESSION['timeout']) ) {
         { session_destroy(); header("Location: login.php"); }
 }
 $_SESSION['timeout'] = time();
+$username = $_SESSION['username'];
+
 
 function redirect($page_name)
 {
@@ -65,9 +67,9 @@ function getExpPageArray($index) {
       for($j=0;$j < count($properties);$j++)
       {
          // Split property into key and value
-         $item = explode('=',$properties[$j]);
+         $items = explode('=',$properties[$j]);
 
-         if(($item[0] == 'page') && ($items[1] == $index))
+         if(($items[0] == 'page') && ($items[1] == $index))
          {
             // This is the desired page, return its string
             return $properties;          

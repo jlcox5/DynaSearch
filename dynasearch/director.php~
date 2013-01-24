@@ -91,7 +91,7 @@ if(isset($_SESSION['logged_in'])) {
       //echo '<br/>';
       
       $expstr = $row['ExperimentString'];
-         redirect('logOut.php');
+
       $exparr = explode('$',$expstr);
       for($i=0; $i<count($exparr);$i++)
       {

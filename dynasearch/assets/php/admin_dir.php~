@@ -28,10 +28,25 @@
       array("Name" => "Applets",
             "Extensions" => array(),
             "MaxFileSize" => 512,
+            "Options" => array() ),
+			
+      array("Name" => "Instructions",
+            "Extensions" => array(),
+            "MaxFileSize" => 512,
+            "Options" => array() ),
+			
+	  array("Name" => "Text",
+            "Extensions" => array(),
+            "MaxFileSize" => 512,
+            "Options" => array() ),
+			
+       array("Name" => "Training",
+            "Extensions" => array(),
+            "MaxFileSize" => 512,
             "Options" => array() )
    );
 
-
+   $username = $_SESSION['username'];
    $assetBaseDir = "./admins/" . $username . "/assets/";
    for($i = 0; $i < count($assets); $i++)
    {
@@ -48,7 +63,8 @@
             {
                if($file !== '.' && $file !== '..')
                {
-                  $assetOptions[ $assetOptionCount ] = '<option value="' . $file . '">' . $file . '</option>';
+                  $filePath = $currAsset["Tag"] . '/' . $file;
+                  $assetOptions[ $assetOptionCount ] = '<option value="' . $filePath . '">' . $file . '</option>';
                   ++$assetOptionCount;
                }
 

@@ -6,29 +6,38 @@
     mysql_select_db($DB_NAME) or die("Unable to select database.");
 	
 	$notice = "";
-    /*
-    function strToHex($string){
-       $hex='';
-       for ($i=0; $i < strlen($string); $i++){
-          $hex .= dechex(ord($string[$i]));
-       }
-       return $hex;
-    }
-
-    function hexToStr($hex){
-       $string='';
-       for ($i=0; $i < strlen($hex)-1; $i+=2){
-          $string .= chr( hexdec($hex[$i].$hex[$i+1]) );
-       }
-	    return $string;
-    }*/
 	
+   
+      /////////////////////////////////////////////////
+      // Get the title and content
+      /////////////////////////////////////////////////
+      $username = $_SESSION['username'];
+	
+      // Get our current page.
+      $result = query_db('select * from t_user where User_ID=\''. $username .'\'');
+      $row = mysql_fetch_array($result, MYSQL_BOTH);
+      $current_position = $row['current_position'];
+   
+      $questName = hexToStr( getExpPageProperty($current_position-1, "src") );
+
+      // Current Questionaire
+      $query = "SELECT Value FROM sur_question WHERE Name='".mysql_real_escape_string($questName)."'";
+      $result  = mysql_query($query);
+      if($result){
+         $assoc = mysql_fetch_assoc($result);
+         $quest  = $assoc['Value'];
+      }
+      //echo hexToStr($quest);
+
+	/////////////////////////////////////////////////
+
+
    if(isset($_POST['doneWithPage'])){
-      $questName = "Test5"; // TODO
+      //$questName = "Test5"; // TODO
       $fileToOpen ="./userData/".$_SESSION['username'].".txt";
       //$handle = fopen($fileToOpen, 'a+');
 
-      $resultStr = "";
+      $resultStr = $questName . ":";
 	   
 	   // Test to make sure questions are actually answered
 	   $quest_finished = TRUE;
@@ -78,11 +87,12 @@
          }
 
          //fclose($handle);
-         $username = $_SESSION['username'];
-         $resultStr = mysql_real_escape_string($resultStr);
-         $query = "UPDATE t_user " .
-                  "SET OutputDataString=IFNULL(CONCAT(OutputDataString, '$resultStr'), '$resultStr') " .
-                  "WHERE User_ID='$username';";
+         $username  = $_SESSION['username'];
+         $userExpId = $_SESSION['userExpId'];
+         $resultStr = mysql_real_escape_string($resultStr . '&');
+         $query = "UPDATE t_user_output " .
+                  "SET QuestOutput=IFNULL(CONCAT(QuestOutput, '$resultStr'), '$resultStr') " .
+                  "WHERE User_ID='$username' AND Experiment_ID='$userExpId';";
          mysql_query($query);
 	     //redirect("advance.php");
 	   }
@@ -98,76 +108,7 @@
    {
    	redirect('assets/php/user.php?logout=true');
    }
-   
-      /////////////////////////////////////////////////
-      // Get the title and content
-      /////////////////////////////////////////////////
-      $username = $_SESSION['username'];
-	
-      // Get our current page.
-      $result = query_db('select * from t_user where User_ID=\''. $username .'\'');
-      $row = mysql_fetch_array($result, MYSQL_BOTH);
-      $current_position = $row['current_position'];
-   
-      $expshortname = $row['experiment'];
-      // Find out where we should go now.
-      $result = query_db('select * from t_experiments where ExperimentShortName=\''. $expshortname .'\'');
-      $row = mysql_fetch_array($result, MYSQL_BOTH);
-	
-	$expstr = $row['ExperimentString'];
 
-	$exparr = explode('$',$expstr);
-	for($i=0; $i<count($exparr);$i++)
-	{
-		$properties = explode('&', $exparr[$i]);
-		
-		for($j=0;$j < count($properties);$j++)
-		{
-			$item = explode('=',$properties[$j]);
-			
-			// Match up with the page we should be on.
-			if($item[0] == 'page')
-			{
-				$pagenum = (int)$item[1];
-				if($pagenum == $current_position-1)
-				{
-					for($k=0;$k<count($properties);$k++)
-					{
-						$item2 = explode('=',$properties[$k]);
-						
-						if($item2[0] == 'title')
-						{
-							$exp_page_title = hexToStr($item2[1]);
-						}
-						elseif($item2[0] == 'src')
-						{
-							//$myFile = 'hurricane_data/'. $expshortname . '/'. hexToStr($item2[1]);
-
-							//$fh = fopen($myFile, 'r');
-							//$page_content = fread($fh, filesize($myFile));
-							//fclose($fh);
-
-$questName = hexToStr($item2[1]);
-
-						}
-					}
-				}				
-			}
-		}
-	}
-
-      $questName = hexToStr( getExpPageProperty($current_position-1, "src") );
-echo $questName;
-      // Current Questionaire
-      $query = "SELECT Value FROM sur_question WHERE Name='".mysql_real_escape_string($questName)."'";
-      $result  = mysql_query($query);
-      if($result){
-         $assoc = mysql_fetch_assoc($result);
-         $quest  = $assoc['Value'];
-      }
-      //echo hexToStr($quest);
-
-	/////////////////////////////////////////////////
 
    $_SESSION['curQ'] = "";
 	

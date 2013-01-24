@@ -11,53 +11,12 @@
    $username = $_SESSION['username'];
 
    $template_style_array  = array("style.css", "adminAssets.css");
-   $template_script_array = array("ajax-core.js");
+   $template_script_array = array("ajax-core.js", "adminAssets.js");
 
-/*
-   // Extensible Settings:
-   $assetSettings = array(
-      array("AssetName" => "Images",
-            "Extensions"=> array(),
-            "MaxFileSize"=> 512)
-   );
-
-
-   $allAssets = array('Images', 'Tables', 'Other Objects', "Applets");
-
-
-   function sanitize($string)
-   {
-      $match   = array("/\s+/", "/W+/");
-      $replace = array("_",     ""    );
-      $string  = preg_replace($match, $replace, $string);
-      $string  = strtolower($string);
-      return $string;
-   }
-
-   // Load User Asset Data  
-   $assetBaseDir = "./admins/" . $username . "/assets/";
-   $assets       = array();
-   $assetDirs    = array();
-
-   for ($i = 0; $i < count($allAssets); ++$i)
-   {
-      $assetTag       = sanitize($allAssets[$i]);
-      $assets[$assetTag] = $allAssets[$i];
-      $assetDirs[ $assetTag ] = $assetBaseDir . $assetTag;
-   }
-
-   for ($i = 0; $i < count($assetSettings); ++$i)
-   {
-      $assetTag       = sanitize($allAssets[$i]["AssetName"]);
-      $assets[$assetTag] = $allAssets[$i];
-      $assetDirs[ $assetTag ] = $assetBaseDir . $assetTag;
-   }
-
-*/
    include('assets/php/admin_dir.php');
    
    // Set Directory - Added by Jon 21JAN13
-   $assetBaseDir = "./admins/" . $username . "/assets/";
+   //$assetBaseDir = "./admins/" . $username . "/assets/"; // Shouldn't need to redeclare?
 
    // Upload
    if( isset($_POST['upload']) )
@@ -65,7 +24,7 @@
 
       if($_FILES["assetFile"]["error"] > 0)
       {
-         echo "Error: " . $_FILES["assetFile"]["error"] . "<br>";;
+         echo "Error: " . $_FILES["assetFile"]["error"] . "<br>";
       }
       else
       {
@@ -89,6 +48,17 @@
 	  redirect('adminAssets.php');
    }
    
+   // Delete Asset
+   if( isset($_POST['delete']) && isset($_POST['asset']))
+   {
+      $assetName = $_POST['asset'];
+
+      $assetFile = $assetBaseDir . $assetName;
+      $fh = fopen($assetFile, 'w') or die("can't open file");
+      fclose($fh);
+      unlink($assetFile);
+      redirect('adminAssets.php');
+   }
 
    include('assets/php/standard.php');
 ?>
@@ -102,47 +72,7 @@
 
          <!-- Asset Lists -->
    <?php 
-/*
-      foreach($assets as $key => $value)
-      {
-         echo '<td style="padding:10px;">' . 
-                 '<h2>' . $value . '</h2>';
-
-         if($handle = @opendir($assetDirs[ $key ]))
-         {
-            // Asset Directory exists, load all files
-            $assetOptions = '';
-            $assetOptionCount = 0;
-            while(false !== ($file = readdir($handle)))
-            {
-               if($file !== '.' && $file !== '..')
-               {
-                  $assetOptions = $assetOptions.'<option value="'.$file.'">'.$file.'</option>';
-                  ++$assetOptionCount;
-               }
-            }
-         }
-         else
-         {
-            // Asset Directory must be made
-            echo "Made Directory : " . $assetDirs[ $key ];
-            mkdir($assetDirs[ $key ], 0777, true);
-         }
-
-         if ($assetOptionCount > 0)
-         {
-            echo '<select name="'.$key.'Select" size="'.($assetOptionCount + 1).'">' . 
-                    $assetOptions .
-                 '</select>';
-         }
-         else
-         {
-            echo 'No Assets Uploaded';
-         }
-
-         echo '</td>';
-      }
-*/
+      echo '<table>';
       // I added the minus 1 because training pages should never be uploaded, always created through the editor.  If this ever changes,
 	  // then it can be removed.  - Jon 22JAN13
       for($i = 0; $i < count($assets)-1; $i++)
@@ -150,25 +80,33 @@
          $currAsset = &$assets[$i];
 
          echo '<td style="padding:10px;">' . 
-                 '<h2>' . $currAsset["Name"] . '</h2>';
+                 '<form action="adminAssets.php" method="post">' .
+                    '<h2>' . $currAsset["Name"] . '</h2>';
 
          $assetOptions = &$currAsset["Options"];
          $assetOptionCount = count($assetOptions);
          if ( $assetOptionCount > 0)
          {
-            echo '<select name="'. $currAsset["Tag"] .'Select" size="'.($assetOptionCount + 1).'">';
+            echo '<select name="asset" size="'.($assetOptionCount + 1).'">';
             for ($j = 0; $j < $assetOptionCount; $j++)
             {
                echo $assetOptions[$j];
             }
             echo '</select>';
+
+
+            // Delete Button
+            echo '<input type="submit" name="delete" value="Delete" onclick="return confirmDelete();">';
          }
          else
          {
             echo 'No Assets Uploaded';
          }
-         echo '</td>';
+         echo    '</form>' .
+              '</td>';
       }
+
+      echo '</table>';
    ?>
          <br/>
          <br/>

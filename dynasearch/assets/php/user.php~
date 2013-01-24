@@ -33,9 +33,6 @@ function user_signin($username, $password)
       $_SESSION['scaleW'] = $test['scaleW'];
       $_SESSION['scaleH'] = $test['scaleH'];
 
-         if( $test['User_Type'] == 'U')
-         {
- 
          $userExpId = $_SESSION['userExpId'];
          $query = "SELECT id FROM t_user_output WHERE User_ID='$username' AND Experiment_ID='$userExpId';";
          $result = mysql_query($query);
@@ -52,7 +49,6 @@ function user_signin($username, $password)
             $result = mysql_query($query);  
 
          }
-}
 		return 'true';
 	}
 	else { return 'false'; }

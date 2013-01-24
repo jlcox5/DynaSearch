@@ -68,7 +68,8 @@
             {
                if($file !== '.' && $file !== '..')
                {
-                  $assetOptions[ $assetOptionCount ] = '<option value="' . $file . '">' . $file . '</option>';
+                  $filePath = $currAsset["Tag"] . '/' . $file;
+                  $assetOptions[ $assetOptionCount ] = '<option value="' . $filePath . '">' . $file . '</option>';
                   ++$assetOptionCount;
                }
 
@@ -77,7 +78,7 @@
          else
          {
             // Asset Directory must be made
-            echo "Made Directory : " . $currAsset["Path"];
+            //echo "Made Directory : " . $currAsset["Path"];
             mkdir($currAsset["Path"], 0777, true);
          }
       }

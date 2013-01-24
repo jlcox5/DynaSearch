@@ -178,6 +178,9 @@
          echo '<select id="userSelect" name="pId"  disabled="disabled" style="display:none;">';
       }
 
+
+      //if ( count($adminUsers) > 0)
+      //{
       foreach($adminUsers as $key => $value)
       {
          if ($key == $pId)
@@ -232,11 +235,12 @@
             <!-- Info -->
    <?php
 
-      if( isset($_POST["load"]) )
+      //if( isset($_POST["load"]) )
+      if( true )
       {
 
          // Info
-         if( $viewMode == "participant")
+         if( ($viewMode == "participant") && ($pId != ""))
          {
             echo '<h2>Participant Name : ' . $pName . '</h2>' .
                  '<br/>';
@@ -287,13 +291,13 @@
 
          echo '<br/>';
 
-         if (isset($_POST["pId"]) && isset($_POST["expId"]))
+         //if (isset($_POST["pId"]) && isset($_POST["expId"]))
+         if (true)
          {
-
          // Results
          echo '<h2>Questionaire Results :</h2>';
          //echo $questResults;
-         $pages = explode("&", $questResults);
+         $pages = preg_split('@&@', $questResults, NULL, PREG_SPLIT_NO_EMPTY);
 
          for( $i = 0; $i < count($pages); ++$i )
          {
@@ -317,7 +321,7 @@
 
          echo '<h2>Click Results :</h2>';
          //echo $clickResults;
-         $pages = explode("&", $clickResults);
+         $pages = preg_split('@&@', $clickResults, NULL, PREG_SPLIT_NO_EMPTY);
 
          for( $i = 0; $i < count($pages); ++$i )
          {

@@ -13,11 +13,18 @@
    $template_style_array  = array("style.css");
    $template_script_array = array("ajax-core.js", "userAdmin.js");
    
+   if( isset($_POST['participantId']) )
+   {
+      $pId = $_POST['participantId'];
+   }
+   else
+   {
+      $pId = "";
+   }
+
    // Save
    if( isset($_POST['save']) )
    {
-
-      $pId = $_POST['participantId'];
 
       if( isset($_POST['participantName']) )
       {
@@ -55,8 +62,6 @@
 
       mysql_query($query);
    }
-
-   $pId = $_POST["participantId"];
 
    include('assets/php/standard.php');
 ?>
@@ -106,13 +111,14 @@
 
          <!-- User Data -->
    <?php
-      if( isset($_POST["participantId"]) )
+      if( isset($_POST["add"]) || isset($_POST["load"]) )
       {
 
          if( isset($_POST["add"]) )
          {
+
             // Add participant
-            $participantId = "";
+            $pId = "";
 
             $participantName     = "";
             $participantPassword = "";
@@ -121,9 +127,8 @@
          }
          else
          {
-            $participantId = $_POST["participantId"];
 
-            $query  = "SELECT * FROM t_user WHERE User_ID='$participantId';";
+            $query  = "SELECT * FROM t_user WHERE User_ID='$pId';";
             $result = mysql_query($query);
             $row    = mysql_fetch_array($result, MYSQL_BOTH);
 
@@ -145,7 +150,7 @@
 
          // Login
          echo '<h2>Login : ' . 
-                 '<input id="pId" type="text" name="participantId" value="' .$participantId . '" required="required" onchange="checkAvailability();" ';
+                 '<input id="pId" type="text" name="participantId" value="' .$pId . '" required="required" onchange="checkAvailability();" ';
          if( isset($_POST["add"]) )
          {
             echo '/>';
@@ -153,7 +158,7 @@
          else
          {
             echo 'hidden="hidden" />' .
-                 '<span>' . $participantId . '</span>';
+                 '<span>' . $pId . '</span>';
          }
 
          echo '<span id="availabilityTag"></span>' .
@@ -175,6 +180,12 @@
          echo '<select id="pExps" name="participantExp"  required="required"' . 
               ( (isset($_POST["add"])) ? ('') : ('hidden="hidden"') ) .
               ' >';
+
+         // Experiment Unassigned Option
+         echo '<option value="-1" ' . '' . ' >' .
+                 'Unassigned' .
+              '</option>';
+
          $query  = "SELECT * FROM t_experiments WHERE Admin_ID='$username';";
          $result = mysql_query($query);
          while( $row = mysql_fetch_array($result, MYSQL_BOTH) )
@@ -201,7 +212,7 @@
          if( !isset($_POST["add"]) )
          {
             echo '<span id="expDisplay">' . 
-                    ( $pExpName . ' (' . $pExpId . ')' ) . 
+                    ( ($pExpID = '-1') ? ('Unassigned ') : ($pExpName . ' (' . $pExpId . ')') ) . 
                     '<input type="button" value="Change" onclick="changeExp();"/>' .
                  '</span>';
          }
