@@ -2,10 +2,16 @@
 $page_title = "Editor";
 
 $template_style_array  = array("style.css", "editor.css");
-$template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js", "timer.js",  "hurricane-unisys-parser.js", "editor.js", "canvas3dapi/c3dapi.js");
+$template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js", "timer.js",  "hurricane-unisys-parser.js", "canvas3dapi/c3dapi.js");
 
-include('assets/php/standard.php');
+// There is a little bit of a dependency issue with the editor.js file needing to have assetDir defined before it can run.  It would be nice to be
+// able to clean this up a little more at some point, but it works for now... I guess. -- Jon
+require_once('assets/php/std_api.php');
 include('assets/php/admin_dir.php');
+echo '<script type="text/javascript"> assetDir = "' . $assetBaseDir . '"; </script> ';
+
+array_push($template_script_array, "editor.js");
+include('assets/php/standard.php');
 
 if(isset($_POST['expLoad'])){
    $exp_name = $_POST['instChoice'];
@@ -100,8 +106,7 @@ if(isset($_SESSION['scaleH'])){
 echo '<script type="text/javascript"> var pageadvnum = '. $adv_num .'; var experiment_shortname = "'. $exp_name .'"; var editing=true;';
 
    //$assetBaseDir = "./admins/" . $username . "/assets/training/";
-
-   echo 'assetDir = "' . $assetBaseDir . '";';
+   echo 'assetDir = " ' . $assetBaseDir . ' ";';
 
 
 if($exp_name != 'DefaultExperiment'){

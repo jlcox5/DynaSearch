@@ -14,7 +14,7 @@ if(isset($_SESSION['timeout']) ) {
         { session_destroy(); header("Location: login.php"); }
 }
 $_SESSION['timeout'] = time();
-$username = $_SESSION['username'];
+//$username = $_SESSION['username'];
 
 
 function redirect($page_name)

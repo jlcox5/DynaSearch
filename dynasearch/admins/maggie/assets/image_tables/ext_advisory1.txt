@@ -4,7 +4,7 @@ num_cols 5
 tableID iamlegend
 
 testing
-2 img clock-icon.png
+2 img images/hobbit_hill.jpg
 3
 4
 5
@@ -16,7 +16,7 @@ testing
 0
 
 7
-8 img test_icon.png
+8 img images/I_want_to_live_here.jpg
 9
 0
 7

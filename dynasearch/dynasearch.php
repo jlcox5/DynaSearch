@@ -67,7 +67,11 @@ $template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js"
 	/////////////////////////////////////////////////
 	// Get the title and content
 	/////////////////////////////////////////////////
+	
 	$username = $_SESSION['username'];
+	$userAdmin = $_SESSION['userAdmin'];
+    $assetBaseDir = "./admins/" . $userAdmin . "/assets/";
+	echo '<script type="text/javascript"> assetDir = "' . $assetBaseDir . '"; </script> ';
 
 	// Get our current page.
 	$result = query_db('select * from t_user where User_ID=\''. $username .'\'');

@@ -206,7 +206,7 @@ var ext_table_parser = function(experiment, file, receiver)
 	// Changed by Jon
 	filepath = assetDir+file;
 	
-	//alert(filepath);
+	alert(filepath);
 	var req = new Request({
 		url: filepath,
 		async: false,
@@ -657,7 +657,7 @@ var Toolbar = new Class({
 // Image Selection Window
 
 // Image Window
-var ImageAssetDir = "./assets/images/";
+var ImageAssetDir = assetDir;
 var ImageWindow = new Class({
 	Extends: Window,
 	initialize: function(experiment,file,ntableLink) {
