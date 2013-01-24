@@ -24,6 +24,11 @@
             "Extensions" => array(),
             "MaxFileSize" => 512,
             "Options" => array() ),
+			
+	  array("Name" => "Image Tables",
+            "Extensions" => array(),
+            "MaxFileSize" => 512,
+            "Options" => array() ),
 
       array("Name" => "Applets",
             "Extensions" => array(),
@@ -47,7 +52,7 @@
    );
 
    $username = $_SESSION['username'];
-   $assetBaseDir = "./admins/" . $username . "/assets/";
+   $assetBaseDir = "./admins/" . $userAdmin . "/assets/";
    for($i = 0; $i < count($assets); $i++)
    {
       $currAsset = &$assets[$i];
@@ -73,7 +78,7 @@
          else
          {
             // Asset Directory must be made
-            echo "Made Directory : " . $currAsset["Path"];
+            //echo "Made Directory : " . $currAsset["Path"];
             mkdir($currAsset["Path"], 0777, true);
          }
       }

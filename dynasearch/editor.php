@@ -17,9 +17,9 @@ else{
    $adv_num = 5;
 }
 
-	$assetBaseDir = "admins/" . $username . "/assets/training/";
-	 echo '<script language="javascript"> <!-- 
-	     window.assetBaseDir = "' . $assetBaseDir . '"; //--></script>';
+	//$assetBaseDir = "admins/" . $username . "/assets/training/";
+	//echo '<script language="javascript"> <!-- 
+	 //   window.assetBaseDir = "' . $assetBaseDir . '"; //--></script>';
 //echo "Load: ".$exp_name;
 ?>
 
@@ -39,13 +39,13 @@ if(isset($_SESSION['scaleH'])){
 
 <?php
 	// Added by Jon - Display all saved editor pages
-	$assetBaseDir = "admins/" . $username . "/assets/training/";
-	 echo '<script language="javascript"> <!-- 
-	     window.assetBaseDir = "' . $assetBaseDir . '"; //--></script>';
+	//$assetBaseDir = "admins/" . $username . "/assets/training/";
+	 //echo '<script language="javascript"> <!-- 
+	  //   window.assetBaseDir = "' . $assetBaseDir . '"; //--></script>';
 	
 	echo '<script language="javascript"> <!--
 	   window.editorFiles = "<select name=\"instChoice\" id=\"instChoice\">"; //--></script>';
-	   if($handle = opendir($assetBaseDir)){
+	   if($handle = opendir($assetBaseDir . "training/")){
    	   while(false !== ($file = readdir($handle))){
       	   if($file !== '.' && $file !== '..'){
          	   echo '<script language="javascript"> <!--
@@ -57,8 +57,6 @@ if(isset($_SESSION['scaleH'])){
 	      window.editorFiles = window.editorFiles+"</select>"; //--></script>';
 ?>
 
-
-<div onclick="openAssetPopup('images');">test popup</div>
 
 <?php 
    for($i = 0; $i < count($assets); $i++)
@@ -79,7 +77,7 @@ if(isset($_SESSION['scaleH'])){
             echo $assetOptions[$j];
          }
          echo '</select>';
-         //$disable = '';
+         $disable = '';
 
       }
       else
@@ -101,20 +99,16 @@ if(isset($_SESSION['scaleH'])){
 <?php 
 echo '<script type="text/javascript"> var pageadvnum = '. $adv_num .'; var experiment_shortname = "'. $exp_name .'"; var editing=true;';
 
-   $assetBaseDir = "./admins/" . $username . "/assets/training/";
+   //$assetBaseDir = "./admins/" . $username . "/assets/training/";
 
-   // Setup directory variables
-   for($i = 0; $i < count($assets); $i++)
-   {
-      $currAsset = &$assets[$i];
-      echo $currAsset["Tag"] . 'AssetDir = "' . $currAsset["Path"] . '/";';
-   }
+   echo 'assetDir = "' . $assetBaseDir . '";';
+
 
 if($exp_name != 'DefaultExperiment'){
-   $exists_already = file_exists($assetBaseDir.$exp_name);
+   $exists_already = file_exists($assetBaseDir. 'training/' .$exp_name);
    if($exists_already)
    {
-      echo 'load_all("'.$assetBaseDir.$exp_name.'");';   
+      echo 'load_all("'.$assetBaseDir. 'training/' .$exp_name.'");';   
    }
 }
 else{

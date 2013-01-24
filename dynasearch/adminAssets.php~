@@ -16,7 +16,7 @@
    include('assets/php/admin_dir.php');
    
    // Set Directory - Added by Jon 21JAN13
-   $assetBaseDir = "./admins/" . $username . "/assets/";
+   //$assetBaseDir = "./admins/" . $username . "/assets/"; // Shouldn't need to redeclare?
 
    // Upload
    if( isset($_POST['upload']) )

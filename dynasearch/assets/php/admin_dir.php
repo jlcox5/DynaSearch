@@ -52,7 +52,8 @@
    );
 
    $username = $_SESSION['username'];
-   $assetBaseDir = "./admins/" . $username . "/assets/";
+   $userAdmin = $_SESSION['userAdmin'];
+   $assetBaseDir = "./admins/" . $userAdmin . "/assets/";
    for($i = 0; $i < count($assets); $i++)
    {
       $currAsset = &$assets[$i];

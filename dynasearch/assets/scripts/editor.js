@@ -108,7 +108,8 @@ var table_data = []
 var table_parser = function(experiment, file, receiver)
 {
 	//filepath = 'hurricane_data/' + experiment + '/' + file;
-	filepath = 'expResources/tables/'+file;
+	filepath = assetDir+file;
+
 	//alert(filepath);
    var req = new Request({
       url        : filepath,
@@ -203,7 +204,7 @@ var ext_table_parser = function(experiment, file, receiver)
 	//filepath = 'hurricane_data/' + experiment + '/' + file;
 	
 	// Changed by Jon
-	filepath = 'expResources/tables/'+file;
+	filepath = assetDir+file;
 	
 	//alert(filepath);
 	var req = new Request({
@@ -211,9 +212,15 @@ var ext_table_parser = function(experiment, file, receiver)
 		async: false,
 		onComplete: function(response) 
 		{ 
-         var table = {src_file:file,num_rows:0,num_cols:0,cell_N:0};
+                   var table = {src_file:file,num_rows:0,num_cols:0,cell_N:0};
 
-			var lines = response.split('\n').filter(function(element,index,array){return !(/^\s*$/.test(element));});
+         if (response != undefined) {
+            var lines = response.split('\n').filter(function(element,index,array){return !(/^\s*$/.test(element));});
+
+         } else {
+            var lines = [];
+         }
+			
 			var result = [];
 			for(var l=0; l < lines.length; l+=1)
 			{
@@ -755,7 +762,7 @@ var ImageWindow = new Class({
 
 var cb = function(asset) {
             me.def_imgbase = asset;
-            me.img.src = me.def_imgsrc  = imagesAssetDir+me.def_imgbase.trim();
+            me.img.src = me.def_imgsrc  = assetDir+me.def_imgbase.trim();
 
             me.tableLink = prompt("Please enter an associated table ID.",me.tableLink);
 }
@@ -1161,22 +1168,22 @@ var ObjectWindow = new Class({
 
       genContent();
 
-		if(typeof editing != 'undefined') {
-		this.div.getElement(".infohandle").getElement(".icon").onmouseup = function()
-			{ 
-				//var pd = this.parentNode.parentNode;
-				//var pdc = pd.getElement('.content');			
-				//var pdh = pd.getElement('.handle');
-            //
-				//pdc.innerHTML = prompt("Please enter your new text for this box, or press Okay to keep the current text.", pdc.innerHTML);
-				//pdh.innerHTML = prompt("Please enter your new title for this box, or press Okay to keep the current text.", pdh.innerHTML);
-            owThis.objSourceBase = prompt("Please enter the local filename of the object to embed.",owThis.objSourceBase);
-            owThis.objSourceBase = owThis.objSourceBase.trim();
-            genContent();
-			}
-		}
+      if(typeof editing != 'undefined') {
+         this.div.getElement(".infohandle").getElement(".icon").onmouseup = function() { 
 
-	},
+            var cb = function(asset) {
+               owThis.objSourceBase = asset;
+               owThis.objSourceBase = owThis.objSourceBase.trim();
+               genContent();
+
+            }
+
+            openAssetPopup('applets', cb);
+
+         }
+      }
+
+   },
 	//update: function(o) { this.div.getElement('.handle').innerHTML = o.index + hurricane_frame_num; },
    update: function(o) { },
 });
@@ -1188,7 +1195,7 @@ var InteractiveTableWindow = new Class({
    {
       this.table = new Element('table');
       this.experiment = experiment;
-		this.file = file == null ? 'ext_advisory1.txt' : file;
+		this.file = file == null ? '' : file;
 		this.type='ext_table';
 		this.parent(undefined,'InteractiveTable');
 
@@ -1200,57 +1207,26 @@ var InteractiveTableWindow = new Class({
             
       if(typeof editing != 'undefined') {
          this.div.getElement(".infohandle").getElement(".icon").onmouseup = function(){ 
+
             var pd = this.parentNode.parentNode.getElement('.content');
             var pdh = this.parentNode.parentNode.getElement('.handle');
             var file = "";
             var pdChild = pd.getChildren();
             pdChild = pdChild[0];
-
-            /*
-            var i;
-            var curFile = "";
-            for(var i=0; i < updatables.length; i+=1){		
-               var w = updatables[i];
-               if(w.type == 'table'){
-                  if(pd === w.content){
-                     curFile = w.file;
-                  }
-               }
-            }
-            */
-
-            file = prompt("Please enter the name of the table file that you wish to use.", myself.file);
-            pdh.innerHTML = prompt("Please enter your new title for this box, or press Okay to keep the current text.", pdh.innerHTML);
-			while(pdh.innerHTML == ''){
-			   pdh.innerHTML = prompt("A title is required for this element.  Please enter a title here.", pdh.innerHTML);;
-			}
-            myself.fromFile(file);
          
-            /*
-            for(var i=0; i < updatables.length; i+=1){		
-               w = updatables[i];
-               if(w.type == 'table'){
-                  if(pd === w.content){
-                     w.file = file;
-                     //pdChild = new Element('table');
-                     pdChild.setAttribute('class', 'dynaview_table');
-                     pdChild.setAttribute('id', w.file+"_");
-                     pdChild.innerHTML = "";
-                     table_parser(experiment, w.file, pdChild.id);
-                       var data = table_data[w.file];
-                       for(var i=0; i < data.length; i+=1){
-                          var tr = new Element('tr');
-                          pdChild.adopt(tr);
-                          for(var j=0; j < data[i].length;j+=1){
-                             var td = new Element('td');
-                             tr.adopt(td);
-                             td.innerHTML = '<center>' + data[i][j] + '</center>';
-                          }
-                       }
-                  }
+            var cb = function(asset) {
+
+               file = asset;
+               pdh.innerHTML = prompt("Please enter your new title for this box, or press Okay to keep the current text.", pdh.innerHTML);
+               while(pdh.innerHTML == ''){
+                  pdh.innerHTML = prompt("A title is required for this element.  Please enter a title here.", pdh.innerHTML);;
                }
+
+               myself.fromFile(file);
             }
-            */
+
+            openAssetPopup('image_tables', cb);
+
          }
       }
    
@@ -1378,7 +1354,7 @@ var TableWindow = new Class({
    Extends: Window,
    initialize: function(experiment, file)
    {
-      this.file = file == null ? 'advisory1.txt' : file;
+      this.file = file == null ? '' : file;
       this.type='table';
       this.parent(undefined,'Table');
       if (true)//typeof editing != 'undefined')
@@ -1712,7 +1688,7 @@ var save_all = function()
 	var windows_added_so_far = 0;
 	
 	var pos = new Array();
-	alert("Starting!");
+	//alert("Starting!");
 	
 	for(var i=0; i < updatables.length; i+=1)
 	{		
@@ -1777,7 +1753,7 @@ var save_all = function()
 	//var filepath = 'expResources/advisory/'+experiment_shortname+'_training_adv_'+pageadvnum+'.txt';
 	//$assetBaseDir = "./admins/" . $username . "/assets/";
 	//var filepath = 'expResources/advisory/'+saveName+'.txt';
-	var filepath = window.assetBaseDir + saveName + '.txt';
+	var filepath = assetDir + "training/" + saveName + '.txt';
 	alert(filepath);
 	 
 	//alert("just before: " + filepath);

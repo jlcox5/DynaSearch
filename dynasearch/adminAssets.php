@@ -24,14 +24,14 @@
 
       if($_FILES["assetFile"]["error"] > 0)
       {
-         echo "Error: " . $_FILES["assetFile"]["error"] . "<br>";
+         //echo "Error: " . $_FILES["assetFile"]["error"] . "<br>";
       }
       else
       {
-         echo "Upload: " . $_FILES["assetFile"]["name"] . "<br>";
-         echo "Type: " . $_FILES["assetFile"]["type"] . "<br>";
-         echo "Size: " . ($_FILES["assetFile"]["size"] / 1024) . " kB<br>";
-         echo "Temp file: " . $_FILES["assetFile"]["tmp_name"] . "<br>";
+         //echo "Upload: " . $_FILES["assetFile"]["name"] . "<br>";
+         //echo "Type: " . $_FILES["assetFile"]["type"] . "<br>";
+         //echo "Size: " . ($_FILES["assetFile"]["size"] / 1024) . " kB<br>";
+         //echo "Temp file: " . $_FILES["assetFile"]["tmp_name"] . "<br>";
 
          //if (file_exists())
          $assetType = $_POST['assetType'];
@@ -41,7 +41,7 @@
 
          move_uploaded_file($_FILES["assetFile"]["tmp_name"],
                             $assetFilepath);
-         echo "Stored in: " . $assetFilepath . "<br>";
+         //echo "Stored in: " . $assetFilepath . "<br>";
 
       }
 	  // Added so assets automatically show in list after uploaded.  Need to comment out for debugging. - Jon 22JAN13
