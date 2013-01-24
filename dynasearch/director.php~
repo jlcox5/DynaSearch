@@ -6,27 +6,6 @@ require_once('assets/php/config.php');
 mysql_connect($DB_HOST, $DB_USER, $DB_PASS) or die("Unable to connect.");
 mysql_select_db($DB_NAME) or die("Unable to select database.");
 
-/*
-function strToHex($string)
-{
-    $hex='';
-    for ($i=0; $i < strlen($string); $i++)
-    {
-        $hex .= dechex(ord($string[$i]));
-    }
-    return $hex;
-}
-
-function hexToStr($hex)
-{
-    $string='';
-    for ($i=0; $i < strlen($hex)-1; $i+=2)
-    {
-        $string .= chr( hexdec($hex[$i].$hex[$i+1]) );
-    }
-   return $string;
-}
-*/
 
 if(isset($_SESSION['logged_in'])) {
    if($_SESSION['logged_in'] == 'true') {

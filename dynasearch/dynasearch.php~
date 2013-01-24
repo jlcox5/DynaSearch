@@ -14,54 +14,41 @@ $template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js"
 	//Button hit
 	//var done = $post['pageFinished'];
 	//$_POST['pageFinished'] = 'true';
-	if(isset($_POST['pageFinished'])){
-	   // At least one click on necesarry elements
-	   if(isset($_POST['clickNum1']) && isset($_POST['clickTime1']) && isset($_POST['elemId1'])){
+    if(isset($_POST['pageFinished'])){
+      // At least one click on necesarry elements
+      if(isset($_POST['clickNum1']) && isset($_POST['clickTime1']) && isset($_POST['elemId1'])){
          $totalClicks = $_POST['totalClicks'];
          $username = $_SESSION['username'];
-	 		for($x=1 ; $x <= $totalClicks; $x+=1){
-			   $var_clickNum = 'clickNum'.$x;
-			   $var_clickTime = 'clickTime'.$x;
-			   $var_elemId = 'elemId'.$x;
-			   $clickNum = $_POST[$var_clickNum];
-		      $clickTime = $_POST[$var_clickTime];
-		      $elemId = $_POST[$var_elemId ];
+         $resultStr = 'Pagename:';
+
+         for($x=1 ; $x <= $totalClicks; $x+=1){
+            $var_clickNum = 'clickNum'.$x;
+            $var_clickTime = 'clickTime'.$x;
+            $var_elemId = 'elemId'.$x;
+            $clickNum = $_POST[$var_clickNum];
+            $clickTime = $_POST[$var_clickTime];
+            $elemId = $_POST[$var_elemId ];
 			   /*echo $var_clickNum;
 			   echo $var_clickTime;
 			   echo $var_elemId;
 			   echo $clickNum;
 			   echo $clickTime;
 			   echo $elemId;*/
-		       mysql_query("INSERT INTO sur_clicks SET UserName='$username', SessionNumber=0, ObjClicked='$elemId', ClickLength='$clickTime', ClickNumber='$clickNum';");
-			   redirect("advance.php");
-			}
-	   }
-	   else{
-    	 $username = $_SESSION['username'];
-         mysql_query("INSERT INTO sur_clicks SET UserName='$username', SessionNumber=0, ObjClicked='NULL', ClickLength=-1, ClickNumber=-1;");
-         redirect("advance.php");
-       }
-	}
-/*
-function strToHex($string)
-{
-    $hex='';
-    for ($i=0; $i < strlen($string); $i++)
-    {
-        $hex .= dechex(ord($string[$i]));
-    }
-    return $hex;
-}
+            $resultStr .= $elemId . "," . $clickTime . ( ($x < $totalClicks) ? ('$') : ('') );
+         }
 
-function hexToStr($hex)
-{
-    $string='';
-    for ($i=0; $i < strlen($hex)-1; $i+=2)
-    {
-        $string .= chr( hexdec($hex[$i].$hex[$i+1]) );
-    }
-	return $string;
-}*/
+         $resultStr .= "&";
+         $query = 
+         mysql_query("INSERT INTO sur_clicks SET UserName='$username', SessionNumber=0, ObjClicked='$elemId', ClickLength='$clickTime', ClickNumber='$clickNum';");
+         redirect("advance.php");
+      }
+      else
+      {
+         $username = $_SESSION['username'];
+         mysql_query("INSERT INTO sur_clicks SET UserName='$username', SessionNumber=0, ObjClicked='NULL', ClickLength=-1, ClickNumber=-1;");
+        redirect("advance.php");
+      }
+   }
 
     // Are we supposed to be here?
    if(isset($_SESSION['page_sig'])) {
@@ -77,13 +64,28 @@ function hexToStr($hex)
 	/////////////////////////////////////////////////
 	// Get the title and content
 	/////////////////////////////////////////////////
+	
 	$username = $_SESSION['username'];
+	$userAdmin = $_SESSION['userAdmin'];
+    $assetBaseDir = "./admins/" . $userAdmin . "/assets/";
+	echo '<script type="text/javascript"> assetDir = "' . $assetBaseDir . '"; </script> ';
 
 	// Get our current page.
 	$result = query_db('select * from t_user where User_ID=\''. $username .'\'');
 	$row = mysql_fetch_array($result, MYSQL_BOTH);
+	$admin = $row['Admin_ID'];
 	$current_position = $row['current_position'];
 
+      $expArray = getExpPageProperties($current_position - 1);
+      $myFile = "./admins/" . $admin . "/assets/training/" . $expArray['src']; 
+      $adv_num = $_SESSION['advNum'];
+      $fh = fopen($myFile, 'r');
+      $page_content = fread($fh, filesize($myFile));
+      $page_content = hexToStr($page_content);
+      echo $myFile;
+      fclose($fh);
+
+/*
 	$expshortname = $row['experiment'];
 	// Find out where we should go now.
 	$result = query_db('select * from t_experiments where ExperimentShortName=\''. $expshortname .'\'');
@@ -115,13 +117,14 @@ function hexToStr($hex)
 						elseif($item2[0] == 'src')
 						{
    						//echo " here again! ";
-							$myFile = 'hurricane_data/'. $expshortname . '/'. hexToStr($item2[1]);
+						    $myFile = "./admins/" . $admin . "/assets/training/" . hexToStr($item2[1]);
+							//$myFile = './'. $expshortname . '/'. hexToStr($item2[1]);
 							//$myFile = hurricane_data\' . $expshortname . '\' . hexToStr($(item2[1]));
 							$adv_num = $_SESSION['advNum'];
 							$fh = fopen($myFile, 'r');
 							$page_content = fread($fh, filesize($myFile));
 							$page_content = hexToStr($page_content);
-							//echo $myFile;
+							echo $myFile;
 							fclose($fh);
 						}
 					}
@@ -129,6 +132,7 @@ function hexToStr($hex)
 			}
 		}
 	}
+*/
 	/////////////////////////////////////////////////
 
 include('assets/php/standard.php');

@@ -212,7 +212,7 @@
          if( !isset($_POST["add"]) )
          {
             echo '<span id="expDisplay">' . 
-                    ( ($pExpID = '-1') ? ('Unassigned ') : ($pExpName . ' (' . $pExpId . ')') ) . 
+                    ( ($pExpId == '-1') ? ('Unassigned ') : ($pExpName . ' (' . $pExpId . ')') ) . 
                     '<input type="button" value="Change" onclick="changeExp();"/>' .
                  '</span>';
          }

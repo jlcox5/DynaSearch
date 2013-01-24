@@ -294,7 +294,6 @@
          //if (isset($_POST["pId"]) && isset($_POST["expId"]))
          if (true)
          {
-         echo $questResults;
          // Results
          echo '<h2>Questionaire Results :</h2>';
          //echo $questResults;

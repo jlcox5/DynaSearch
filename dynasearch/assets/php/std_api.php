@@ -51,7 +51,7 @@ function getExpPageArray($index) {
    $row = mysql_fetch_array($result, MYSQL_BOTH);
 
    // Pull experiment data from database
-   $result = query_db('select * from t_experiments where ExperimentShortName=\''. $row['experiment'] .'\'');
+   $result = query_db('select * from t_experiments where id=\''. $_SESSION['userExpId'] .'\'');
    $row = mysql_fetch_array($result, MYSQL_BOTH);
    
    // Pull Experiment string from experiment data
@@ -104,5 +104,29 @@ function getExpPageProperty($index, $key)
    // If key was not found, return null
    return 'uh oh';
 }
+
+function getExpPageProperties($index)
+{
+
+   $properties = getExpPageArray($index);
+
+   $ret = array();
+
+   // Go through each property for the page
+   for($i = 0; $i < count($properties); $i++)
+   {
+      // Pull out key and value from property
+      $item = explode('=',$properties[$i]);
+
+      $key   = $item[0];
+      $value = ( ($key == "page") ? ($item[1]) : (hexToStr($item[1])) );
+
+      $ret[$key] = $value;			
+   }
+
+   // If key was not found, return null
+   return $ret;
+}
+
 
 ?>

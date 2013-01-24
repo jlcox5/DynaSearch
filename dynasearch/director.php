@@ -65,7 +65,7 @@ if(isset($_SESSION['logged_in'])) {
 
 
       // Find out where we should go now.
-      $result = query_db('select * from t_experiments where ExperimentShortName=\''. $row['experiment'] .'\'');
+      $result = query_db('select * from t_experiments where id=\''. $_SESSION['userExpId'] .'\'');
       $row = mysql_fetch_array($result, MYSQL_BOTH);
       //echo '<br/>';
       

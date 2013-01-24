@@ -14,34 +14,44 @@ $template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js"
 	//Button hit
 	//var done = $post['pageFinished'];
 	//$_POST['pageFinished'] = 'true';
-	if(isset($_POST['pageFinished'])){
-	   // At least one click on necesarry elements
-	   if(isset($_POST['clickNum1']) && isset($_POST['clickTime1']) && isset($_POST['elemId1'])){
+    if(isset($_POST['pageFinished'])){
+      // At least one click on necesarry elements
+      if(isset($_POST['clickNum1']) && isset($_POST['clickTime1']) && isset($_POST['elemId1'])){
          $totalClicks = $_POST['totalClicks'];
          $username = $_SESSION['username'];
-	 		for($x=1 ; $x <= $totalClicks; $x+=1){
-			   $var_clickNum = 'clickNum'.$x;
-			   $var_clickTime = 'clickTime'.$x;
-			   $var_elemId = 'elemId'.$x;
-			   $clickNum = $_POST[$var_clickNum];
-		      $clickTime = $_POST[$var_clickTime];
-		      $elemId = $_POST[$var_elemId ];
+         $userExpId = $_SESSION['userExpId'];
+         $resultStr = 'Pagename:';
+
+         for($x=1 ; $x <= $totalClicks; $x+=1){
+            $var_clickNum = 'clickNum'.$x;
+            $var_clickTime = 'clickTime'.$x;
+            $var_elemId = 'elemId'.$x;
+            $clickNum = $_POST[$var_clickNum];
+            $clickTime = $_POST[$var_clickTime];
+            $elemId = $_POST[$var_elemId ];
 			   /*echo $var_clickNum;
 			   echo $var_clickTime;
 			   echo $var_elemId;
 			   echo $clickNum;
 			   echo $clickTime;
 			   echo $elemId;*/
-		       mysql_query("INSERT INTO sur_clicks SET UserName='$username', SessionNumber=0, ObjClicked='$elemId', ClickLength='$clickTime', ClickNumber='$clickNum';");
-			   redirect("advance.php");
-			}
-	   }
-	   else{
-    	 $username = $_SESSION['username'];
+            $resultStr .= $elemId . "," . $clickTime . ( ($x < $totalClicks) ? ('$') : ('') );
+         }
+
+         $resultStr .= "&";
+         $query = "UPDATE t_user_output " .
+                  "SET ClickOutput=IFNULL(CONCAT(ClickOutput, '$resultStr'), '$resultStr') " .
+                  "WHERE User_ID='$username' AND Experiment_ID='$userExpId';";
+         mysql_query($query);
+         //redirect("advance.php");
+      }
+      else
+      {
+         $username = $_SESSION['username'];
          mysql_query("INSERT INTO sur_clicks SET UserName='$username', SessionNumber=0, ObjClicked='NULL', ClickLength=-1, ClickNumber=-1;");
-         redirect("advance.php");
-       }
-	}
+         //redirect("advance.php");
+      }
+   }
 
     // Are we supposed to be here?
    if(isset($_SESSION['page_sig'])) {
@@ -69,6 +79,16 @@ $template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js"
 	$admin = $row['Admin_ID'];
 	$current_position = $row['current_position'];
 
+      $expArray = getExpPageProperties($current_position - 1);
+      $myFile = "./admins/" . $admin . "/assets/training/" . $expArray['src']; 
+      $adv_num = $_SESSION['advNum'];
+      $fh = fopen($myFile, 'r');
+      $page_content = fread($fh, filesize($myFile));
+      $page_content = hexToStr($page_content);
+      echo $myFile;
+      fclose($fh);
+
+/*
 	$expshortname = $row['experiment'];
 	// Find out where we should go now.
 	$result = query_db('select * from t_experiments where ExperimentShortName=\''. $expshortname .'\'');
@@ -115,6 +135,7 @@ $template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js"
 			}
 		}
 	}
+*/
 	/////////////////////////////////////////////////
 
 include('assets/php/standard.php');
