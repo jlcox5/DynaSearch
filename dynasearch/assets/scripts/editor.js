@@ -104,79 +104,6 @@ var hex_to_str = function(s)
 	return output;
 }
 
-path_points = [];
-past_path_points = [];
-tracking_parser = function(file, adv)
-{
-    // Changed by Jon, but completely useless with current capabilities
-	filepath = 'expResources/tracking/' + file;
-
-	var req = new Request({
-		url: filepath,
-		async: false,
-		onComplete: function(response) { 
-
-			var lines = response.split('\n');
-			var count = 0;
-
-			var last = [-1,-1];
-			
-			//Get the points for the past paths
-			for(var x=0; x < adv; x+=1){
-   		   var y = lines[x*6].split(',');
-   		   past_path_points[count] = [ parseFloat(y[2]), parseFloat(y[1]) ];
-   		   count = count +1;
-	      }
-			
-	      count = 0;
-			for(var l=(adv-1)*6; l < adv*6; l+=1)
-			{
-				// And split into an array of tokens
-				var k = lines[l].split(',');		
-				
-				if(last[0] == -1)
-				{
-					last[0] = k[1];
-					last[1] = k[2];
-				} 
-
-				// Results start on third line
-				path_points[count] = [ parseFloat(k[2]), parseFloat(k[1]) ];
-				count = count + 1;
-
-				last[0] = k[1];
-				last[1] = k[2];
-			}
-			 //alert("Path Points:" + path_points);
-		},
-	}).send();
-}
-
-var map_left	= 0;
-var map_right	= 0;
-var map_top		= 0;
-var map_bottom	= 0;
-geo_parser = function(file)
-{
-    // Changed by Jon, but probably useless
-	filepath = 'expResources/images/' + file;
-	
-	var req = new Request({
-		url: filepath,
-		async: false,
-		onComplete: function(response) { 
-
-			var lines = response.split(',');
-			map_left = lines[0];
-			map_right = lines[1];
-			map_top = lines[3];
-			map_bottom = lines[2];
-			
-		},
-	}).send();
-			
-}
-
 var table_data = []
 var table_parser = function(experiment, file, receiver)
 {
@@ -474,63 +401,8 @@ var load_all = function(file)
       			document.getElementById((i+1)+'_content').style.height = (height*window.scaleH)-21 + 'px';
       			document.getElementById((i+1)+'_content').style.fontSize = 16*(window.scaleW/55.0);
             }
-				else if( type == 'legend' )
-				{
-					handle = new Legend(window.experiment_shortname);
-					handle.set_trashable(true);				
-					handle.div.getElement('.handle').innerHTML = hex_to_str(attributes[1]);
-					
-					//Position and Size
-					var posx = ( hex_to_str(attributes[2]) );
-					var posy = ( hex_to_str(attributes[3]) );
-					var width = ( hex_to_str(attributes[4]) );
-					var height = ( hex_to_str(attributes[5]) );
 
-					handle.div.style.left = posx*window.scaleW+'px';
-					handle.div.style.top = posy*window.scaleH+'px';
-					handle.div.style.width = width*window.scaleW + 'px';
-					handle.div.style.height = height*window.scaleH + 'px';
-					handle.div.style.fontSize = 16*(window.scaleW/55.0);
-					
-					// Jon test stuff
-      			document.getElementById((i+1)+'_content').style.width = width*window.scaleW + 'px';
-      			document.getElementById((i+1)+'_content').style.height = (height*window.scaleH)-21 + 'px';
-      			document.getElementById((i+1)+'_content').style.fontSize = 16*(window.scaleW/55.0);
-					
-					if(typeof editing == 'undefined')
-		      			{
-			 		   coverLegend(attributes[6]);
-		      			}
-				}
-				else if( type == 'map' )
-				{
-   				//alert('Advisory Now: ' + attributes[7]); 
-   				handle = new MapWindow(window.experiment_shortname, hex_to_str(attributes[6]), attributes[7] );
-					handle.set_trashable(true);			
-					handle.div.getElement('.handle').innerHTML = hex_to_str(attributes[1]);
-					
-					//Position and Size
-					var posx = ( hex_to_str(attributes[2]) );
-					var posy = ( hex_to_str(attributes[3]) );
-					var width = ( hex_to_str(attributes[4]) );
-					var height = ( hex_to_str(attributes[5]) );
-
-					handle.div.style.left = posx*window.scaleW+'px';
-					handle.div.style.top = posy*window.scaleH+'px';
-	                handle.div.style.width = width*window.scaleW + 'px';
-					handle.div.style.height = height*window.scaleH + 'px';
-					handle.div.style.fontSize = 16*(window.scaleW/55.0);
-					
-					// Jon test stuff
-      			document.getElementById((i+1)+'_content_I').style.width =  handle.div.style.width;
-      			document.getElementById((i+1)+'_content_I').style.height = (height*window.scaleH)-21 + 'px';
-      			document.getElementById((i+1)+'_content_C').width =  handle.div.style.width;
-      			document.getElementById((i+1)+'_content_C').height = (height*window.scaleH)-21 + 'px';
-      			
-      			document.getElementById((i+1)+'_content_I').style.fontSize = 16*(window.scaleW/55.0);
-      			document.getElementById((i+1)+'_content_C').style.fontSize = 16*(window.scaleW/55.0);
-				}
-				else if( type == 'clock' ){
+			else if( type == 'clock' ){
    				if(typeof editing != 'undefined'){
       				//Position and Size
       				handle = new ClockWindow();
@@ -661,7 +533,6 @@ var Window = new Class({
 		if(content === undefined) { content = ''; }
 		if(title === undefined) { title = "Untitled Window"; }
 		this.div.innerHTML = '<div class="handle">' + title + '</h4>';
-		
 		if(typeof editing != 'undefined')
 		{
 			this.div.innerHTML += '<div class="resize" style="position:absolute; right:0px; bottom: 0px;"><img src="assets/images/resize_icon.png" style="padding: 0 0; margin: 0 0;"/></div>';
@@ -779,7 +650,7 @@ var Toolbar = new Class({
 // Image Selection Window
 
 // Image Window
-var ImageAssetDir = "assets/images/";
+var ImageAssetDir = "./assets/images/";
 var ImageWindow = new Class({
 	Extends: Window,
 	initialize: function(experiment,file,ntableLink) {
@@ -824,8 +695,17 @@ var ImageWindow = new Class({
 
       var This = this;
       this.resizeCB = function(){
+	     if(typeof editing == 'undefined'){
+		    //var tempHeight = This.img.getSize().y - 50;
+		    //This.div.getElement(".content").style.height = tempHeight + "px";
+            //This.div.style.height = This.img.getSize().y - 100 +"px";
+		 }
+		 else{
+		    This.div.style.height = This.img.getSize().y + This.getHandleOffsetY() + 5 +"px";
+		 }
          //This.div.getElement(".content").style.height = This.img.getSize().y + "px";
-         This.div.style.height = This.img.getSize().y + This.getHandleOffsetY() + 5 +"px";
+         //This.div.style.height = This.img.getSize().y + This.getHandleOffsetY() + 5 +"px";
+		 //This.div.style.height = This.img.getSize().y + 5 +"px";
       };
 
       //var eventID = this.img.src.split('/').pop().trim();
@@ -993,333 +873,6 @@ var last_sidex = [0, 0];
 var last_sidey = [0, 0];
 var last_points=0, prev_point=0;
 
-// Map Window
-var MapWindow = new Class({
-	Extends: Window,
-	initialize: function(otherThing, mapfile, advisoryRead) {
-   	//alert("Mapfile: " + mapfile);
-		this.type='map';
-		this.id = 'map1';
-		this.parent(undefined,'Map');
-		curAdvisory = advisoryRead;
-		var trackingFile = '';
-		if(mapfile == undefined) { 
-   		this.mapfile = 'hurricane_map_1.png';
-   		this.advisory = 1;
-   		trackingFile = this.mapfile.substring(0,this.mapfile.length-4)+'.txt';
-   		curAdvisory = this.advisory;
-   	}
-   	else{
-      	this.mapfile = mapfile;
-      	this.advisory = advisoryRead;
-      	trackingFile = this.mapfile.substring(0,this.mapfile.length-4)+'.txt';
-      	advisory = advisoryRead;
-      	curAdvisory = advisoryRead;
-      }
-		//else { this.mapfile = mapfile }
-		
-		// Get the map
-		this.el = document.createElement('img');
-		this.canvas = document.createElement('canvas');
-
-		
-		
-		this.image = this.el.image = 'expResources/images/' + this.mapfile;
-		this.el.src = this.el.image;
-		
-
-		this.el.style.width = this.div.getSize().x-3 + "px";
-		this.handle = this.div.getElement('.handle');
-		this.el.style.height = (this.div.getSize().y - this.handle.getSize().y - 3) + "px";
-		
-		this.el.setAttribute('class','map');
-
-		this.div.getElement('.content').appendChild(this.el);
-		this.div.getElement('.content').appendChild(this.canvas);
-		
-		this.el.style.position = this.canvas.style.position = 'absolute';
-		this.el.style.top = this.canvas.style.top = this.handle.getSize().y + 'px';
-		this.el.style.left = this.canvas.style.left = '0px';
-		                
-		if(typeof editing != 'undefined') {
-		this.div.getElement(".infohandle").getElement(".icon").onmouseup = function()
-		{ 
-				var pd = this.parentNode.parentNode.getElement('.content');
-            var map = "";
-            var trackingFile = "";
-            var mapCoordFile = "";
-            var pdChild = pd.getElementById(pd.id + '_I');
-            var i;
-            var advisory = "";
-
-            for(var i=0; i < updatables.length; i+=1){		
-		         var w = updatables[i];
-		         if(w.type == 'map'){
-   		         if(pd == w.content){
-      		         map = w.mapfile;
-      		         advisory = w.advisory;
-   		         }
-   		         break;
-			      }
-		      }
-                        
-				map = prompt("Please enter the name of the mapfile that you wish to use.", map);
-				trackingFile = map.substring(0,map.length-4)+'.txt';
-				advisory = prompt("Please specify an advisory: ",  curAdvisory);
-				curAdvisory = advisory;
-				
-				pd.src = 'expResources/images/' + map;
-				pdChild.image = 'expResources/images/' + map;
-
-				pdChild.src =pdChild.image;
-				
-			   for(var i=0; i < updatables.length; i+=1){		
-		         var w = updatables[i];
-		         if(w.type == 'map'){
-   		         if(pd == w.content){
-      		         w.mapfile = map;
-      		         w.advisory = curAdvisory;
-      		         advisory = curAdvisory;
-   		         }
-			      }
-		      }
-	      }
-      }
-
-		// Prevent image drag
-		this.el.onmousedown = function(e) { e.preventDefault(); }
-
-		this.div.addEvent('resize', function(e){
-			var el = this.getElement('.map');
-			var handle = this.getElement('.handle');
-
-			this.classpointer.canvas.width = el.style.width = this.style.width;
-			this.classpointer.canvas.height = el.style.height = (this.getSize().y - handle.getSize().y - 3) + "px";
-
-		});
-		
-		this.el.id = this.div.getElement('.content').id+'_I';
-		this.canvas.id = this.div.getElement('.content').id+'_C';
-		//alert("Tracking file: " + trackingFile);
-		tracking_parser(trackingFile, advisory);
-		
-		mapCoordFile = trackingFile.substring(0,trackingFile.length-4)+'_GEO.txt';
-      //alert("GEO file: " + mapCoordFile);
-      geo_parser(mapCoordFile);
-      
-	},
-
-	// Map bounds given in [right, top, left, bottom]
-	draw_line: function(ctx, x0, y0, x1, y1, map_bounds, w, h)
-	{
-   	//alert("Points: " + x0 + "," + y0 + " to " + x1 + "," + y1);
-   	
-		x0 = w*(((map_bounds[2])-x0) / (map_bounds[0] - map_bounds[2]));
-		y0 = h*((map_bounds[1]-y0) / (map_bounds[1] - map_bounds[3]));	
-		
-		x1 = w*(((map_bounds[2])-x1) / (map_bounds[0] - map_bounds[2]));
-		y1 = h*((map_bounds[1]-y1) / (map_bounds[1] - map_bounds[3]));
-		
-		if( x0 < 0){ x0 = x0*-1; }
-		if( x1 < 0){ x1 = x1*-1; }
-		if( y0 < 0){ y0 = y0*-1; }
-		if( y1 < 0){ y1 = y1*-1; }
-
-		//alert("Converted To: " + x0 + "," + y0 + " to " + x1 + "," + y1);	
-		
-		ctx.beginPath();
-		ctx.moveTo(x0, y0);
-		ctx.lineTo(x1, y1);
-		ctx.stroke();
-	},
-	
-	draw_circle: function(ctx, x0, y0, miles, map_bounds, w, h){
-      
-        //Draw storm radius
-        //alert("x: " + x0 + " y: " + y0 + "  map_bounds: [" + map_bounds[0] + ", " + map_bounds[1] + ", " + map_bounds[2] + ", " + map_bounds[3] + "]");
-		x0 = w*( (x0 - map_bounds[2]) / (map_bounds[0] - map_bounds[2]));
-		y0 = h*((map_bounds[1]-y0) / (map_bounds[1] - map_bounds[3]));
-		
-		ctx.strokeStyle = '#FF0000';
-		ctx.beginPath();
-		//alert("First cirle-    x: " + x0 + "   y: " + y0 + "    m: " + miles + "    w: " + w + " h: " + h + " ");
-      ctx.arc(x0,y0,miles,0,Math.PI*2,true);
-      ctx.stroke();
-   },
-   
-   draw_position: function(ctx, x0, y0, miles, map_bounds, w, h){
-      //Draw storm radius
-      //alert("x: " + x0 + " y: " + y0 + "  map_bounds: [" + map_bounds[0] + ", " + map_bounds[1] + ", " + map_bounds[2] + ", " + map_bounds[3] + "]");
-	  x0 = w*( (x0 - map_bounds[2]) / (map_bounds[0] - map_bounds[2]));
-	  y0 = h*((map_bounds[1]-y0) / (map_bounds[1] - map_bounds[3]));
-		
-	  ctx.fillStyle = '#FF0000';
-	  ctx.beginPath();
-	  //alert("First cirle-    x: " + x0 + "   y: " + y0 + "    m: " + miles + "    w: " + w + " h: " + h + " ");
-      ctx.arc(x0,y0,miles,0,Math.PI*2,true);
-      ctx.fill();       
-   },
-	
-	clearMap: function(){
-      var ctx = this.canvas.getContext('2d');
-   	ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-   },
-	
-	paintCone: function(day)
-	{
-   	this.canvas.width = this.el.getSize().x;
-		this.canvas.height = this.el.getSize().y;
-
-		var ctx = this.canvas.getContext('2d');
-   	ctx.strokeStyle = '#FF0000';
-   	  	
-		var yc = this.handle.getSize().y;
-		var w = this.canvas.getSize().x;
-		var h = this.canvas.getSize().y;
-		//var map_left	= -100.0;
-		//var map_right	= -75.0;
-		//var map_top		= 33.0;
-		//var map_bottom	= 17.3;
-		var totalLon = map_right - map_left;
-		var totalLat = map_top - map_bottom;
-		// Pixels per degree for latitude and longitude
-		var pixPerDegLat = h/totalLat;
-		var pixPerDegLon = w/totalLon;
-		// Degrees in a mile
-		var mileToDeg = 0.016;
-		var dist;
-		var dx, dy;
-		var errorTop = [];
-		var errorBot = [];
-   	
-   	// Draw estimate at ...
-		var error_table = [];
-		error_table[0] = 25;
-		error_table[1] = 50;
-		error_table[2] = 75;
-		error_table[3] = 100;
-		error_table[4] = 150;
-   	
-   	
-   	//Find the error cone
-		for(var i=0; i < day; i+=1)
-		{	
-			//alert(i);
-			p1 = path_points[i];
-			p2 = path_points[i+1];
-			dx = p2[0]-p1[0];
-			dy = p2[1]-p1[1];
-			dist = Math.sqrt(dx*dx+dy*dy);
-			dx = -1*(dx/dist);
-			dy = dy/dist;
-			var slope = dy/dx;
-			//alert("dx: " + dx + " dy: " + dy);
-			//alert("error_table[i]: " + error_table[i] + ",  Total pixels:  " + (error_table[i]*mileToDeg*pixPerDegLat));
-			errorTop[i] = [p2[0] + (error_table[i]*mileToDeg)*dy , p2[1] + (error_table[i]*mileToDeg)*dx];
-			errorBot[i] = [p2[0] - (error_table[i]*mileToDeg)*dy , p2[1] - (error_table[i]*mileToDeg)*dx];
-			//alert("Top: " + errorTop[i] + " Bottom: " + errorBot[i]);
-		}
-		
-   	//Draw error cone
-		for(var i=0; i < day; i+=1){
-   		if(i == 0){
-      		p1 = path_points[i];
-   		   this.draw_line(ctx, p1[0], p1[1], errorTop[i][0], errorTop[i][1], new Array(map_right, map_top, map_left, map_bottom), w, h );
-			   this.draw_line(ctx, p1[0], p1[1], errorBot[i][0], errorBot[i][1], new Array(map_right, map_top, map_left, map_bottom), w, h );      		
-   		}
-   		else{
-   		   this.draw_line(ctx, errorTop[i-1][0], errorTop[i-1][1], errorTop[i][0], errorTop[i][1], new Array(map_right, map_top, map_left, map_bottom), w, h );
-			   this.draw_line(ctx, errorBot[i-1][0], errorBot[i-1][1], errorBot[i][0], errorBot[i][1], new Array(map_right, map_top, map_left, map_bottom), w, h );
-		   }
-      }
-   },
-   
-   paintForecast: function(day){
-    //alert("Starting forecast function");
-   	this.canvas.width = this.el.getSize().x;
-		this.canvas.height = this.el.getSize().y;
-
-		var ctx = this.canvas.getContext('2d');
-   	  	
-		var yc = this.handle.getSize().y;
-		var w = this.canvas.getSize().x;
-		var h = this.canvas.getSize().y;
-		//var map_left	= -100.0;
-		//var map_right	= -75.0;
-		//var map_top		= 33.0;
-		//var map_bottom	= 17.3;
-		
-		ctx.strokeStyle = 'rgba(0,0,255,1);';
-		for(var i=0; i < day; i+=1)
-		{	
-   		p1 = path_points[i];
-			p2 = path_points[i+1];
-         this.draw_line(ctx, p1[0], p1[1], p2[0], p2[1], new Array(map_right, map_top, map_left, map_bottom), w, h );
-      }
-   },
-   
-   paintPast: function(day){
-    //alert("Starting past function");
-   	this.canvas.width = this.el.getSize().x;
-		this.canvas.height = this.el.getSize().y;      
-		var ctx = this.canvas.getContext('2d');
-		
-		var w = this.canvas.getSize().x;
-		var h = this.canvas.getSize().y;
-		
-		//var map_left	= -100.0;
-		//var map_right	= -75.0;
-		//var map_top		= 33.0;
-	   //var map_bottom	= 17.3;
-		      
-      ctx.strokeStyle = 'rgba(0,125,125,1);';
-      //Draw past path
-      
-      for(var i=advisory-day; i < advisory; i+=1){
-            //var i = advisory-day;
-			p1 = past_path_points[i-1];
-			p2 = past_path_points[i];
-			//alert("Past i-1: " + p1 + " Past i: " + p2);
-			this.draw_line(ctx, p1[0], p1[1], p2[0], p2[1], new Array(map_right, map_top, map_left, map_bottom), w, h );   
-      }
-   },
-   
-   paintCurrent: function(){
-   	this.canvas.width = this.el.getSize().x;
-		this.canvas.height = this.el.getSize().y;      
-		var ctx = this.canvas.getContext('2d');
-		
-		var w = this.canvas.getSize().x;
-		var h = this.canvas.getSize().y;
-		
-		//var map_left	= -100.0;
-		//var map_right	= -75.0;
-		//var map_top		= 33.0;
-		//var map_bottom	= 17.3;
-		
-	   var totalLon = map_right - map_left;
-		var totalLat = map_top - map_bottom;
-		// Pixels per degree for latitude and longitude
-		var pixPerDegLat = h/totalLat;
-		var pixPerDegLon = w/totalLon;
-		// Degrees in a mile
-		var mileToDeg = 0.016;
-		
-		//Draw circles for wind speed
-      p1 = path_points[0];
-      //alert("First cirle: " + p1[0] + " " + p1[1] + " " + pixPerDegLat/(69*mileToDeg) + " " + w + " " + h + " ");
-      this.draw_position(ctx, p1[0], p1[1], 3, new Array(map_right, map_top, map_left, map_bottom), w, h);
-      this.draw_circle(ctx, p1[0], p1[1], pixPerDegLat/(69*mileToDeg), new Array(map_right, map_top, map_left, map_bottom), w, h);
-      this.draw_circle(ctx, p1[0], p1[1], pixPerDegLat/(79*mileToDeg), new Array(map_right, map_top, map_left, map_bottom), w, h);
-      this.draw_circle(ctx, p1[0], p1[1], pixPerDegLat/(89*mileToDeg), new Array(map_right, map_top, map_left, map_bottom), w, h);
-   },
-
-	update: function(o) 
-	{
-		//this.paint();
-	},
-});
-
 var toHandle = null;
 var extMouseUp = function(){
    if(toHandle !== null){
@@ -1347,32 +900,6 @@ function mkParam(name,value){
 window.testing123 = function(){
    //alert('test');
 }
-/*
-window.addEvent('domready',function() {
-      var btn = document.createElement("button");
-      btn.innerHTML="test";
-      btn.onclick=function(){
-         var spyEQ    = document.getElementById('spyObj').mkSpyEQ();
-         //var trygetEQ = document.getElementById('spyObj').Packages.java.awt.Toolkit.getDefaultToolkit().getSystemEventQueue();
-
-      };
-      var btndiv = document.createElement("div");
-      btndiv.appendChild(btn);
-      btndiv.style.position="fixed";
-      btndiv.style.top="50%";
-      btndiv.style.left="50%";
-      document.body.appendChild(btndiv);
-});
-*/
-
-//var SpyEQ;
-//window.addEvent('domready',function() {
-//   SpyEQ = document.getElementById('spyObj').mkSpyEQ();
-//});
-
-//window.addEvent('domready',function() {
-//      window.SLReady = true;
-//});
 
 var clickif = /^DS_.*/;
 function registerAppletClick(cid, ctime, comp){
@@ -1692,8 +1219,6 @@ var InteractiveTableWindow = new Class({
             }
             */
 
-            
-         
             file = prompt("Please enter the name of the table file that you wish to use.", myself.file);
             pdh.innerHTML = prompt("Please enter your new title for this box, or press Okay to keep the current text.", pdh.innerHTML);
 			while(pdh.innerHTML == ''){
@@ -1988,100 +1513,6 @@ openAssetPopup('tables', cb);
    },
 });
 
-var Legend = new Class({
-	Extends: Window,
-	initialize: function(experiment, file)
-	{
-		this.file = file == null ? 'legend.txt' : file;
-		this.experiment = experiment;
-		this.type='legend';
-		this.parent(undefined,'Legend');
-		this.table = new Element('table');
-		this.tableTitle = "Current Location";
-
-		if (true)//typeof editing != 'undefined')
-		{	
-			// If we get here, the user is performing an actual experiment
-			// Insert the actual table
-			this.fromFile(this.file);
-			
-		}
-			
-			
-			
-		if (typeof editing != 'undefined')
-		{
-
-			var myself = this;
-			this.div.getElement(".infohandle").getElement(".icon").onmouseup = function()
-			{ 
-				// Set handle text
-				var pd = this.parentNode.parentNode.getElement('.content');
-				var pdh = this.parentNode.parentNode.getElement('.handle');
-				pdh.innerHTML = prompt("Please enter your new title for this box, or press Okay to keep the current text.", pdh.innerHTML);
-				while(pdh.innerHTML == ''){
-				   pdh.innerHTML = prompt("A title is required for this element.  Please enter a title here.", pdh.innerHTML);;
-				}
-
-				// Set Table title
-				myself.tableTitle = prompt("Please enter your new title for the legend, or press Okay to keep the current text.", myself.tableTitle);
-
-				// Set Table content file
-				var file = "";
-				file = prompt("Please enter the name of the table file that you wish to use.", myself.file);
-				myself.fromFile(file);
-
-			}
-		}
-	},
-	fromFile : function(file)
-	{
-		if(file != null) this.file = file;
-
-		this.table.setAttribute('class', 'dynaview_table');
-		this.table.setAttribute('id', "mapLegend");
-		this.border='1';
-
-		// Clear table
-		this.table.innerHTML = "";
-			
-		// Parse table file
-		table_parser(this.experiment, this.file, this.div.id);
-		var data = table_data[this.file];
-			
-		// Top Row - Table Title
-		var tr = new Element('tr');
-		var td = new Element('td');
-		td.setAttribute('colspan', '6');
-		tr.adopt(td);
-		tr.style.fontSize = 16*(window.scaleW/55.0);
-		td.innerHTML = '<center>' + this.tableTitle + '</center>';
-		this.table.adopt(tr);
-			
-		// Each Row
-		for(var i = 0; i < data.length; i += 1) {
-   			var tr = new Element('tr');
-
-			// Each Cell
-			for(var j = 0; j < data[i].length; j += 1) {
-				var td = new Element('td');
-
-				// Setup attributtes as css string and append
-				var styleString = 'font-size:' + 16*(window.scaleW/55.0) + 'px;';
-				td.setAttribute("class", "legend_cell");
-				td.setAttribute("style", styleString);
-
-				td.innerHTML = '<center>' + data[i][j] + '</center>';
-
-				tr.adopt(td);
-			}
-			this.table.adopt(tr);
-
-		}
-		this.content.adopt(this.table);
-	},
-});
-
 //////////////////////////////////////////
 // ICONS
 //////////////////////////////////////////
@@ -2180,14 +1611,12 @@ var ToolbarIcon = new Class({
 				// Create the new toolbar and the dragging functionality.
 				var tb2;
 				
-				if( type == 'map_window') tb2 = new MapWindow();
-				else if( type == 'text_window') tb2 = new TextWindow();
+				if( type == 'text_window') tb2 = new TextWindow();
 				else if( type == 'text_nohide_window') tb2 = new TextWindow(false);
 				else if( type == 'object_window') tb2 = new ObjectWindow();
 				else if( type == 'clock_window') tb2 = new ClockWindow();
 				else if( type == 'table_window') tb2 = new TableWindow();
 				else if( type == 'ext_table_window') tb2 = new InteractiveTableWindow();
-				else if( type == 'legend') tb2 = new Legend();
 				else if( type == 'image_window') tb2 = new ImageWindow();
 
 				newdiv = tb2.div;
@@ -2242,15 +1671,6 @@ var ToolbarIcon_TextWindow_NoHide = new Class({
 	}
 });
 
-/*
-var ToolbarIcon_MapWindow = new Class({
-	Extends: ToolbarIcon,
-	initialize: function() {
-		this.parent('map_icon.png', 'map_window', true);
-	}
-});
-*/
-
 var ToolbarIcon_ClockWindow = new Class({
 	Extends: ToolbarIcon,
 	initialize: function() {
@@ -2278,15 +1698,6 @@ var ToolbarIcon_ext_TableWindow = new Class({
 		this.parent('/toolbar/glyph_interactivetable.png', 'ext_table_window', true, 'Create Interactive Table');
 	}
 });
-
-
-var ToolbarIcon_Legend = new Class({
-	Extends: ToolbarIcon,
-	initialize: function() {
-		this.parent('legend-icon.png', 'legend', true);
-	}
-});
-
 
 function update_stuff(el)
 {
@@ -2339,34 +1750,22 @@ var save_all = function()
 		}
 		else if(w.type == 'ext_table')
 		{
-         save_string += str_to_hex(w.file);
-      }
+          save_string += str_to_hex(w.file);
+        }
 		else if(w.type == 'image')
 		{
-         save_string += str_to_hex(w.def_imgbase);
-         //alert(w.tableLink);
-         save_string += ',' + str_to_hex(w.tableLink);
-      }
+          save_string += str_to_hex(w.def_imgbase);
+          //alert(w.tableLink);
+          save_string += ',' + str_to_hex(w.tableLink);
+        }
 		else if(w.type == 'object')
 		{
-         save_string += str_to_hex(w.objSourceBase);
-      }
-		else if(w.type == 'map')
-		{
-   		//alert('saving map as ' + w.mapfile);
-			save_string += str_to_hex(w.mapfile);
-			save_string += ',' + w.advisory;
-			//save_string += str_to_hex(w.advisory);
-		}
-		else if(w.type == 'legend')
-		{ 
-   		//alert("Attaching advisory to legend: " + curAdvisory);
-   		save_string += curAdvisory;
-	   }
-	   else if(w.type == 'clock')
-	   {
-   	   save_string += w.time;
-	   }
+          save_string += str_to_hex(w.objSourceBase);
+        }
+	    else if(w.type == 'clock')
+	    {
+   	      save_string += w.time;
+	    }
 		
 		save_string += '&';
 	}
@@ -2396,16 +1795,6 @@ var save_all = function()
 	alert(req);
 }
 
-/*function loadToolBar(){
-      var tb = new Toolbar();
-   	tb.add_icon(new ToolbarIcon_Trashbin());
-   	tb.add_icon(new ToolbarIcon_MapWindow());
-   	tb.add_icon(new ToolbarIcon_TextWindow());
-   	tb.add_icon(new ToolbarIcon_ClockWindow());
-   	tb.add_icon(new ToolbarIcon_TableWindow());
-   	tb.add_icon(new ToolbarIcon_Legend());
-}*/
-
 window.addEvent('domready', function()
 {
 	var ifr = document.createElement("div");
@@ -2417,7 +1806,6 @@ window.addEvent('domready', function()
 	{
     	var tb = new Toolbar();
    	tb.add_icon(new ToolbarIcon_Trashbin());
-   	//tb.add_icon(new ToolbarIcon_MapWindow());
    	tb.add_icon(new ToolbarIcon_TextWindow());
    	tb.add_icon(new ToolbarIcon_TextWindow_NoHide());
    	tb.add_icon(new ToolbarIcon_ObjectWindow());
@@ -2425,8 +1813,6 @@ window.addEvent('domready', function()
    	tb.add_icon(new ToolbarIcon_ClockWindow());
    	tb.add_icon(new ToolbarIcon_TableWindow());
    	tb.add_icon(new ToolbarIcon_ext_TableWindow());
-   	tb.add_icon(new ToolbarIcon_Legend());
-   		
    }
    
    // Take away the resizing and dragging if not in edit mode

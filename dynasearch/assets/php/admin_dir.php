@@ -24,6 +24,11 @@
             "Extensions" => array(),
             "MaxFileSize" => 512,
             "Options" => array() ),
+			
+	  array("Name" => "Image Tables",
+            "Extensions" => array(),
+            "MaxFileSize" => 512,
+            "Options" => array() ),
 
       array("Name" => "Applets",
             "Extensions" => array(),

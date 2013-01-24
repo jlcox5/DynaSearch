@@ -20,7 +20,6 @@ else{
 	$assetBaseDir = "admins/" . $username . "/assets/training/";
 	 echo '<script language="javascript"> <!-- 
 	     window.assetBaseDir = "' . $assetBaseDir . '"; //--></script>';
-	 echo "first: ".$assetBaseDir;
 //echo "Load: ".$exp_name;
 ?>
 
@@ -43,7 +42,6 @@ if(isset($_SESSION['scaleH'])){
 	$assetBaseDir = "admins/" . $username . "/assets/training/";
 	 echo '<script language="javascript"> <!-- 
 	     window.assetBaseDir = "' . $assetBaseDir . '"; //--></script>';
-	 echo "second: ".$assetBaseDir;
 	
 	echo '<script language="javascript"> <!--
 	   window.editorFiles = "<select name=\"instChoice\" id=\"instChoice\">"; //--></script>';
@@ -116,14 +114,15 @@ if($exp_name != 'DefaultExperiment'){
    $exists_already = file_exists($assetBaseDir.$exp_name);
    if($exists_already)
    {
-      echo 'load_all('.$assetBaseDir.$exp_name.');';   
+      echo 'load_all("'.$assetBaseDir.$exp_name.'");';   
    }
 }
 else{
    $exists_already = file_exists($assetBaseDir.$exp_name.'_training_adv_' . $adv_num . '.txt');
    if($exists_already)
    {
-      echo 'load_all('.$assetBaseDir.$exp_name.'_training_adv_' . $adv_num . '.txt");';   
+      echo $assetBaseDir.$exp_name.'_training_adv_' . $adv_num . '.txt';
+      //echo 'load_all('.$assetBaseDir.$exp_name.'_training_adv_' . $adv_num . '.txt");';   
    }
 }
 echo '</script>'; ?>

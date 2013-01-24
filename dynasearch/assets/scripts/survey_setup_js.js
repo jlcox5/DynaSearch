@@ -538,7 +538,7 @@ var save_experiment = function()
    
    //Construct the string for the Experiment
    var i=0;
-   var bars = $$('.page_bar'); //.each(function(li) { alert(li.getFirst('.content').innerHTML); });
+   var bars = $$('div.page_bar'); //.each(function(li) { alert(li.getFirst('.content').innerHTML); });
    var final_str = '';
    // Used for saving surveys
    var filepath = '';
@@ -554,6 +554,8 @@ var save_experiment = function()
          }, 
          onComplete: function(r) {} 
    }).send();
+   
+   alert(bars);
 
    // Add size check data to string
    // TODO - record boolean and default X/Y scale
@@ -570,6 +572,7 @@ var save_experiment = function()
    for(var i=0; i<bars.length; i+=1)
    {
       if(i>0) { final_str += '$'; }
+	  alert(i + ": " + bars[i]);
       var type = bars[i].getFirst('.page_bar_item').innerHTML;
       var c = bars[i].getFirst('.content').getChildren();
                

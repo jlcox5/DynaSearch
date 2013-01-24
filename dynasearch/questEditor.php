@@ -16,7 +16,7 @@
     
     $template_style_array  = array($style_file, "questEditor.css", "accordian.css");
     $template_script_array = array("accordian.js", "questEditor.js");
-   $username = $_SESSION['username'];
+	
     include("assets/php/standard.php");
 
     /*
@@ -98,9 +98,7 @@
    <!-- Fetch Loadable Questionaires -->
    <datalist id="loadable">
       <?php
-         $query = "SELECT Name FROM sur_question WHERE Admin_ID='$username';";
-     echo $query;
-         $response = mysql_query($query);
+         $response = mysql_query("SELECT Name FROM sur_question;");
          while($row = mysql_fetch_assoc($response)){
             echo "   <option value='".$row['Name']."'>".$row['Name']."</option>";
          }

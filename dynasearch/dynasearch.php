@@ -62,6 +62,7 @@ $template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js"
 	// Get our current page.
 	$result = query_db('select * from t_user where User_ID=\''. $username .'\'');
 	$row = mysql_fetch_array($result, MYSQL_BOTH);
+	$admin = $row['Admin_ID'];
 	$current_position = $row['current_position'];
 
 	$expshortname = $row['experiment'];
@@ -95,13 +96,14 @@ $template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js"
 						elseif($item2[0] == 'src')
 						{
    						//echo " here again! ";
-							$myFile = 'hurricane_data/'. $expshortname . '/'. hexToStr($item2[1]);
+						    $myFile = "./admins/" . $admin . "/assets/training/" . hexToStr($item2[1]);
+							//$myFile = './'. $expshortname . '/'. hexToStr($item2[1]);
 							//$myFile = hurricane_data\' . $expshortname . '\' . hexToStr($(item2[1]));
 							$adv_num = $_SESSION['advNum'];
 							$fh = fopen($myFile, 'r');
 							$page_content = fread($fh, filesize($myFile));
 							$page_content = hexToStr($page_content);
-							//echo $myFile;
+							echo $myFile;
 							fclose($fh);
 						}
 					}
