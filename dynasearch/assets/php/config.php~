@@ -4,7 +4,7 @@
 $DB_HOST = "localhost";
 $DB_NAME = "emdss";
 $DB_USER = "root";
-$DB_PASS = "YES";
+$DB_PASS = "winter5";
 
 $SOFTWARE_VERSION = "0.01a";
 

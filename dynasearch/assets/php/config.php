@@ -8,4 +8,7 @@ $DB_PASS = "winter5";
 
 $SOFTWARE_VERSION = "0.01a";
 
+// Debug Flag to print php debug statements
+$DEBUG = false;
+
 ?>

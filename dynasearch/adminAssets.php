@@ -22,16 +22,16 @@
    if( isset($_POST['upload']) )
    {
 
-      if($_FILES["assetFile"]["error"] > 0)
+      if( $_FILES["assetFile"]["error"] > 0 )
       {
-         //echo "Error: " . $_FILES["assetFile"]["error"] . "<br>";
+        if( $DEBUG )
+         {
+            echo "Error: " . $_FILES["assetFile"]["error"] . "<br>";
+         }
       }
       else
       {
-         //echo "Upload: " . $_FILES["assetFile"]["name"] . "<br>";
-         //echo "Type: " . $_FILES["assetFile"]["type"] . "<br>";
-         //echo "Size: " . ($_FILES["assetFile"]["size"] / 1024) . " kB<br>";
-         //echo "Temp file: " . $_FILES["assetFile"]["tmp_name"] . "<br>";
+
 
          //if (file_exists())
          $assetType = $_POST['assetType'];
@@ -41,11 +41,23 @@
 
          move_uploaded_file($_FILES["assetFile"]["tmp_name"],
                             $assetFilepath);
-         //echo "Stored in: " . $assetFilepath . "<br>";
+
+         if( $DEBUG )
+         {
+            echo "Upload: " . $_FILES["assetFile"]["name"] . "<br>";
+            echo "Type: " . $_FILES["assetFile"]["type"] . "<br>";
+            echo "Size: " . ($_FILES["assetFile"]["size"] / 1024) . " kB<br>";
+            echo "Temp file: " . $_FILES["assetFile"]["tmp_name"] . "<br>";
+            echo "Stored in: " . $assetFilepath . "<br>";
+         }
 
       }
-	  // Added so assets automatically show in list after uploaded.  Need to comment out for debugging. - Jon 22JAN13
-	  redirect('adminAssets.php');
+
+      if( ! $DEBUG )
+      {
+         // Added so assets automatically show in list after uploaded.  Need to comment out for debugging. - Jon 22JAN13
+         redirect('adminAssets.php');
+      }
    }
    
    // Delete Asset
@@ -64,11 +76,89 @@
 ?>
 
 <body id="body">
+<?php
+echo '<script type="text/javascript">assetDir = "' . $assetBaseDir . '";</script>';
+?>
    <div id="maincontainer">
       <div id="wrapper" style="width:70%; margin: auto auto;">
    
          <h1>Manage Assets</h1><br/>
          <br/>
+
+         <!-- Asset Viewer -->
+   <?php 
+      echo '<div>';
+      // I added the minus 1 because training pages should never be uploaded, always created through the editor.  If this ever changes,
+	  // then it can be removed.  - Jon 22JAN13
+      for($i = 0; $i < count($assets)-1; $i++)
+      {
+         $currAsset = &$assets[$i];
+
+         echo '<div class="asset-panel">'. 
+                 '<form action="adminAssets.php" method="post">' .
+                    '<h2>' . $currAsset["Name"] . '</h2>';
+
+
+         $assetOptions = &$currAsset["Options"];
+         $assetOptionCount = count($assetOptions);
+         if ( $assetOptionCount > 0)
+         {
+
+//            echo '<table class="asset-table">' . 
+//                    '<tr>' .
+//                       '<td>';
+
+echo '<div class="asset-manager">';
+
+//echo '<div style="height : 100%;">';
+echo '<div class="control-pane">';
+            echo '<select id="' . $currAsset["Tag"] .'Select" ' .
+                         'name="asset" size="'.($assetOptionCount + 1).'" >';
+            for ($j = 0; $j < $assetOptionCount; $j++)
+            {
+               echo $assetOptions[$j];
+            }
+            echo '</select>';
+
+            echo '<br/>';
+
+
+
+
+            // Delete Button
+            echo '<input type="button" value="Preview" onclick="previewAsset(\'' . $currAsset["Tag"] . '\');">';
+//echo '<br/>';
+
+            echo '<input type="submit" name="delete" value="Delete" onclick="return confirmDelete();">';
+
+echo '</div>';
+
+
+//echo '</td>';
+//echo '<td>';
+
+echo '<div class="preview-pane">';
+echo '<textarea id="' . $currAsset["Tag"] . 'Preview" class="text-preview"></textarea>';
+echo '</div>';
+//echo '</td>';
+//echo '</tr>';
+//echo '</table>';
+echo '</div>';
+
+         }
+         else
+         {
+            echo 'No Assets Uploaded';
+         }
+
+         echo    '</form>' .
+              '</div>';
+      }
+
+      echo '</div>';
+   ?>
+
+
 
          <!-- Asset Lists -->
    <?php 
