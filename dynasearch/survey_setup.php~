@@ -1,16 +1,16 @@
 <?php
 
-include("assets/php/config.php");
-include("assets/php/std_api.php");
-mysql_connect($DB_HOST, $DB_USER, $DB_PASS) or die("Unable to connect.");
-mysql_select_db($DB_NAME) or die("Unable to select database.");
+   include("assets/php/config.php");
+   include("assets/php/std_api.php");
+   mysql_connect($DB_HOST, $DB_USER, $DB_PASS) or die("Unable to connect.");
+   mysql_select_db($DB_NAME) or die("Unable to select database.");
 
-$page_title = "Survey Page Layout Editor";
+   $page_title = "Survey Page Layout Editor";
 
-$template_style_array  = array("style.css", "survey_setup.css");
-$template_script_array = array("ajax-core.js", "survey_setup_js.js");
+   $template_style_array  = array("style.css", "survey_setup.css");
+   $template_script_array = array("ajax-core.js", "survey_setup_js.js");
 
-include('assets/php/db_util.php');
+   include('assets/php/db_util.php');
 /*
 // Everyone is always running a session. 
 // TODO: IS THIS A BAD IDEA?
@@ -23,15 +23,20 @@ function redirect($page_name)
 	header("Location: http://$host$uri/$page_name");	
 }
 */
-require_once('assets/php/std_api.php');
+//require_once('assets/php/std_api.php');
+   include('assets/php/admin_dir.php');
 
    $username = $_SESSION['username'];
+   $expName = 'New Experiment';
 
-if(isset($_POST['fileop'])) {
-	if($_POST['fileop'] == 'save') {
-			$short = $_POST['shortname'];
-			$name = $_POST['fullname'];
-			$experiment_string = $_POST['data'];
+   if( isset($_POST['fileop']) )
+   {
+      if( $_POST['fileop'] == 'save' )
+      {
+         $short = $_POST['shortname'];
+         $name = $_POST['fullname'];
+         $customScaling = $_POST['customScaling'];
+         $experiment_string = $_POST['data'];
 			
 			// See if this entry already exists...
 /*
@@ -41,53 +46,73 @@ if(isset($_POST['fileop'])) {
 				{ query_db("DELETE from t_experiments where ExperimentShortName='". $short ."';");	}
 */
 	
-   $query = "INSERT INTO t_experiments (ExperimentShortName, Admin_ID, ExperimentName, ExperimentString) " .
-            "VALUES ('$short', '$username', '$name', '$experiment_string')" .
+   $query = "INSERT INTO t_experiments (ExperimentShortName, Admin_ID, ExperimentName, CustomScaling, ExperimentString) " .
+            "VALUES ('$short', '$username', '$name', $customScaling, '$experiment_string')" .
             "ON DUPLICATE KEY UPDATE " .
             "ExperimentShortName=Values(ExperimentShortName), Admin_ID=Values(Admin_ID), ExperimentName=Values(ExperimentName), ExperimentString=Values(ExperimentString)"  . 
             ";";
 
-			query_db($query);
-			redirect('survey_setup.php?fileop=load&file='.$short);
-	}// End Save
-}
-include('assets/php/standard.php');
+//echo $query;
+         query_db($query);
+         redirect('survey_setup.php?fileop=load&file='.$short);
+      }// End Save
 
-?>
+      if($_POST['fileop'] == 'load')
+      {
+         if( isset($_POST['expId']))
+         {
+            $expId = $_POST['expId'];
+         }
+         else
+         {
+            if( $DEBUG ) { echo "FileOp : LOAD --- ExpId not set<br/>"; }
+         }
 
-
-<?php
-// Load/Save
-
-// Survey Setup Code
-$current_survey_name = 'New Experiment';
-if( isset($_POST['fileop']) ) {
-
-	if(isset($_POST['file']))
-	{
-		if($_POST['fileop'] == 'load') {
-			if( strlen($_POST['file']) > 0)
-			{
-				$res = query_db("select * from t_experiments where ExperimentShortName='". $_POST["file"] ."';");
+         $query = "SELECT * FROM t_experiments WHERE id='$expId';";
+         $res = query_db( $query );
 				
-				if( is_string($res) ) 
-				{  
+         if( is_string($res) ) 
+         {  
+            if( $DEBUG ) { echo "FileOp : LOAD --- Exp not found in database<br/>"; }
+         }
+         else 
+         {
+            // Load the Experiment
+           $res = mysql_fetch_array($res, MYSQL_BOTH);
+					
+          $expName = $res['ExperimentName'];
+          $expShortName = $res['ExperimentShortName'];
+          $expString = $res['ExperimentString'];
+					
+          }		
+
+/*
+         if( strlen($_POST['file']) > 0)
+         {
+            $res = query_db("select * from t_experiments where ExperimentShortName='". $_POST["file"] ."';");
+				
+            if( is_string($res) ) 
+            {  
 					//printf('isstring');
 					// Fail.
-				}
-				else 
-				{
-					// Load the Experiment
-					$res = mysql_fetch_array($res, MYSQL_BOTH);
+            }
+            else 
+            {
+               // Load the Experiment
+               $res = mysql_fetch_array($res, MYSQL_BOTH);
 					
-					$current_survey_name = $res['ExperimentName'];
-					$experiment_short_name = $res['ExperimentShortName'];
+               $expName = $res['ExperimentName'];
+               $expShortName = $res['ExperimentShortName'];
+               $expString = $res['ExperimentString'];
 					
-				}		
-			}
-		}// End Load
-	}
-}
+            }		
+         }
+*/
+      }// End Load
+   }
+
+   include('assets/php/standard.php');
+
 ?>
 
 <body id="body">
@@ -96,17 +121,39 @@ if( isset($_POST['fileop']) ) {
 	
          <h1>Experiment Editor</h1><br/>
          <h2>Currently Editing: 
-            <input type="text" id="survey_name" value="<?php echo $current_survey_name; ?>">
+            <input type="text" id="survey_name" value="<?php echo $expName; ?>">
          </h2>
 
          <br/>
 
-         <h1 style="display:none;" id="exp_short_name"><?php echo $experiment_short_name; ?></h1>
+         <h1 style="display:none;" id="exp_short_name"><?php echo $expShortName; ?></h1>
 	
          <!-- Buttons -->
-         <button onClick="prompt_new_experiment();">New Survey</button>	
-         <button onClick="save_experiment();">Save Survey</button>	
+         <button onClick="prompt_new_experiment();">New</button>	
+         <button onClick="save_experiment();">Save</button>
+         <button onClick="save_experiment();">Save As...</button>
          <br/>
+   <?php
+      $adminExps = getAdminExps($username);
+      echo '<select id="expId" >';
+      foreach($adminExps as $key => $value)
+      {
+         if ($key == $expId)
+         {
+               $selected = 'selected="selected"';
+         }
+         else
+         {
+            $selected = '';
+         }
+
+         echo '<option value="' . $key . '" ' . $selected . '>' .
+                 $value . ' (' . $key . ')' .
+              '</option>';
+      }
+      echo '</select>';
+   ?>
+
          <select id="load_select_list">
          <?php
              
@@ -124,13 +171,23 @@ if( isset($_POST['fileop']) ) {
          <button onClick="if(confirm('Are you sure you would like to discard all changes since the last save and load a new file?')){load_file();}">Load</button>
          <br/>
          <br/>
-         <input type="checkbox" name="exemptResize"> Custom Scaling ()
+         <input type="checkbox" id="customScaling" <?php echo $expCustomScaling ? 'checked="checked"' : ''; ?> />
+         Require Custom Scaling
 
          <!-- To add items to the list -->
          <br/><br/>
-         <a href="#" onClick="add_info_page('','');">    <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;"> Add Information Page</a>
-         <a href="#" onClick="add_training_page('','');"><img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;"> Add Training Screen</a>
-         <a href="#" onClick="add_survey_page('','','');">  <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;"> Add Survey Screen</a>
+         <a href="#" onClick="add_info_page('','');">
+            <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;">
+            Add Information Page
+         </a>
+         <a href="#" onClick="add_training_page('','');">
+            <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;">
+            Add Training Screen
+         </a>
+         <a href="#" onClick="add_survey_page('','','');">
+            <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;">
+            Add Survey Screen
+         </a>
          <p></p>
 
          <!-- Invisible selects. These are cloned to create drop downs for each list item-->
@@ -146,7 +203,7 @@ if( isset($_POST['fileop']) ) {
 
             // Added by Jon - List all instruction pages
             $instFiles = '<select name="instChoice" id="instChoice" style="display:none;">';
-            if($handle = opendir('./expResources/instructPages'))
+            if($handle = opendir("./admins/" . $username . "/assets/instructions/"))
             {
                while(false !== ($file = readdir($handle)))
                {
@@ -160,7 +217,7 @@ if( isset($_POST['fileop']) ) {
 
             // Added by Jon - List all advisory pages
             $advFiles = '<select name="advChoice" id="advChoice" style="display:none;">';
-            if($handle = opendir('./expResources/advisory'))
+            if($handle = opendir("./admins/" . $username . "/assets/training/"))
             {
                while(false !== ($file = readdir($handle)))
                {
@@ -175,6 +232,8 @@ if( isset($_POST['fileop']) ) {
 
          <p><?php echo($_SESSION['SurveyList']); ?> <?php echo($instFiles); ?> <?php echo($advFiles); ?> </p>
 
+
+
          <!--- Our Sortables List --->
          <div id="page_list">
          </div>
@@ -186,6 +245,88 @@ if( isset($_POST['fileop']) ) {
       echo '<script type="text/javascript">
             window.addEvent(\'domready\', function(){
             ';
+
+/*
+      if( isset($_POST['fileop']) )
+      {
+         if($_POST['fileop'] == 'load')
+         {
+*/
+            //echo $_POST['file'];
+
+      $expData = parseExperimentData( $expString );
+      for( $i = 0; $i < count($expData); ++$i )
+      {
+         $expPageData = $expData[ $i ];
+
+         $pageSource = $expPageData['src'];
+         $pageTitle  = $expPageData['title'];
+
+         switch( $expPageData['type'] )
+         {
+            case 'Information Page' :
+               echo 'add_info_page("'. $pageTitle .'","'. $pageSource .'");';
+               break;
+
+            case 'Training Screen' :
+               echo 'add_training_page("'. $pageTitle .'","'. $pageSource .'");';
+               break;
+
+            case 'Survey Page' :
+               $survName = '';
+               if($survName == '')
+               {
+                  $survName = 'undefined';
+               }
+               echo 'add_survey_page("'. $pageTitle .'","'. $pageSource .'","'.$survName.'");';
+               break;
+         }
+      }
+	/*				
+               $barstrings = explode('$', $expString);				
+               for($rownum=0;$rownum<count($barstrings);++$rownum)
+               {
+                  $attribs = explode('&', $barstrings[$rownum]);
+                  $pagetype = hexToStr(substr($attribs[0],5));
+
+                  if($pagetype == 'Information Page')
+                  {
+                     $page_source = hexToStr(substr($attribs[3],4));
+                     $page_title = hexToStr(substr($attribs[2],6));
+						
+                     echo 'add_info_page("'. $page_title .'","'. $page_source .'");';
+                  }
+                  else if($pagetype == 'Training Screen')
+                  {
+                     $page_source = hexToStr(substr($attribs[3],4));
+                     $page_title = hexToStr(substr($attribs[2],6));
+                     //$adv = hexToStr(substr($attribs[4],7));
+
+                     echo 'add_training_page("'. $page_title .'","'. $page_source .'");';
+                     //echo 'add_training_page_sourced("'. $page_title .'","'. $page_source .');';
+                  }
+                  else if($pagetype == 'Survey Page')
+                  {
+                     $page_source = hexToStr(substr($attribs[3],4));
+                     $page_title = hexToStr(substr($attribs[2],6));
+                     $survName = hexToStr(substr($attribs[4],7));
+                     if($survName == '')
+                     {
+                        $survName = 'undefined';
+                     }
+		
+                     echo 'add_survey_page("'. $page_title .'","'. $page_source .'","'.$survName.'");';
+                  }
+               }
+*/
+/*
+         }
+
+      }
+
+
+
+
       if( isset($_POST['fileop']) )
       {
          if(isset($_POST['file']))
@@ -234,6 +375,7 @@ if( isset($_POST['fileop']) ) {
             }
          }
       }
+*/
       echo '});</script>';
    ?>
 	

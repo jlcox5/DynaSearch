@@ -1,14 +1,14 @@
 <?php
-require_once('assets/php/std_api.php');
-require_once('assets/php/db_util.php');
-require_once('assets/php/config.php');
+   require_once('assets/php/std_api.php');
+   require_once('assets/php/db_util.php');
+   require_once('assets/php/config.php');
 
-mysql_connect($DB_HOST, $DB_USER, $DB_PASS) or die("Unable to connect.");
-mysql_select_db($DB_NAME) or die("Unable to select database.");
+   mysql_connect($DB_HOST, $DB_USER, $DB_PASS) or die("Unable to connect.");
+   mysql_select_db($DB_NAME) or die("Unable to select database.");
 
 
-if(isset($_SESSION['logged_in'])) {
-   if($_SESSION['logged_in'] == 'true') {
+   if( isset($_SESSION['logged_in']) && ($_SESSION['logged_in'] == 'true') )
+   {
       $username = $_SESSION['username'];
 
       // Get our current page.
@@ -27,8 +27,23 @@ if(isset($_SESSION['logged_in'])) {
          redirect('director.php');
       }
       
-      if((int)$current_position == 0)
-      { 
+      if( $current_position == 0 )
+      {
+         redirect('sizeReg.php'); 
+
+
+/*
+         if( isset($_POST['customScaling']) && ($_POST['customScaling'] == true) )
+         {
+            redirect('sizeReg.php'); 
+         }
+         else
+         {
+            $width  = $_SESSION['scaleW'] = 1.0;
+            $height = $_SESSION['scaleH'] = 1.0;
+            redirect('advance.php'); 
+         }
+
          if(isset($_POST['setSize']))
          {
             if(isset($_POST['scaleW']) && isset($_POST['scaleH']))
@@ -55,6 +70,7 @@ if(isset($_SESSION['logged_in'])) {
 
             redirect('sizeReg.php'); 
          }
+*/
 
       }
       
@@ -64,66 +80,42 @@ if(isset($_SESSION['logged_in'])) {
       //echo 'User "' . $username  .'" is going to page '. $current_position .' and has experiment ID of "'. $row['experiment'] .'"<br/>';
 
 
-      // Find out where we should go now.
-      $result = query_db('select * from t_experiments where ExperimentShortName=\''. $row['experiment'] .'\'');
-      $row = mysql_fetch_array($result, MYSQL_BOTH);
-      //echo '<br/>';
-      
-      $expstr = $row['ExperimentString'];
 
-      $exparr = explode('$',$expstr);
-      for($i=0; $i<count($exparr);$i++)
+      // Find out where we should go now.
+      $expData = $_SESSION['expData'];
+
+      if( $current_position > count($expData) )
       {
-         $properties = explode('&', $exparr[$i]);
-         
-         for($j=0;$j < count($properties);$j++)
-         {
-            $item = explode('=',$properties[$j]);
-            //echo $item[0].' == '. $item[1].'<br/>';
-            
-            // Match up with the page we should be on.
-            if($item[0] == 'page')
-            {
-               $pagenum = $i;
-               //echo ((int)$pagenum)+1 .' ' . (int)$current_position .'<br/>';
-               if( ((int)$pagenum)+1 == (int)$current_position)
-               {
-               //exit();
-                  for($k=0;$k<count($properties);$k++)
-                  {
-                     $item2 = explode('=',$properties[$k]);
-                     
-                     if($item2[0] == 'type')
-                     {
-                        $item2[1] = hexToStr($item2[1]);//
-                        //echo 'Headed to ... ';
-                        if($item2[1] == 'Information Page')
-                        { $_SESSION['page_sig'] = 'instructions.php'; redirect('instructions.php'); }
-                        if($item2[1] == 'Survey Page')
-                        { $_SESSION['page_sig'] = 'question.php'; redirect('question.php'); }
-                        if($item2[1] == 'Training Screen')
-                        { $_SESSION['page_sig'] = 'dynaview.php'; 
-                          $item3 = explode('=',$properties[4]);
-                          $_SESSION['advNum'] = hexToStr($item3[1]);
-                          //echo $_SESSION['advNum'];
-                          redirect('dynasearch.php'); 
-                        }
-                     }
-                  }
-               }            
-            }
-         }
-      }
-      //if((int)$current_position > count($properties)+1){
-                if((int)$current_position > count($exparr)){
          //$_SESSION['logged_in'] = 'false';
          redirect('logOut.php');
       }
-   } // Logged in
-}
-else
-{
-   redirect('login.php');
-}
+
+      $currentPage = $expData[ $current_position - 1 ];
+
+      switch( $currentPage['type'] )
+      {
+         case 'Information Page':
+            $_SESSION['page_sig'] = 'instructions.php';
+            redirect('instructions.php');
+            break;
+
+         case 'Survey Page':
+            $_SESSION['page_sig'] = 'question.php';
+            redirect('question.php');
+            break;
+
+         case 'Training Screen':
+            $_SESSION['page_sig'] = 'dynaview.php';
+            $_SESSION['advNum'] = $currentPage['advNum'];
+            if( $DEBUG ) { echo $_SESSION['advNum']; }
+            redirect('dynasearch.php');
+            break;
+      }
+
+   }
+   else
+   {
+      redirect('login.php');
+   }
 
 ?>

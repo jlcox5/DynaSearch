@@ -17,6 +17,8 @@ $_SESSION['timeout'] = time();
 //$username = $_SESSION['username'];
 
 
+// Helper Functions
+
 function redirect($page_name)
 {
 	$host  = $_SERVER['HTTP_HOST'];
@@ -24,25 +26,83 @@ function redirect($page_name)
 	header("Location: http://$host$uri/$page_name");	
 }
 
-   function strToHex($string)
+
+function strToHex($string)
+{
+   $hex='';
+   for ($i=0; $i < strlen($string); $i++)
    {
-      $hex='';
-      for ($i=0; $i < strlen($string); $i++)
+      $hex .= dechex(ord($string[$i]));
+   }
+   return $hex;
+}
+
+
+function hexToStr($hex)
+{
+   $string='';
+   for ($i=0; $i < strlen($hex)-1; $i+=2)
+   {
+      $string .= chr( hexdec($hex[$i].$hex[$i+1]) );
+   }
+   return $string;
+}
+
+
+   /** 
+    * Parses the hex encoded experiment string into an array where each 
+    * index corresponds to a page, and contains an associated array of
+    * that page's values
+    *
+    * @param string $expdata - the hex encoded experiment string
+    * @return array - contains each page as an associated array
+    */
+   function parseExperimentData( $expData )
+   {
+      $expArray = array();
+
+      // Split experiment string up by page
+      $expPages = explode('$',$expData);
+      for($i=0; $i<count($expPages);$i++)
       {
-         $hex .= dechex(ord($string[$i]));
+         // Split page into page's properties
+         $expProperties = explode('&', $expPages[$i]);
+         $propertyArray = array();
+
+         for($j=0;$j < count($expProperties);$j++)
+         {
+            // Pull out key and value from property
+            $item = explode('=',$expProperties[$j]);
+            $key   = $item[0];
+            $value = ( ($key == "page") ? ($item[1]) : (hexToStr($item[1])) );
+            $propertyArray[$key] = $value;
+         }
+
+         $expArray[ $i ] = $propertyArray;
+
       }
-      return $hex;
+
+      return $expArray;
    }
 
-   function hexToStr($hex)
+// Get Admin's Experiments
+function getAdminExps( $username )
+{
+   $adminExps = array();
+   $query = "SELECT * FROM t_experiments WHERE Admin_ID='$username';";
+   $result = mysql_query($query);
+   while( $row = mysql_fetch_array($result, MYSQL_BOTH) )
    {
-      $string='';
-      for ($i=0; $i < strlen($hex)-1; $i+=2)
-      {
-         $string .= chr( hexdec($hex[$i].$hex[$i+1]) );
-      }
-	   return $string;
+      $optionExpId   = $row['id'];
+      $optionExpName = $row['ExperimentName'];
+
+      $adminExps[$optionExpId] = $optionExpName;
    }
+   return $adminExps;
+}
+
+
+// TODO : the following should be worked out
 
 function getExpPageArray($index) {
    $username = $_SESSION['username'];

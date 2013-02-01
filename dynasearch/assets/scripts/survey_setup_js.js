@@ -31,16 +31,7 @@ var prompt_new_experiment = function()
    else return;
 }
 
-// TODO: Since we are now using a text input for the name, we do not need this function
-/*
-var edit_survey_name = function(el)
-{
-   var resp = prompt("Please input the new name for the survey.", el.innerHTML );
-   if (resp.length == 0) { resp = 'TitleHere'; }
-   el.innerHTML = resp;
 
-}
-*/
 
 var add_info_page = function(title, source)
 {
@@ -529,6 +520,7 @@ var add_training_page_sourced = function(title, source)
 };
 */
 
+
 var save_experiment = function()
 {
    var experiment_name = $('survey_name').value;
@@ -555,24 +547,14 @@ var save_experiment = function()
          onComplete: function(r) {} 
    }).send();
    
-   alert(bars);
-
-   // Add size check data to string
-   // TODO - record boolean and default X/Y scale
-   /*var changeSize = false;
-   var scaleX = 50, 
-       scaleY = 50;
-   final_str += 'type=' + str_to_hex('dynamicSize') + 
-                'changeSize=' + changeSize
-                'scaleX=' + scaleY
-                'scaleY=' + scaleX;*/
-
+   //alert(bars);
 
    // Add experiment Pages to string   
-   for(var i=0; i<bars.length; i+=1)
+   for (var i=0; i<bars.length; i+=1)
    {
-      if(i>0) { final_str += '$'; }
-	  alert(i + ": " + bars[i]);
+      if (i > 0) { final_str += '$'; }
+	  //alert(i + ": " + bars[i]);
+
       var type = bars[i].getFirst('.page_bar_item').innerHTML;
       var c = bars[i].getFirst('.content').getChildren();
                
@@ -656,6 +638,15 @@ var save_experiment = function()
    form.style.visibility = 'hidden';
    form.method = 'POST';
 
+   var customScaling = new Element('input');
+   customScaling.name = 'customScaling';
+   if ( $('customScaling').checked ) {
+      customScaling.value = true;
+   } else {
+      customScaling.value = false;
+   }
+   form.adopt(customScaling);
+
    var data = new Element('input');
    data.name = 'data';
    data.value = final_str;
@@ -681,66 +672,34 @@ var save_experiment = function()
    form.submit();
 };
 
+
+
 var load_file = function()
 {
-   var list = $("load_select_list");
-   var d = list.options[list.selectedIndex];
-   
+
    var form = new Element('form');
    form.action = 'survey_setup.php';
    form.style.visibility = 'hidden';
    form.method = 'POST';
-   
+
    var fo = new Element('input');
    fo.name = 'fileop';
    fo.value = 'load';
-   
-   var file = new Element('input');
-   file.name = 'file';
-   file.value = d.value;
-   
    form.adopt(fo);
-   form.adopt(file);
-   
+
+   var expId = new Element('input');
+   expId.name = 'expId';
+   expId.value = $("expId").value;
+   form.adopt(expId);
+
    document.body.adopt(form);
    form.submit();
-   
-//   window.location='survey_setup.php?fileop=load&file=' + d.value;
+
 }
 
 
 
-// Take in a bar div and prompt for a new title for that bar's page
-/*
-var edit_page_title = function(bar)
-{
-   bar.getChildren('.page_title')[0].innerHTML = prompt('Please enter a new title for this page.', bar.getChildren('.page_title')[0].innerHTML);
-};
 
-var edit_info_page_source = function(bar)
-{
-   bar.getChildren('.page_source')[0].innerHTML = prompt('Please enter the name of the page\'s script.', bar.getChildren('.page_source')[0].innerHTML);
-};
-
-var edit_info_page_source_instruction = function(bar)
-{
-   bar.getChildren('.page_source')[0].innerHTML = prompt('Please enter the name of the page\'s script.', document.getElement('#instChoice').value);
-};
-var edit_info_page_source_training = function(bar)
-{
-   bar.getChildren('.page_source')[0].innerHTML = prompt('Please enter the name of the page\'s script.', document.getElement('#advChoice').value);
-};
-
-var edit_info_page_source_Survey = function(bar)
-{
-   bar.getChildren('.page_source')[0].innerHTML = prompt('Please enter a file name to save for the page\'s script.', bar.getChildren('.page_source')[0].innerHTML);
-};
-var edit_info_page_source_Name = function(bar)
-{
-   //bar.getChildren('.questionairre_name')[0].innerHTML = prompt('Please give the questionairre name that you would like to use.', bar.getChildren('.questionairre_name')[0].innerHTML);
-   bar.getChildren('.questionairre_name')[0].innerHTML = prompt('Please give the questionairre name that you would like to use.', document.getElement('#qChoice').value);
-};
-*/
 var edit_advisory_number = function(bar)
 {
    bar.getChildren('.advisory_number')[0].innerHTML = prompt('Please enter the number of the advisory.', bar.getChildren('.advisory_number')[0].innerHTML);

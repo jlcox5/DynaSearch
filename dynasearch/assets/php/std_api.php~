@@ -17,6 +17,8 @@ $_SESSION['timeout'] = time();
 //$username = $_SESSION['username'];
 
 
+// Helper Functions
+
 function redirect($page_name)
 {
 	$host  = $_SERVER['HTTP_HOST'];
@@ -24,25 +26,47 @@ function redirect($page_name)
 	header("Location: http://$host$uri/$page_name");	
 }
 
-   function strToHex($string)
-   {
-      $hex='';
-      for ($i=0; $i < strlen($string); $i++)
-      {
-         $hex .= dechex(ord($string[$i]));
-      }
-      return $hex;
-   }
 
-   function hexToStr($hex)
+function strToHex($string)
+{
+   $hex='';
+   for ($i=0; $i < strlen($string); $i++)
    {
-      $string='';
-      for ($i=0; $i < strlen($hex)-1; $i+=2)
-      {
-         $string .= chr( hexdec($hex[$i].$hex[$i+1]) );
-      }
-	   return $string;
+      $hex .= dechex(ord($string[$i]));
    }
+   return $hex;
+}
+
+
+function hexToStr($hex)
+{
+   $string='';
+   for ($i=0; $i < strlen($hex)-1; $i+=2)
+   {
+      $string .= chr( hexdec($hex[$i].$hex[$i+1]) );
+   }
+   return $string;
+}
+
+
+// Get Admin's Experiments
+function getAdminExps( $username )
+{
+   $adminExps = array();
+   $query = "SELECT * FROM t_experiments WHERE Admin_ID='$username';";
+   $result = mysql_query($query);
+   while( $row = mysql_fetch_array($result, MYSQL_BOTH) )
+   {
+      $optionExpId   = $row['id'];
+      $optionExpName = $row['ExperimentName'];
+
+      $adminExps[$optionExpId] = $optionExpName;
+   }
+   return $adminExps;
+}
+
+
+// TODO : the following should be worked out
 
 function getExpPageArray($index) {
    $username = $_SESSION['username'];

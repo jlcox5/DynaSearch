@@ -22,6 +22,10 @@
 	display: table;
 }
 
+button {
+   padding : 5px;
+}
+
 .drag_handle {
 	background-color:#003366;
 	float: left;
