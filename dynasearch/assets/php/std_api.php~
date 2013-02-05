@@ -27,6 +27,21 @@ function redirect($page_name)
 }
 
 
+function fileSizeStr($size)
+{
+   $i     = -1; 
+   $units = array('kB', 'MB', 'GB');
+   do
+   {
+      $size = $size / 1024;
+      ++$i;
+   }
+   while ($size >= 1024);
+
+   return (number_format($size, 2) . ' ' . $units[$i]);
+}
+
+
 function strToHex($string)
 {
    $hex='';
@@ -48,6 +63,42 @@ function hexToStr($hex)
    return $string;
 }
 
+
+   /** 
+    * Parses the hex encoded experiment string into an array where each 
+    * index corresponds to a page, and contains an associated array of
+    * that page's values
+    *
+    * @param string $expdata - the hex encoded experiment string
+    * @return array - contains each page as an associated array
+    */
+   function parseExperimentData( $expData )
+   {
+      $expArray = array();
+
+      // Split experiment string up by page
+      $expPages = explode('$',$expData);
+      for($i=0; $i<count($expPages);$i++)
+      {
+         // Split page into page's properties
+         $expProperties = explode('&', $expPages[$i]);
+         $propertyArray = array();
+
+         for($j=0;$j < count($expProperties);$j++)
+         {
+            // Pull out key and value from property
+            $item = explode('=',$expProperties[$j]);
+            $key   = $item[0];
+            $value = ( ($key == "page") ? ($item[1]) : (hexToStr($item[1])) );
+            $propertyArray[$key] = $value;
+         }
+
+         $expArray[ $i ] = $propertyArray;
+
+      }
+
+      return $expArray;
+   }
 
 // Get Admin's Experiments
 function getAdminExps( $username )

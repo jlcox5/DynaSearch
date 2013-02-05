@@ -48,6 +48,7 @@
 
    $username = $_SESSION['username'];
    $userAdmin = $_SESSION['userAdmin'];
+   $adminDirSize = 0;
    $assetBaseDir = "./admins/" . $userAdmin . "/assets/";
    for($i = 0; $i < count($assets); $i++)
    {
@@ -66,6 +67,7 @@
                {
                   $filePath = $currAsset["Tag"] . '/' . $file;
                   $assetOptions[ $assetOptionCount ] = '<option value="' . $filePath . '">' . $file . '</option>';
+                  $adminDirSize += filesize($currAsset["Path"] . '/' . $file);
                   ++$assetOptionCount;
                }
 

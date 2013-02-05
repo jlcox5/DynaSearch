@@ -27,6 +27,21 @@ function redirect($page_name)
 }
 
 
+function fileSizeStr($size)
+{
+   $i     = -1; 
+   $units = array('kB', 'MB', 'GB');
+   do
+   {
+      $size = $size / 1024;
+      ++$i;
+   }
+   while ($size >= 1024);
+
+   return (number_format($size, 1) . ' ' . $units[$i]);
+}
+
+
 function strToHex($string)
 {
    $hex='';

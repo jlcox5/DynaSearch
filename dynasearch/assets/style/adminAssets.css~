@@ -18,3 +18,101 @@
 td {
    vertical-align : top;
 }
+
+
+.asset-list {
+   width : 100%;
+
+   /*height : 50%;*/
+}
+
+
+/* Accordion */
+#accordion {
+   margin : 20px 0px 0px;
+}
+
+#accordion H2 {
+   background: #555;
+   color: white;
+   cursor: pointer;
+   font: 16px Helvetica, Arial, sans-serif;
+   line-height: 24px;
+   margin: 0 0 4px 0;
+   padding: 3px 5px 1px;
+}
+
+#accordion .content {
+
+}
+
+.asset-panel {
+   position : relative;
+   width : 100%;
+   height : 500px;
+}
+
+
+
+textarea.text-preview {
+   width  : 100%;
+   height : 100%;
+   resize : none;
+}
+
+.img-preview {
+   max-width  : 100%;
+   max-height : 100%;
+   resize : none;
+}
+
+table.asset-table {
+   width : 100%;
+}
+
+
+
+.asset-manager {
+   width : 100%;
+}
+
+.control-pane {
+   position : absolute;
+   /*top : 0px;*/
+   left : 0px;
+   width : 40%;
+   height : 100%;
+   padding : 10px;
+
+   -moz-box-sizing    : border-box;
+   -webkit-box-sizing : border-box;
+   box-sizing         : border-box;
+}
+
+.preview-pane {
+   position : absolute;
+   top : 0px;
+   right : 0px;
+   width : 60%;
+   height : 100%;
+   padding : 10px;
+
+   -moz-box-sizing    : border-box;
+   -webkit-box-sizing : border-box;
+   box-sizing         : border-box;
+}
+
+
+.capacity-bar {
+   width  : 100%;
+   height : 25px;
+   background : #aaa;
+}
+
+.capacity-full {
+   width  : 100%;
+   height : 100%;
+   background : red;
+}
+
+

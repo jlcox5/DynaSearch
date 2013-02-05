@@ -80,9 +80,10 @@ function redirect($page_name)
             // Load the Experiment
            $res = mysql_fetch_array($res, MYSQL_BOTH);
 					
-          $expName = $res['ExperimentName'];
-          $expShortName = $res['ExperimentShortName'];
-          $expString = $res['ExperimentString'];
+          $expName          = $res['ExperimentName'];
+          $expShortName     = $res['ExperimentShortName'];
+          $expString        = $res['ExperimentString'];
+          $expCustomScaling = $res['CustomScaling'];
 					
           }		
 
@@ -154,7 +155,7 @@ function redirect($page_name)
       echo '</select>';
    ?>
 
-         <select id="load_select_list">
+         <!--<select id="load_select_list">
          <?php
              
             $query = "SELECT * FROM t_experiments where Admin_ID='$username'";
@@ -166,7 +167,7 @@ function redirect($page_name)
                echo '<option value="'. $row['ExperimentShortName'] .'">'. $row['ExperimentName'] .'</option>';
             }
          ?>
-         </select>
+         </select>-->
 
          <button onClick="if(confirm('Are you sure you would like to discard all changes since the last save and load a new file?')){load_file();}">Load</button>
          <br/>

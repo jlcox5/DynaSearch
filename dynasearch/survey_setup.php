@@ -77,37 +77,16 @@ function redirect($page_name)
          }
          else 
          {
-            // Load the Experiment
-           $res = mysql_fetch_array($res, MYSQL_BOTH);
+             // Load the Experiment
+             $res = mysql_fetch_array($res, MYSQL_BOTH);
 					
-          $expName = $res['ExperimentName'];
-          $expShortName = $res['ExperimentShortName'];
-          $expString = $res['ExperimentString'];
+             $expName          = $res['ExperimentName'];
+             $expShortName     = $res['ExperimentShortName'];
+             $expString        = $res['ExperimentString'];
+             $expCustomScaling = $res['CustomScaling'];
 					
           }		
 
-/*
-         if( strlen($_POST['file']) > 0)
-         {
-            $res = query_db("select * from t_experiments where ExperimentShortName='". $_POST["file"] ."';");
-				
-            if( is_string($res) ) 
-            {  
-					//printf('isstring');
-					// Fail.
-            }
-            else 
-            {
-               // Load the Experiment
-               $res = mysql_fetch_array($res, MYSQL_BOTH);
-					
-               $expName = $res['ExperimentName'];
-               $expShortName = $res['ExperimentShortName'];
-               $expString = $res['ExperimentString'];
-					
-            }		
-         }
-*/
       }// End Load
    }
 
@@ -174,6 +153,7 @@ function redirect($page_name)
          <input type="checkbox" id="customScaling" <?php echo $expCustomScaling ? 'checked="checked"' : ''; ?> />
          Require Custom Scaling
 
+
          <!-- To add items to the list -->
          <br/><br/>
          <a href="#" onClick="add_info_page('','');">
@@ -189,6 +169,7 @@ function redirect($page_name)
             Add Survey Screen
          </a>
          <p></p>
+
 
          <!-- Invisible selects. These are cloned to create drop downs for each list item-->
          <?php
@@ -235,8 +216,7 @@ function redirect($page_name)
 
 
          <!--- Our Sortables List --->
-         <div id="page_list">
-         </div>
+         <div id="page_list"></div>
 	
       </div>
    </div>
@@ -245,14 +225,6 @@ function redirect($page_name)
       echo '<script type="text/javascript">
             window.addEvent(\'domready\', function(){
             ';
-
-/*
-      if( isset($_POST['fileop']) )
-      {
-         if($_POST['fileop'] == 'load')
-         {
-*/
-            //echo $_POST['file'];
 
       $expData = parseExperimentData( $expString );
       for( $i = 0; $i < count($expData); ++$i )
@@ -282,100 +254,7 @@ function redirect($page_name)
                break;
          }
       }
-	/*				
-               $barstrings = explode('$', $expString);				
-               for($rownum=0;$rownum<count($barstrings);++$rownum)
-               {
-                  $attribs = explode('&', $barstrings[$rownum]);
-                  $pagetype = hexToStr(substr($attribs[0],5));
 
-                  if($pagetype == 'Information Page')
-                  {
-                     $page_source = hexToStr(substr($attribs[3],4));
-                     $page_title = hexToStr(substr($attribs[2],6));
-						
-                     echo 'add_info_page("'. $page_title .'","'. $page_source .'");';
-                  }
-                  else if($pagetype == 'Training Screen')
-                  {
-                     $page_source = hexToStr(substr($attribs[3],4));
-                     $page_title = hexToStr(substr($attribs[2],6));
-                     //$adv = hexToStr(substr($attribs[4],7));
-
-                     echo 'add_training_page("'. $page_title .'","'. $page_source .'");';
-                     //echo 'add_training_page_sourced("'. $page_title .'","'. $page_source .');';
-                  }
-                  else if($pagetype == 'Survey Page')
-                  {
-                     $page_source = hexToStr(substr($attribs[3],4));
-                     $page_title = hexToStr(substr($attribs[2],6));
-                     $survName = hexToStr(substr($attribs[4],7));
-                     if($survName == '')
-                     {
-                        $survName = 'undefined';
-                     }
-		
-                     echo 'add_survey_page("'. $page_title .'","'. $page_source .'","'.$survName.'");';
-                  }
-               }
-*/
-/*
-         }
-
-      }
-
-
-
-
-      if( isset($_POST['fileop']) )
-      {
-         if(isset($_POST['file']))
-         {
-            if($_POST['fileop'] == 'load')
-            {
-               //echo $_POST['file'];
-               $r = query_db("select ExperimentName, ExperimentShortName, ExperimentString from t_experiments where ExperimentShortName='". $_POST["file"] ."';");
-               $row = mysql_fetch_array($r, MYSQL_BOTH);
-					
-               $barstrings = explode('$', $row['ExperimentString']);				
-               for($rownum=0;$rownum<count($barstrings);++$rownum)
-               {
-                  $attribs = explode('&', $barstrings[$rownum]);
-                  $pagetype = hexToStr(substr($attribs[0],5));
-
-                  if($pagetype == 'Information Page')
-                  {
-                     $page_source = hexToStr(substr($attribs[3],4));
-                     $page_title = hexToStr(substr($attribs[2],6));
-						
-                     echo 'add_info_page("'. $page_title .'","'. $page_source .'");';
-                  }
-                  else if($pagetype == 'Training Screen')
-                  {
-                     $page_source = hexToStr(substr($attribs[3],4));
-                     $page_title = hexToStr(substr($attribs[2],6));
-                     //$adv = hexToStr(substr($attribs[4],7));
-
-                     echo 'add_training_page("'. $page_title .'","'. $page_source .'");';
-                     //echo 'add_training_page_sourced("'. $page_title .'","'. $page_source .');';
-                  }
-                  else if($pagetype == 'Survey Page')
-                  {
-                     $page_source = hexToStr(substr($attribs[3],4));
-                     $page_title = hexToStr(substr($attribs[2],6));
-                     $survName = hexToStr(substr($attribs[4],7));
-                     if($survName == '')
-                     {
-                        $survName = 'undefined';
-                     }
-		
-                     echo 'add_survey_page("'. $page_title .'","'. $page_source .'","'.$survName.'");';
-                  }
-               }
-            }
-         }
-      }
-*/
       echo '});</script>';
    ?>
 	

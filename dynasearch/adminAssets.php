@@ -87,16 +87,16 @@ echo '<script type="text/javascript">assetDir = "' . $assetBaseDir . '";</script
 
          <!-- Asset Viewer -->
    <?php 
-      echo '<div>';
+      echo '<div id="accordion">';
       // I added the minus 1 because training pages should never be uploaded, always created through the editor.  If this ever changes,
 	  // then it can be removed.  - Jon 22JAN13
       for($i = 0; $i < count($assets)-1; $i++)
       {
          $currAsset = &$assets[$i];
 
-         echo '<div class="asset-panel">'. 
-                 '<form action="adminAssets.php" method="post">' .
-                    '<h2>' . $currAsset["Name"] . '</h2>';
+         echo '<h2>' . $currAsset["Name"] . '</h2>' .
+              '<div class="content">'. 
+                 '<form class="asset-panel" action="adminAssets.php" method="post">';
 
 
          $assetOptions = &$currAsset["Options"];
@@ -104,15 +104,11 @@ echo '<script type="text/javascript">assetDir = "' . $assetBaseDir . '";</script
          if ( $assetOptionCount > 0)
          {
 
-//            echo '<table class="asset-table">' . 
-//                    '<tr>' .
-//                       '<td>';
 
-echo '<div class="asset-manager">';
+            echo '<div class="asset-manager">';
 
-//echo '<div style="height : 100%;">';
-echo '<div class="control-pane">';
-            echo '<select id="' . $currAsset["Tag"] .'Select" ' .
+            echo '<div class="control-pane">';
+            echo '<select class="asset-list" id="' . $currAsset["Tag"] .'Select" ' .
                          'name="asset" size="'.($assetOptionCount + 1).'" >';
             for ($j = 0; $j < $assetOptionCount; $j++)
             {
@@ -124,25 +120,40 @@ echo '<div class="control-pane">';
 
 
 
+            // File Info
+            echo '<h3>File Size : <span id="' . $currAsset["Tag"] . 'FileSize"></span></h3>';
 
-            // Delete Button
-            echo '<input type="button" value="Preview" onclick="previewAsset(\'' . $currAsset["Tag"] . '\');">';
-//echo '<br/>';
-
+            // Control Buttons
+            echo '<input type="button" value="Preview" onclick="previewAsset(\'' . $currAsset["Tag"] . '\');"> ';
             echo '<input type="submit" name="delete" value="Delete" onclick="return confirmDelete();">';
 
+            if($currAsset["Tag"] != 'images') {
+
+               echo '<br/>' .
+                    '<input type="button" value="New" ' .
+                           'onclick="newAsset(\'' . $currAsset["Tag"] . '\');" /> ' .
+                    '<input type="button" id="' . $currAsset["Tag"] . 'SaveBtn" value="Save" ' .
+                           'onclick="saveAsset(\'' . $currAsset["Tag"] . '\');" disabled="disabled" /> ';
+               echo '<input type="button" id="' . $currAsset["Tag"] . 'SaveAsBtn"value="Save As.." ' .
+                           'onclick="saveAssetAs(\'' . $currAsset["Tag"] . '\');" disabled="disabled">';
+            }
+
+
 echo '</div>';
 
-
-//echo '</td>';
-//echo '<td>';
 
 echo '<div class="preview-pane">';
-echo '<textarea id="' . $currAsset["Tag"] . 'Preview" class="text-preview"></textarea>';
+echo '<input type="text" id="' . $currAsset["Tag"] . 'SelectedAsset" name="selectedAsset" style="display:none;"/>';
+
+if($currAsset["Tag"] == 'images') {
+echo '<img id="' . $currAsset["Tag"] . 'Preview" class="img-preview"></img>';
+}
+else
+{
+echo '<textarea id="' . $currAsset["Tag"] . 'Preview" class="text-preview" disabled="disabled"></textarea>';
+}
 echo '</div>';
-//echo '</td>';
-//echo '</tr>';
-//echo '</table>';
+
 echo '</div>';
 
          }
@@ -160,44 +171,6 @@ echo '</div>';
 
 
 
-         <!-- Asset Lists -->
-   <?php 
-      echo '<table>';
-      // I added the minus 1 because training pages should never be uploaded, always created through the editor.  If this ever changes,
-	  // then it can be removed.  - Jon 22JAN13
-      for($i = 0; $i < count($assets)-1; $i++)
-      {
-         $currAsset = &$assets[$i];
-
-         echo '<td style="padding:10px;">' . 
-                 '<form action="adminAssets.php" method="post">' .
-                    '<h2>' . $currAsset["Name"] . '</h2>';
-
-         $assetOptions = &$currAsset["Options"];
-         $assetOptionCount = count($assetOptions);
-         if ( $assetOptionCount > 0)
-         {
-            echo '<select name="asset" size="'.($assetOptionCount + 1).'">';
-            for ($j = 0; $j < $assetOptionCount; $j++)
-            {
-               echo $assetOptions[$j];
-            }
-            echo '</select>';
-
-
-            // Delete Button
-            echo '<input type="submit" name="delete" value="Delete" onclick="return confirmDelete();">';
-         }
-         else
-         {
-            echo 'No Assets Uploaded';
-         }
-         echo    '</form>' .
-              '</td>';
-      }
-
-      echo '</table>';
-   ?>
          <br/>
          <br/>
 
@@ -226,6 +199,28 @@ echo '</div>';
 
             <input type="submit" name="upload" value="Upload">
          </form>
+
+         <!-- Capacity Info-->
+         <div class="allocation-info">
+   <?php 
+      $adminMaxSize = 1048576;
+
+      echo '<h3>My Allocation</h3>';
+
+      echo fileSizeStr($adminDirSize) . ' of ' . fileSizeStr($adminMaxSize) . '<br/>' .
+           ' (' . fileSizeStr($adminMaxSize - $adminDirSize) . ' remaining) <br/>';
+
+      $percentUsed = $adminDirSize / $adminMaxSize * 100.0;
+
+      echo '<div class="capacity-bar">' .
+              '<div class="capacity-full" style="width:' . $percentUsed . '%;"></div>' .
+           '</div>';
+
+      echo number_format($percentUsed, 1) . '% Used ';
+
+   ?>
+         </div>
+
       </div>
    </div>
    
