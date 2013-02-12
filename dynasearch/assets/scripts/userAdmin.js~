@@ -28,8 +28,9 @@ var checkAvailability = function() {
          'ret'    : 'User_ID'
       },
       onSuccess : function(response) {
+         var arr    = JSON.decode(response);  
 
-         if (response == userId) {
+         if (arr['User_ID'] == userId) {
             // ID exists, not available
             availabilityTag.set('html', 'Not Available');
             availabilityTag.setProperty('style', 'color:red;');
@@ -58,6 +59,9 @@ var changeExp = function() {
 
       var expSelect = $("pExps");
       expSelect.removeProperty("hidden");
+
+      var pProgress = $("pProgress");
+      pProgress.setProperty("value", "0");
    }
 }
 

@@ -26,11 +26,19 @@
          query_db('update t_user set current_position='. $current_position .' where User_ID=\''. $username .'\'');
          redirect('director.php');
       }
-      
+
+      $scaleProfileId = $_SESSION['scaleProfileId'];
+      if( $scaleProfileId == -1 )
+      {
+         redirect('sizeReg.php'); 
+      }
+
+     /* 
       if( $current_position == 0 )
       {
          redirect('sizeReg.php'); 
       }
+*/
       
       //echo 'current after update: '. $current_position .'<br/>';
 //      exit();

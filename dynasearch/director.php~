@@ -26,53 +26,12 @@
          query_db('update t_user set current_position='. $current_position .' where User_ID=\''. $username .'\'');
          redirect('director.php');
       }
-      
+     /* 
       if( $current_position == 0 )
       {
          redirect('sizeReg.php'); 
-
-
-/*
-         if( isset($_POST['customScaling']) && ($_POST['customScaling'] == true) )
-         {
-            redirect('sizeReg.php'); 
-         }
-         else
-         {
-            $width  = $_SESSION['scaleW'] = 1.0;
-            $height = $_SESSION['scaleH'] = 1.0;
-            redirect('advance.php'); 
-         }
-
-         if(isset($_POST['setSize']))
-         {
-            if(isset($_POST['scaleW']) && isset($_POST['scaleH']))
-            {
-               $_SESSION['scaleW'] = $_POST['scaleW'];
-               $_SESSION['scaleH'] = $_POST['scaleH'];
-               $username = $_SESSION['username'];
-               $width = $_SESSION['scaleW'];
-               $height = $_SESSION['scaleH'];
-             
-             // Crazy values?
-      //      if((int)$width < 1) { $width = (string)1; }
-      //      if((int)$height < 1) { $height = (string)1; }
-             
-               query_db("UPDATE t_user SET scaleW='$width', scaleH='$height' WHERE User_ID='$username';");
-                redirect("advance.php");
-               unset($_POST['scaleW']); unset($_POST['scaleH']);
-            }
-         }
-         else
-         {
-            // If User desires dynamic sizing, then go to resize
-
-
-            redirect('sizeReg.php'); 
-         }
-*/
-
       }
+*/
       
       //echo 'current after update: '. $current_position .'<br/>';
 //      exit();

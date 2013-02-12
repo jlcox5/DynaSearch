@@ -105,6 +105,13 @@ table.asset-table {
 
 .allocation-info {
    width : 30%;
+   border : 1px solid #555;
+}
+
+.allocation-info h3 {
+   background: #555;
+   color: white;
+   padding: 3px 5px 1px;
 }
 
 .capacity-bar {

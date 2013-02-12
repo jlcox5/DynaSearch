@@ -94,7 +94,7 @@
                   "SET QuestOutput=IFNULL(CONCAT(QuestOutput, '$resultStr'), '$resultStr') " .
                   "WHERE User_ID='$username' AND Experiment_ID='$userExpId';";
          mysql_query($query);
-	     //redirect("advance.php");
+	 redirect("advance.php");
 	   }
     }
     

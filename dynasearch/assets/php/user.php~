@@ -4,42 +4,6 @@
    require_once('config.php');
    require_once('std_api.php');
 
-   /** 
-    * Parses the hex encoded experiment string into an array where each 
-    * index corresponds to a page, and contains an associated array of
-    * that page's values
-    *
-    * @param string $expdata - the hex encoded experiment string
-    * @return array - contains each page as an associated array
-    */
-   function parseExperimentData( $expData )
-   {
-      $expArray = array();
-
-      // Split experiment string up by page
-      $expPages = explode('$',$expData);
-      for($i=0; $i<count($expPages);$i++)
-      {
-         // Split page into page's properties
-         $expProperties = explode('&', $expPages[$i]);
-         $propertyArray = array();
-
-         for($j=0;$j < count($expProperties);$j++)
-         {
-            // Pull out key and value from property
-            $item = explode('=',$expProperties[$j]);
-            $key   = $item[0];
-            $value = ( ($key == "page") ? ($item[1]) : (hexToStr($item[1])) );
-            $propertyArray[$key] = $value;
-         }
-
-         $expArray[ $i ] = $propertyArray;
-
-      }
-
-      return $expArray;
-   }
-
 
    # Return "True" on success, setting session variables "username", "full_name" and "logged_in"
    # else returns "False"
@@ -66,8 +30,11 @@
          $_SESSION['userAdmin'] = $test['Admin_ID'];
          $_SESSION['userExpId'] = $test['Current_Experiment_ID'];
          $_SESSION['full_name'] = $test['Name'];
-         $_SESSION['scaleW'] = $test['scaleW'];
-         $_SESSION['scaleH'] = $test['scaleH'];
+         //$_SESSION['scaleW'] = $test['scaleW'];
+         //$_SESSION['scaleH'] = $test['scaleH'];
+
+         $_SESSION['scaleProfileId'] = $test['ScaleProfileID'];
+
 
          if( $test['User_Type'] == 'U')
          {
@@ -96,6 +63,13 @@
 
             // Get Custom Scaling flag
             $_SESSION['customScaling'] = $row['CustomScaling'];
+
+            // Get Scaling Profile
+            $_SESSION['customScaling'] = $row['CustomScaling'];
+
+            // Get Experiment Scale
+            $_SESSION['scaleW'] = $row['ScaleW'];
+            $_SESSION['scaleH'] = $row['ScaleH'];
 
             // Pull Experiment string from experiment data
             $expstr = $row['ExperimentString'];

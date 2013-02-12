@@ -21,7 +21,7 @@ function test() {
 
    document.getElementById('scaleW').value = scaleW;
    document.getElementById('scaleH').value = scaleH;
-   document.getElementById('numbers').innerHTML = scaleW.toFixed(2) + " by " + scaleH.toFixed(2) + " is your scale";
+   document.getElementById('numbers').innerHTML = scaleW.toFixed(2) + " " + scaleH.toFixed(2) + " is your scale";
 }
 
 window.addEvent('domready', function() {

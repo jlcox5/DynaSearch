@@ -17,6 +17,7 @@ var checkAvailability = function() {
    var availabilityTag = $("availabilityTag");
    var saveButton = $("saveButton");
    var userId    = $("pId").get("value");
+   //var params    = new Array('User_ID', userId);
    var params    = new Array('User_ID', userId);
    var request = new Request({
       method    : 'post',
@@ -28,8 +29,9 @@ var checkAvailability = function() {
          'ret'    : 'User_ID'
       },
       onSuccess : function(response) {
+         var arr    = JSON.decode(response);  
 
-         if (response == userId) {
+         if (arr['User_ID'] == userId) {
             // ID exists, not available
             availabilityTag.set('html', 'Not Available');
             availabilityTag.setProperty('style', 'color:red;');

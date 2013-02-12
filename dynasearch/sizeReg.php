@@ -4,13 +4,24 @@
    require_once('assets/php/db_util.php');
 
    $username = $_SESSION['username'];
+   $adminId  = $_SESSION['userAdmin'];
 
+/*
    if( $_SESSION['customScaling'] == false )
    {
       $_POST['scaleW'] = 1.0;
       $_POST['scaleH'] = 1.0;
    }
+*/
 
+   //if( $username == $adminId ) { echo "test post"; }
+/*
+   if( ($_SESSION['scaleW'] != -1.0) && ($_SESSION['scaleH'] != -1.0) )
+   {
+      $_POST['scaleW'] = $_SESSION['scaleW'];
+      $_POST['scaleH'] = $_SESSION['scaleH'];
+   }
+*/
 
    if( isset($_POST['scaleW']) && isset($_POST['scaleH']) )
    {
@@ -18,10 +29,23 @@
       $width = $_SESSION['scaleW'] = $_POST['scaleW'];
       $height = $_SESSION['scaleH'] = $_POST['scaleH'];
 	 
-      $query = "UPDATE t_user SET scaleW='$width', scaleH='$height' WHERE User_ID='$username';";
-      query_db($query);
+      //$query = "UPDATE t_user SET scaleW='$width', scaleH='$height' WHERE User_ID='$username';";
+      //query_db($query);
+      if( $username == $adminId ) {
 
-      redirect('advance.php'); 
+         $profileName = $_POST['profileName'];
+         $query = "INSERT INTO t_scale_profiles " .
+                  "(Admin_ID, Name, ScaleW, ScaleH) VALUES " . 
+                  "('$adminId', '$profileName', $width, $height);";
+         if( $DEBUG ) { echo $query; }
+         query_db($query);
+
+         redirect('adminSettings.php');
+      }
+      else
+      {
+         redirect('advance.php');
+      } 
    }
    
    $page_title = "Size Registration Page";
@@ -40,10 +64,21 @@
 
                <form id="configSize" name="configSize" method="post" action="sizeReg.php">
                   <table>
-                     <tr><img id="resizable1" name="resizable1" class="resize" src="assets/images/card.jpg"></></tr>
-                     <tr><td id="numbers">55</td></tr>
+                     <tr><img id="resizable1" name="resizable1" class="resize" src="assets/images/card.jpg"></img></tr>
+                     <tr><td id="numbers"></td></tr>
                      <tr><td><input type="hidden" id="scaleW" name="scaleW" value=55 /></td></tr>
                      <tr><td><input type="hidden" id="scaleH" name="scaleH" value=55 /></td></tr>
+
+<?php
+      if( $username == $adminId ) {
+         echo '<tr><td>Profile Name : <input type="text" name="profileName" required="required" /></td></tr>';
+      }
+      else
+      {
+         //redirect('advance.php');
+      }
+?>
+
                      <tr>
                         <td>
                            <input type="submit" id="setSize" name="setSize" value="Set Size" />

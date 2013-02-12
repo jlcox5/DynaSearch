@@ -44,7 +44,8 @@ function query_db($query)
       $result = query_db($query);
       $row = mysql_fetch_array($result, MYSQL_BOTH);
  
-      echo $row[$ret];
+      //echo $row[$ret];
+      echo json_encode($row);
       //echo $params[0];
       //return false;
    }

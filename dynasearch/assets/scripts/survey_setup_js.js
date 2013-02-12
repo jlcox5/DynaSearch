@@ -638,14 +638,15 @@ var save_experiment = function()
    form.style.visibility = 'hidden';
    form.method = 'POST';
 
-   var customScaling = new Element('input');
-   customScaling.name = 'customScaling';
-   if ( $('customScaling').checked ) {
-      customScaling.value = true;
-   } else {
-      customScaling.value = false;
-   }
-   form.adopt(customScaling);
+   //var customScaling = new Element('input');
+   //customScaling.name = 'customScaling';
+   //customScaling.value = $('customScaling').checked;
+   //form.adopt(customScaling);
+
+   var scaleProfile = new Element('input');
+   scaleProfile.name = 'scaleProfile';
+   scaleProfile.value = $('scaleProfile').value;
+   form.adopt(scaleProfile);
 
    var data = new Element('input');
    data.name = 'data';
@@ -672,6 +673,45 @@ var save_experiment = function()
    form.submit();
 };
 
+
+var save_experiment_copy = function()
+{
+   var expName = $('survey_name').value;
+
+   var short_name = experiment_name.replace( /[^\w]/gi ,'');   // Get rid of spaces and weird symbols
+   //alert('saving as ' + short_name);
+   
+   var params    = new Array('ExperimentName', expName);
+   var request = new Request({
+      method    : 'post',
+      url       : './assets/php/db_util.php',
+      data      : {
+         'query'  : 'select',
+         'table'  : 't_experiments',
+         'params' : params,
+         'ret'    : 'User_ID'
+      },
+      onSuccess : function(response) {
+         var arr    = JSON.decode(response);  
+
+         if (arr['User_ID'] == userId) {
+            // ID exists, not available
+            availabilityTag.set('html', 'Not Available');
+            availabilityTag.setProperty('style', 'color:red;');
+            saveButton.setProperty('disabled', 'disabled');
+
+         } else {
+            // ID does not exist, available
+            availabilityTag.set('html', 'Available');
+            availabilityTag.setProperty('style', 'color:green;');
+            saveButton.setProperty('disabled', '');
+         }
+      }
+   }).send();
+
+
+
+};
 
 
 var load_file = function()

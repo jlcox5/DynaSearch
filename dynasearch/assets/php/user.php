@@ -30,8 +30,11 @@
          $_SESSION['userAdmin'] = $test['Admin_ID'];
          $_SESSION['userExpId'] = $test['Current_Experiment_ID'];
          $_SESSION['full_name'] = $test['Name'];
-         $_SESSION['scaleW'] = $test['scaleW'];
-         $_SESSION['scaleH'] = $test['scaleH'];
+         //$_SESSION['scaleW'] = $test['scaleW'];
+         //$_SESSION['scaleH'] = $test['scaleH'];
+
+         $_SESSION['scaleProfileId'] = $test['ScaleProfileID'];
+
 
          if( $test['User_Type'] == 'U')
          {
@@ -60,6 +63,13 @@
 
             // Get Custom Scaling flag
             $_SESSION['customScaling'] = $row['CustomScaling'];
+
+            // Get Scaling Profile
+            $_SESSION['scaleProfileId'] = $row['ScaleProfileID'];
+
+            // Get Experiment Scale
+            $_SESSION['scaleW'] = $row['ScaleW'];
+            $_SESSION['scaleH'] = $row['ScaleH'];
 
             // Pull Experiment string from experiment data
             $expstr = $row['ExperimentString'];

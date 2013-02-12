@@ -1,13 +1,45 @@
 <?php
-$page_title = "Editor";
 
-$template_style_array  = array("style.css", "editor.css");
-$template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js", "timer.js",  "hurricane-unisys-parser.js", "canvas3dapi/c3dapi.js");
+   require_once('assets/php/std_api.php');
+   include("assets/php/config.php");
+   include('assets/php/admin_dir.php');
+
+   mysql_connect($DB_HOST, $DB_USER, $DB_PASS) or die("Unable to connect.");
+   mysql_select_db($DB_NAME) or die("Unable to select database.");
+
+
+   // Load Scale Profile
+   $scaleProfileId = $_SESSION['scaleProfileId'];
+   $query = "SELECT * FROM t_scale_profiles " .
+            "WHERE " .
+            "Profile_ID='$scaleProfileId' AND Admin_ID='$username';";
+      if( $DEBUG ) { echo $query; }
+      $result = mysql_query($query);
+      if( $row = mysql_fetch_array($result, MYSQL_BOTH) )
+      {
+         $scaleProfileName   = $row["Name"];
+         $scaleProfileW      = $row["ScaleW"];
+         $scaleProfileH      = $row["ScaleH"];
+      }
+      else
+      {
+         $host  = $_SERVER['HTTP_HOST'];
+         $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+         echo '<script type="text/javascript">
+                  alert("You must have a Scale Profile selected in order to create a training page.");
+                  window.location = "http://'. $host . $uri .'/adminSettings.php";
+               </script> ';
+      }
+
+   $page_title = "Editor";
+
+   $template_style_array  = array("style.css", "editor.css");
+   $template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js", "timer.js",  "hurricane-unisys-parser.js", "canvas3dapi/c3dapi.js");
 
 // There is a little bit of a dependency issue with the editor.js file needing to have assetDir defined before it can run.  It would be nice to be
 // able to clean this up a little more at some point, but it works for now... I guess. -- Jon
-require_once('assets/php/std_api.php');
-include('assets/php/admin_dir.php');
+
+
 echo '<script type="text/javascript"> assetDir = "' . $assetBaseDir . '"; </script> ';
 
 array_push($template_script_array, "editor.js");
@@ -31,7 +63,16 @@ else{
 
 <body id="body" >
 
-<?php
+   <?php
+
+
+
+      echo '<script language="javascript"> <!--
+               window.scaleW = '.$scaleProfileW.';
+               window.scaleH = '.$scaleProfileH.';
+            //--></script>';
+
+/*
 if(isset($_SESSION['scaleW'])){
  echo '<script language="javascript"> <!--
 		window.scaleW = '.$_SESSION['scaleW'].'; //--></script>';
@@ -40,8 +81,8 @@ if(isset($_SESSION['scaleW'])){
 if(isset($_SESSION['scaleH'])){
  echo '<script language="javascript"> <!--
 		window.scaleH = '.$_SESSION['scaleH'].'; //--></script>';
-}
-?>
+}*/
+   ?>
 
 <?php
 	// Added by Jon - Display all saved editor pages

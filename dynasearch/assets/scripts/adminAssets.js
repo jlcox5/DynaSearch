@@ -72,11 +72,15 @@ var previewAsset = function(type) {
 
 var newAsset = function(type) {
 
+   var assetPreview = $(type + "Preview");
 
-   if( confirm('Are you sure you want to make a new asset?\n\nAll changes since your last save will be lost.') ) {
+   if( (assetPreview == "") ||
+       (confirm('Are you sure you want to make a new asset?\n\nAll changes since your last save will be lost.')) ) {
+
       $(type + "SaveBtn").setProperty('disabled', 'disabled');
       $(type + "SaveAsBtn").setProperty('disabled', '');
       $(type + "Preview").setProperty('disabled', '');
+      assetPreview.value = "";
    }
 
 }
@@ -106,7 +110,7 @@ var saveAsset = function(type) {
          },
          onSuccess : function(response) {
             //var arr = JSON.decode(response);
-            //alert("File saved!\n\n" + asset);
+            alert("File saved!\n\n" + asset);
             //assetPreview.set('html', arr['fileContent']);
          }
       }).send();

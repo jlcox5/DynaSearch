@@ -35,7 +35,8 @@ function redirect($page_name)
       {
          $short = $_POST['shortname'];
          $name = $_POST['fullname'];
-         $customScaling = $_POST['customScaling'];
+         //$customScaling = $_POST['customScaling'];
+         $scaleProfileId = $_POST['scaleProfile'];
          $experiment_string = $_POST['data'];
 			
 			// See if this entry already exists...
@@ -46,13 +47,13 @@ function redirect($page_name)
 				{ query_db("DELETE from t_experiments where ExperimentShortName='". $short ."';");	}
 */
 	
-   $query = "INSERT INTO t_experiments (ExperimentShortName, Admin_ID, ExperimentName, CustomScaling, ExperimentString) " .
-            "VALUES ('$short', '$username', '$name', $customScaling, '$experiment_string')" .
+   $query = "INSERT INTO t_experiments (ExperimentShortName, Admin_ID, ExperimentName, ScaleProfileID, ExperimentString) " .
+            "VALUES ('$short', '$username', '$name', $scaleProfileId, '$experiment_string')" .
             "ON DUPLICATE KEY UPDATE " .
             "ExperimentShortName=Values(ExperimentShortName), Admin_ID=Values(Admin_ID), ExperimentName=Values(ExperimentName), ExperimentString=Values(ExperimentString)"  . 
             ";";
 
-//echo $query;
+         if( $DEBUG ) { echo $query; }
          query_db($query);
          redirect('survey_setup.php?fileop=load&file='.$short);
       }// End Save
@@ -80,10 +81,11 @@ function redirect($page_name)
              // Load the Experiment
              $res = mysql_fetch_array($res, MYSQL_BOTH);
 					
-             $expName          = $res['ExperimentName'];
-             $expShortName     = $res['ExperimentShortName'];
-             $expString        = $res['ExperimentString'];
-             $expCustomScaling = $res['CustomScaling'];
+             $expName        = $res['ExperimentName'];
+             $expShortName   = $res['ExperimentShortName'];
+             $expString      = $res['ExperimentString'];
+             //$expCustomScaling = $res['CustomScaling'];
+             $scaleProfileId = $res['ScaleProfileID'];
 					
           }		
 
@@ -150,8 +152,26 @@ function redirect($page_name)
          <button onClick="if(confirm('Are you sure you would like to discard all changes since the last save and load a new file?')){load_file();}">Load</button>
          <br/>
          <br/>
-         <input type="checkbox" id="customScaling" <?php echo $expCustomScaling ? 'checked="checked"' : ''; ?> />
-         Require Custom Scaling
+
+
+         <!-- Scale Profile -->
+         <!--<input type="checkbox" id="customScaling" <?php echo $expCustomScaling ? 'checked="checked"' : ''; ?> />-->
+         Scale Profile : 
+
+   <?php
+      $admSizeProfiles = getAdminSizeProfiles( $username );
+      echo '<select id="scaleProfile">';
+
+      // Custom Scaling Option - always available
+      echo    '<option value="-1" ' . ($scaleProfileId == '-1' ? 'selected="selected"' : '') . '>Custom Scaling</option>';
+
+      foreach($admSizeProfiles as $key => $value)
+      {
+         echo '<option value="' . $key . '" ' . ($scaleProfileId == $key ? 'selected="selected"' : '') . '>' . $value . '</option>';
+      }
+
+      echo '</select>';
+   ?>
 
 
          <!-- To add items to the list -->

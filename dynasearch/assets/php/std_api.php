@@ -117,6 +117,28 @@ function getAdminExps( $username )
 }
 
 
+// Get Admin's Size Profiles
+function getAdminSizeProfiles( $username )
+{
+   $adminSizeProfiles = array();
+   $query = "SELECT * FROM t_scale_profiles WHERE Admin_ID='$username';";
+   $result = mysql_query($query);
+   if( $result )
+   {
+      while( $row = mysql_fetch_array($result, MYSQL_BOTH) )
+      {
+         $profileName = $row['Name'];
+         $profileID   = $row['Profile_ID'];
+         //$profileScaleW   = $row['ScaleW'];
+         //$profileScaleH   = $row['ScaleW'];
+
+         $adminSizeProfiles[$profileID] = $profileName;
+      }
+   }
+   return $adminSizeProfiles;
+}
+
+
 // TODO : the following should be worked out
 
 function getExpPageArray($index) {
