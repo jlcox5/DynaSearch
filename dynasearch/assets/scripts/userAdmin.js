@@ -31,7 +31,7 @@ var checkAvailability = function() {
       onSuccess : function(response) {
          var arr    = JSON.decode(response);  
 
-         if (arr['User_ID'] == userId) {
+         if (arr.length > 0) {
             // ID exists, not available
             availabilityTag.set('html', 'Not Available');
             availabilityTag.setProperty('style', 'color:red;');

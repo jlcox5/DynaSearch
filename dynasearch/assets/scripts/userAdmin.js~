@@ -17,6 +17,7 @@ var checkAvailability = function() {
    var availabilityTag = $("availabilityTag");
    var saveButton = $("saveButton");
    var userId    = $("pId").get("value");
+   //var params    = new Array('User_ID', userId);
    var params    = new Array('User_ID', userId);
    var request = new Request({
       method    : 'post',

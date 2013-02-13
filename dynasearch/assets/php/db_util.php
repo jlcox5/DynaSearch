@@ -28,24 +28,30 @@ function query_db($query)
    {
       $table  = $_POST['table'];
       $params = $_POST['params'];
-      $ret = $_POST['ret'];
+      //$ret = $_POST['ret'];
 
       $query = "SELECT * FROM $table WHERE";
-
       for($i = 0; $i < count($params); $i = $i + 2)
       {
+         if( $i > 0 ) { $query .= " AND "; }
          $field = $params[$i];
          $value = mysql_escape_string($params[$i + 1]);
          $query = "$query $field='$value'";
       }
-
       $query = $query . ";";
 
       $result = query_db($query);
-      $row = mysql_fetch_array($result, MYSQL_BOTH);
+      $ret = array();
+      if( $result != "False" )
+      { 
+         while( $row = mysql_fetch_assoc($result) )
+         {
+            $ret[] = $row;
+         }
+      }
  
       //echo $row[$ret];
-      echo json_encode($row);
+      echo json_encode($ret);
       //echo $params[0];
       //return false;
    }

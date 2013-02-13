@@ -27,31 +27,33 @@ function redirect($page_name)
    include('assets/php/admin_dir.php');
 
    $username = $_SESSION['username'];
+   $expId = -1;
    $expName = 'New Experiment';
 
    if( isset($_POST['fileop']) )
    {
       if( $_POST['fileop'] == 'save' )
       {
+         $id = $_POST['expId'];
          $short = $_POST['shortname'];
          $name = $_POST['fullname'];
          //$customScaling = $_POST['customScaling'];
          $scaleProfileId = $_POST['scaleProfile'];
          $experiment_string = $_POST['data'];
-			
-			// See if this entry already exists...
-/*
-			$res = query_db("SELECT COUNT(*) as \"count\" from t_experiments where ExperimentShortName='". $short ."'");
-			$res = mysql_fetch_array($res, MYSQL_BOTH);
-			if($res[0] == '1')
-				{ query_db("DELETE from t_experiments where ExperimentShortName='". $short ."';");	}
-*/
-	
-   $query = "INSERT INTO t_experiments (ExperimentShortName, Admin_ID, ExperimentName, ScaleProfileID, ExperimentString) " .
-            "VALUES ('$short', '$username', '$name', $scaleProfileId, '$experiment_string')" .
-            "ON DUPLICATE KEY UPDATE " .
-            "ExperimentShortName=Values(ExperimentShortName), Admin_ID=Values(Admin_ID), ExperimentName=Values(ExperimentName), ExperimentString=Values(ExperimentString)"  . 
-            ";";
+
+         if( $id > 0 )
+         {
+            $query = "UPDATE t_experiments " .
+                     "SET ExperimentShortName='$short', Admin_ID='$username', ExperimentName='$name', " .
+                        "ScaleProfileID=$scaleProfileId, ExperimentString='$experiment_string' " .
+                     "WHERE id=$id;";
+         }
+         else
+         {
+            $query = "INSERT INTO t_experiments " .
+                     "(ExperimentShortName, Admin_ID, ExperimentName, ScaleProfileID, ExperimentString) " .
+                     "VALUES ('$short', '$username', '$name', $scaleProfileId, '$experiment_string');";
+         }
 
          if( $DEBUG ) { echo $query; }
          query_db($query);
@@ -103,6 +105,7 @@ function redirect($page_name)
          <h1>Experiment Editor</h1><br/>
          <h2>Currently Editing: 
             <input type="text" id="survey_name" value="<?php echo $expName; ?>">
+            <input id="exp_id" value="<?php echo $expId; ?>"  style="display:none;"></span>
          </h2>
 
          <br/>
@@ -112,7 +115,7 @@ function redirect($page_name)
          <!-- Buttons -->
          <button onClick="prompt_new_experiment();">New</button>	
          <button onClick="save_experiment();">Save</button>
-         <button onClick="save_experiment();">Save As...</button>
+         <button onClick="save_experiment_copy();">Save Copy</button>
          <br/>
    <?php
       $adminExps = getAdminExps($username);
@@ -243,6 +246,7 @@ function redirect($page_name)
 	
    <?php
       echo '<script type="text/javascript">
+            ADMIN_ID = "' . $username . '";
             window.addEvent(\'domready\', function(){
             ';
 
