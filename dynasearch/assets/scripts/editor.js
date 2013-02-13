@@ -107,10 +107,9 @@ var hex_to_str = function(s)
 var table_data = []
 var table_parser = function(experiment, file, receiver)
 {
-	//filepath = 'hurricane_data/' + experiment + '/' + file;
-	filepath = assetDir+file;
+   //filepath = 'hurricane_data/' + experiment + '/' + file;
+   filepath = assetDir+file;
 
-	//alert(filepath);
    var req = new Request({
       url        : filepath,
       async      : false,
@@ -206,7 +205,6 @@ var ext_table_parser = function(experiment, file, receiver)
 	// Changed by Jon
 	filepath = assetDir+file;
 	
-	alert(filepath);
 	var req = new Request({
 		url: filepath,
 		async: false,
@@ -1146,16 +1144,8 @@ var ObjectWindow = new Class({
                   var appname = owThis.objName + "_" + getInstanceCount(owThis.objName); 
                   owThis.contentObject.setName(appname);
                   owThis.contentObject.name = appname;
-
-                  //alert(owThis.contentObject.Packages.java.lang.Thread.currentThread().getName());
-
-//                  var nspyEQ = document.getElementById('spyObj').mkSpyEQ(appname);
-//                  var toolkit = owThis.contentObject.Packages.java.awt.Toolkit.getDefaultToolkit();
-//                  toolkit.getSystemEventQueue().push(nspyEQ);
                   try{
                      document.getElementById('spyObj').attachSpyTo(appname);
-
-                     //owThis.contentObject.firePropertyChange("gogogadgetthreadhook",1748.8471,1830.0381);
                   }catch(e){
                      alert(e);
                   }
@@ -1350,44 +1340,39 @@ var InteractiveTableWindow = new Class({
    },
 });
 
-var TableWindow = new Class({
+var TableWindow = new Class(
+{
    Extends: Window,
    initialize: function(experiment, file)
    {
       this.file = file == null ? '' : file;
       this.type='table';
       this.parent(undefined,'Table');
-      if (true)//typeof editing != 'undefined')
-      {	
-         // If we get here, the user is performing an actual experiment
-         // Insert the actual table
+      if (true)
+	  {	
          this.table  = new Element('table');
          this.table.setAttribute('class', 'dynaview_table');
          this.table.setAttribute('id', file+"_");
          this.border = '1';
-         //this.table.setAttribute('fontSize',16*(window.scaleW/55.0))+"px";
-			
-			
-         //alert(this.div.id);
+
          table_parser(experiment, this.file, this.div.id);
 
          var data = table_data[this.file];
 			
          for(var i=0; i < data.length; i+=1)
-         {
+		 {
             var tr = new Element('tr');
             this.table.adopt(tr);
             tr.style.fontSize = 16*(window.scaleW/55.0);
 				
             for(var j=0; j < data[i].length;j+=1)
-            {
+			{
                var td = new Element('td');
                tr.adopt(td);
                td.style.fontSize = 16*(window.scaleW/55.0);
                td.innerHTML = '<center>' + data[i][j] + '</center>';
             }
          }
-			
 					
          if(typeof editing != 'undefined')
          {
@@ -1398,11 +1383,11 @@ var TableWindow = new Class({
                var file = "";
                var pdChild = pd.getChildren();
                pdChild = pdChild[0];
-               var i;
+			   
                var curFile = "";
-               for(var i=0; i < updatables.length; i+=1)
+               for(var k=0; k < updatables.length; k+=1)
                {		
-                  var w = updatables[i];
+                  var w = updatables[k];
                   if(w.type == 'table')
                   {
                      if(pd === w.content)
@@ -1411,76 +1396,48 @@ var TableWindow = new Class({
                      }
                   }
                }
-               
-            /*
-               file = prompt("Please enter the name of the table file that you wish to use.", curFile);
-               pdh.innerHTML = prompt("Please enter your new title for this box, or press Okay to keep the current text.", pdh.innerHTML);
-				   
-				
-               for(var i=0; i < updatables.length; i+=1)
-               {		
-                  w = updatables[i];
-                  if(w.type == 'table'){
-                     if(pd === w.content){
-                        w.file = file;
-                        //pdChild = new Element('table');
-                        pdChild.setAttribute('class', 'dynaview_table');
-                        pdChild.setAttribute('id', w.file+"_");
-                        pdChild.innerHTML = "";
-                        table_parser(experiment, w.file, pdChild.id);
-                        var data = table_data[w.file];
-                        for(var i=0; i < data.length; i+=1){
-                           var tr = new Element('tr');
-                           pdChild.adopt(tr);
-                           for(var j=0; j < data[i].length;j+=1){
-                              var td = new Element('td');
-                              tr.adopt(td);
-                              td.innerHTML = '<center>' + data[i][j] + '</center>';
+
+               var cb = function(asset)
+			   {
+                  file = asset;
+                  for(var i=0; i < updatables.length; i+=1)
+                  {
+                     w = updatables[i];
+                     if(w.type == 'table')
+					 {
+                        if(pd === w.content)
+						{
+                           w.file = file;
+                           //pdChild = new Element('table');
+                           pdChild.setAttribute('class', 'dynaview_table');
+                           pdChild.setAttribute('id', w.file+"_");
+                           pdChild.innerHTML = "";
+		  				
+                           table_parser(experiment, w.file, pdChild.id);
+                           var data = table_data[w.file];
+                           for(var r=0; r < data.length; r+=1)
+						   {
+                              var tr = new Element('tr');
+                              pdChild.adopt(tr);
+                              for(var j=0; j < data[r].length;j+=1)
+							  {
+                                 var td = new Element('td');
+                                 tr.adopt(td);
+                                 td.innerHTML = '<center>' + data[r][j] + '</center>';
+                              }
                            }
                         }
                      }
                   }
-               }
-*/
 
-var cb = function(asset) {
-file = asset;
+                  pdh.innerHTML = prompt("Please enter your new title for this box, or press Okay to keep the current text.", pdh.innerHTML);
+			   	   while(pdh.innerHTML == ''){
+				      pdh.innerHTML = prompt("A title is required for this element.  Please enter a title here.", pdh.innerHTML);;
+                   }
 
-				   
-				
-               for(var i=0; i < updatables.length; i+=1)
-               {		
-                  w = updatables[i];
-                  if(w.type == 'table'){
-                     if(pd === w.content){
-                        w.file = file;
-                        //pdChild = new Element('table');
-                        pdChild.setAttribute('class', 'dynaview_table');
-                        pdChild.setAttribute('id', w.file+"_");
-                        pdChild.innerHTML = "";
-                        table_parser(experiment, w.file, pdChild.id);
-                        var data = table_data[w.file];
-                        for(var i=0; i < data.length; i+=1){
-                           var tr = new Element('tr');
-                           pdChild.adopt(tr);
-                           for(var j=0; j < data[i].length;j+=1){
-                              var td = new Element('td');
-                              tr.adopt(td);
-                              td.innerHTML = '<center>' + data[i][j] + '</center>';
-                           }
-                        }
-                     }
-                  }
                }
 
-               pdh.innerHTML = prompt("Please enter your new title for this box, or press Okay to keep the current text.", pdh.innerHTML);
-			   	while(pdh.innerHTML == ''){
-				   pdh.innerHTML = prompt("A title is required for this element.  Please enter a title here.", pdh.innerHTML);;
-				}
-
-}
-
-openAssetPopup('tables', cb);
+               openAssetPopup('tables', cb);
             }
          }
 		
@@ -1754,7 +1711,6 @@ var save_all = function()
 	//$assetBaseDir = "./admins/" . $username . "/assets/";
 	//var filepath = 'expResources/advisory/'+saveName+'.txt';
 	var filepath = assetDir + "training/" + saveName + '.txt';
-	alert(filepath);
 	 
 	//alert("just before: " + filepath);
 	var req = new Request({
@@ -1767,8 +1723,6 @@ var save_all = function()
 			}, 
 		onComplete: function(r) { } 
 	}).send();
-	
-	alert(req);
 }
 
 window.addEvent('domready', function()
