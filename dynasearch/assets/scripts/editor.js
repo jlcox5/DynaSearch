@@ -351,15 +351,15 @@ var load_all = function(file)
       			document.getElementById((i+1)+'_content').style.height = (height*window.scaleH)-21 + 'px';
       			document.getElementById((i+1)+'_content').style.fontSize = 16*(window.scaleW/55.0);
 					
-					if(typeof editing == 'undefined')
-		         {
-   		         //var pdh = this.parentNode.parentNode.getElement('.handle');
-   		      	//var table_name = handle.div.getElement('.handle').innerHTML.replace( /[^\w]/gi ,'');	// Get rid of spaces and weird symbols
-                  var table_name = handle.tabID;
-   		      	//alert("Table Name: " + table_name);
-			 		   //coverTable(	handle.table.id , handle.table.id+"_"+table_name+"_");
-                  attachTimerFuncs(handle,table_name);
-		      	}
+				  if(typeof editing == 'undefined')
+		          {
+   		             //var pdh = this.parentNode.parentNode.getElement('.handle');
+   		      	     //var table_name = handle.div.getElement('.handle').innerHTML.replace( /[^\w]/gi ,'');	// Get rid of spaces and weird symbols
+                     var table_name = handle.tabID;
+   		      	     //alert("Table Name: " + table_name);
+			 		 //coverTable(	handle.table.id , handle.table.id+"_"+table_name+"_");
+                     attachTimerFuncs(handle,table_name);
+		      	  }
 				}
 				else if( type == 'image' ){
                //alert(hex_to_str(attributes[7]));
@@ -1260,7 +1260,8 @@ var InteractiveTableWindow = new Class({
                document.dispatchEvent(sig);
              }
 
-          }
+      
+	  }
           */
           tdel.style.padding = tdel.style.margins = "0";
           tdel.style.textalign = "center";

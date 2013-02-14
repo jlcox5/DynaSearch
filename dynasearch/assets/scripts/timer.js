@@ -49,6 +49,7 @@ function stopPageTimer(){
 }
 
 function startTimer(event){
+   //alert("In function: startTimer");
    if(runningExp == 0){
 	   event.preventDefault();
 	   var today = new Date();
@@ -69,6 +70,7 @@ function startTimerAlt(nid){
 }
 
 function registerClick(cid,ctime){
+   //alert("In function: registerClick");
    clickNum = clickNum + 1;
 	   document.getElementById('clickData').innerHTML += "<input type='hidden' id='clickNum" + clickNum + "' name='clickNum" + clickNum + "' value= " + clickNum + " /> <input type='hidden' id='elemId" + clickNum + "' name='elemId" + clickNum + "' value= " + cid + " /> <input type='hidden' id='clickTime" + clickNum + "' name='clickTime" + clickNum + "' value= " + ctime/1000 + "/>";
 	   document.getElementById('totalClicks').innerHTML=  "<input type='hidden' id='totalClicks' name='totalClicks' value=" + clickNum + " />";
@@ -76,6 +78,8 @@ function registerClick(cid,ctime){
 
 function endTimer(event){
 	//Cell Data
+	//alert("In function: endTimer");
+	
 	if(runningExp == 0){
 	 if(id.substring(0,15) == 'x_toTrackTable_'){
 	   hideCell(id, 0, 0, event);
@@ -101,9 +105,11 @@ function endTimer(event){
 	   document.getElementById('totalClicks').innerHTML=  "<input type='hidden' id='totalClicks' name='totalClicks' value=" + clickNum + " />";
 	 }
 	 else if(id.substring(0,18) == 'x_toTrackExtTable_'){
-      //alert(id + " " + event.target.id);
 	   clickNum = clickNum + 1;
-      var newtime = event.timeStamp - startTime;
+	   event.preventDefault();
+	   var today = new Date();
+	   endTime = today.getTime();
+	   var newTime = endTime - startTime;
 	   document.getElementById('clickData').innerHTML += "<input type='hidden' id='clickNum" + clickNum + "' name='clickNum" + clickNum + "' value= " + clickNum + " /> <input type='hidden' id='elemId" + clickNum + "' name='elemId" + clickNum + "' value= " + id + " /> <input type='hidden' id='clickTime" + clickNum + "' name='clickTime" + clickNum + "' value= " + newTime/1000 + "/>";
 	   document.getElementById('totalClicks').innerHTML=  "<input type='hidden' id='totalClicks' name='totalClicks' value=" + clickNum + " />";
     }
@@ -189,189 +195,6 @@ function coverTable(grabTable,tableName){
          ctx.fillRect(1,1, canvas.width-1, canvas.height-1);
 	  }
    }
-}
-
-function coverLegend(adv){
-   //alert("Adv for Legend: " + adv);
-   curAdv = adv;
-   tableName = "mapLegend_adv_"+adv+"_";
-   nTable = document.getElementById('mapLegend');
-   nRows = nTable.rows.length;
-   nCells1 = nTable.rows[0].cells.length;
-   nCells2 = nTable.rows[1].cells.length;
-   var pos = new Array();
-   var canvas = '';
-   toInsPar = document.getElementById("body");
-   var mapToMod;
-   //nText = document.getElementById(textName);
-   
-   // First Row - current location
-   pos = findPos(nTable.rows[0].cells[0]);
-   canvas = document.createElement('CANVAS');
-   canvas.setAttribute('style.zIndex', 100);
-   if( window.CURRENT == 1 ){
-      canvas.setAttribute('id', 'x_toTrackTable_'+tableName+'0_0');
-      canvas.setAttribute('onmousedown', "showMapCurrent()");
-      canvas.setAttribute('onmouseup', "clearMap()");
-      canvas.setAttribute('onmouseout', "clearMap()");
-   }
-   else{
-      canvas.setAttribute('id', 'x_notToTrackTable_'+tableName+'0_0');
-   }
-   canvas.setAttribute('width', nTable.offsetWidth);
-   canvas.setAttribute('height', nTable.offsetHeight);
-   canvas.setAttribute('style', 'position: absolute; left:'+pos[0]+'px; top:'+pos[1]+'px;');
-   toInsPar.appendChild(canvas);
-   
-   
-   // Last Rows
-   //alert('Rows: '+nRows+'  Cells: '+nCells);
-   for (i=1; i<nRows; i++){
-      for (n=0; n<nCells2; n++){
-         pos = findPos(nTable.rows[i].cells[n]);
-         canvas = document.createElement('CANVAS');
-         canvas.setAttribute('style.zIndex', 100);
-         if( (i == 1 && (n >= adv || window.PAST_TRACK == 0)) || ( i == 2 && window.FORECAST == 0 ) || ( i == 3 && window.CONE == 0) ){
-            canvas.setAttribute('id', 'x_notToTrackTable_'+tableName+i+'_'+n);
-         }
-         else{
-            canvas.setAttribute('id', 'x_toTrackTable_'+tableName+i+'_'+n);
-         }
-         canvas.setAttribute('width', nTable.rows[i].cells[n].offsetWidth);
-         canvas.setAttribute('height', nTable.rows[i].cells[n].offsetHeight);
-         canvas.setAttribute('style', 'position: absolute; left:'+pos[0]+'px; top:'+pos[1]+'px;');
-         if( i == 1 ){
-            if( n < adv && window.PAST_TRACK == 1){
-               canvas.setAttribute('onmousedown', "showMapPast("+n+")");
-            }
-         }
-         if( i == 2 && window.FORECAST == 1){
-            canvas.setAttribute('onmousedown', "showMapForecast("+n+")");
-         }
-         if( i == 3 && window.CONE == 1){
-            canvas.setAttribute('onmousedown', "showMapCone("+n+")");
-         }
-         canvas.setAttribute('onmouseup', "clearMap()");
-         canvas.setAttribute('onmouseout', "clearMap()");
-         toInsPar.appendChild(canvas);
-	  }
-   }
-   
-
-   // First Row
-   canvas = document.getElementById('x_toTrackTable_'+tableName+'0_0');
-   if(canvas == undefined){
-      canvas = document.getElementById('x_notToTrackTable_'+tableName+'0_0');
-   }
-   canvas.style.zIndex=100;
-   canvas.width = nTable.rows[0].cells[0].offsetWidth;
-   canvas.height = nTable.rows[0].cells[0].offsetHeight;
-   
-   // Following Rows
-   for (i=1; i<nRows; i++){
-      for (n=1; n<nCells2; n++){
-         canvas = document.getElementById('x_toTrackTable_'+tableName+i+'_'+n);
-         if(canvas == undefined){
-            canvas = document.getElementById('x_notToTrackTable_'+tableName+i+'_'+n);
-         }
-         canvas.style.zIndex=100;
-         canvas.width = nTable.rows[i].cells[n].offsetWidth;
-         canvas.height = nTable.rows[i].cells[n].offsetHeight;
-      }
-   }       
-   var ctx;
-   var found = -1;
-   
-   // First Row
-   canvas = document.getElementById('x_toTrackTable_'+tableName+'0_0');
-   if(canvas == undefined){
-      found = 0;
-      canvas = document.getElementById('x_notToTrackTable_'+tableName+'0_0');
-   }
-   else{
-      found = 1;
-   }
-   ctx = canvas.getContext("2d");
-   //ctx.fillStyle = "rgba(255,255,255, .5)";
-   if(found == 1){
-      ctx.fillStyle = "rgba(255,255,255, 0)";
-   }
-   else{
-      ctx.fillStyle = "rgba(255,255,255, .75)";
-   }
-   ctx.fillRect(1,1, canvas.width-1, canvas.height-1);
-   // Following Row
-   for (i=1; i<nRows; i++){
-      for (n=1; n<nCells2; n++){
-         //alert("N : " + n + " adv: " + adv);
-         canvas = document.getElementById('x_toTrackTable_'+tableName+i+'_'+n);
-         if(canvas == undefined){
-            canvas = document.getElementById('x_notToTrackTable_'+tableName+i+'_'+n);
-         }
-         ctx = canvas.getContext("2d");
-         if( (i == 1 && (n >= adv || window.PAST_TRACK == 0)) || ( i == 2 && window.FORECAST == 0 ) || ( i == 3 && window.CONE == 0) ){
-            ctx.fillStyle = "rgba(255,255,255, .75)";
-            ctx.fillRect(1,1, canvas.width-1, canvas.height-1);          
-         }
-         else{
-            ctx.fillStyle = "rgba(255,255,255, 0)";
-            ctx.fillRect(1,1, canvas.width-1, canvas.height-1);
-         }
-	  }
-   }
-}
-
-function showMapCone(day){
-   if(runningExp == 0){
-      for(var i=0; i < updatables.length; i+=1){		
-	      var w = updatables[i];
-		   if(w.type == 'map'){
-            w.paintCone(day);
-		   }
-      }
-   }   
-}
-
-function showMapForecast(day){
-   if(runningExp == 0){
-      for(var i=0; i < updatables.length; i+=1){		
-	      var w = updatables[i];
-		   if(w.type == 'map'){
-            w.paintForecast(day);
-		   }
-      }
-   }   
-}
-
-function showMapPast(day){
-   if(runningExp == 0){
-      for(var i=0; i < updatables.length; i+=1){		
-	      var w = updatables[i];
-		   if(w.type == 'map'){
-            w.paintPast(day);
-		   }
-      }
-   }   
-}
-
-function showMapCurrent(){
-   if(runningExp == 0){
-      for(var i=0; i < updatables.length; i+=1){		
-	      var w = updatables[i];
-		   if(w.type == 'map'){
-            w.paintCurrent();
-		   }
-      }
-   }   
-}
-
-function clearMap(){
-      for(var i=0; i < updatables.length; i+=1){		
-	      var w = updatables[i];
-		   if(w.type == 'map'){
-            w.clearMap();
-		   }
-      }   
 }
 
 function coverText(textName,h){
