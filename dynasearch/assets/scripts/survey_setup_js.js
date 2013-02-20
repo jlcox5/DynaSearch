@@ -27,7 +27,7 @@ var prompt_new_experiment = function()
    // Destroy all the page bars. New == Reset.
    var resp = confirm('This action will discard all changes since the last save. Are you sure?');
    if(resp)
-   { $$('.page_bar').destroy(); }
+   { window.location.reload(); /*$$('.page_bar').destroy();*/ }
    else return;
 }
 
@@ -567,125 +567,14 @@ var construct_exp_string = function() {
 
 var save_experiment = function()
 {
-   var experiment_name = $('survey_name').value;
+   var expId   = $('exp_id').value;
+   var expName = $('survey_name').get('html');
+   var short_name = expName.replace( /[^\w]/gi ,'');   // Get rid of spaces and weird symbols
 
-   var short_name = experiment_name.replace( /[^\w]/gi ,'');   // Get rid of spaces and weird symbols
-   //alert('saving as ' + short_name);
-   /*
-   //Construct the string for the Experiment
-   var i=0;
-   var bars = $$('div.page_bar'); //.each(function(li) { alert(li.getFirst('.content').innerHTML); });
-   var final_str = '';
-   // Used for saving surveys
-   var filepath = '';
-   var req = null;
-   
-   // Added by Jon
-   // Creates directory if needed
-   req = new Request({
-         url: 'assets/php/create_dir.php', 
-         async: false, method: 'post', 
-         data: {
-            'name': short_name
-         }, 
-         onComplete: function(r) {} 
-   }).send();
-   
-   //alert(bars);
-
-   // Add experiment Pages to string   
-   for (var i=0; i<bars.length; i+=1)
-   {
-      if (i > 0) { final_str += '$'; }
-	  //alert(i + ": " + bars[i]);
-
-      var type = bars[i].getFirst('.page_bar_item').innerHTML;
-      var c = bars[i].getFirst('.content').getChildren();
-               
-      // Seperated by Jon
-      if(type == 'Survey Page'){      
-         //var page_title = c[0].getFirst('.page_title').innerHTML;
-         //var page_src   = c[1].getFirst('.page_source').innerHTML;
-         //var survName = c[2].getFirst('.questionairre_name').innerHTML;
-
-         // Edited by Jordan - Now reads from text Input and Select
-         var page_title = String( c[0].getFirst('#page_title').getProperty('value') );
-         var page_src   = String( c[1].getFirst('#page_source').getSelected().getProperty('value') );
-         var survName    = "";//String( c[2].getFirst('#survey_name').getSelected().getProperty('value') );
-
-
-         final_str += 'type=' + str_to_hex(type) + '&page=' + i + '&title=' + str_to_hex(page_title) + '&src=' + str_to_hex(page_src) + '&advnum='+ str_to_hex(survName);
-         //final_str += 'type=' + str_to_hex(type) + '&page=' + i + '&title=' + str_to_hex(page_title) + '&src=' + str_to_hex(page_src);
-         
-         
-         filepath = 'hurricane_data/'+short_name+'/'+page_src;
-         //alert('Name: '+c[2].getFirst('.questionairre_name').innerHTML);
-         req = new Request({
-               url: 'assets/php/save_survey.php', 
-               async: false, method: 'post', 
-               data: {
-                   'name': survName, //c[2].getFirst('.questionairre_name').innerHTML,
-                   'file_path': filepath
-               }, 
-                onComplete: function(r) {} 
-         }).send();
-      }
-      else if(type == 'Information Page')
-      {
-         //var page_title = c[0].getFirst('.page_title').innerHTML;
-
-         // Edited by Jordan - Now reads from text Input and Select
-         var page_title = String( c[0].getFirst('#page_title').getProperty('value') );
-         var page_src   = String( c[1].getFirst('#page_source').getSelected().getProperty('value') );
-
-
-         final_str += 'type=' + str_to_hex(type) + '&page=' + i + '&title=' + str_to_hex(page_title) + '&src=' + str_to_hex(page_src);
-         // Added by Jon - Copy instruction file to experiment directory
-         req = new Request({
-               url: 'assets/php/copy_inst.php', 
-               async: false, method: 'post', 
-               data: {
-                   'fileName': page_src, //c[1].getFirst('.page_source').innerHTML, // Edited by Jordan
-                   'expName': short_name,
-               }, 
-                onComplete: function(r) {} 
-         }).send();
-      }
-      else
-      {
-         //var page_title = c[0].getFirst('.page_title').innerHTML;
-         //var page_src   = c[1].getFirst('.page_source').innerHTML;
-
-         // Edited by Jorda - Now reads from text Input and Select
-         var page_title = String( c[0].getFirst('#page_title').getProperty('value') );
-         var page_src   = String( c[1].getFirst('#page_source').getSelected().getProperty('value') );
-
-         //var adv_num    = c[2].getFirst('.advisory_number').innerHTML // TODO?
-
-         // Added by Jon - Copy advisory file to experiment directory
-         req = new Request({
-               url: 'assets/php/copy_adv.php', 
-               async: false, method: 'post', 
-               data: {
-                   'fileName': page_src,//c[1].getFirst('.page_source').innerHTML,
-                   'expName': short_name,
-               }, 
-                onComplete: function(r) {} 
-         }).send();
-         //final_str += 'type=' + str_to_hex(type) + '&page=' + i + '&title=' + str_to_hex(page_title) + '&src=' + str_to_hex(page_src) + '&advnum=' + str_to_hex(adv_num);
-         final_str += 'type=' + str_to_hex(type) + '&page=' + i + '&title=' + str_to_hex(page_title) + '&src=' + str_to_hex(page_src);
-      }
-   }
-   //alert(final_str);
-   */
+   // Save Experiment
    var form = new Element('form');
    form.style.visibility = 'hidden';
    form.method = 'POST';
-
-   //var customScaling = new Element('input');
-   //customScaling.name = 'customScaling';
-   //customScaling.value = $('customScaling').checked;
-   //form.adopt(customScaling);
 
    var scaleProfile = new Element('input');
    scaleProfile.name = 'scaleProfile';
@@ -697,10 +586,10 @@ var save_experiment = function()
    data.value = construct_exp_string();
    form.adopt(data);
 
-   var expId = new Element('input');
-   expId.name = 'expId';
-   expId.value = $('exp_id').value;
-   form.adopt(expId);
+   var id = new Element('input');
+   id.name = 'expId';
+   id.value = expId;
+   form.adopt(id);
 
    var shortname = new Element('input');
    shortname.name = 'shortname';
@@ -709,7 +598,7 @@ var save_experiment = function()
    
    var fullname = new Element('input');
    fullname.name = 'fullname';
-   fullname.value = experiment_name;
+   fullname.value = expName;
    form.adopt(fullname);
    
    var mode = new Element('input');
@@ -720,18 +609,10 @@ var save_experiment = function()
    form.action = "survey_setup.php";
    document.body.adopt(form);
    form.submit();
-};
 
-
-var save_experiment_copy = function()
-{
-
-   $('exp_id').value = -1;
-
-   var expName = $('survey_name').value;
-   
+/*
    var params    = new Array('ExperimentName', expName,
-                             'Admin_ID', ADMIN_ID);
+                             'Admin_ID',       ADMIN_ID);
    var request = new Request({
       method    : 'post',
       url       : './assets/php/db_util.php',
@@ -739,22 +620,102 @@ var save_experiment_copy = function()
          'query'  : 'select',
          'table'  : 't_experiments',
          'params' : params
-         //'ret'    : 'User_ID'
       },
       onSuccess : function(response) {
 
          var arr    = JSON.decode(response);
-         if( arr.length > 0 ) {
-            // ID exists, not available
-alert('exists');
+         if( (arr.length > 0) && (arr[0]['id'] != expId) ) {
+            // Experiment Name exists, not available
+           alert('This experiment name is already in use. Please save under a unique name.');
 
          } else {
-alert('doesnt exist');
+            // Save Experiment
+            var form = new Element('form');
+            form.style.visibility = 'hidden';
+            form.method = 'POST';
+
+            var scaleProfile = new Element('input');
+            scaleProfile.name = 'scaleProfile';
+            scaleProfile.value = $('scaleProfile').value;
+            form.adopt(scaleProfile);
+
+            var data = new Element('input');
+            data.name = 'data';
+            data.value = construct_exp_string();
+            form.adopt(data);
+
+            var id = new Element('input');
+            id.name = 'expId';
+            id.value = expId;
+            form.adopt(id);
+
+            var shortname = new Element('input');
+            shortname.name = 'shortname';
+            shortname.value = short_name;
+            form.adopt(shortname);
+   
+            var fullname = new Element('input');
+            fullname.name = 'fullname';
+            fullname.value = expName;
+            form.adopt(fullname);
+   
+            var mode = new Element('input');
+            mode.name = 'fileop';
+            mode.value = 'save';
+            form.adopt(mode);
+
+            form.action = "survey_setup.php";
+            document.body.adopt(form);
+            form.submit();
          } 
       }
    }).send();
+*/
+};
 
 
+var save_experiment_as = function()
+{
+
+   var expName = prompt("Please enter a name for the experiment:");
+
+   if (expName) {
+      var params    = new Array('ExperimentName', expName,
+                             'Admin_ID',       ADMIN_ID);
+      var request = new Request({
+         method    : 'post',
+         url       : './assets/php/db_util.php',
+         data      : {
+            'query'  : 'select',
+            'table'  : 't_experiments',
+            'params' : params
+         },
+         onSuccess : function(response) {
+
+            var arr    = JSON.decode(response);
+            if (arr.length > 0) {
+               // Experiment Name exists, not available
+              alert('This experiment name is already in use. Please save under a unique name.');
+              save_experiment_as();
+
+            } else {
+               // Save Experiment
+               $('exp_id').value      = -1;
+               $('survey_name').set('html', expName);
+               save_experiment();
+            } 
+         }
+      }).send();
+   }
+
+};
+
+
+var save_experiment_copy = function()
+{
+
+   $('exp_id').value = -1;
+   save_experiment();
 
 };
 

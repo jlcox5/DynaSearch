@@ -32,6 +32,7 @@ function redirect($page_name)
 
    if( isset($_POST['fileop']) )
    {
+
       if( $_POST['fileop'] == 'save' )
       {
          $id = $_POST['expId'];
@@ -47,6 +48,7 @@ function redirect($page_name)
                      "SET ExperimentShortName='$short', Admin_ID='$username', ExperimentName='$name', " .
                         "ScaleProfileID=$scaleProfileId, ExperimentString='$experiment_string' " .
                      "WHERE id=$id;";
+         $_POST['fileop'] = 'load';
          }
          else
          {
@@ -56,8 +58,10 @@ function redirect($page_name)
          }
 
          if( $DEBUG ) { echo $query; }
+//echo $query;
          query_db($query);
-         redirect('survey_setup.php?fileop=load&file='.$short);
+
+         //redirect('survey_setup.php?fileop=load');
       }// End Save
 
       if($_POST['fileop'] == 'load')
@@ -77,6 +81,7 @@ function redirect($page_name)
          if( is_string($res) ) 
          {  
             if( $DEBUG ) { echo "FileOp : LOAD --- Exp not found in database<br/>"; }
+echo "FileOp : LOAD --- Exp not found in database<br/>";
          }
          else 
          {
@@ -104,8 +109,9 @@ function redirect($page_name)
 	
          <h1>Experiment Editor</h1><br/>
          <h2>Currently Editing: 
-            <input type="text" id="survey_name" value="<?php echo $expName; ?>">
-            <input id="exp_id" value="<?php echo $expId; ?>"  style="display:none;"></span>
+            <span id="survey_name"/><?php echo $expName; ?></span>
+            <!--<input type="text" id="survey_name" value="<?php echo $expName; ?>" />-->
+            <input id="exp_id" value="<?php echo $expId; ?>"  style="display:none;" />
          </h2>
 
          <br/>
@@ -114,8 +120,8 @@ function redirect($page_name)
 	
          <!-- Buttons -->
          <button onClick="prompt_new_experiment();">New</button>	
-         <button onClick="save_experiment();">Save</button>
-         <button onClick="save_experiment_copy();">Save Copy</button>
+         <button onClick="save_experiment();" <?php echo ( ($expId > 0) ? ('') : ('disabled="disabled"') ); ?> >Save</button>
+         <button onClick="save_experiment_as();">Save As...</button>
          <br/>
    <?php
       $adminExps = getAdminExps($username);
