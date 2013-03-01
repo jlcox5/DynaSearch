@@ -1,5 +1,7 @@
 <?php
 
+   //include('assets/php/std_api.php');
+
    /**
     *
     */
@@ -48,6 +50,7 @@
 
    $username = $_SESSION['username'];
    $userAdmin = $_SESSION['userAdmin'];
+   $adminMaxSize = $_SESSION['memMax'];
    $adminDirSize = 0;
    $assetBaseDir = "./admins/" . $userAdmin . "/assets/";
    for($i = 0; $i < count($assets); $i++)

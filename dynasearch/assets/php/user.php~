@@ -65,7 +65,7 @@
             $_SESSION['customScaling'] = $row['CustomScaling'];
 
             // Get Scaling Profile
-            $_SESSION['customScaling'] = $row['CustomScaling'];
+            $_SESSION['scaleProfileId'] = $row['ScaleProfileID'];
 
             // Get Experiment Scale
             $_SESSION['scaleW'] = $row['ScaleW'];
@@ -78,6 +78,11 @@
             $_SESSION['expData'] = parseExperimentData( $expstr );
 
          }
+         else
+         {
+            $_SESSION['memMax'] = $test['MemoryAllocation'];
+         }
+
          return 'true';
       }
       else

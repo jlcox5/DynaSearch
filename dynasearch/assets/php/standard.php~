@@ -95,7 +95,7 @@
                            .                '<li><a href="userOutput.php" onclick="handleExit();">--Participant Results</a></li>'
                            .           '</ul></li>';
 
-            $logout_str .= '<li><a href="assets/php/adminSettings.php" onclick="handleExit();">Settings</a></li>';
+            $logout_str .= '<li><a href="adminSettings.php" onclick="handleExit();">Settings</a></li>';
          }
          else
          {

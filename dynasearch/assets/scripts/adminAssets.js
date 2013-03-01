@@ -1,4 +1,9 @@
-var confirmDelete = function() {
+
+
+var confirmDelete = function(type) {
+   var asset        = $(type + "SelectedAsset").value;
+alert(asset);
+   return false;
    return confirm("Are you sure you want to delete this asset?\n(This action cannot be undone)");
 }
 /*
@@ -87,7 +92,7 @@ var newAsset = function(type) {
 
 
 var saveAsset = function(type) {
-
+/*
    var asset        = $(type + "SelectedAsset").value;
    var assetPreview = $(type + "Preview");
 
@@ -109,14 +114,15 @@ var saveAsset = function(type) {
             'contents' : assetPreview.value
          },
          onSuccess : function(response) {
-            //var arr = JSON.decode(response);
-            alert("File saved!\n\n" + asset);
+            var arr = JSON.decode(response);
+            //alert("File saved!\n\n" + asset);
+            alert("File size : " + arr['size']);
             //assetPreview.set('html', arr['fileContent']);
          }
       }).send();
 
    }
-
+*/
 }
 
 
@@ -139,8 +145,9 @@ var saveAssetAs = function(type) {
                saveAssetAs(type);
             } else {
                $(type + "SelectedAsset").value = type + '/' + newAsset;
-               saveAsset(type);
-               window.location.reload()
+            $(type + "SaveBtn").setProperty('disabled', '');
+      $(type + "SaveBtn").click();
+               //saveAsset(type);
             }
          }
       }).send();
@@ -148,7 +155,37 @@ var saveAssetAs = function(type) {
 
 }
 
+var uploadAsset = function(assetType) {
+      $('assetType').value = assetType;
+      //myMBox.open();
+      $('assetFile').click();
+   }
 
 window.addEvent('domready', function(){
-  new Fx.Accordion($('accordion'), '#accordion h2', '#accordion .content');
+   new Fx.Accordion($('accordion'), '#accordion h2', '#accordion .content',
+      {
+         display    : CURRENT_SLICE,
+         alwaysHide : true
+      }
+  );
+
+/*
+  // Popup functions
+   var myMBox = new mBox.Modal({
+      title   : 'Upload Asset',
+      content : 'uploadPopUp',
+      overlay : true,
+      closeInTitle : true,
+      buttons: [
+         { title: 'Cancel' },
+      ],
+   });*/
+
+
+    uploadAsset = function(assetType) {
+      $('assetType').value = assetType;
+      //myMBox.open();
+      $('assetFile').click();
+   }
+
 });

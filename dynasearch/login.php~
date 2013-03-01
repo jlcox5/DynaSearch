@@ -25,9 +25,15 @@
 
    include("assets/php/standard.php");
 	
+	//$_SESSION['hwSet'] = 0;
+	
 	// Code to prevent backtracking
 	//checkPage(0);
 
+   //I forgot the password :(
+   //global $DB_PASS;
+   //global $DB_USER;
+   //echo "   " . $DB_USER . " : " . $DB_PASS . "   ";
 ?>
 
 <body>

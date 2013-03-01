@@ -78,6 +78,11 @@
             $_SESSION['expData'] = parseExperimentData( $expstr );
 
          }
+         else
+         {
+            $_SESSION['memMax'] = $test['MemoryAllocation'] * 1024;
+         }
+
          return 'true';
       }
       else

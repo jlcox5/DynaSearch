@@ -33,6 +33,25 @@ function redirect($page_name)
    if( isset($_POST['fileop']) )
    {
 
+      if( $_POST['fileop'] == 'delete' )
+      {
+         $id = $_POST['expId'];
+
+         if( $id > 0 )
+         {
+            $query = "DELETE FROM t_experiments " .
+                     "WHERE id=$id;";
+            if( $DEBUG ) { echo $query; }
+            query_db($query);
+         }
+         else
+         {
+            if( $DEBUG ) { echo "FileOp ERROR : DELETE --- ExpId not set<br/>"; }
+         }
+
+      }// End Save
+
+
       if( $_POST['fileop'] == 'save' )
       {
          $id = $_POST['expId'];
@@ -72,7 +91,7 @@ function redirect($page_name)
          }
          else
          {
-            if( $DEBUG ) { echo "FileOp : LOAD --- ExpId not set<br/>"; }
+            if( $DEBUG ) { echo "FileOp ERROR : LOAD --- ExpId not set<br/>"; }
          }
 
          $query = "SELECT * FROM t_experiments WHERE id='$expId';";
@@ -80,8 +99,7 @@ function redirect($page_name)
 				
          if( is_string($res) ) 
          {  
-            if( $DEBUG ) { echo "FileOp : LOAD --- Exp not found in database<br/>"; }
-echo "FileOp : LOAD --- Exp not found in database<br/>";
+            if( $DEBUG ) { echo "FileOp ERROR : LOAD --- Exp not found in database<br/>"; }
          }
          else 
          {
@@ -122,6 +140,7 @@ echo "FileOp : LOAD --- Exp not found in database<br/>";
          <button onClick="prompt_new_experiment();">New</button>	
          <button onClick="save_experiment();" <?php echo ( ($expId > 0) ? ('') : ('disabled="disabled"') ); ?> >Save</button>
          <button onClick="save_experiment_as();">Save As...</button>
+         <button onClick="delete_experiment();" <?php echo ( ($expId > 0) ? ('') : ('disabled="disabled"') ); ?> >Delete</button>
          <br/>
    <?php
       $adminExps = getAdminExps($username);

@@ -12,7 +12,8 @@
 }
 
 .page_bar_item {
-	padding-right: 10px;
+	padding: auto 10px;
+	width: 200px;
 	display: table-cell;
 	vertical-align: middle;
 }
@@ -20,6 +21,10 @@
 .content {
 	width: 100%;
 	display: table;
+}
+
+button {
+   padding : 5px;
 }
 
 .drag_handle {
