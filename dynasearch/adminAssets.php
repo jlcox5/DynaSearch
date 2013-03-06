@@ -16,18 +16,9 @@
 
    include('assets/php/admin_dir.php');
 
-   if( isset($_GET['error']) )
+   if( isset($_GET['assetType']) )
    {
-      $errorMsg = $_GET['error'];
-   }
-   else
-   {
-      $errorMsg = '';
-   }
-
-   if( isset($_REQUEST['assetType']) )
-   {
-      $assetType = $_REQUEST['assetType'];
+      $assetType = $_GET['assetType'];
    }
    else
    {
@@ -51,20 +42,14 @@
       {
 
 
-         $fileSize = $_FILES["assetFile"]["size"];
+         //if (file_exists())
          $assetType = $_POST['assetType'];
-         $assetFilepath =  $assetBaseDir . $assetType . "/" . $_FILES["assetFile"]["name"];
+		 // Modified by Jon 21JAN13
+         //$assetFilepath = $assetDirs[$assetType] . "/" . $_FILES["assetFile"]["name"];
+		 $assetFilepath =  $assetBaseDir . $assetType . "/" . $_FILES["assetFile"]["name"];
 
-         if( ($adminDirSize + $fileSize) <= $adminMaxSize )
-         {
-            move_uploaded_file($_FILES["assetFile"]["tmp_name"],
-                               $assetFilepath);
-            $error = '';
-         }
-         else
-         {
-            $error = '&error=overCap';
-         }
+         move_uploaded_file($_FILES["assetFile"]["tmp_name"],
+                            $assetFilepath);
 
          if( $DEBUG )
          {
@@ -80,7 +65,7 @@
       if( ! $DEBUG )
       {
          // Added so assets automatically show in list after uploaded.  Need to comment out for debugging. - Jon 22JAN13
-         redirect('adminAssets.php?assetType=' . $assetType . $error);
+         redirect('adminAssets.php?assetType=' . $assetType);
       }
    }
    
@@ -89,40 +74,12 @@
    {
       $assetName = $_POST['asset'];
       $assetType = $_POST['assetType'];
-
+/*
       $assetFile = $assetBaseDir . $assetName;
       $fh = fopen($assetFile, 'w') or die("can't open file");
       fclose($fh);
-      unlink($assetFile);
+      unlink($assetFile);*/
       redirect('adminAssets.php?assetType=' . $assetType);
-   }
-
-   // Delete Asset
-   if( isset($_POST['save']) )
-   {
-
-      $assetName = $_POST['selectedAsset'];
-      //$assetType = $_POST['assetType'];
-
-      $assetFile = $assetBaseDir . $assetName;
-         //$filepath = '../../' . $_POST['filepath'];
-      $content = $_POST['content'];
-         //echo $content;
-
-      $fileSize = strlen( $content );
-         //echo $fileSize;
-            //file_put_contents($filepath, $contents);
-      if( ($adminDirSize + $fileSize) <= $adminMaxSize )
-      {
-         file_put_contents($assetFile, $content);
-            $error = '';
-      }
-      else
-      {
-         $error = '&error=overCap';
-      }
-         //echo $errorMsg;
-         redirect('adminAssets.php?assetType=' . $assetType . $error);
    }
 
    include('assets/php/standard.php');
@@ -130,7 +87,6 @@
 
 <body id="body">
 <?php
-
 //echo '<script type="text/javascript">assetDir = "' . $assetBaseDir . '";</script>';
 ?>
    <div id="maincontainer">
@@ -139,6 +95,7 @@
          <!-- Capacity Info-->
          <div class="allocation-info">
    <?php 
+      $adminMaxSize = 1048576;
 
       echo '<h3>My Allocation</h3>';
 
@@ -207,16 +164,15 @@
             // Control Buttons
             echo '<input type="button" value="Upload" onclick="uploadAsset(\'' . $currAsset["Tag"] . '\');"> ';
             echo '<input type="button" value="Preview" onclick="previewAsset(\'' . $currAsset["Tag"] . '\');"> ';
-            echo '<input type="submit" name="delete" value="Delete" onclick="return confirmDelete(\'' . $currAsset["Tag"] . '\');">';
+            echo '<input type="submit" name="delete" value="Delete" onclick="return confirmDelete();">';
 
             if($currAsset["Tag"] != 'images') {
 
                echo '<br/>' .
                     '<input type="button" value="New" ' .
                            'onclick="newAsset(\'' . $currAsset["Tag"] . '\');" /> ' .
-                    '<input type="submit" id="' . $currAsset["Tag"] . 'SaveBtn" name="save" value="Save" ' .
-                           //'onclick="saveAsset(\'' . $currAsset["Tag"] . '\');" ' .
-                           'disabled="disabled" /> ';
+                    '<input type="button" id="' . $currAsset["Tag"] . 'SaveBtn" value="Save" ' .
+                           'onclick="saveAsset(\'' . $currAsset["Tag"] . '\');" disabled="disabled" /> ';
                echo '<input type="button" id="' . $currAsset["Tag"] . 'SaveAsBtn"value="Save As.." ' .
                            'onclick="saveAssetAs(\'' . $currAsset["Tag"] . '\');" disabled="disabled">';
             }
@@ -234,7 +190,7 @@ echo '<img id="' . $currAsset["Tag"] . 'Preview" class="img-preview"></img>';
 }
 else
 {
-echo '<textarea id="' . $currAsset["Tag"] . 'Preview" name="content" class="text-preview" disabled="disabled"></textarea>';
+echo '<textarea id="' . $currAsset["Tag"] . 'Preview" class="text-preview" disabled="disabled"></textarea>';
 }
 echo '</div>';
 
@@ -252,17 +208,7 @@ echo '</div>';
 
       echo '</div>';
 
-      echo '<script type="text/javascript">' .
-            'assetDir = "' . $assetBaseDir . '";' .
-            'CURRENT_SLICE = ' . $currentSlice . ';';
-
-         if ($errorMsg == 'overCap')
-         {
-            echo 'alert("You do not have enough memory allocation remaining to complete this operation!");';
-         }
-
-
-      echo '</script>';
+      echo '<script type="text/javascript">assetDir = "' . $assetBaseDir . '"; CURRENT_SLICE = ' . $currentSlice . ';</script>';
 
    ?>
 

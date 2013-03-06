@@ -3,6 +3,7 @@
    require_once('assets/php/std_api.php');
    include("assets/php/config.php");
    include('assets/php/db_util.php');
+   include('assets/php/PasswordHash.php');
 
    mysql_connect($DB_HOST, $DB_USER, $DB_PASS) or die("Unable to connect.");
    mysql_select_db($DB_NAME) or die("Unable to select database.");
@@ -14,28 +15,50 @@
    $page_title = "Settings";
    $username = $_SESSION['username'];
 
-   $template_style_array  = array("style.css", "adminSettings.css");
-   $template_script_array = array("ajax-core.js", "adminSettings.js");
+   $template_style_array  = array("style.css", "mBoxNotice.css", "adminSettings.css");
+   $template_script_array = array("ajax-core.js", "mBox.All.min.js", "adminSettings.js");
 
    include('assets/php/admin_dir.php');
+
+   $noticeType = '';
+   $noticeMsg  = '';
 
    // Change Password
    if( isset($_POST['newPassword']) )
    {
 
-      $newPassword = $_POST['newPassword'];
+      $query = "SELECT * FROM t_user WHERE User_ID='$username';";
+      $result = mysql_query( $query );
+      $row = mysql_fetch_array($result);
 
-      if( $DEBUG )
+      $oldPasswordHash = $row['PasswordHash'];
+      $oldPassword     = $_POST['oldPassword'];
+
+      if( validate_password($oldPassword, $oldPasswordHash) )
       {
-         
-      }
 
-      $query = "UPDATE t_user " .
-               "SET UPassword='$newPassword' " .
-               "WHERE " .
-               "User_ID='$username';";
-      if( $DEBUG ) { echo $query; }
-      mysql_query($query);
+         $newPassword = $_POST['newPassword'];
+
+         if( $DEBUG )
+         {
+         
+         }
+
+         $passwordHash = create_hash( $newPassword );
+         $passwordHashStr = mysql_escape_string( $passwordHash );
+         $query = "UPDATE t_user SET PasswordHash='$passwordHashStr' WHERE User_ID='$username';";
+         if( $DEBUG ) { echo $query; }
+         mysql_query($query);
+//echo "password changed";
+         $noticeType = 'ok';
+         $noticeMsg  = 'Password Updated!';
+
+      }
+      else
+      {
+         $noticeType = 'error';
+         $noticeMsg  = 'Old Password Invalid!';
+      }
    }
 
    if( isset($_POST['newProfile']) )
@@ -79,25 +102,6 @@
       //$optionExpName = $row["ExperimentName"];
    }
 
-   // Add Profile
-
-      //$profileName   = "Test";
-      //$profileScaleW = 50.0;
-      //$profileScaleH = 50.0;
-
-/*
-      $query = "INSERT INTO t_size_profiles " .
-               "(Profile_ID, Admin_ID, Name, UPassword, User_Type, Current_Experiment_ID, current_position) " .
-               "VALUES " .
-               "('$pId', '$username', '$pName', '$pPassword', 'U', $pCurrExp, $pProgress) " .
-               "ON DUPLICATE KEY UPDATE " .
-               "Name=Values(Name), UPassword=Values(UPassword) , Current_Experiment_ID=Values(Current_Experiment_ID) , current_position=Values(current_position)"  . 
-               ";";
-
-      if( $DEBUG ) { echo $query; }
-      mysql_query($query);
-*/
-
    $admSizeProfiles = getAdminSizeProfiles( $username );
 
    include('assets/php/standard.php');
@@ -108,7 +112,16 @@
 
 <body id="body">
    <?php
-      echo '<script type="text/javascript">assetDir = "' . $assetBaseDir . '"; ADMIN_ID = "' . $username . '"</script>';
+      echo '<script type="text/javascript">' .
+              'assetDir = "' . $assetBaseDir . '";' .
+              'ADMIN_ID = "' . $username . '";';
+
+      if( $noticeMsg )
+      {
+         echo 'setNotice("' . $noticeType . '", "' . $noticeMsg . '");';
+      }
+
+      echo '</script>';
    ?>
 
    <div id="maincontainer">

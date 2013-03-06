@@ -6,6 +6,9 @@ var validatePassword = function( form ) {
        newPasswordCheck = form.getElementById('newPasswordCheck').value;
 
    if (newPassword == newPasswordCheck) {
+
+      return true;
+
       // Check password matches
       var oldPassword = form.getElementById('oldPassword').value;
 
@@ -43,10 +46,21 @@ var validatePassword = function( form ) {
 }
 
 
-window.addEvent( 'domready',
-                 function() {
-                    new Fx.Accordion($('accordion'), '#accordion h2', '#accordion .content',
-                       { alwaysHide : true, display : -1 } );
+var notice = undefined;
+var setNotice = function(noticeType, noticeContent) {
+   notice = { type: noticeType, content: noticeContent };
+}
+
+window.addEvent(
+   'domready',
+   function() {
+      new Fx.Accordion($('accordion'), '#accordion h2', '#accordion .content',
+         { alwaysHide : true, display : -1 } );
+
+      if (notice) {
+         new mBox.Notice( notice );
+      }
+//new mBox.Notice({ type: 'ok', content : 'Aagin' });
 });
 
 

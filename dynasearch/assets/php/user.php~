@@ -3,7 +3,7 @@
    session_start();
    require_once('config.php');
    require_once('std_api.php');
-
+   include('PasswordHash.php');
 
    # Return "True" on success, setting session variables "username", "full_name" and "logged_in"
    # else returns "False"
@@ -20,10 +20,11 @@
       mysql_connect($DB_HOST, $DB_USER, $DB_PASS) or die("Unable to connect.");
       mysql_select_db($DB_NAME) or die("Unable to select database.");
 	
-      $result = mysql_query("SELECT * FROM t_user WHERE User_ID='$username' AND UPassword='$password';");
+      $result = mysql_query("SELECT * FROM t_user WHERE User_ID='$username';");
       $test = mysql_fetch_array($result);
 	
-      if( $test['User_ID'] == $username && $test['UPassword'] == $password )
+      //if( $test['User_ID'] == $username && $test['UPassword'] == $password )
+      if( $test['User_ID'] == $username && validate_password($password, $test['PasswordHash']) )
       {
          $_SESSION['logged_in'] = 'true';
          $_SESSION['username'] = $username;
@@ -80,7 +81,7 @@
          }
          else
          {
-            $_SESSION['memMax'] = $test['MemoryAllocation'];
+            $_SESSION['memMax'] = $test['MemoryAllocation'] * 1024;
          }
 
          return 'true';
@@ -90,6 +91,10 @@
          return 'false';
       }
    }
+
+
+   mysql_connect($DB_HOST, $DB_USER, $DB_PASS) or die("Unable to connect.");
+   mysql_select_db($DB_NAME) or die("Unable to select database.");
 
 
    // Logout
@@ -102,6 +107,73 @@
 
    if(isset($_POST['user_action'])) // Are we performing a user action?
    {
+
+      // Password Reset
+      if($_POST['user_action'] == 'reset') 
+      {
+         if(isset($_POST['username']) && isset($_POST['password']))
+         {
+
+            $username = $_POST['username'];
+
+            // Check for valid token
+            $query = "SELECT * FROM t_user WHERE User_ID='$username';";
+            $result = mysql_query( $query );
+            $row = mysql_fetch_array($result);
+            $validToken     = $row['ResetToken'];
+            $tokenTimestamp = $row['TokenExpiration'];
+            $resetToken     = $_POST['token'];
+
+echo 'reset token : ' . $resetToken . '<br/>';
+echo 'valid token : ' . $validToken . '<br/>';
+echo 'timestamp : ' . $tokenTimestamp . '<br/>';
+echo 'current time : ' . date("Y-m-d H:i:s", time()) . '<br/>';
+echo strtotime($tokenTimestamp);
+exit;
+
+            if( $resetToken != $validToken )
+            {
+               redirect('../../reset.php?error=invalid_token');
+            }
+
+            // Check if token has expired
+            if( time() > strtotime($tokenTimestamp) )
+            {
+               redirect('../../reset.php?error=expired_token');
+            }
+/*
+echo 'reset token : ' . $resetToken . '<br/>';
+echo 'valid token : ' . $validToken . '<br/>';
+echo 'timestamp : ' . $tokenTimestamp . '<br/>';
+exit;*/
+
+            $password = $_POST['password'];
+            $passwordHash = create_hash( $password );
+
+            // Securimage Captcha Validation
+            include_once '../securimage/securimage.php';
+            $securimage = new Securimage();
+            if ($securimage->check($_POST['captcha_code']) == false) {
+              // the code was incorrect
+              // you should handle the error so that the form processor doesn't continue
+ 
+              // or you can use the following code if there is no validation or you do not know how
+              echo "The security code entered was incorrect.<br /><br />";
+              echo "Please go <a href='javascript:history.go(-1)'>back</a> and try again.";
+              exit;
+            }
+
+            $passwordHashStr = mysql_escape_string( $passwordHash );
+            $query = "UPDATE t_user SET PasswordHash='$passwordHashStr' WHERE User_ID='$username';";
+            $result = mysql_query( $query );
+
+            // Continue to login
+            $_POST['user_action'] = 'login';
+           
+         }
+      }
+
+
       if($_POST['user_action'] == 'login') // Are we trying to login?
       {		
          if(isset($_POST['username']) && isset($_POST['password']))
@@ -130,6 +202,9 @@
             }
          }
       }
+
+
+
    }
 
 ?>

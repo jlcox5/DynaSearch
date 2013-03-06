@@ -36,6 +36,8 @@
          $pPassword = $_POST['participantPassword'];
       }
 
+         $pEmail = $_POST['pEmail'];
+
       if( isset($_POST['participantExp']) )
       {
          $pCurrExp = $_POST['participantExp'];
@@ -53,11 +55,11 @@
       }
 
       $query = "INSERT INTO t_user " .
-               "(User_ID, Admin_ID, Name, UPassword, User_Type, Current_Experiment_ID, current_position) " .
+               "(User_ID, Admin_ID, Name, UPassword, Email, User_Type, Current_Experiment_ID, current_position) " .
                "VALUES " .
-               "('$pId', '$username', '$pName', '$pPassword', 'U', $pCurrExp, $pProgress) " .
+               "('$pId', '$username', '$pName', '$pPassword', '$pEmail', 'U', $pCurrExp, $pProgress) " .
                "ON DUPLICATE KEY UPDATE " .
-               "Name=Values(Name), UPassword=Values(UPassword) , Current_Experiment_ID=Values(Current_Experiment_ID) , current_position=Values(current_position)"  . 
+               "Name=Values(Name), UPassword=Values(UPassword), Email=Values(Email), Current_Experiment_ID=Values(Current_Experiment_ID), current_position=Values(current_position)"  . 
                ";";
 
       mysql_query($query);
@@ -122,6 +124,7 @@
 
             $participantName     = "";
             $participantPassword = "";
+            $participantEmail = "";
             $pExpId = "";
             $pProgress = 0;
          }
@@ -134,6 +137,7 @@
 
             $participantName     = $row["Name"];
             $participantPassword = $row["UPassword"];
+            $participantEmail = $row["Email"];
             $pExpId = $row["Current_Experiment_ID"];
             $pProgress = $row["current_position"];
          }
@@ -166,12 +170,27 @@
          echo '<br/>' ;
 
 
-         // Password
-         echo '<h2>Password : ' . 
-                 '<input type="text" name="participantPassword" value="' .$participantPassword . '" required="required" />' .
+         // Email
+         echo '<h2>Email : ' . 
+                 '<input type="text" name="pEmail" value="' . $pEmail . '" />' .
               '</h2>' ;
          echo '<br/>' ;
 
+
+         // Change Password
+         echo '<h2>New Password : ' . 
+                 '<input type="password" name="pPassword" ';
+        if( isset($_POST["add"]) )
+         {
+            echo 'required="required" />';
+         }
+         else
+         {
+            echo '/>';
+         }
+
+         echo '</h2>' ;
+         echo '<br/>' ;
 
          // Current Experiment
          echo '<h2>Current Experiment : ';
@@ -212,7 +231,7 @@
          if( !isset($_POST["add"]) )
          {
             echo '<span id="expDisplay">' . 
-                    ( ($pExpID = '-1') ? ('Unassigned ') : ($pExpName . ' (' . $pExpId . ')') ) . 
+                    ( ($pExpId == '-1') ? ('Unassigned ') : ($pExpName . ' (' . $pExpId . ')') ) . 
                     '<input type="button" value="Change" onclick="changeExp();"/>' .
                  '</span>';
          }

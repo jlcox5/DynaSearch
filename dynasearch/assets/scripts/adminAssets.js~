@@ -144,7 +144,7 @@ var saveAssetAs = function(type) {
             if (exists) {
                saveAssetAs(type);
             } else {
-               $(type + "SelectedAsset").value = type + '/' + newAsset;\
+               $(type + "SelectedAsset").value = type + '/' + newAsset;
             $(type + "SaveBtn").setProperty('disabled', '');
       $(type + "SaveBtn").click();
                //saveAsset(type);

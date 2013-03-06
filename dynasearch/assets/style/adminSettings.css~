@@ -1,0 +1,19 @@
+/* Accordion */
+#accordion {
+   margin : 20px 0px 0px;
+}
+
+#accordion H2 {
+   background: #555;
+   color: white;
+   cursor: pointer;
+   font: 24px Raleway, Arial, sans-serif;
+text-transform: uppercase;
+   line-height: 32px;
+   margin: 0 0 4px 0;
+   padding: 3px 5px 1px;
+}
+
+#accordion .content {
+
+}

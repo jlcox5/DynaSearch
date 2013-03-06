@@ -23,6 +23,28 @@
 
    }
 
+
+   // Check for password reset
+   if( isset($_GET['reset']) )
+   {
+      $resetToken = $_GET['reset'];
+      echo $resetToken;
+/*
+      if( $_SESSION['logged_in'] == 'true' )
+      {
+         if( $_SESSION['User_Type'] == 'A' )
+         {
+            redirect('admin.php');
+         }
+         else
+         {
+            redirect('director.php');
+         }
+      }
+*/
+
+   }
+
    include("assets/php/standard.php");
 	
 	// Code to prevent backtracking

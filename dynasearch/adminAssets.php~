@@ -258,7 +258,7 @@ echo '</div>';
 
          if ($errorMsg == 'overCap')
          {
-            echo 'alert("Over Capacity");';
+            echo 'alert("You do not have enough memory allocation remaining to complete this operation!");';
          }
 
 

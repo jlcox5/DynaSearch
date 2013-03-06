@@ -26,6 +26,10 @@
    <html>
    <head>';
    
+
+   // Fonts
+   echo "<link href='http://fonts.googleapis.com/css?family=Josefin+Sans:300,400,700' rel='stylesheet' type='text/css'>";
+
    // Input every templated CSS file
    if(isset($template_style_array))
    {

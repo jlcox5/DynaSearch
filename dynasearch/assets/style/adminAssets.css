@@ -36,8 +36,8 @@ td {
    background: #555;
    color: white;
    cursor: pointer;
-   font: 16px Helvetica, Arial, sans-serif;
-   line-height: 24px;
+   font: 24px Josefin Sans, Arial, sans-serif;
+   line-height: 32px;
    margin: 0 0 4px 0;
    padding: 3px 5px 1px;
 }
@@ -112,6 +112,8 @@ float : right;
 .allocation-info h3 {
    background: #555;
    color: white;
+   font: 24px Josefin Sans, Arial, sans-serif;
+   /*font-weight: bold;*/
    padding: 3px 5px 1px;
 }
 
