@@ -1,0 +1,43 @@
+
+
+#emailBox {
+   position : relative;
+   width  : 100%;
+   height : 100%;
+}
+
+
+.email-text {
+
+   font-size : 16px;
+   width     : 100%;
+}
+
+.emailTable {
+   width  : 100%;
+   height : 100%;
+}
+
+.emailField {
+   width  : 100%;
+}
+
+.messageArea {
+   position : absolute;
+   bottom : 0px;
+   top : 110px;
+   width  : 100%;
+}
+
+#emailMessage {
+/*
+position : absolute;
+bottom : 0px;
+top : 0px;
+left : 0px;*/
+
+
+   width  : 100%;
+   height  : 100%;
+   resize : none;
+}

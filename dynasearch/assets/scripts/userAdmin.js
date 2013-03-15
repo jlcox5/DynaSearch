@@ -76,3 +76,77 @@ var resetExpInfo = function() {
 
 }
 
+var sendEmail = function() {
+
+   //var emailBox = $('emailBox');
+   var recipient = $('emailRecipient'),
+       subject   = $('emailSubject'),
+       mailmsg   = $('emailMessage'),
+       sender    = $('emailSender');
+
+   var request = new Request({
+      method    : 'post',
+      url       : './assets/php/send_email.php',
+      data      : {
+         'email_op'  : 'send',
+         'recipient' : recipient,
+         'subject'   : subject,
+         'message'   : mailmsg,
+         'sender'    : sender
+      },
+      onSuccess : function(response) {
+/*
+         var arr    = JSON.decode(response);  
+
+         if (arr.length > 0) {
+            // ID exists, not available
+            availabilityTag.set('html', 'Not Available');
+            availabilityTag.setProperty('style', 'color:red;');
+            saveButton.setProperty('disabled', 'disabled');
+
+         } else {
+            // ID does not exist, available
+            availabilityTag.set('html', 'Available');
+            availabilityTag.setProperty('style', 'color:green;');
+            saveButton.setProperty('disabled', '');
+         }
+*/
+alert(response);
+         new mBox.Notice({
+            type    : 'ok',
+            content : "Email Sent!"
+         });
+      }
+   }).send();
+
+}
+
+var showEmailPopup = function() {
+
+   var emailBox = new mBox.Modal({
+      title   : 'Send Email to Participant?',
+      content : 'emailBox',
+      width   : '800px',
+      height  : '450px',
+      overlay : true,
+      closeOnBodyClick : false,
+      buttons : [
+         { title : 'Cancel',
+           event : function() {
+              new mBox.Notice({
+                 type    : 'info',
+                 content : "Email Canceled"
+               });
+              this.close();
+           },
+         },
+         { title : 'Submit' ,
+           event : function() { sendEmail(); this.close(); },
+           addClass : 'button_green' }
+      ],
+   }).open();
+
+   //emailBox.open();
+
+}
+

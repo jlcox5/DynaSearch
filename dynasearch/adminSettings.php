@@ -3,6 +3,7 @@
    require_once('assets/php/std_api.php');
    include("assets/php/config.php");
    include('assets/php/db_util.php');
+   include('assets/php/email_util.php');
    include('assets/php/PasswordHash.php');
 
    mysql_connect($DB_HOST, $DB_USER, $DB_PASS) or die("Unable to connect.");
@@ -58,6 +59,30 @@
       {
          $noticeType = 'error';
          $noticeMsg  = 'Old Password Invalid!';
+      }
+   }
+
+   // Update Email Address
+   if( isset($_POST['updateEmail']) )
+   {
+
+      $emailAddr = $_POST['email'];
+      if( valid_email($emailAddr) )
+      {
+         $emailAddrStr = mysql_escape_string( $emailAddr );
+
+         $query = "UPDATE t_user SET Email='$emailAddrStr' WHERE User_ID='$username';";
+         if( $DEBUG ) { echo $query; }
+         mysql_query($query);
+
+         $noticeType = 'ok';
+         $noticeMsg  = 'Email Address Updated!';
+
+      }
+      else
+      {
+         $noticeType = 'error';
+         $noticeMsg  = 'Email Address Invalid!';
       }
    }
 
@@ -126,7 +151,7 @@
 
    <div id="maincontainer">
       <div id="wrapper" style="width:70%; margin: auto auto;">
-   
+
          <h1>Settings</h1><br/>
          <br/>
 
@@ -155,18 +180,23 @@
             <!-- Change Email Address -->
             <h2>Change Email Address</h2>
             <div class="content">
-               <form id="changePasswordForm" action="adminSettings.php" method="post" onsubmit="return validatePassword(this);">
-               <h3>Old Password : 
-                 <input type="password" id="oldPassword" name="oldPassword" value="" required="required" />
-               </h3>
-               <h3>New Password : 
-                 <input type="password" id="newPassword" name="newPassword" value="" required="required" />
-               </h3>
-               <h3>Re-enter Password : 
-                 <input type="password" id="newPasswordCheck" name="newPasswordCheck" value="" required="required" />
-               </h3>
+               <form id="updateEmailForm" action="adminSettings.php" method="post">
+               <h3>Email : 
+   <?php
+      $query = "SELECT * FROM t_user " .
+               "WHERE " .
+               "User_ID='$username' AND Admin_ID='$username';";
+      if( $DEBUG ) { echo $query; }
+      $result = mysql_query($query);
+      if( $row = mysql_fetch_array($result, MYSQL_BOTH) )
+      {
+         $emailAddr   = $row["Email"];
+      }
 
-               <input type="submit" name="changePassword" value="Change" />
+      echo '<input type="text" name="email" value="' . $emailAddr . '" required="required" />'
+   ?>
+               </h3>
+               <input type="submit" name="updateEmail" value="Update" />
                <br/>
                </form>
 

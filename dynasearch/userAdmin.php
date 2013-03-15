@@ -11,9 +11,10 @@
    $page_title = "Manage Participants";
    $username = $_SESSION['username'];
 
-   $template_style_array  = array("style.css");
-   $template_script_array = array("ajax-core.js", "userAdmin.js");
-   
+   $template_style_array  = array("style.css", "userAdmin.css", "mBoxCore.css", "mBoxModal.css", "mBoxNotice.css");
+   $template_script_array = array("ajax-core.js", "mBox.All.min.js", "userAdmin.js");
+   include('assets/php/standard.php');   
+
    if( isset($_POST['participantId']) )
    {
       $pId = $_POST['participantId'];
@@ -73,15 +74,54 @@
 
       mysql_query($query);
       $_POST['load'] = '';
+
+      $emailStr = "Hello $pName!\n" . 
+                  "An account has been created for you!\n" .
+                  "\nLogin ID : $pId\n" . 
+                  "Password : $pPassword\n" .
+                  "\n";
+
+      echo '<script type="text/javascript">' .
+           '   window.addEvent("domready",' .
+           '                    function(){ showEmailPopup(); }' .
+           '                  );' .
+           '</script>';
+
    }
 
-   include('assets/php/standard.php');
 ?>
 
 <body id="body">
+
+   <!-- Email Popup Box -->
+   <div id="emailBox" style="display:none;">
+
+      <table class="emailField">
+         <td><label class="emailFieldCell">From</label></td>
+         <td><input id="emailSender" class="email-text" type="text" value="jgestri@g.clemson.edu"></td>
+      </table>
+
+      <table class="emailField">
+         <td><label class="emailFieldCell">To</label></td>
+         <td><input id="emailRecipient" class="email-text" type="text" value="jgestri@g.clemson.edu"></td>
+      </table>
+
+      <table class="emailField">
+         <td><label class="emailFieldCell">Subject</label></td>
+         <td><input id="emailSubject" class="email-text" type="text" value=""></td>
+      </table>
+
+      <div class="messageArea">
+         <textarea id="emailMessage" class="email-text"><?php echo $emailStr; ?></textarea>
+      </div>
+   </div>
+
+
    <div id="maincontainer">
       <div id="wrapper" style="width:70%; margin: auto auto;">
    
+
+
          <h1>Manage Participants</h1><br/>
          <br/>
 
