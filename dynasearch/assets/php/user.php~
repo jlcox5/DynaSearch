@@ -5,6 +5,71 @@
    require_once('std_api.php');
    include('PasswordHash.php');
 
+   function load_user( $username, $array )
+   {
+      //$_SESSION['logged_in'] = 'true';
+      $_SESSION['username'] = $username;
+      $_SESSION['userAdmin'] = $array['Admin_ID'];
+      $_SESSION['userExpId'] = $array['Current_Experiment_ID'];
+      $_SESSION['full_name'] = $array['Name'];
+
+      $_SESSION['scaleProfileId'] = $array['ScaleProfileID'];
+
+      if( ($array['User_Type'] == 'U') || ($array['User_Type'] == 'M') )
+      {
+ 
+         $userExpId = $_SESSION['userExpId'];
+         $query = "SELECT id FROM t_user_output WHERE User_ID='$username' AND Experiment_ID='$userExpId' LIMIT 1;";
+         $result = mysql_query($query);
+         if( mysql_fetch_array($result) !== false )
+         {
+            // User output has been started for this experiment
+            if( $array['User_Type'] == 'M' )
+            {
+               // MT Logins are One-Time Use Only
+               redirect('../../mturk.php?error=already_run');
+            }
+            
+         }
+         else
+         {
+           // User ouput must be added to database
+            $query = "INSERT INTO t_user_output (User_ID, Experiment_ID) " .
+                        "VALUES ('$username', '$userExpId');";
+            $result = mysql_query($query);  
+
+         }
+
+         // Pull experiment data from database
+         $query = "SELECT * FROM t_experiments WHERE id='$userExpId';";
+         $result = mysql_query($query);
+         $row = mysql_fetch_array($result, MYSQL_BOTH);
+
+         // Get Custom Scaling flag
+         //$_SESSION['customScaling'] = $row['CustomScaling'];
+
+         // Get Scaling Profile
+         $_SESSION['scaleProfileId'] = $row['ScaleProfileID'];
+
+         // Get Experiment Scale
+         $_SESSION['scaleW'] = $row['ScaleW'];
+         $_SESSION['scaleH'] = $row['ScaleH'];
+
+         // Pull Experiment string from experiment data
+         $expstr = $row['ExperimentString'];
+
+         // Parse experiment string and save as session variable
+         $_SESSION['expData'] = parseExperimentData( $expstr );
+
+      }
+      else
+      {
+         $_SESSION['memMax'] = $array['MemoryAllocation'] * 1024;
+      }
+
+   }
+
+
    # Return "True" on success, setting session variables "username", "full_name" and "logged_in"
    # else returns "False"
    function user_signin($username, $password)
@@ -24,7 +89,9 @@
       $test = mysql_fetch_array($result);
 	
       //if( $test['User_ID'] == $username && $test['UPassword'] == $password )
-      if( $test['User_ID'] == $username && validate_password($password, $test['PasswordHash']) )
+      if( ($test['User_ID'] == $username) && 
+          ( validate_password($password, $test['PasswordHash']) ) 
+        )
       {
          $_SESSION['logged_in'] = 'true';
          $_SESSION['username'] = $username;
@@ -123,13 +190,13 @@
             $validToken     = $row['ResetToken'];
             $tokenTimestamp = $row['TokenExpiration'];
             $resetToken     = $_POST['token'];
-
+/*
 echo 'reset token : ' . $resetToken . '<br/>';
 echo 'valid token : ' . $validToken . '<br/>';
 echo 'timestamp : ' . $tokenTimestamp . '<br/>';
 echo 'current time : ' . date("Y-m-d H:i:s", time()) . '<br/>';
 echo strtotime($tokenTimestamp);
-exit;
+exit;*/
 
             if( $resetToken != $validToken )
             {
@@ -203,6 +270,55 @@ exit;*/
          }
       }
 
+
+      // Mechanical Turk Login
+      if($_POST['user_action'] == 'mt_login')
+      {		
+
+         $adminId  = $_POST['adminId'];
+         $expId    = $_POST['expId'];
+         $amazonId = $_POST['amazonId'];
+
+         //$query  = "SELECT * FROM t_user WHERE User_ID='$pId' AND Admin_ID='$adminId' LIMIT 1;";
+         $query  = "SELECT * FROM t_mturk WHERE Admin_ID='$adminId' AND Amazon_ID='$amazonId' LIMIT 1;";
+         $result = mysql_query($query);
+
+         if( ($row = mysql_fetch_array($result)) === false )
+         {
+            // MT Participant must be created
+            $query = "INSERT INTO t_mturk " .
+                     "(Admin_ID, Amazon_ID) " .
+                     "VALUES " .
+                     "('$adminId', '$amazonId');";
+            mysql_query($query);
+            $mtId = mysql_insert_id();
+
+         }
+         else
+         {
+            $mtId = $row['MT_ID'];
+         }
+
+         $pId   = "mt_" . str_pad( $mtId, 12, '0', STR_PAD_LEFT );
+         $pName = "MT_" . $amazonId;
+         $query = "INSERT INTO t_user " .
+                  "(User_ID, Admin_ID, Name, User_Type, Current_Experiment_ID) " .
+                  "VALUES " .
+                  "('$pId', '$adminId', '$pName', 'M', $expId) " .
+                  "ON DUPLICATE KEY UPDATE " .
+                  "Current_Experiment_ID=Values(Current_Experiment_ID)";
+            mysql_query($query);
+
+         $query = "SELECT * FROM t_user WHERE User_ID='$pId' LIMIT 1;";
+         $result = mysql_query($query);
+         $row = mysql_fetch_array($result);
+
+         // Load & Log In MT Participant
+         load_user( $pId, $row );
+         $_SESSION['logged_in'] = 'true';
+         redirect('../../director.php');
+
+      }
 
 
    }

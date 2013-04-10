@@ -50,8 +50,80 @@ var checkAvailability = function() {
    request.send();
 }
 
+
+var resetPassword = function( pId ) {
+
+   // Create Form
+   var form = new Element('form');
+   form.style.visibility = 'hidden';
+   form.method = 'POST';
+
+   var id = new Element('input');
+   id.name = "pId";
+   id.value = pId;
+   form.adopt(id);
+   
+   var mode = new Element('input');
+   mode.name = 'op';
+   mode.value = 'resetPassword';
+   form.adopt(mode);
+
+   form.action = "userAdmin.php";
+   document.body.adopt(form);
+   form.submit();
+   
+}
+
+
+var resetProgress = function( pId ) {
+
+   // Create Form
+   var form = new Element('form');
+   form.style.visibility = 'hidden';
+   form.method = 'POST';
+
+   var id = new Element('input');
+   id.name = "pId";
+   id.value = pId;
+   form.adopt(id);
+   
+   var mode = new Element('input');
+   mode.name = 'op';
+   mode.value = 'resetProgress';
+   form.adopt(mode);
+
+   form.action = "userAdmin.php";
+   document.body.adopt(form);
+   form.submit();
+   
+}
+
+
 var changeExp = function() {
 
+   var expSelectBox = new mBox.Modal({
+      title   : 'Assign Experiment',
+      content : 'expSelectBox',
+      /*width   : '800px',
+      height  : '450px',*/
+      overlay : true,
+      closeOnBodyClick : false,
+      buttons : [
+         { title : 'Cancel',
+           /*event : function() {
+              new mBox.Notice({
+                 type    : 'info',
+                 content : "Email Canceled"
+               });
+              this.close();
+           },*/
+         },
+         { title : 'Assign' ,
+           event : function() { sendEmail(); this.close(); },
+           addClass : 'button_green' }
+      ],
+   }).open();
+/*
    var conf = confirm("Are you sure you want to assign a different experiment?\n\nIf you save this change, the participants progress will be reset.");
 
    if (conf) {
@@ -64,6 +136,7 @@ var changeExp = function() {
       var pProgress = $("pProgress");
       pProgress.setProperty("value", "0");
    }
+*/
 }
 
 var resetExpInfo = function() {
