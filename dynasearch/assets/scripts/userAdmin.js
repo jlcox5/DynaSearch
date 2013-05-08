@@ -119,7 +119,14 @@ var changeExp = function() {
            },*/
          },
          { title : 'Assign' ,
-           event : function() { sendEmail(); this.close(); },
+           event : function() {
+              var expSelect = $("pExps");
+              var ndx = expSelect.selectedIndex;
+              $("pExp").value = expSelect.value;
+              $("expDisplay").set( 'html', expSelect[ndx].text );
+              // sendEmail();
+              this.close();
+           },
            addClass : 'button_green' }
       ],
    }).open();
@@ -213,9 +220,9 @@ var showEmailPopup = function() {
               this.close();
            },
          },
-         { title : 'Submit' ,
+         { title : 'Send' ,
            event : function() { sendEmail(); this.close(); },
-           addClass : 'button_green' }
+           addClass : 'button-green' }
       ],
    }).open();
 

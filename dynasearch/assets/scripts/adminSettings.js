@@ -54,12 +54,35 @@ var setNotice = function(noticeType, noticeContent) {
 window.addEvent(
    'domready',
    function() {
-      new Fx.Accordion($('accordion'), '#accordion h2', '#accordion .content',
-         { alwaysHide : true, display : -1 } );
+
+      // Get current slice from url
+      var currentSlice = -1;   
+      $$('div.toggle').each(function(toggler, i){
+         if ( window.location.hash.test(toggler.get('hash-link')) ) {
+            currentSlice = i; 
+         }
+      });
+
+      // Create Accordion
+      var accordion = new Fx.Accordion(
+         $('accordion'),
+         '#accordion .toggle',
+         '#accordion .content',
+         {
+            alwaysHide : true,
+            display    : currentSlice,
+            onActive   : function( toggler ) {
+               window.location.hash = toggler.get('hash-link');
+            }
+         }
+      );
+
 
       if (notice) {
          new mBox.Notice( notice );
       }
+
+
 //new mBox.Notice({ type: 'ok', content : 'Aagin' });
 });
 

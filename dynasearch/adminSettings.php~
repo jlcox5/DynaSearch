@@ -67,7 +67,7 @@
    {
 
       $emailAddr = $_POST['email'];
-      if(  )
+      if( valid_email($emailAddr) )
       {
          $emailAddrStr = mysql_escape_string( $emailAddr );
 
@@ -82,7 +82,7 @@
       else
       {
          $noticeType = 'error';
-         $noticeMsg  = 'Old Password Invalid!';
+         $noticeMsg  = 'Email Address Invalid!';
       }
    }
 
@@ -158,7 +158,7 @@
          <div id="accordion">
 
             <!-- Change Password -->
-            <h2>Change Password</h2>
+            <div class="toggle" hash-link="password">Change Password</div>
             <div class="content">
                <form id="changePasswordForm" action="adminSettings.php" method="post" onsubmit="return validatePassword(this);">
                <h3>Old Password : 
@@ -178,7 +178,7 @@
             </div>
 
             <!-- Change Email Address -->
-            <h2>Change Email Address</h2>
+            <div class="toggle" hash-link="email">Change Email Address</div>
             <div class="content">
                <form id="updateEmailForm" action="adminSettings.php" method="post">
                <h3>Email : 
@@ -203,7 +203,7 @@
             </div>
 
             <!-- Screen Size Calibration -->
-            <h2>Screen Size Profile</h2>
+            <div class="toggle" hash-link="size_profile">Screen Size Profile</div>
             <div class="content">
                <form action="adminSettings.php" method="post">
                   <h3>Current Profile : <?php echo $profileName; ?></h3>

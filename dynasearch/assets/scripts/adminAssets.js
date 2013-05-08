@@ -157,12 +157,29 @@ var uploadAsset = function(assetType) {
    }
 
 window.addEvent('domready', function(){
-   new Fx.Accordion($('accordion'), '#accordion h2', '#accordion .content',
+
+
+   // Get current slice from url
+   var currentSlice = -1;   
+   $$('div.toggle').each(function(toggler, i){
+      if ( window.location.hash.test(toggler.get('hash-link')) ) {
+         currentSlice = i; 
+      }
+   });
+
+   // Create Accordion
+
+   var accordion = new Fx.Accordion($('accordion'), '#accordion .toggle', '#accordion .content',
       {
-         display    : CURRENT_SLICE,
-         alwaysHide : true
+         display    : currentSlice,
+         alwaysHide : true,
+         onActive   : function( toggler ) {
+            window.location.hash = toggler.get('hash-link');
+         }
       }
   );
+
+
 
 /*
   // Popup functions

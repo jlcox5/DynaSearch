@@ -1,4 +1,29 @@
 
+.form-user {
+        /*max-width: 300px;*/
+        padding: 19px 29px 29px;
+        /*margin: 0 auto 20px;*/
+        background-color: #fff;
+        border: 1px solid #cdcdcd;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 2px 3px rgba(0,0,0,.5);
+           -moz-box-shadow: 0 2px 3px rgba(0,0,0,.5);
+                box-shadow: 0 2px 3px rgba(0,0,0,.5);
+}
+
+td {
+   padding : 5px;
+}
+
+td.label {
+   /*vertical-align : top;*/
+   text-align     : right;
+
+   font-weight : bold;
+}
+
 
 #emailBox {
    position : relative;

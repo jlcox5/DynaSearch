@@ -3,7 +3,7 @@
    margin : 20px 0px 0px;
 }
 
-#accordion H2 {
+#accordion .toggle {
    background: #555;
    color: white;
    cursor: pointer;

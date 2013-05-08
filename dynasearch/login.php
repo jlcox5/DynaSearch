@@ -51,54 +51,64 @@
 	//checkPage(0);
 
 ?>
+ <style type="text/css">
 
+      .form-signin {
+        max-width: 300px;
+        padding: 19px 29px 29px;
+        margin: 0 auto 20px;
+        background-color: #fff;
+        border: 1px solid #cdcdcd;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 2px 3px rgba(0,0,0,.5);
+           -moz-box-shadow: 0 2px 3px rgba(0,0,0,.5);
+                box-shadow: 0 2px 3px rgba(0,0,0,.5);
+      }
+      .form-signin .form-signin-heading,
+      .form-signin .checkbox {
+        margin-bottom: 10px;
+      }
+      .form-signin input[type="text"],
+      .form-signin input[type="password"] {
+        font-size: 16px;
+        height: auto;
+        margin-bottom: 15px;
+        padding: 7px 9px;
+      }
+
+    </style>
 <body>
    <div id="maincontainer">
       <center><h1>DynaSearch</h1></center>
       <br/>
-      <table id="two_column_opening"> <!-- Begin main page columns  -->
-         <td width="50%">
-            Please provide your login information:
 
-            <form action="assets/php/user.php" id="login_form" method="post">
-               <input type="hidden" name="user_action" value="login" />
-               <table>
+            <form class="form-signin" action="assets/php/user.php" id="login_form" method="post">
+               <h2 class="form-signin-heading">Please provide your login information</h2>
    <?php
       if( isset($_GET['error']) )
       {
          if($_GET['error'] == 'wrong_pass')
          {
-            echo '<tr><h3 style="color: red;">Incorrect Password.</h3></tr>';
+            echo '<h3 style="color: red;">Incorrect Password.</h3>';
          }
       }
    ?>
-                  <tr>
-                     <td width="125px" class="input_prompt">User Name</td>
-                     <td><input name="username"  onKeyDown="if(event.keyCode == 13) $('login_form').submit();"/></td>
-                  </tr>
-
-                  <tr>
-                     <td class="input_prompt">Password</td>
-                     <td><input name="password" type="password" onKeyDown="if(event.keyCode == 13) $('login_form').submit();"/></td>
-                  </tr>
-
-                  <tr>
-                     <td><button type="submit">Login</button></td>
-                  </tr>
-               </table>
+               <input type="hidden" name="user_action" value="login" />
+               <input name="username" type="text" placeholder="User ID" onKeyDown="if(event.keyCode == 13) $('login_form').submit();"/>
+               <input name="password" type="password" placeholder="Password" onKeyDown="if(event.keyCode == 13) $('login_form').submit();"/>
+               <button class="button-blue" type="submit">Login</button>
+               <br/>
+               <br/>
+               <!-- Commented out on 21JAN13 by Jon -->
+               <a href="#">Having trouble logging in?</a>
             </form>
-            <br/>
+
             <br/>
 
-<!-- Commented out on 21JAN13 by Jon -->
-<!-- <a href="#">Having trouble logging in?</a> -->
 
-         </td>
-         <td>
-<!-- Commented out on 21JAN13 by Jon -->
-<!-- DynaSearch is a system for (...) -->
-         </td>
-      </table> <!-- End main page columns  -->
+
    </div>
 </body>
 </html>

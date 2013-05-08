@@ -74,11 +74,11 @@
    {
       $assetName = $_POST['asset'];
       $assetType = $_POST['assetType'];
-/*
+/**/
       $assetFile = $assetBaseDir . $assetName;
       $fh = fopen($assetFile, 'w') or die("can't open file");
       fclose($fh);
-      unlink($assetFile);*/
+      unlink($assetFile);
       redirect('adminAssets.php?assetType=' . $assetType);
    }
 
@@ -95,7 +95,7 @@
          <!-- Capacity Info-->
          <div class="allocation-info">
    <?php 
-      $adminMaxSize = 1048576;
+      //$adminMaxSize = 1048576;
 
       echo '<h3>My Allocation</h3>';
 
@@ -113,7 +113,7 @@
    ?>
          </div>
 
-         <h1>Manage Assets</h1>
+         <h1>My Assets</h1>
          <div style="clear:both;"></div>
 
          <!-- Asset Viewer -->
@@ -128,7 +128,7 @@
       {
          $currAsset = &$assets[$i];
 
-         echo '<h2>' . $currAsset["Name"] . '</h2>' .
+         echo '<div hash-link="#' . $currAsset["Tag"] . '" class="toggle">' . $currAsset["Name"] . '</div>' .
               '<div class="content">'. 
                  '<form class="asset-panel" action="adminAssets.php" method="post">';
 
@@ -240,7 +240,7 @@ echo '</div>';
          </form>
  --> 
 
-         <!-- Upload Popup --> 
+         <!-- Upload Form --> 
          <form id="uploadForm" action="adminAssets.php" method="post" enctype="multipart/form-data" style="display:none;">
             <input id="assetFile" type="file" name="assetFile" required="required" onchange="$('upload').click();" />
             <input id="assetType" type="text" name="assetType" />

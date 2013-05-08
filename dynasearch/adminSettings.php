@@ -152,13 +152,13 @@
    <div id="maincontainer">
       <div id="wrapper" style="width:70%; margin: auto auto;">
 
-         <h1>Settings</h1><br/>
+         <h1>My Settings</h1><br/>
          <br/>
 
          <div id="accordion">
 
             <!-- Change Password -->
-            <h2>Change Password</h2>
+            <div class="toggle" hash-link="password">Change Password</div>
             <div class="content">
                <form id="changePasswordForm" action="adminSettings.php" method="post" onsubmit="return validatePassword(this);">
                <h3>Old Password : 
@@ -178,7 +178,7 @@
             </div>
 
             <!-- Change Email Address -->
-            <h2>Change Email Address</h2>
+            <div class="toggle" hash-link="email">Change Email Address</div>
             <div class="content">
                <form id="updateEmailForm" action="adminSettings.php" method="post">
                <h3>Email : 
@@ -203,7 +203,7 @@
             </div>
 
             <!-- Screen Size Calibration -->
-            <h2>Screen Size Profile</h2>
+            <div class="toggle" hash-link="size_profile">Screen Size Profile</div>
             <div class="content">
                <form action="adminSettings.php" method="post">
                   <h3>Current Profile : <?php echo $profileName; ?></h3>

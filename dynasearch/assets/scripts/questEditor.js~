@@ -109,6 +109,7 @@ var Questionnaire = new Class(
       return str + "</questionnaire>";
    },
    genElement:  function(forreal){
+      alert(this.elements);
       if(forreal == undefined) forreal = false;
       var quest = document.createElement('div');
           quest.id = "accordion";
@@ -1169,7 +1170,6 @@ function constructQuestion(forReal){
    var currentQuestStr = document.forms['To_Load'].elements['currentQuestStr'].value.trim();
    if(currentQuestStr != ""){
       var root = parseQuestionnaireString(currentQuestStr);
-alert(root);
       theQuest = new Questionnaire();
       theQuest.setName(hexDecode(root.attributes['name'].value));
       appendQuestions(root);
@@ -1187,6 +1187,32 @@ alert(root);
 
    Update(forReal);
 	
+
+/*
+   new mBox.Modal({
+      title   : 'Question Constructor',
+      content : 'quest-construct',
+      width   : '800px',
+      height  : '450px',
+      overlay : false,
+      closeOnBodyClick : false,
+      buttons : [
+         { title : 'Cancel',
+           event : function() {
+              new mBox.Notice({
+                 type    : 'info',
+                 content : "Email Canceled"
+               });
+              this.close();
+           },
+         },
+         { title : 'Send' ,
+           event : function() { sendEmail(); this.close(); },
+           addClass : 'button-green' }
+      ],
+   }).open();
+*/ 
+ 
 	//document.getElementById('questInfo').innerHTML = "<p>Please select the Item you would like to create:</p><blockquote><input id='qtype' name='type' type='radio' value='0' onclick='setOption(0)'/>Section<br/><input id='qtype' name='type' type='radio' value='1' onclick='setOption(1)'/>Radio Button Question<br/><input id='qtype' name='type' type='radio' value='2' onclick='setOption(2)'/>Text Question<br/><input id='qtype' name='type' type='radio' value='3' onclick='setOption(3)'/>Line of Text<br/></blockquote><input type='submit' id='questSub' name='questSub' value='Next' onclick='buildQuestion()'/><input type='submit' id='questSave' name='questSave' value='Save' onclick='saveQuestion()'/>";
 
    //ROOTMENU = constructRootMenu();

@@ -1,0 +1,152 @@
+
+
+var Questionnaire = new Class(
+{
+   // Initialize Questionnaire
+   initialize: function(nName){
+      this.name      = (nName==undefined)?"anonymous":nName;
+      this.elements  = new Array();
+      this.sections  = {};
+      this.iid       = 0;
+   },
+   getItemId: function(){
+      return this.iid++;
+   },
+   filter: function(callback,othis){
+      this.elements = this.elements.filter(callback,othis);
+   },
+   registerSection:  function(nsec){
+      //this.sections[secName] = new QuestSection({Q:this,title:secName});
+      //this.elements.push(this.sections[secName]);
+
+      this.sections[nsec.title] = nsec;
+   },
+   unregisterSection:  function(secName){
+      //this.sections[secName] = undefined;
+      delete this.sections[secName];
+      //var ndx = this.sections.indexOf(secName);
+      //this.sections.splice(ndx,1);
+   },
+   push: function(el){
+      this.elements.push(el);
+   },
+   getName: function(){
+      return (this.name==null)?"(root)":this.name;
+   },
+   setName: function(nname){
+      this.name = nname;
+   },
+   genQuestionString: function(){
+      var qarr = [];
+      for(var i=0; i < this.elements.length; ++i){
+          qarr = qarr.concat(this.elements[i].genQuestions());
+      }
+      return qarr.join(' ');
+   },
+   genString:  function(){
+      var str  = "<questionnaire name='"+hexEncode(this.name)+"'>";
+      for(var i=0; i < this.elements.length; ++i)
+          str += this.elements[i].genString();
+      return str + "</questionnaire>";
+   },
+   genElement:  function(forreal){
+      alert(this.elements);
+      if(forreal == undefined) forreal = false;
+      var quest = document.createElement('div');
+          quest.id = "accordion";
+          quest.className = "questionairre";
+          quest.name = this.name;
+      for(var i=0; i < this.elements.length; ++i){
+          quest.appendChild(this.elements[i].genElement(forreal));
+         /*
+         var cur_el = this.elements[i].genElement(forreal);
+         if(forreal && this.elements[i].type == 'section'){
+            while(cur_el.childNodes.length != 0){
+              var guy = cur_el.removeChild(cur_el.firstChild);
+              quest.appendChild(guy);
+              // alert(cur_el.childNodes[ci].tagName);
+               //quest.appendChild(cur_el.childNodes[ci]);
+            }
+         }else{
+            quest.appendChild(cur_el);
+         }
+         */
+      }
+
+      if(forreal){
+         var questionstring = this.genQuestionString();
+         var hiddenqs = dce('input');
+             hiddenqs.type  = 'hidden';
+             hiddenqs.name  = 'questions';
+             hiddenqs.value = questionstring;
+
+         quest.appendChild(hiddenqs);
+      }
+
+      return quest;
+   },
+   wrapElement: function(element,item){
+      var wrapper = document.createElement('div');
+          wrapper.className = "element_wrapper";
+
+      var row = document.createElement('tr');
+      var d1  = document.createElement('td'); //Resection
+      var d2  = document.createElement('td'); //Up
+      var d3  = document.createElement('td'); //Down
+      var d4  = document.createElement('td'); //Delete
+
+      var selectSection = document.createElement('select');
+      if(item.type == 'section'){
+         var optsec = document.createElement('option');
+             optsec.value = optsec.innerHTML = '---';
+         selectSection.appendChild(optsec);
+      }else{
+         var optnone = document.createElement('option');
+             optnone.value = optnone.innerHTML = '(none)';
+         if(item.section === null) optnone.selected = true;
+         selectSection.appendChild(optnone);
+         for (sec in theQuest.sections ){
+            if(sec === item.title) continue;
+            var opt = document.createElement('option');
+                opt.value = opt.innerHTML = sec;
+            if(sec == item.section) opt.selected = true;
+            selectSection.appendChild(opt);
+         }
+         selectSection.onchange = function(){item.handleResection(selectSection.value);};
+      }
+      d1.appendChild(selectSection);
+
+      var img2 = document.createElement('img');
+          img2.src = './assets/images/glyph_up.png';
+      //    img2.width = img2.height = '16px';
+          img2.onclick = function(){item.handleUp();};
+      var img3 = document.createElement('img');
+          img3.src = './assets/images/glyph_down.png';
+       //   img3.width = img3.height = '16px';
+          img3.onclick = function(){item.handleDown();};
+      var img4 = document.createElement('img');
+          img4.src = './assets/images/glyph_remove.png';
+        //  img4.width = img4.height = '16px';
+          img4.onclick = function(){item.handleDelete();};
+
+      d2.appendChild(img2);
+      d3.appendChild(img3);
+      d4.appendChild(img4);
+
+      row.appendChild(d1);
+      row.appendChild(d2);
+      row.appendChild(d3);
+      row.appendChild(d4);
+
+      wrapper.appendChild(row);
+      wrapper.appendChild(element);
+
+      return wrapper;
+   },
+   draw: function(forreal){
+      if(forreal == undefined) forreal = false;
+      document.getElementById('newQuest').innerHTML = "";
+      document.getElementById('newQuest').appendChild(this.genElement(forreal));
+   }
+}
+);

@@ -89,14 +89,14 @@
          $expuserpage_str = '';
          $logout_str = '<li>' . $_SESSION['username'] . '<ul>';
 
-         if( $_SESSION['User_Type'] == 'A' ){
+         if( $_SESSION['UserType'] == 'A' ){
             $useradmin_str = '<li>[Admin]<ul><li><a href="admin.php" onclick="handleExit();">Admin Page</a></li>'
                            .                '<li><a href="editor.php" onclick="handleExit();">--Training Page Editor</a></li>'
                            .                '<li><a href="questEditor.php" onclick="handleExit();">--Questionaire Editor</a></li>'
                            .                '<li><a href="survey_setup.php" onclick="handleExit();">--Experiment Editor</a></li>'
-                           .                '<li><a href="adminAssets.php" onclick="handleExit();">--Manage Assets</a></li>'
-                           .                '<li><a href="userAdmin.php" onclick="handleExit();">--Manage Participants</a></li>'
-                           .                '<li><a href="userOutput.php" onclick="handleExit();">--Participant Results</a></li>'
+                           .                '<li><a href="adminAssets.php" onclick="handleExit();">My Assets</a></li>'
+                           .                '<li><a href="userAdmin.php" onclick="handleExit();">My Participants</a></li>'
+                           .                '<li><a href="userOutput.php" onclick="handleExit();">Participant Results</a></li>'
                            .           '</ul></li>';
 
             $logout_str .= '<li><a href="adminSettings.php" onclick="handleExit();">Settings</a></li>';
@@ -105,8 +105,8 @@
          {
             $useradmin_str = '<li>[User]<ul><li><a href="" onclick="openHelpFrame();return false;">Help</a></li></ul></li>';
 
-            $expuserpage_str = '<li>[Page]'
-                             . '   <ul>';
+            //$expuserpage_str = '<li>[Page]'
+             //                . '   <ul>';
 
 //TODO : get all pages and put them in the list
       // Load up experiment

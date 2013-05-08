@@ -14,8 +14,8 @@
     $page_title = "Questionnaire";
     $style_file = "style.css";
     
-    $template_style_array  = array($style_file, "questEditor.css", "accordian.css");
-    $template_script_array = array("accordian.js", "questEditor.js");
+    $template_style_array  = array($style_file, "questEditor.css", "accordian.css", "mBoxCore.css", "mBoxModal.css", "mBoxNotice.css");
+    $template_script_array = array("accordian.js", "mBox.All.min.js", "questEditor.js");
 	
     include("assets/php/standard.php");
 
@@ -51,6 +51,9 @@
 <body onLoad="constructQuestion()">
 
 <?php
+
+   $currentQuest = "";
+   $loadQuest = "";
 
    if(isset($_POST['saveQuest']) && isset($_POST['questName'])){
       //
@@ -110,13 +113,110 @@
       <input type="hidden" name="questName" value="">
    </form>
 
+   <div id="section-editor">
+      Please enter a title for the section<br/>
+      <input type="text" />
+   </div>
+
+   <div id="radio-editor">
+      Please enter the question<br/>
+      <input type="text" /><br/>
+      Please enter the possible answers<br/>
+      <input type="text" />
+   </div>
+
+   <div id="quest-text-editor">
+      Please enter the question<br/>
+      <input type="text" /><br/>
+      Please enter the maximum character count for the answer<br/>
+      <input type="text" />
+   </div>
+
+   <div id="line-text-editor">
+      Please enter a line of text<br/>
+      <input type="text" />
+   </div>
+
    <div id="drag_cont">
       <div id="maincontainer">
-         <center><h1>DynaView</h1></center>
+         <center><h1>Questionnaire Editor</h1></center>
          <br/>
          <table id="two_column_opening"> <!-- Begin main page columns  -->
             <td width="50%">
                From this screen you can create questionnaires that can be used in surveys created from the Experiment Editor.
+
+         <h2>Currently Editing: 
+            <span id="survey_name"/><?php echo $expName; ?></span>
+            <!--<input type="text" id="survey_name" value="<?php echo $expName; ?>" />-->
+            <input id="exp_id" value="<?php echo $expId; ?>"  style="display:none;" />
+         </h2>
+
+         <br/>
+
+         <h1 style="display:none;" id="exp_short_name"><?php echo $expShortName; ?></h1>
+	
+         <!-- Buttons -->
+         <button onClick="prompt_new_experiment();">New</button>	
+         <button onClick="save_experiment();" <?php echo ( ($expId > 0) ? ('') : ('disabled="disabled"') ); ?> >Save</button>
+         <button onClick="save_experiment_as();">Save As...</button>
+         <button onClick="delete_experiment();" <?php echo ( ($expId > 0) ? ('') : ('disabled="disabled"') ); ?> >Delete</button>
+         <br/>
+   <?php
+      $adminExps = getAdminExps($username);
+      echo '<select id="expId" >';
+      foreach($adminExps as $key => $value)
+      {
+         if ($key == $expId)
+         {
+               $selected = 'selected="selected"';
+         }
+         else
+         {
+            $selected = '';
+         }
+
+         echo '<option value="' . $key . '" ' . $selected . '>' .
+                 $value . ' (' . $key . ')' .
+              '</option>';
+      }
+      echo '</select>';
+   ?>
+
+         <!--<select id="load_select_list">
+         <?php
+             
+            $query = "SELECT * FROM t_experiments where Admin_ID='$username'";
+
+            $exps = query_db($query);
+            while($row = mysql_fetch_array($exps, MYSQL_BOTH))
+            {
+               //var_dump($row);
+               echo '<option value="'. $row['ExperimentShortName'] .'">'. $row['ExperimentName'] .'</option>';
+            }
+         ?>
+         </select>-->
+
+         <button onClick="if(confirm('Are you sure you would like to discard all changes since the last save and load a new file?')){load_file();}">Load</button>
+
+
+         <!-- To add items to the list -->
+         <br/><br/>
+         <a href="#" onClick="add_info_page('','');">
+            <img src="assets/images/add.png" style="margin: auto 0px auto 10px; border-width:0px;">
+            Section
+         </a>
+         <a href="#" onClick="add_training_page('','');">
+            <img src="assets/images/add.png" style="margin: auto 0px auto 10px; border-width:0px;">
+            Radio Button Question
+         </a>
+         <a href="#" onClick="add_survey_page('','','');">
+            <img src="assets/images/add.png" style="margin: auto 0px auto 10px; border-width:0px;">
+            Text Question
+         </a>
+         <a href="#" onClick="add_survey_page('','','');">
+            <img src="assets/images/add.png" style="margin: auto 0px auto 10px; border-width:0px;">
+            Line Of Text
+         </a>
 
                <form action="questEditor.php" id="question_editor" name="question_editor" method="post">
                   <div id="accordion">

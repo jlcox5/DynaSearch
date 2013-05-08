@@ -11,24 +11,46 @@
    $page_title = "Manage Participants";
    $username = $_SESSION['username'];
 
-   $template_style_array  = array("style.css", "userAdmin.css", "mBoxCore.css", "mBoxModal.css", "mBoxModal.css", "mBoxNotice.css");
+   $template_style_array  = array("style.css", "userAdmin.css", "mBoxCore.css", "mBoxModal.css", "mBoxNotice.css");
    $template_script_array = array("ajax-core.js", "mBox.All.min.js", "userAdmin.js");
    include('assets/php/standard.php');   
 
    if( isset($_POST['op']) )
    {
       $op = $_POST['op'];
-//echo "op set<br/>";
    }
    else
    {
-//echo "op not set<br/>";
       $op = '';
    }
 
    if( isset($_POST['pId']) )
    {
       $pId = $_POST['pId'];
+
+     if( isset($_POST["add"]) )
+      {
+
+         // Add participant
+         $pId = "";
+
+         $pName     = "";
+         $pEmail = "";
+         $pExpId = -1;
+         $pProgress = 0;
+      }
+      else
+      {
+
+         $query  = "SELECT * FROM t_user WHERE User_ID='$pId';";
+         $result = mysql_query($query);
+         $row    = mysql_fetch_array($result, MYSQL_BOTH);
+
+         $pName     = $row["Name"];
+         $pEmail = $row["Email"];
+         $pExpId = $row["Current_Experiment_ID"];
+         $pProgress = $row["current_position"];
+      }
 
    }
    else
@@ -38,20 +60,17 @@
 
    $emailStr = "";
 
-//echo "op : " . $op . "<br/>";
 
-   // Reset Progress
-   if( $op == 'resetProgress' )
+   switch( $op )
    {
+   case 'resetProgress' : // Reset Progress
       $query = "UPDATE t_user " .
                "SET current_position=0 " .
                "WHERE User_ID='$pId';" ;
       mysql_query($query);
-   }
+      break;
 
-   // Reset Password
-   if( $op == 'resetPassword' )
-   {
+   case 'resetPassword' : // Reset Password
       $resetToken = randString();
       $tokenExpiration = date('Y/m/d H:i:s', time() + (60 * 60));
       $uri = 'http://'. $_SERVER['HTTP_HOST'] ;
@@ -70,44 +89,32 @@
                    "\n" .
                    "This link will expire on $tokenExpiration.\n" .
                    "";
-   }
+      break;
 
-   // Save
-   if( isset($_POST['save']) )
-   {
+   case 'Save' : // Save
 
-      if( isset($_POST['participantName']) )
+      $pName  = $_POST['pName'];
+      $pExpId = $_POST['pExp'];
+
+      if( isset($_POST['pEmail']) )
       {
-         $pName = $_POST['participantName'];
-      }
-
-
          $pEmail = $_POST['pEmail'];
-
-      if( isset($_POST['participantExp']) )
-      {
-         $pCurrExp = $_POST['participantExp'];
       }
 
+      // Check if participant exists
       $query  = "SELECT * FROM t_user WHERE User_ID='$pId' LIMIT 1;";
       $result = mysql_query($query);
       if( mysql_fetch_array($result) !== false )
       {
          // Participant Exists - Update
-         //$resetToken = "testtoken";
-         //$tokenExpiration = date('Y/m/d H:i:s', time() + (60 * 60));
-         //$uri = 'http://'. $_SERVER['HTTP_HOST'] ;
-         //$tokenUrl = $uri . '/reset.php?token=' . $resetToken;
-//echo $tokenUrl;
-//ocalhost/dynasearch/dynasearch
          $query = "UPDATE t_user " .
-                  "SET Name='$pName', Email='$pEmail', Current_Experiment_ID=$pCurrExp, " .
+                  "SET Name='$pName', Email='$pEmail', Current_Experiment_ID=$pExpId " .
                   "WHERE User_ID='$pId'; ";
       }
       else
       {
 
-
+         // Create initial password reset link
          $resetToken = randString();
          $tokenExpiration = date('m/d/Y h:i:s a', time() + (60 * 60));
          $resetUrl = '/reset.php?token=' . $resetToken;
@@ -116,7 +123,7 @@
          $query = "INSERT INTO t_user " .
                   "(User_ID, Admin_ID, Name, Email, User_Type, Current_Experiment_ID, ResetToken, TokenExpiration) " .
                   "VALUES " .
-                  "('$pId', '$username', '$pName', '$pEmail', 'U', $pCurrExp, '$resetToken', '$tokenExpiration');";
+                  "('$pId', '$username', '$pName', '$pEmail', 'U', $pExp, '$resetToken', '$tokenExpiration');";
 
          $emailStr .= "An account has been created for you!\n" .
                       "\nLogin ID : $pId\n\n" . 
@@ -125,11 +132,14 @@
                       "\n" .
                       "";
       }
-
+//echo $query;
       mysql_query($query);
-     // $_POST['load'] = '';
+      break;
 
+   default :
+      break;
    }
+
 
    if( $emailStr )
    {
@@ -219,7 +229,7 @@
    
 
 
-         <h1>Manage Participants</h1><br/>
+         <h1>My Participants</h1><br/>
          <br/>
 
          <!-- User Select -->
@@ -251,8 +261,8 @@
    ?>
             </select>
 
-            <input type="submit" name="load" value="Load"/>
-            <input type="submit" name="add" value="Add"/>
+            <input class="button" type="submit" name="load" value="Load"/>
+            <input class="button" type="submit" name="add" value="Add"/>
          </form>
          <br/>
          <br/>
@@ -263,163 +273,105 @@
       if( is_string($pId) )
       {
 
-     if( isset($_POST["add"]) )
-      {
+         echo '<form class="form-user" action="userAdmin.php" method="post">';
 
-         // Add participant
-         $pId = "";
-
-         $participantName     = "";
-         $participantPassword = "";
-         $pEmail = "";
-         $pExpId = "";
-         $pProgress = 0;
-      }
-      else
-      {
-
-         $query  = "SELECT * FROM t_user WHERE User_ID='$pId';";
-         $result = mysql_query($query);
-         $row    = mysql_fetch_array($result, MYSQL_BOTH);
-
-         $participantName     = $row["Name"];
-         $participantPassword = $row["UPassword"];
-         $pEmail = $row["Email"];
-         $pExpId = $row["Current_Experiment_ID"];
-         $pProgress = $row["current_position"];
-      }
-
-         echo '<form action="userAdmin.php" method="post">';
-
-
-         // Name
-         echo '<h2>Name : ' . 
-                 '<input type="text" name="participantName" value="' .$participantName . '" required="required" />' .
-              '</h2>' ;
-         echo '<br/>' ;
-
+         echo '<table>';
 
          // Login
-         echo '<h2>Login : ' . 
-                 '<input id="pId" type="text" name="pId" value="' .$pId . '" required="required" onchange="checkAvailability();" ';
+         echo '<tr>' .
+                 '<td class="label">Login :</td>' . 
+                 '<td colspan="2"><input id="pId" type="text" name="pId" value="' .$pId . '" required="required" onchange="checkAvailability();" ';
          if( isset($_POST["add"]) )
          {
-            echo '/>';
+            echo '/>' .
+                 '<span id="availabilityTag"></span>';
          }
          else
          {
             echo 'hidden="hidden" />' .
                  '<span>' . $pId . '</span>';
          }
+         echo    '</td>' . 
+              '</tr>' ;
 
-         echo '<span id="availabilityTag"></span>' .
-              '</h2>' ;
-         echo '<br/>' ;
+
+         // Name
+         echo '<tr>' .
+                 '<td class="label">Name :</td>' . 
+                 '<td colspan="2"><input type="text" name="pName" value="' .$pName . '" required="required" /></td>' .
+              '</tr>' ;
 
 
          // Email
-         echo '<h2>Email : ' . 
-                 '<input type="text" name="pEmail" value="' . $pEmail . '" />' .
-              '</h2>' ;
-         echo '<br/>' ;
+         echo '<tr>' .
+                 '<td class="label">E-mail :</td>' . 
+                 '<td colspan="2"><input type="text" name="pEmail" value="' . $pEmail . '" /></td>' .
+              '</tr>' ;
 
 
          // Change Password
-         echo '<h2>Password : ';
-         if( isset($_POST["add"]) )
-         {
-            echo '<input type="password" name="pPassword" required="required" />';
-         }
-         else
-         {
-            echo '<button data-confirm-action="resetPassword(\'' . $pId . '\');" ' .
-                         'data-confirm="Are you sure you wish to reset the user\'s password?<br/>' . 
-                                       '(This will generate a reset link that will expire in 1 hour)">' .
-                    'Reset' .
-                 '</button>';
-         }
-
-         echo '</h2>' ;
-         echo '<br/>' ;
-
-         // Current Experiment
-         echo '<h2>Current Experiment : ';
-
-         // Experiment Select
-         echo '<select id="pExps" name="participantExp"  required="required"' . 
-              ( (isset($_POST["add"])) ? ('') : ('hidden="hidden"') ) .
-              ' >';
-
-         // Experiment Unassigned Option
-         echo '<option value="-1" ' . '' . ' >' .
-                 'Unassigned' .
-              '</option>';
-
-         $query  = "SELECT * FROM t_experiments WHERE Admin_ID='$username';";
-         $result = mysql_query($query);
-         while( $row = mysql_fetch_array($result, MYSQL_BOTH) )
-         {
-            $optionExpId   = $row["id"];
-            $optionExpName = $row["ExperimentName"];
-
-            if ($optionExpId == $pExpId)
-            {
-               $selected = 'selected="selected"';
-               $pExpName = $optionExpName;
-            }
-            else
-            {
-               $selected = '';
-            }
-
-            echo '<option value="' . $optionExpId . '" ' . $selected . ' >' .
-                    $optionExpName .
-                 '</option>';
-         }
-         echo '</select>';
-
          if( !isset($_POST["add"]) )
          {
-            echo '<span id="expDisplay">' . 
-                    ( ($pExpId == '-1') ? ('Unassigned ') : ($pExpName . ' (' . $pExpId . ')') ) . 
-                    '<input type="button" value="Change" onclick="changeExp();"/>' .
-                 '</span>';
+            echo '<tr>' .
+                    '<td class="label">Password :</td>' .
+                    '<td colspan="2">' .
+                       '<button data-confirm-action="resetPassword(\'' . $pId . '\');" ' .
+                               'data-confirm="Are you sure you wish to reset the user\'s password?<br/>' . 
+                                             '(This will generate a reset link that will expire in 1 hour)">' .
+                          'Reset' .
+                       '</button>' .
+                    '</td>' .
+                 '</tr>' ;
          }
 
-         // 
-         //echo '<>';
 
-         echo '</h2>';
-
-         echo '<br/>' ;
+         // Current Experiment
+         echo '<tr>' .
+                 '<td class="label">Current Experiment :</td>' .
+                 '<td>' .
+                    '<input id="pExp" name="pExp" required="required" value="' . $pExpId . '" hidden="hidden" />' . 
+                    '<span id="expDisplay">' . 
+                        ( ($pExpId == '-1') ? ('Unassigned ') : ($pExpName . ' (' . $pExpId . ')') ) . 
+                    '</span> ' .
+                 '</td>' .
+                 '<td>' .
+                    '<input type="button" value="Change" onclick="changeExp();"/>' .
+                 '</td>' .
+              '</tr>';
 
 
          // Experiment Progress
-         echo '<h2>Experiment Progress : ';
-         if( $pProgress < 1 )
+         if( !isset($_POST["add"]) )
          {
-            echo 'Not Started';
+            echo '<tr>' .
+                    '<td class="label">Experiment Progress :</td>';
+            if( $pProgress < 1 )
+            {
+               echo '<td colspan="2">' .
+                       'Not Started' .
+                    '</td>';
+            }
+            else
+            {
+               echo '<td>' .
+                       'Page ' . $pProgress .
+                    '</td>' .
+                    '<td>' .
+                       '<button data-confirm-action="resetProgress(\'' . $pId . '\');" ' .
+                               'data-confirm="Are you sure you wish to reset the user to the beginning of the experiment?<br/>' . 
+                                             '(This action cannot be undone)">' .
+                          'Reset' .
+                       '</button>' .
+                    '</td>';
+            }
+            echo '</tr>';
          }
-         else
-         {
-            echo 'Page ' . $pProgress . ' ' .
-                // '<input type="button" value="Reset" onclick="changeExp();"/>' .
-                 '<button data-confirm-action="resetProgress(\'' . $pId . '\');" ' .
-                         'data-confirm="Are you sure you wish to reset the user to the beginning of the experiment?<br/>' . 
-                                       '(This action cannot be undone)">' .
-                    'Reset' .
-                 '</button>';
-         }
-         echo '</h2>';
 
-              //'<input id="pProgress" type="number" name="participantProgress" value="' . $pProgress . '" hidden="hidden" />' .
-             // '<input type="checkbox" name="resetProgress">Reset Progress</input>';
-
-         echo '<br/>' ;
-         echo '<br/>' ;
+         echo '</table>' .
+              '<br>';
 
          // Buttons
-         echo '<input id="saveButton" type="submit" name="save" value="Save" /> ' .
+         echo '<input id="saveButton" type="submit" name="op" value="Save" /> ' .
               '<input type="reset" name="reset" value="Discard" onclick="resetExpInfo();"/>';
 
          echo '</form>';
