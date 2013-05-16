@@ -11,6 +11,19 @@
    {
       if( $_SESSION['logged_in'] == 'true' )
       {
+
+         switch( $_SESSION['User_Type'] ) {
+         case 'A' :
+            redirect('admin.php');
+            break;
+
+         case 'U' :
+            redirect('director.php');
+            break;
+
+
+         }
+/*
          if( $_SESSION['User_Type'] == 'A' )
          {
             redirect('admin.php');
@@ -18,7 +31,7 @@
          else
          {
             redirect('director.php');
-         }
+         }*/
       }
 
    }
@@ -98,6 +111,7 @@
                <input type="hidden" name="user_action" value="login" />
                <input name="username" type="text" placeholder="User ID" onKeyDown="if(event.keyCode == 13) $('login_form').submit();"/>
                <input name="password" type="password" placeholder="Password" onKeyDown="if(event.keyCode == 13) $('login_form').submit();"/>
+               <br/>
                <button class="button-blue" type="submit">Login</button>
                <br/>
                <br/>

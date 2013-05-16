@@ -11,7 +11,7 @@
    $page_title = "Manage Participants";
    $username = $_SESSION['username'];
 
-   $template_style_array  = array("style.css", "userAdmin.css", "mBoxCore.css", "mBoxModal.css", "mBoxModal.css", "mBoxNotice.css");
+   $template_style_array  = array("style.css", "userAdmin.css", "mBoxCore.css", "mBoxModal.css", "mBoxNotice.css");
    $template_script_array = array("ajax-core.js", "mBox.All.min.js", "userAdmin.js");
    include('assets/php/standard.php');   
 
@@ -68,6 +68,7 @@
                "SET current_position=0 " .
                "WHERE User_ID='$pId';" ;
       mysql_query($query);
+      $pProgress = 0;
       break;
 
    case 'resetPassword' : // Reset Password

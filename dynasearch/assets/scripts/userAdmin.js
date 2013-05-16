@@ -120,14 +120,15 @@ var changeExp = function() {
          },
          { title : 'Assign' ,
            event : function() {
+              this.close();
               var expSelect = $("pExps");
               var ndx = expSelect.selectedIndex;
               $("pExp").value = expSelect.value;
               $("expDisplay").set( 'html', expSelect[ndx].text );
               // sendEmail();
-              this.close();
+
            },
-           addClass : 'button_green' }
+           addClass : 'button-green' }
       ],
    }).open();
 /*

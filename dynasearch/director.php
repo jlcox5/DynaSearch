@@ -19,7 +19,7 @@
       //echo 'current before update: '. $current_position .'<br/>';
 
       // Are we supposed to go to the next page?
-      if(isset($_SESSION['advance_next'])) {
+      if( isset($_SESSION['advance_next']) || ($current_position == 0) ) {
          //echo 'updating<br/>';
          unset($_SESSION['advance_next']);
          $current_position = (int)$current_position + 1;
@@ -28,9 +28,12 @@
       }
 
       $scaleProfileId = $_SESSION['scaleProfileId'];
-      if( $scaleProfileId == -1 )
+      //echo 'scale: '. $scaleProfileId .'<br/>';
+      //echo 'scale: '. $_SESSION['scaleW'] .'<br/>';
+      if( ($scaleProfileId == -1) and !(isset($_SESSION['scaleW']) && isset($_SESSION['scaleH'])) )
       {
          redirect('sizeReg.php'); 
+         exit;
       }
 
      /* 

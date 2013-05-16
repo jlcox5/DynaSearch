@@ -44,7 +44,7 @@
 
    // Everyone gets mootools. It's awesome like that.
    echo '<script type="text/javascript" src="assets/scripts/mootools-1.4.5-core.js"></script>
-         <script type="text/javascript" src="assets/scripts/mootools-1.4.0.1-more.js"></script>
+         <script type="text/javascript" src="assets/scripts/mootools-more-1.4.0.1.js"></script>
 
          <script>
             function handleExit(){ 

@@ -14,22 +14,23 @@
       $_SESSION['userExpId'] = $array['Current_Experiment_ID'];
       $_SESSION['full_name'] = $array['Name'];
 
-      $_SESSION['scaleProfileId'] = $array['ScaleProfileID'];
+      //$_SESSION['scaleProfileId'] = $array['ScaleProfileID'];
 
       if( ($array['User_Type'] == 'U') || ($array['User_Type'] == 'M') )
       {
 
-         $userExpId = $_SESSION['userExpId'];
+         $expId = $_SESSION['userExpId'];
 
          if ( $expId > 0 )
          {
- 
+
             // Pull experiment data from database
-            $query = "SELECT * FROM t_experiments WHERE id='$userExpId';";
+            $query = "SELECT * FROM t_experiments WHERE id='$expId';";
             $result = mysql_query($query);
             if( ($row = mysql_fetch_array($result, MYSQL_BOTH)) === false)
             {
                redirect('../../logOut.php?error=exp_dne');
+               exit;
             }
 
             // Get Custom Scaling flag
@@ -39,8 +40,8 @@
             $_SESSION['scaleProfileId'] = $row['ScaleProfileID'];
 
             // Get Experiment Scale
-            $_SESSION['scaleW'] = $row['ScaleW'];
-            $_SESSION['scaleH'] = $row['ScaleH'];
+            //$_SESSION['scaleW'] = //$row['ScaleW'];
+            //$_SESSION['scaleH'] = //$row['ScaleH'];
 
             // Pull Experiment string from experiment data
             $expstr = $row['ExperimentString'];
@@ -48,15 +49,17 @@
             // Parse experiment string and save as session variable
             $_SESSION['expData'] = parseExperimentData( $expstr );
 
-            $query = "SELECT id FROM t_user_output WHERE User_ID='$username' AND Experiment_ID='$userExpId' LIMIT 1;";
+            $query = "SELECT id FROM t_user_output WHERE User_ID='$username' AND Experiment_ID='$expId' LIMIT 1;";
             $result = mysql_query($query);
             if( mysql_fetch_array($result) !== false )
             {
+
                // User output has been started for this experiment
                if( $array['User_Type'] == 'M' )
                {
                   // MT Logins are One-Time Use Only
                   redirect('../../mturk.php?error=already_run');
+                  exit;
                }
             
             }
@@ -64,7 +67,7 @@
             {
               // User ouput must be added to database
                $query = "INSERT INTO t_user_output (User_ID, Experiment_ID) " .
-                           "VALUES ('$username', '$userExpId');";
+                           "VALUES ('$username', '$expId');";
                $result = mysql_query($query);  
 
             }
@@ -72,7 +75,9 @@
          }
          else
          {
+
             redirect('../../logOut.php?error=exp_unassigned');
+            exit;
          }
 
       }
@@ -197,20 +202,23 @@
                if($_SESSION['UserType'] == 'A')
                {
                   redirect('../../admin.php');
+                  exit;
                }
                else
                {
                //echo("user");
                
                   redirect('../../director.php');
+                  exit;
                }
             }
             else if( 'false' == $login )
             {
                // Otherwise
-               //redirect('../../login.php?error=wrong_pass');
-echo 'username : ' . $_POST['username'] . '<br/>' .
-     'password : ' . $_POST['password'] . '<br/>' ;
+               redirect('../../login.php?error=wrong_pass');
+               exit;
+//echo 'username : ' . $_POST['username'] . '<br/>' .
+  //   'password : ' . $_POST['password'] . '<br/>' ;
             }
          }
       }

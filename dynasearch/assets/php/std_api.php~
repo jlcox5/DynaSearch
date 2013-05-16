@@ -116,6 +116,22 @@ function getAdminExps( $username )
    return $adminExps;
 }
 
+// Get Admin's Questionnaires
+function getAdminQuests( $username )
+{
+   $adminQuests = array();
+   $query = "SELECT * FROM sur_question WHERE Admin_ID='$username';";
+   $result = mysql_query($query);
+   while( $row = mysql_fetch_array($result, MYSQL_BOTH) )
+   {
+      $optionQuestId   = $row['id'];
+      $optionQuestName = $row['Name'];
+
+      $adminQuests[$optionQuestId] = $optionQuestName;
+   }
+   return $adminQuests;
+}
+
 
 // Get Admin's Size Profiles
 function getAdminSizeProfiles( $username )
@@ -226,27 +242,18 @@ function getExpPageProperties($index)
 }
 
 
-function randString($length, $valid_chars)
+function randString( $length = 32,
+                     $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+                   )
 {
+   $size = strlen( $chars );
 
-   $properties = getExpPageArray($index);
-
-   $ret = array();
-
-   // Go through each property for the page
-   for($i = 0; $i < count($properties); $i++)
+   for( $i = 0; $i < $length; $i++ )
    {
-      // Pull out key and value from property
-      $item = explode('=',$properties[$i]);
-
-      $key   = $item[0];
-      $value = ( ($key == "page") ? ($item[1]) : (hexToStr($item[1])) );
-
-      $ret[$key] = $value;			
+      $str .= $chars[ rand(0, $size - 1) ];
    }
 
-   // If key was not found, return null
-   return $ret;
+   return $str;
 }
 
 

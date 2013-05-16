@@ -64,6 +64,8 @@ function hexToStr($hex)
 }
 
 
+
+
    /** 
     * Parses the hex encoded experiment string into an array where each 
     * index corresponds to a page, and contains an associated array of
@@ -114,6 +116,22 @@ function getAdminExps( $username )
       $adminExps[$optionExpId] = $optionExpName;
    }
    return $adminExps;
+}
+
+// Get Admin's Questionnaires
+function getAdminQuests( $username )
+{
+   $adminQuests = array();
+   $query = "SELECT * FROM sur_question WHERE Admin_ID='$username';";
+   $result = mysql_query($query);
+   while( $row = mysql_fetch_array($result, MYSQL_BOTH) )
+   {
+      $optionQuestId   = $row['id'];
+      $optionQuestName = $row['Name'];
+
+      $adminQuests[$optionQuestId] = $optionQuestName;
+   }
+   return $adminQuests;
 }
 
 

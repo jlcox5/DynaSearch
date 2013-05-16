@@ -19,13 +19,23 @@
       //echo 'current before update: '. $current_position .'<br/>';
 
       // Are we supposed to go to the next page?
-      if(isset($_SESSION['advance_next'])) {
+      if( isset($_SESSION['advance_next']) ) {
          //echo 'updating<br/>';
          unset($_SESSION['advance_next']);
          $current_position = (int)$current_position + 1;
          query_db('update t_user set current_position='. $current_position .' where User_ID=\''. $username .'\'');
          redirect('director.php');
       }
+
+      $scaleProfileId = $_SESSION['scaleProfileId'];
+      //echo 'scale: '. $scaleProfileId .'<br/>';
+      //echo 'scale: '. $_SESSION['scaleW'] .'<br/>';
+      if( ($scaleProfileId == -1) and !(isset($_SESSION['scaleW']) && isset($_SESSION['scaleH'])) )
+      {
+         redirect('sizeReg.php'); 
+         exit;
+      }
+
      /* 
       if( $current_position == 0 )
       {

@@ -1,4 +1,19 @@
 
+//Helper Functions
+
+function dce(type){
+   return document.createElement(type);
+}
+
+function hexEncode(str){
+   return str.split("").map(function(strchar){return strchar.charCodeAt(0).toString(16);}).join('.');
+}
+
+function hexDecode(str){
+   return str.split('.').map(function(hexchar){return String.fromCharCode(parseInt(hexchar,16));}).join("");
+}
+
+
 /*
  * Questionnaire Class
  */
@@ -11,6 +26,7 @@ var Questionnaire = new Class(
       this.sections  = {};
       this.iid       = 0;
    },
+
    getItemId: function(){
       return this.iid++;
    },
@@ -32,6 +48,26 @@ var Questionnaire = new Class(
    push: function(el){
       this.elements.push(el);
    },
+
+   appendItems: function( questStr ){
+
+      // Parse DOM String
+      var questDoc;
+      if ( window.DOMParser ) {
+         parser = new DOMParser();
+         questDoc = parser.parseFromString( questStr,'text/xml' );
+      } else {
+         questDoc = new ActiveXObject( 'Microsoft.XMLDOM' );
+         questDoc.async=false;
+         questDoc.loadXML( questStr );
+      }
+      var root = questDoc.documentElement;
+
+      for ( var i = 0; i < root.childNodes.length; ++i ) {
+         this.push( parseDOMItem( root.childNodes[i], this ) );
+      }
+   },
+
    getName: function(){
       return (this.name==null)?"(root)":this.name;
    },
@@ -51,8 +87,27 @@ var Questionnaire = new Class(
           str += this.elements[i].genString();
       return str + "</questionnaire>";
    },
+
+   genResult:  function ( page ) {
+
+      var el = new Element(
+         'questionnaire',
+         {
+            'page' : page
+         }
+      );
+
+      for ( var i = 0; i < this.elements.length; ++i ) {
+         var child = this.elements[i].genResult();
+         if ( child != false ) {
+            el.adopt( child );
+         }
+      }
+      return el;
+   },
+
    genElement:  function(forreal){
-      alert(this.elements);
+      //alert(this.elements);
       if(forreal == undefined) forreal = false;
       var quest = document.createElement('div');
           quest.id = "accordion";
@@ -154,6 +209,83 @@ var Questionnaire = new Class(
 );
 
 
+function parseDOMItem( root, quest ) {
+   switch ( root.tagName ) {
+      case 'section':
+      case 'SECTION':
+         var command = {};
+             command.Q     = quest;
+             command.id    = parseInt(root.attributes['id'].value,10);
+             command.title = hexDecode(root.attributes['title'].value);
+         var nsection = new QuestSection(command);
+
+         for ( var i = 0; i < root.childNodes.length; ++i ) {
+            var nitem = parseDOMItem( root.childNodes[i], quest );
+            nsection.addItem(nitem);
+         }
+
+         return nsection;
+         break;
+
+      case 'textquestion':
+      case 'TEXTQUESTION':
+         var command = {};
+             command.Q             = quest;
+             command.id            = parseInt(root.attributes['id'].value,10);
+             command.fieldLength   = root.attributes['fieldLength'].value;
+             command.text          = hexDecode(root.textContent);
+         return new TextQuest(command);
+         break;
+
+      case 'textline':
+      case 'TEXTLINE':
+         var command = {};
+             command.Q    = quest;
+             command.id   = parseInt(root.attributes['id'].value,10);
+             command.text = hexDecode(root.textContent);
+         return new TextLine(command);
+         break;
+
+      case 'radioquestion':
+      case 'RADIOQUESTION':
+         var N   = parseInt(root.attributes['num'].value,10);
+         answers = new Array(N);
+         answerNodes = root.getElementsByTagName('ans');
+         for ( var i = 0; i < answerNodes.length; ++i ) {
+            var node_i = answerNodes[i];
+            var ndx    = parseInt(node_i.attributes['num'].value,10);
+            answers[ndx] = hexDecode(node_i.textContent);
+         }
+         var command = {};
+             command.Q       = quest;
+             command.id      = parseInt(root.attributes['id'].value,10);
+             command.answers = answers;
+             command.text    = hexDecode(root.getElementsByTagName('question')[0].textContent);
+         return new RadioQuest(command);
+         break;
+   }
+};
+
+function makeQuestItem( command ) {
+   switch ( command.type ) {
+   case "section"    : 
+      return new QuestSection( command );
+      break;
+
+   case "radioQuest" : 
+      return new RadioQuest( command );
+      break;
+
+   case "textQuest"  : 
+      return new TextQuest( command );
+      break;
+
+   case "textline"   : 
+      return new TextLine( command );
+      break;
+   }
+};
+
 
 /*
  * Questionnaire Item Base Class
@@ -173,6 +305,10 @@ var QuestItem = new Class(
    },
    genString:  function(){
    },
+
+   genResult:  function() {
+   },
+
    genElement:  function(forreal){
    },
    goQuietlyIntoThatNight: function(){
@@ -232,6 +368,7 @@ var QuestSection = new Class(
       this.title    = args.title;
       this.children = new Array();
       this.type = "section";
+      this.Q.registerSection( this );
    },
    genQuestions: function(){
       var ret = [];
@@ -244,6 +381,7 @@ var QuestSection = new Class(
       this.children = this.children.filter(callback,othis);
    },
    addItem: function(nChild){
+      nChild.section = this.title;
       this.children.push(nChild);
    },
    removeItemById: function(id2rm){
@@ -257,6 +395,20 @@ var QuestSection = new Class(
 
       return str + "</section>";
    },
+
+   genResult:  function() {
+      var el = new Element(
+         'section',
+         {
+            'title' : this.title
+         }
+      );
+      for ( var i = 0; i < this.children.length; ++i ) {
+          el.adopt( this.children[i].genResult() );
+      }
+      return el;
+   },
+
    genElement:  function(forreal){
       var header = dce('h3');
           header.className = "toggler";
@@ -298,7 +450,7 @@ var RadioQuest = new Class(
    genQuestions: function(){
       return ['q'+this.id];
    },
-   genString:  function(){
+   genString:  function() {
       var str  = "<radioquestion id='"+this.id+"' num='"+this.answers.length+"'>";
           str += "<question>"+hexEncode(this.text)+"</question>";
       for(var i=0; i < this.answers.length; ++i){
@@ -306,6 +458,19 @@ var RadioQuest = new Class(
       }
       return str+"</radioquestion>";
    },
+
+   genResult:  function(){
+
+      var answer = $('q' + this.id).value;
+      return new Element(
+         'radioquestion',
+         {
+            'question' : this.text,
+            'answer'   : answer
+         }
+      );
+   },
+
    genElement:  function(forreal){
       var bq1  = document.createElement("blockquote");
       var para = document.createElement("p");
@@ -353,6 +518,19 @@ var TextQuest = new Class(
       return "<textquestion id='"+this.id+"' fieldLength='"+this.fieldLength+"'>"
             +hexEncode(this.text)+"</textquestion>";
    },
+
+   genResult:  function () {
+
+      var answer = $('q' + this.id).value;
+      return new Element(
+         'textquestion',
+         {
+            'question' : this.text,
+            'answer'   : answer
+         }
+      );
+   },
+
    genElement:  function(forreal){
       var element = document.createElement("blockquote");
       var innerBQ = document.createElement("blockquote");
@@ -417,6 +595,11 @@ var TextLine = new Class(
    genString:  function(){
       return "<textline id='"+this.id+"'>"+hexEncode(this.text)+"</textline>";
    },
+
+   genResult:  function() {
+      return false;
+   },
+
    genElement:  function(forreal){
       var element = document.createElement('p');
           element.innerHTML = this.text;

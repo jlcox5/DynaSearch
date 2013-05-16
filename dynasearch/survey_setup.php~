@@ -46,7 +46,7 @@ function redirect($page_name)
          }
          else
          {
-            if( $DEBUG ) { echo "Error - "; }
+            if( $DEBUG ) { echo "FileOp ERROR : DELETE --- ExpId not set<br/>"; }
          }
 
       }// End Save
@@ -126,11 +126,6 @@ function redirect($page_name)
       <div id="wrapper" style="width:70%; margin: auto auto;">
 	
          <h1>Experiment Editor</h1><br/>
-         <h2>Currently Editing: 
-            <span id="survey_name"/><?php echo $expName; ?></span>
-            <!--<input type="text" id="survey_name" value="<?php echo $expName; ?>" />-->
-            <input id="exp_id" value="<?php echo $expId; ?>"  style="display:none;" />
-         </h2>
 
          <br/>
 
@@ -182,6 +177,12 @@ function redirect($page_name)
          <br/>
 
 
+         <h2>Currently Editing: 
+            <span id="survey_name"/><?php echo $expName; ?></span>
+            <!--<input type="text" id="survey_name" value="<?php echo $expName; ?>" />-->
+            <input id="exp_id" value="<?php echo $expId; ?>"  style="display:none;" />
+         </h2>
+
          <!-- Scale Profile -->
          <!--<input type="checkbox" id="customScaling" <?php echo $expCustomScaling ? 'checked="checked"' : ''; ?> />-->
          Scale Profile : 
@@ -221,14 +222,19 @@ function redirect($page_name)
 
          <!-- Invisible selects. These are cloned to create drop downs for each list item-->
          <?php
-            // Added by Jon - List all active surveys
-            $return = mysql_query("SELECT Name FROM sur_question;");
-            $_SESSION['SurveyList'] = '<select name="qChoice" id="qChoice" style="display:none;">';
-            while($qNames = mysql_fetch_array($return)){
-               $toPrint = $qNames['Name'];
-               $_SESSION['SurveyList'] = $_SESSION['SurveyList'].'<option value="'.$toPrint.'">'.$toPrint.'</option>';
+            // List all active Questionnaires
+            $adminQuests = getAdminQuests($username);
+            //$_SESSION['SurveyList'] = '<select name="qChoice" id="qChoice" style="display:none;">';
+            $aQuests = '<select name="aQuests" id="aQuests" style="display:none;">';
+            foreach($adminQuests as $key => $value)
+            {
+               $aQuests .= '<option value="' . $key . '">' .
+                              $value . ' (' . $key . ')' .
+                           '</option>';
+               //$_SESSION['SurveyList'] = $_SESSION['SurveyList'].'<option value="'.$toPrint.'">'.$toPrint.'</option>';
             }
-            $_SESSION['SurveyList'] = $_SESSION['SurveyList'].'</select>';
+            //$_SESSION['SurveyList'] = $_SESSION['SurveyList'].'</select>';
+            $aQuests .= '</select>';
 
             // Added by Jon - List all instruction pages
             $instFiles = '<select name="instChoice" id="instChoice" style="display:none;">';
@@ -259,7 +265,7 @@ function redirect($page_name)
             $advFiles = $advFiles.'</select>';
          ?>
 
-         <p><?php echo($_SESSION['SurveyList']); ?> <?php echo($instFiles); ?> <?php echo($advFiles); ?> </p>
+         <p><?php echo($aQuests); echo($instFiles); echo($advFiles); ?> </p>
 
 
 

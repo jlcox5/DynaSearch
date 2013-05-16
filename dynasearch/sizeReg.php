@@ -23,6 +23,7 @@
    }
 */
 
+//echo       $_POST['scaleH'];
    if( isset($_POST['scaleW']) && isset($_POST['scaleH']) )
    {
 
@@ -32,7 +33,6 @@
       //$query = "UPDATE t_user SET scaleW='$width', scaleH='$height' WHERE User_ID='$username';";
       //query_db($query);
       if( $username == $adminId ) {
-
          $profileName = $_POST['profileName'];
          $query = "INSERT INTO t_scale_profiles " .
                   "(Admin_ID, Name, ScaleW, ScaleH) VALUES " . 
@@ -41,10 +41,12 @@
          query_db($query);
 
          redirect('adminSettings.php');
+         exit;
       }
       else
       {
-         redirect('advance.php');
+         redirect('director.php');
+         exit;
       } 
    }
    

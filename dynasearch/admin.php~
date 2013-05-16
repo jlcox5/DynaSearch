@@ -3,26 +3,6 @@
    include("assets/php/std_api.php");
    require_once("assets/php/db_util.php");
    
-   function strToHex($string)
-   {
-      $hex='';
-      for ($i=0; $i < strlen($string); $i++)
-      {
-         $hex .= dechex(ord($string[$i]));
-      }
-      return $hex;
-   }
-
-   function hexToStr($hex)
-   {
-      $string='';
-      for ($i=0; $i < strlen($hex)-1; $i+=2)
-      {
-         $string .= chr( hexdec($hex[$i].$hex[$i+1]) );
-      }
-	   return $string;
-   }
-   
    // Only admins allowed
    $username = $_SESSION['username'];
    $result = query_db('select User_Type from t_user where User_ID=\''.$username.'\'');
@@ -56,9 +36,10 @@
             Hurricane Evacuation Decision Making.
          </p>
          <br/>
+		 <!-- Commented out on 21JAN13 by Jon 
          <br/>
-         <a href="assets/officials_guide.pdf" target="_blank">Official’s Guide for Hurricane Evacuation Decision Making</a>
-         <br/>
+         <a href="assets/officials_guide.pdf" target="_blank">Official’s Guide for Hurricane Evacuation Decision Making</a> 
+         <br/> -->
          <br/>
 
          <div id="shade"></div>
@@ -67,8 +48,15 @@
             <li><a href="editor.php">Training Page Editor</a></li>
             <li><a href="questEditor.php">Questionnaire Editor</a></li>
             <li><a href="survey_setup.php">Experiment Editor</a></li>
+			<li><a href="adminAssets.php">Asset Manager</a></li>
+			<li><a href="userAdmin.php">Participant Manager</a></li>
+			<li><a href="userOutput.php">View Results</a></li>
          </p>       
       </div>
    </div>
+
+<script type="text/javascript">
+   window.addEvent('domready', function(){ alert('hello'); });
+</script>
 </body>
 </html>

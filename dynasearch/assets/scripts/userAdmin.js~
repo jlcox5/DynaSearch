@@ -120,14 +120,17 @@ var changeExp = function() {
          },
          { title : 'Assign' ,
            event : function() {
+              this.close();
               var expSelect = $("pExps");
               var ndx = expSelect.selectedIndex;
+
               $("pExp").value = expSelect.value;
+alert($("pExp").value);
               $("expDisplay").set( 'html', expSelect[ndx].text );
               // sendEmail();
-              this.close();
+
            },
-           addClass : 'button_green' }
+           addClass : 'button-green' }
       ],
    }).open();
 /*
@@ -220,9 +223,9 @@ var showEmailPopup = function() {
               this.close();
            },
          },
-         { title : 'Submit' ,
+         { title : 'Send' ,
            event : function() { sendEmail(); this.close(); },
-           addClass : 'button_green' }
+           addClass : 'button-green' }
       ],
    }).open();
 

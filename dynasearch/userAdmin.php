@@ -68,6 +68,7 @@
                "SET current_position=0 " .
                "WHERE User_ID='$pId';" ;
       mysql_query($query);
+      $pProgress = 0;
       break;
 
    case 'resetPassword' : // Reset Password
@@ -218,7 +219,7 @@
    ?>
 
       <div class="warning">
-         If you save this change, the participants progress will be reset.
+         <b>If you save this change, the participants progress will be reset.</b>
       </div>
 
    </div>
