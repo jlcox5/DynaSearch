@@ -94,7 +94,7 @@ DynaSearch is a web based system that allows the end user to create and run a va
 
 \begin{figure}[h!]
  \centering
- \includegraphics[width=4.0in]{figures/login.png}
+ \includegraphics[width=2.0in]{figures/ds_login.png}
  \caption{Users will start an experiment by logging into the DynaSearch system through the login screen.}
  \label{fig:login}
 \end{figure}
@@ -163,14 +163,14 @@ From this point forward, "you" will refer to the individual creating the experim
 
 The DynaSearch system allows for the creation of user studies that can be composed of three different types of pages. The first is the instruction page. Here, basic HTML is displayed that can be used to convey specific instructions to users or as a means of supplying them with supplemental information. The second is the training page. This page can be composed of text boxes, tables, and images that are all covered on the page's initial load.  In order for users to reveal the covered information and interact with any of these elements, they must click on it. The order and duration of these clicks is tracked by a database typically hosted on the web server. The training page can also house custom applets that offer a wider variety of interactions.  The last type of page is a questionnaire which gives users the opportunity to provide feedback.  Additionally, it can serve as a way to test the users on previously displayed information.
 
-Accounts with administrator access are given access to the \textbf{Administrator's Page} where links to the different editors are listed. Instruction pages, training pages, and questionnaire pages can be created in any order. The survey creation tool defines an experiement by linking pages together, and should not be used until all of the pages for a given experiment have been completed.
+Accounts with administrator access are given access to the \textbf{Administrator's Page} where links to the different editors are listed. Instruction pages, training pages, and questionnaire pages can be created in any order. The experiment creation tool defines an experiement by linking pages together, and should not be used until all of the pages for a given experiment have been completed.
 
-In addition to these editors, other pages have been provided to manage the assests used in an experiment, such as images or scripts, as well as to create users and access the data resulting from the experiments.   Assets used in the experienments can be managed through the Manage Assets page.  The creation and editing of participant accounts can be completed through the Manage Participants page, while their experimental results can be accessed through the Participant Results page.
+In addition to these editors, other pages have been provided to manage the assests used in an experiment, such as images or scripts, as well as to create users and access the data resulting from the experiments.   Assets used in the experienments can be managed through the \testbf{Asset Manager}.  The creation and editing of participant accounts can be completed through the \textbf{Participant Manager}, while their experimental results can be accessed through the \textbf{View Results} page.
 
 The remainder of this section will explain the use and operation of these editors and pages. For more information regarding the database, please refer to Appendix A. For more information on the file system, please see Appendix B.
 
 \subsubsection{Instruction Pages}
-To create an instruction page, just create a text file that contains the information desired and place it in the \newline \texttt{DynaSearch/expResources/instructPages/} directory located in the DynaSearch file system. Because this data will be inserted between the $<\texttt{body}>$ tags of the template instruction page, any additional HTML tags and scripting maybe used as desired. These files will automatically be available from the Survey Setup editor page. 
+To create an instruction page, just create a text file that contains the information desired and upload it using the \textbf{Asset Manager}. Because this data will be inserted between the $<\texttt{body}>$ tags of the template instruction page, any additional HTML tags and scripting maybe used as desired. These files will automatically be available from the \textbf{Experiment Editor} editor page. 
 
 \subsubsection{Training Pages}
 
@@ -182,14 +182,13 @@ To create an instruction page, just create a text file that contains the informa
 \end{figure}
 \FloatBarrier
 
-To access the training page, select the \textbf{Training Page Editor} link from the \textbf{Administrator's Page}. This will take you to a blank training editor page with the toolbar window located in the upper left window. With the exception of the trash can, each of the icons on the toolbar allow for the creation of a different window. The toolbar window is displayed in \ref{fig:tool}. The toolbar window and any other created window can be moved by clicking and dragging on the title handle of the window.
+To access the training page, select the \textbf{Training Page Editor} link from the \textbf{Administrator's Page}. This will take you to a blank training editor page with the toolbar window located in the upper left window. With the exception of the trash can, each of the icons on the toolbar allow for the creation of a different window. The toolbar window is displayed in Figure \ref{fig:tool}. The toolbar window and any other created window can be moved by clicking and dragging on the title handle of the window.
 
 \paragraph{The Trash Bin}
-
 The Trash Bin allows you to delete unwanted windows. Simply click on the title bar of the window you wish to remove, and drag it over the trash can. When you release it, it will be deleted.
 
 \paragraph{The Text Window}
-The Text Window is used to display paragraphs or sections of text to the user. These will be hidden during a user study until the user clicks on the section containing the text. The title of the window and the text inside can both be modified by clicking on the blue icon in the top right corner of the window. It can be resized by clicking and dragging on the white box in the bottom right corner of the window.
+The Text Window is used to display paragraphs or sections of text to the user. These will be hidden during a user study until the user clicks on the section containing the text. Both the title of the window and the text itself can be modified by clicking on the blue icon in the top right corner of the window. It can be resized by clicking and dragging on the white box in the bottom right corner of the window.
 
 \paragraph{The Visible Text Window}
 The Visible Text Window is similar to the Text Window, with the exception that the text will always be visible to users.  The contents will not be hidden during the course of a user study.
@@ -254,9 +253,7 @@ The Table Window behaves in the same manner as the Interactive Table Window with
 To load a previously saved training screen, pick the training file from the drop down menu that you wish to work with and hit the Load button. Note that to save any changes made to this training screen, you must hit the Save button before navigating away from the page.
 
 \paragraph{Saving A Training Page}
-The Save button will prompt you to enter a name to save the file as. The extension .txt will automatically be added to the name you supply, so it is not necessary to include that in the file name. For example, if you want the file name to be \texttt{test1.txt}, enter only \texttt{test1}.  This data is written to the specified file in the directory \texttt{DynaSearch/expResourses/advisory}.
-
-
+The Save button will prompt you to enter a name to save the file as. The extension .txt will automatically be added to the name you supply, so it is not necessary to include that in the file name. For example, if you want the file name to be \texttt{test1.txt}, enter only \texttt{test1}.
 
 \subsubsection {Questionnaire Editor}
 
@@ -282,12 +279,12 @@ Questionnaires are built as a two tier hierarchy.  The top teir of this hierarch
 
 Questionnaire elements can be placed as desired throughout the questionnaire by using the controls located above each element as shown in Fig. \ref{fig:questEdit}.  To place an element within a specific section, select the desired section from the dropdown menu.  Please note that sections cannot be embedded within other sections.  To move a question or section up or down, use the up and down arrow buttons respectively.  Note that if an element is within a section, the arrow keys will only move it within that section. If the element is not located within a section, then it will navigate through the top tier.  To remove a question or section from the questionnaire completely, hit the \textbf{X} button.  \textbf{Be aware that if you delete a section that contains other elements, those other elements will also be deleted.}
 
-When a questionnaire is completed by a user, their responses are kept in a text file with the same name as the user's id and stored in the database table \textbf{t_user_output}. For more information on the database tables, please refer to Appendix A.
+When a questionnaire is completed by a user, their responses are saved and can be accessed and viewed through the \textbf{View Results} option from the \textbf{Administrator's Page}.
 
  Each of the building blocks and editing operations are described in greater detail below.
 
 \paragraph{Section}
-To create a section, hit the Section button from the Question Constructor toolbox and provide the desired name for the section at the given prompt.  When both fields have been completed, you can insert the question into the questionnaire by hitting the check mark button at the bottom of the prompt.  Sections allow you to segement a questionnaire into pieces.  When users are taking a questionnaire, these sections can be collapsed or expanded by clicking on the section's title bar.  Sections are for orgazational purposes only and do not affect the user output in any way.
+To create a section, hit the Section button from the Question Constructor toolbox and provide the desired name for the section at the given prompt.  When both fields have been completed, you can insert the section into the questionnaire by hitting the check mark button at the bottom of the prompt.  Sections allow you to segement a questionnaire into pieces.  When users are taking a questionnaire, these sections can be collapsed or expanded by clicking on the section's title bar.  Sections are for orgazational purposes only and do not affect the user output in any way.
 
 At this time, sections are not able to contain other sections.  To remove or change the position of the radio button question, use the navigation controls located above the question as described above. \textbf{Be aware that if you delete a section that contains other elements, those other elements will also be deleted.}
 
@@ -323,25 +320,28 @@ The clear button allows you to clear the current questionnaire being edited.  Th
 \end{figure}
 \FloatBarrier
 
-The Experiment Editor allows you to combine any number of instruction pages, training pages, and questionnaires into a single experiment. The interface shown in \ref{fig:eeInterface} will allow you to select and assemble the various elements required. To change the title of a new experiment, click on the current title. It is located at the top of the screen in the text box labeled \textbf{Currently Editing}.  The default value is "New Experiment".
+The \textbf{Experiment Editor} allows you to combine any number of instruction pages, training pages, and questionnaires into a single experiment. The interface shown in \ref{fig:eeInterface} will allow you to select and assemble the various elements required. The experiment currently being edited is listed at the top following the line, "Currently Editing:".  When the page first loads, a new experiment entitled, "New Experiment" is created.
 
 The remaining elements of the page are described in greater detail below.
 
-\paragraph{New Experiment}
-To start building a new experiment, click on the \textbf{New Experiment} button. Doing this will clear any work that has been done, so it is important to save previous work before continuing.
+\paragraph{New}
+To start building a new experiment, click on the \textbf{New} button. Doing this will clear any work that has been done, so it is important to save previous work before continuing.
 
-\paragraph{Save Experiment}
-To save an experiment that you have been working on, click on the \textbf{Save Experiment} button. DynaSearch will automatically create a folder in the directory \texttt{DynaSearch/hurricane\textunderscore data} with the same name as that of the experiment.  This directory will be used to store the experiment's files and is explained in greater detail in Appendix B.
+\paragraph{Save}
+To save an experiment that you have been working on, click on the \textbf{Save} button.  How the experiements are saved is covered in greater detail in Apendix B.
+
+\paragraph{Save As}
+To save the experiment currently being edited as a different experiment, click on the \textbf{Save As} button.  You will be prompted to give a name for the experiement.  Please keep in mind that currently, DynaSearch does not check to determine if an experiment already exists with a name with you click on the \textbf{Save As} button.  This means that it is entirely possible to overwrite a prexisting experiment by entering it's name as the name to save the current experiment under.
 
 \paragraph{Load Experiment}
-To load a previously saved experiment, select the experiment that you wish to load from the drop down menu and then click on the Load button.  How experiments are saved is explained in greater detail in Appendix A.
+To load a previously saved experiment, select the experiment that you wish to load from the drop down menu and then click on the \textbf{Load} button.  How experiments are saved is explained in greater detail in \textbf{Appendix B}.
 
-\paragraph{Exempt Resize}
-If the experiment does not require that the training page elements be displayed at the exact same physical size regardless of monitor size or resolution, check this box.
+\paragraph{Scale Profile}
+Scale profiles adjust how the elements are scaled during an experiment.  If an experiement requires that users go through the size registration process to determine the scale needed, select \textem{Custom Scaling} from the scale profile menu dropdown.  Otherwise, select a specific profile from the list as needed by the experiement.  This will generaly want to match the profile used by the administrator when they were creating the experiment.
 
 \paragraph{Add Information Page}
 
-\begin{figure}[h!]
+\begin{figure}[htb]
  \centering
  \includegraphics[width=5.0in]{figures/add_instruction.png}
  \caption{Information Page Inserted}
@@ -377,11 +377,11 @@ To change the sequence of a page, click and drag the blue box on the left hand s
 \end{figure}
 \FloatBarrier
 
-The \textbf{Add Survey Page} link will allow you to insert a new questionnaire into the current experiment. When this button is clicked, a new questionnaire page is inserted into the current list of pages, as is shown in Fig. \ref{fig:surveyInsert}.   To assign a title to the page, click on the box labed "Title" and insert the desired text.  The drop down box lists the current questionnaires  that are available.  The questionnaire currently selected in the drop down box will be the one used during the experiement.  The questionnaire data will be copied to a text file and stored in the experiment's directory.  This is explained in greater detail in Appendix B.
+The \textbf{Add Survey Page} link will allow you to insert a new questionnaire into the current experiment. When this button is clicked, a new questionnaire page is inserted into the current list of pages, as is shown in Fig. \ref{fig:surveyInsert}.   To assign a title to the page, click on the box labed "Title" and insert the desired text.  The drop down box lists the current questionnaires  that are available.  The questionnaire currently selected in the drop down box will be the one used during the experiement.
 
 To change the sequence of a page, click and drag the blue box on the left hand side of the page label up or down to slide it into the desired location. To remove a page from your list of pages, select the red minus sign on the right hand side of its label.
 
-\subsubsection {Manage Assets}
+\subsubsection {Asset Manager}
 
 \begin{figure}[h!]
  \centering
@@ -391,31 +391,93 @@ To change the sequence of a page, click and drag the blue box on the left hand s
 \end{figure}
 \FloatBarrier
 
-The asset manager allows you to upload images, table files, applets, and scripted components to your training pages.  Please note that applets and script components are grouped together.  The available assets for each type can be viewed from the dropdown menu underneath the corresponding category.  To upload a new asset, click on the \textbf{Choose File} button and select the desired file.  When the file has been selected, choose which category the asset belongs to from the drop down menu.  Finally, upload the file by clicking on the \textbf{Upload} button.
+The asset manager allows you to upload images, table files, applets, and scripted components to your training pages.  Please note that applets and script components are grouped together.  The available assets for each type can be viewed from the dropdown menu underneath the corresponding category.  To manage a particular asset type, click on the section header for that type, and use the interface displayed.  The interface for each asset type is explained in greater detail below in the sections corresponding to each type.
+
+Each administrator is allocated a certain amount of storage space to upload assets.  How much storage they get is dictated by the database, as explained in \textbf{Appendix A}.  When an administrator has reached their storage limits, they will be unable to load more assets until they remove other assets, or their capacity is increased by the system administrator.
 
 \paragraph{Images}
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=5.0in]{figures/manage_images.png}
+ \caption{Managing Image Assets}
+ \label{fig:manageImg}
+\end{figure}
+\FloatBarrier
+
+Figure \ref{fig:manageImg} shows the interface used to upload and manage image assets.  Images that are currently available on the system are listed in the text box on the left. To upload an imange, click on the button labeled \textbf{Upload} and select the file that you wish to upload. It is possible to preview these images by selecting the desired image and clicking on the button labeled, \textbf{Preview}.  The image will be displayed in the window on the right side of the interface.  To remove an asset from the list, select the asset and click on the button labeled \textbf{Delete}.
+
 Dynasearch supports most major image formats.
 
 \paragraph{Tables}
-The tables are just text files that are formatted so that columns are separated by commas and the rows are separated by new lines.
+
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=5.0in]{figures/manage_tables.png}
+ \caption{Managing Table Assets}
+ \label{fig:manageTab}
+\end{figure}
+\FloatBarrier
+
+The tables are just text files that are formatted so that columns are separated by commas and the rows are separated by new lines.  The interface to interact with table assets is show in Figure \ref{fig:manageTab}.  Tables  that are currently available on the system are listed in the text box on the left. To upload a prexisting table file, click the button labeled \textbf{Upload} and select the desired file.  To view the contents of a table file, click on the desired file from the list on the left and click on the button labeled \textbf{Preview}.  The file will be loaded in the text editor to the right in the interface.  To remove an asset from the list, select the asset and click on the button labeled \textbf{Delete}.
+
+It is possible to edit and save table assets directly.  Clicking on the button labeled \textbf{New} will completely clear the text editor on the right.  Note that any changes given in the text editor will be lost when the \textbf{New} button is selected.  To save the contents of a file that have been edited, click on the button labeled \textbf{Save}.  To save the contents of the editor as a new table asset, click on the button marked \textbf{Save As} and enter the desired name to save the asset as.
 
 \paragraph{Applets}
-Applets can be Java Applets, or HTML 5 code that embeds WebGL, Processing, or D3.
 
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=5.0in]{figures/manage_applets.png}
+ \caption{Managing Applet and Script Assets}
+ \label{fig:manageApp}
+\end{figure}
+\FloatBarrier
+
+Applets allow for a tremendous degree of flexibility when designing the training page at the cost of an additional development burden on the administrator.  With them, almost any kind of interaction can be built and incorperated into experiments through the training page.  Currently, applets can be Java Applets, or HTML 5 code that embeds WebGL, Processing, or D3.
+
+The interface to interact with applet assets is show in Figure \ref{fig:manageApp}.  Applets and scripts that are currently available on the system are listed in the text box on the left. To upload a prexisting applet or script into the editor, click the button labeled \textbf{Upload} and select the desired file.  To view the contents of an asset file, click on the desired file from the list on the left and click on the button labeled \textbf{Preview}.  The file will be loaded in the text editor to the right in the interface.  To remove an asset from the list, select the asset and click on the button labeled \textbf{Delete}.
+
+It is possible to edit and save applet and script assets directly.  Clicking on the button labeled \textbf{New} will completely clear the text editor on the right.  Note that any changes given in the text editor will be lost when the \textbf{New} button is selected.  To save the contents of a file that have been edited, click on the button labeled \textbf{Save}.  To save the contents of the editor as a new applet or script asset, click on the button marked \textbf{Save As} and enter the desired name to save the asset as.
+
+\paragraph{Instructions}
+
+\begin{figure}[htb]
+ \centering
+ \includegraphics[width=5.0in]{figures/manage_instructions.png}
+ \caption{Managing Instruction Assets}
+ \label{fig:manageInst}
+\end{figure}
+\FloatBarrier
+
+Instruction assets are text files that  display information to the users during the course of an experiment.  These files are loaded directly between the $<\texttt{body}>$ tags of an instruction page and can employ HTML 5 as well as scripting.
+
+The interface to interact with instruction assets is show in Figure \ref{fig:manageInst}.  Instructions that are currently available on the system are listed in the text box on the left. To upload a prexisting instruction file, click the button labeled \textbf{Upload} and select the desired file.  To view the contents of an instruction file, click on the desired file from the list on the left and click on the button labeled \textbf{Preview}.  The file will be loaded in the text editor to the right in the interface.  To remove an instruction asset from the list, select the asset and click on the button labeled \textbf{Delete}.
+
+It is possible to edit and save instructions assets directly.  Clicking on the button labeled \textbf{New} will completely clear the text editor on the right.  Note that any changes given in the text editor will be lost when the \textbf{New} button is selected.  To save the contents of a file that have been edited, click on the button labeled \textbf{Save}.  To save the contents of the editor as a new instruction asset, click on the button marked \textbf{Save As} and enter the desired name to save the asset as.
 
 \subsubsection {Manage Participants}
 
 \begin{figure}[h!]
  \centering
- \includegraphics[width=5.0in]{figures/manage_part.png}
+ \includegraphics[width=5.0in]{figures/manage_participants_new.png}
+ \caption{Participant Manager}
+ \label{fig:managePartNew}
+\end{figure}
+\FloatBarrier
+
+The participant manager allows administrators the ability to create and modify users.  Create a new user, click on the button labaled \textbf{Add}.  A form to create a new user is shown as in Figure \ref{fig:managePartNew}.
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=5.0in]{figures/manage_participants.png}
  \caption{Participant Manager}
  \label{fig:managePart}
 \end{figure}
 \FloatBarrier
 
-The participant manager allows administrators the ability to create and modify users.  To modify an exisiting user select their name from the drop down list and click on the button labeled \textbf{load}.  All of their information should be entered into the form, as show in Fig. \ref{fig:managePart}.  Please note that administrators will only be able to change users that they have created.  This is important when mulitple administrators use the same system.
+To modify an exisiting user select their name from the drop down list and click on the button labeled \textbf{load}.  All of their information should be entered into the form, as show in Fig. \ref{fig:managePart}.  Please note that administrators will only be able to change users that they have created.  This is important when mulitple administrators use the same system.
 
-To assign a user to a specific experiment, select the desired experiment from the drop down box and click on the button labeled \textbf{Save}.  The user's progress in the designated experiment is shown next to the label \textbf{Experiment Progress}.  If a user's progress needs to be reset, check the box labeled \textbf{Reset Progress} and save the user's profile.
+To assign a user to a specific experiment, click on the button labeled \textbf{Change} next to their currently listed experiement, and select the desired experiement from the popup that is displayed. The user's progress in the designated experiment is shown next to the label \textbf{Experiment Progress}.  If a user's progress needs to be reset, check the box labeled \textbf{Reset Progress} and save the user's profile.  To save any changes made to a user account, click on the button labeled \textbf{Save}
 
 
 \subsubsection {Results Manager}
