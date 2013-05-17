@@ -465,7 +465,11 @@ It is possible to edit and save instructions assets directly.  Clicking on the b
 \end{figure}
 \FloatBarrier
 
-The participant manager allows administrators the ability to create and modify users.  Create a new user, click on the button labaled \textbf{Add}.  A form to create a new user is shown as in Figure \ref{fig:managePartNew}.
+The participant manager allows administrators the ability to create and modify users.  To create a new user, click on the button labaled \textbf{Add}.  A form with the required fields for user creation is displayed, as is shown in Figure \ref{fig:managePartNew}.  All of these fields must be completed to create the user.
+
+The \textem{Login} field is the name the user will login to DynaSearch with.  The \textem{Name} field is the user's name. The \textem{E-mail} field is user's email address.  After clicking on the button labeled \textbf{Save}, an email form will be displayed that will be used to notify the user of their account creation, as well as to provide them with a link to reset their password.
+
+It is possible to assign users to an experiment upon user creation by clicking on the button labeled \textbf{Change} located next to the \textem{Current Experiment} field, but it is unnecessary.
 
 \begin{figure}[h!]
  \centering
@@ -475,9 +479,13 @@ The participant manager allows administrators the ability to create and modify u
 \end{figure}
 \FloatBarrier
 
-To modify an exisiting user select their name from the drop down list and click on the button labeled \textbf{load}.  All of their information should be entered into the form, as show in Fig. \ref{fig:managePart}.  Please note that administrators will only be able to change users that they have created.  This is important when mulitple administrators use the same system.
+To modify an exisiting user select their name from the drop down list and click on the button labeled \textbf{Load}.  All of their information will be displayed, as show in Figure \ref{fig:managePart}.  Please note that administrators will only be able to change users that they have created.  This is important when mulitple administrators use the same system.
 
-To assign a user to a specific experiment, click on the button labeled \textbf{Change} next to their currently listed experiement, and select the desired experiement from the popup that is displayed. The user's progress in the designated experiment is shown next to the label \textbf{Experiment Progress}.  If a user's progress needs to be reset, check the box labeled \textbf{Reset Progress} and save the user's profile.  To save any changes made to a user account, click on the button labeled \textbf{Save}
+To assign a user to a specific experiment, click on the button labeled \textbf{Change} located next to their currently listed experiement, and select the desired experiement from the popup that is displayed.  Please note that the progress on the experiment the user is currently working on will be lost. The user's current progress in the designated experiment is shown next to the label \textbf{Experiment Progress}. 
+
+In order to reset a user's password, the button labeled \textbf{Reset} must be selected.  This sends an email to the user with a link that will allow them to reset their password through the DynaSearch site.  This link will be valid for a predetermined period of time, after which point it will expire.
+
+To save any changes made to a user account, click on the button labeled \textbf{Save}
 
 
 \subsubsection {Results Manager}
@@ -490,7 +498,7 @@ To assign a user to a specific experiment, click on the button labeled \textbf{C
 \end{figure}
 \FloatBarrier
 
-The results for each study can be viewed and downloaded from the \testbf{Results Manger}, as shown in Fig. \ref{fig:partResults}.  To do this, select the desired user from the dropdown list and then hit the button labaled \testbf{Load}.  Then, select the experiment you wish to review the results of and again hit the button labeled \textbf{Load}.
+The results for each study can be viewed and downloaded from the \testbf{Results Manger}, as shown in Figure \ref{fig:partResults}.  To do this, select the desired user from the dropdown list and then hit the button labaled \testbf{Load}.  Then, select the experiment you wish to review the results of and again hit the button labeled \textbf{Load}.
 
 This will show a set of tables that display both the questionnaire data as well as the click data.  To download this, choose whether to download the click data or the questionnaire results, select the format desired (currently only plain text is supported), and hit the button labeled \textbf{Download}.  The details of the formats are specified below.
 
