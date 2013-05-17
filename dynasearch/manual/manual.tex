@@ -259,13 +259,13 @@ The Save button will prompt you to enter a name to save the file as. The extensi
 
 \begin{figure}[h!]
  \centering
- \includegraphics[width=2.5in]{figures/question_toolbar.png}
+ \includegraphics[width=5.0in]{figures/question_toolbar.png}
  \caption{Questionnaire Toolbar}
  \label{fig:questTool}
 \end{figure}
 \FloatBarrier
 
-The Questionnaire Editor allows you to create a questionnaire that can be taken by users as they progress through an experiment. There are four basic building blocks that can be incorporated into a questionnaire, all of which are accessed through the toolbar displayed in Fig. \ref{fig:questTool}. In addition, the toolbar allows you to name, load, save, and clear the questionnaire currently being edited.
+The Questionnaire Editor allows you to create a questionnaire that can be taken by users as they progress through an experiment. There are four basic building blocks that can be incorporated into a questionnaire, all of which are accessed through the interface displayed in Fig. \ref{fig:questTool}. In addition, the interface allows you to name, load, save, and clear the questionnaire currently being edited.
 
 \begin{figure}[h!]
  \centering
@@ -301,14 +301,23 @@ To remove or change the position of the text question after it has been inserted
 \paragraph{Line of Text}
 The Line of Text option allows you to provide users with additional instructions or information. After selecting this option and hitting the Next button, DynaSearch will prompt you to enter in the text that should be displayed. To add the information to the page, click the Next button again. To remove a line of text, simply click on the red minus symbol above the upper right corner of the element.
 
+\paragraph{New}
+The button labeled \textbf{New} clears the current questionnaire being edited and starts a new one.  The name of the questionnaire currently being edited is listed underneath the \textbf{New} button.
+
 \paragraph{Save}
-To save a questionnaire, hit the save button located at the top of the Question Constructor toolbox.  The icon for the save button resembles a piece of paper with the arrow pointing into it.  DynaSearch will save the questionnaire using the name given in the box at the top left corner of the toolbox.  The default name for a questionnaire is \textbf{anonymous}.  Please be aware that currently, DynaSearch will overwrite previous questionnaires of the same name without warning.
+To save the questionnaire currently being edited, please click on the button labeled \textbf{Save}.  Please be aware that currently, DynaSearch will overwrite previous questionnaires of the same name without warning.
+
+\paragraph{Save As}
+To save the questionnaire currently being edited as a new questionnaire, please click on the button labeled \textbf{Save As}.  Please be aware that currently, DynaSearch will overwrite previous questionnaires of the same name without warning.
+
+\paragraph{Delete}
+To delete a questionnaire entirely, click on the button labeled \textbf{Delete}.  Please note that this will permanently remove a questionnaire from the list of available questionnaires to load.
 
 \paragraph{Load}
-To load a questionnaire, hit the load button located at the top of the Question Constructor toolbox. The icon for the load button resembles a piece of paper with the arrow leaving it.  DynaSearch will then display a prompt that allows you to select the questionnaire you wish to load from a dropdown box.  Load the selected questionnaire by hitting the button represented by the check mark.
+To load a questionnaire, click the button labeled \textbf{Load}. DynaSearch will then display a prompt that allows you to select the questionnaire you wish to load from a dropdown box and selecting the green button labeled \textbf{Load}.
 
-\paragraph{Clear}
-The clear button allows you to clear the current questionnaire being edited.  The icon for the clear button resembles a trash can and is located at the top of the Question Contrstructor toolbox.  Please note that DynaSearch will \textbf{not} automatically save any work done before clearning the questionnaire from the editor.
+\paragraph{Append}
+To load a previously written questionnaire into the questionnaire currently being edited, click on the button labeled \textbf{Append}.  This is useful if you have a segment of a questionnaire that needs to be inserted into many seperate questionnaires.  The segment can be saved individually, and then appeneded into each questionnaire seperately.  Please note that a questionnaire should not be appended to itself.  For any reason.  Yes, even that one.
 
 \subsubsection{Experiment Editor}
 
@@ -341,6 +350,10 @@ Scale profiles adjust how the elements are scaled during an experiment.  If an e
 
 \paragraph{Add Information Page}
 
+The \textbf{Add Information Page} link will allow you to insert a new information page into the current experiment. When this link is clicked, a new information page label is inserted into the current list of pages, as is shown in \ref{fig:infoInsert}.  To assign a title to the page, click on the box labed "Title" and insert the desired text.  The drop down box lists the current files that can be used as instruction pages.  The file used will be the one currently selected from the drop down menu.
+
+To change the sequence of the pages, click and drag the blue box on the left hand side of a page label up or down to slide it into the desired location. To remove a page from your list of pages, select the red minus sign on the right hand side of its label.
+
 \begin{figure}[htb]
  \centering
  \includegraphics[width=5.0in]{figures/add_instruction.png}
@@ -349,11 +362,11 @@ Scale profiles adjust how the elements are scaled during an experiment.  If an e
 \end{figure}
 \FloatBarrier
 
-The \textbf{Add Information Page} link will allow you to insert a new information page into the current experiment. When this link is clicked, a new information page label is inserted into the current list of pages, as is shown in \ref{fig:infoInsert}.  To assign a title to the page, click on the box labed "Title" and insert the desired text.  The drop down box lists the current files that can be used as instruction pages.  The file used will be the one currently selected from the drop down menu.
-
-To change the sequence of the pages, click and drag the blue box on the left hand side of a page label up or down to slide it into the desired location. To remove a page from your list of pages, select the red minus sign on the right hand side of its label.
-
 \paragraph{Add Training Page}
+
+The \textbf{Add Training Page} link will allow you to insert a new training page into the current experiment. When this button is clicked, a new training page is inserted into the current list of pages, as is shown in \ref{fig:trainInsert}.  To assign a title to the page, click on the box labed "Title" and insert the desired text.  The drop down box lists the current training pages that are available.  The training page currently selected in the drop down box will be the one used during the experiement.
+
+To change the sequence of a page, click and drag the blue box on the left hand side of the page label up or down to slide it into the desired location. To remove a page from your list of pages, select the red minus sign on the right hand side of its label.
 
 \begin{figure}[h!]
  \centering
@@ -363,11 +376,11 @@ To change the sequence of the pages, click and drag the blue box on the left han
 \end{figure}
 \FloatBarrier
 
-The \textbf{Add Training Page} link will allow you to insert a new training page into the current experiment. When this button is clicked, a new training page is inserted into the current list of pages, as is shown in \ref{fig:trainInsert}.  To assign a title to the page, click on the box labed "Title" and insert the desired text.  The drop down box lists the current training pages that are available.  The training page currently selected in the drop down box will be the one used during the experiement.
+\paragraph{Add Survey Page}
+
+The \textbf{Add Survey Page} link will allow you to insert a new questionnaire into the current experiment. When this button is clicked, a new questionnaire page is inserted into the current list of pages, as is shown in Fig. \ref{fig:surveyInsert}.   To assign a title to the page, click on the box labed "Title" and insert the desired text.  The drop down box lists the current questionnaires  that are available.  The questionnaire currently selected in the drop down box will be the one used during the experiement.
 
 To change the sequence of a page, click and drag the blue box on the left hand side of the page label up or down to slide it into the desired location. To remove a page from your list of pages, select the red minus sign on the right hand side of its label.
-
-\paragraph{Add Survey Page}
 
 \begin{figure}[h!]
  \centering
@@ -376,10 +389,6 @@ To change the sequence of a page, click and drag the blue box on the left hand s
  \label{fig:surveyInsert}
 \end{figure}
 \FloatBarrier
-
-The \textbf{Add Survey Page} link will allow you to insert a new questionnaire into the current experiment. When this button is clicked, a new questionnaire page is inserted into the current list of pages, as is shown in Fig. \ref{fig:surveyInsert}.   To assign a title to the page, click on the box labed "Title" and insert the desired text.  The drop down box lists the current questionnaires  that are available.  The questionnaire currently selected in the drop down box will be the one used during the experiement.
-
-To change the sequence of a page, click and drag the blue box on the left hand side of the page label up or down to slide it into the desired location. To remove a page from your list of pages, select the red minus sign on the right hand side of its label.
 
 \subsubsection {Asset Manager}
 
@@ -469,7 +478,7 @@ The participant manager allows administrators the ability to create and modify u
 
 The \textem{Login} field is the name the user will login to DynaSearch with.  The \textem{Name} field is the user's name. The \textem{E-mail} field is user's email address.  After clicking on the button labeled \textbf{Save}, an email form will be displayed that will be used to notify the user of their account creation, as well as to provide them with a link to reset their password.
 
-It is possible to assign users to an experiment upon user creation by clicking on the button labeled \textbf{Change} located next to the \textem{Current Experiment} field, but it is unnecessary.
+It is possible to assign users to an experiment upon user creation by clicking on the button labeled \textbf{Change} located next to the \textem{Current Experiment} field, but it is not required to create a user.
 
 \begin{figure}[h!]
  \centering
@@ -505,97 +514,120 @@ This will show a set of tables that display both the questionnaire data as well 
 \paragraph{Plain Text}
 
 
+\section{Administrator Settings}
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=5.0in]{figures/findSettings.png}
+ \caption{Navigating to the Administrator Settings}
+ \label{fig:findSettings}
+\end{figure}
+\FloatBarrier
+
+The Administrator Settings screen is available to administrators by hovering over their name on the bottom pannel of the screen, and then selecting the link called \textem{Settings} from the menu that is displayed, as showin in Figure \ref{fig:findSettings}.
+
+\subsection{Change Password}
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=5.0in]{figures/adminPassword.png}
+ \caption{Changing an Administrator's Password}
+ \label{fig:adminPassword}
+\end{figure}
+\FloatBarrier
+
+To change your password, enter your current password in the field labeled \textem{Old Password}, and type and then retype your password in the fields marked \textem{New Password} and \textem{Re-enter Password} respectively as shown in \ref{fig:adminPassword}.  That's right.  Just like 90\% of all other password reset mechanisms in existence. 
+
+\subsection{Change Email Address}
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=5.0in]{figures/adminEmail.png}
+ \caption{Changing an Administrator's Email Address}
+ \label{fig:adminEmail}
+\end{figure}
+\FloatBarrier
+
+\subsection{Screen Size Profile}
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=5.0in]{figures/adminScreenProf.png}
+ \caption{Setting and Changing Screen Profiles}
+ \label{fig:adminScreenProf}
+\end{figure}
+\FloatBarrier
+
 \section{Appendix A: Database Information}
 The tables listed below are used for the DynaSearch system. Any other tables you find in the database are legacy items from the original EMDSS application on which this website was based. The tables have no dependency on each other. Because of this, the resulting structure is very simple and easy to maintain. The tables are explained in greater detail below. The database used for DynaSearch is MySQL 5.1. The entire system was built using version 2.0 of wampServer.
 
-\subsection{sur clicks}
-The sur clicks table records the click information for each user on training pages. Each entry in the database represents a single click. Each individual field is explained below. 
 
-\subparagraph{Dummy}
-This is the primary key for the entry. It allows you to determine when an element was inserted into the table in relation to the other elements. This can be useful for reordering the elements after ordering them by another value.
-
-\subparagraph{UserName}
-This is the user name of the individual that did the click.
-
-\subparagraph{SessionNumber}
-This field was placed to keep track of users between separate experiments. It was determined that it would not be of much help for the currently designed experiments and so was never fully implemented. It has been left for possible future expansion of the software. For now it is assumed that each user only participates in one experiment once. If this is not the case, then their data will need to be cleared out of this table beforehand and their position number will need to be reset in t user.
-
-\subparagraph{ObjClicked}
-This is the item that was clicked on a particular training page. Every objects name begins with "x toTrack". From there the naming convention differs, depending on the element in question. The details for each of the three element types are given below.
- 
-\emph{Tables}
-The format for tables is: x toTrackTable "file name" "table name" "row" "column". So for example, if the file name was testFile.txt, the table name was Table 1, and the user clicked on the first row with the second column, then the entry would be x toTrackTable testFile.txt Table1 1 2. 
-It is important to note that for any given experiment, there should be no two tables that share both the same file name and table name. Otherwise, it will be impossible to distinguish between them in the database.
-
-\emph{Map Legends}
-The format for map legends is: x toTrackTable mapLegend adv "advisory number" "row" "column". So for exam.ple, if the advisory number for the map on the training screen was five and the user clicked on the second row and the third column, then the entry would be x toTrackTable mapLegend adv 5 2 3). 
-It is important to note that no two maps should have the same advisory number for a given experiment. Otherwise, it will be impossible to distinguish between them in the database.
-
-\emph{Text Blocks}
-The format for text blocks is: x toTrackText "window name". So for example, the the name of the text window was "Advisory Information", then the entry would be x toTrackText AdvisoryInformation. 
-It is important to note that no two text blocks should have the same title throughout an experiment. Otherwise, it will be impossible to distinguish between them in the database.
-
-\subparagraph{ClickLength}
-This gives how long the element was clicked in seconds.
-
-\subparagraph{ClickNumber}
-This gives the order that an element was clicked on a specific training page. Ordering the elements by their Dummy value will return the sequence in which the elements of a single training page were accessed.
-
-\subsection{sur question}
+\subsection{sur\_question}
 This table holds all of the questionnaires that have been created within DynaSearch. Everything in this database is handled internally, so it should almost never need to be accessed. It should be noted that once experiments are created, the information in the Value field is copied to a file in the file system. This is designed to protect individual experiments from issues that may occur with the database. The details of each field are given below.
 
 \subparagraph{id}
-The id field serves as the primary key for an entry. It should never need to be referenced. 
+The id field serves as the primary key for an entry. It should never need to be referenced.
+
+\subparagraph{Admin\_ID}
+This is the user name of the administrator that created the question.  Administrator's will only have access to the questions that they have created.
 
 \subparagraph{Name}
-This is the name of the given questionnaire. It is what is displayed when trying to insert the questionnaire into different experiments. Each should be unique. 
+This is the name of the given questionnaire. It is what is displayed when trying to insert the questionnaire into different experiments. Each should be unique.
 
 \subparagraph{Value}
 This is the HTML that makes up the questionnaire. It is stored in its basic format. If the questionnaire needs to be edited in any way after it is saved, it will have to be through this field, as there is currently no way to modify pre-existing surveys. 
 
-\subsection{sur randquestion}
-This tables holds the questions that are created through the Questionnaire Catalog. They are single questions that maybe repeatedly inserted into a questionnaire. The details of each field are given below. 
 
-\subparagraph{id}
-The id field serves as the primary key for an entry. It should never need to be referenced. 
-
-\subparagraph{Designator}
-This is how the question is identified from the Questionnaire Editor. These should be unique values. 
-
-\subparagraph{Value}
-This is the HTML that makes up the question, and is stored in its basic format. If the question needs to be modified in anyway after it is saved, it will have to be through this field, as there is currently no way to change a question once it has been saved. 
-
-
-\subsection{t experiments }
+\subsection{t\_experiments }
 The experiments table holds all of the information that is saved from the Experiment Editor. Short of removing experiments from the database, this table should rarely be referenced. 
 
 \subparagraph{id} 
 The id field serves as the primary key for an entry. It should never need to be referenced. 
 
 \subparagraph{ExperimentShortName}
-The experiment short name is the name of the experiment that will be seen from the Experiment Editor. It will be the name given to the experiment on creation without any spaces or special characters. 
+The experiment short name is the name of the experiment that will be seen from the Experiment Editor. It will be the name given to the experiment on creation without any spaces or special characters.
+
+\subparagraph{Admin\_ID}
+This is the user name of the administrator that created the experiment.  Administrator's will only have access to the experiments that they have created.
+
+\subparagraph{ScaleProfileID}
+The ScaleProfileID field is used to determine which scale profile should be used for an experiment.  These scale profiles are stored in the database table \texttt{t\_scale\_profiles}.
+
+\subparagraph{Custom Scaling}
+%Legacy?
+
+\subparagraph{ScaleW}
+%Legacy?
+
+\subparagraph{ScaleH}
+%Legacy?
 
 \subparagraph{ExperimentString}
 This field contains a string which represent the experiment referenced. Most of it is stored in hexadecimal characters, and is therefore unreadable by itself. This informa.tion should only ever be accessed through the Experiment Editor. This string keeps track of the order of the pages, as well as the names of the files that correspond to each page in the experimentÕs folder. 
 
 
-\subsection{t user}
-This table holds all of the account information for a given user. A detailed look at the fields is given below.
+\subsection{m\_turk}
+This table holds the information required for integration into Amazon's Mechanical Turk.
 
-\subparagraph{User ID}
-This is the identification that the user provides to the login screen in order to access the experiment. 
+\subparagraph{MT\_ID}
+The mechanical turk identification number.
 
-\subparagraph{County ID}
-Lists the current county of the user. This field is currently not used. 
+\subparagraph{Admin\_ID}
 
-\subparagraph{UPassword}
-The password for the user. Because the system was designed for academic purposes and no personal information is being stored, these passwords are not encrypted in any.way.
+\subparagraph{Amazon\_ID}
 
-\subparagraph{User Type}
-This specifies the role of the account. An "A" designates the account as an adminis.trator. If this is true, they will automatically taken to the administrator page on login. A "U" designates the account as user. On login this individual will be taken to the experiment they are participating in. They should not have access to any of the editors or administrator page. 
+
+\subsection{t\_scale\_profiles}
+This table holds all of the scale profiles that are used to resize experiments as they are being run.  Scale profiles are created and set by administartors from their \textbf{Settings} screen.
+
+\subparagraph{Profile\_ID}
+The identification number used to associate scale profiles to experiments.
+
+\subparagraph{Admin\_ID}
+This is the user name of the administrator that created the scale profile.  Administrator's will only have access to the scale profiles that they have created.
 
 \subparagraph{Name}
-Real name of the user. 
+This is the name shown to the administrator in their \textbf{Settings} screen when they select which scale profile to use.
 
 \subparagraph{scaleW}
 This field only applies to users. It is the width measurement that is recorded from the size registration page, and is used to ensure that every element on a training page is displayed with proper proportion, regardless of the monitorÕs screen size or resolution. 
@@ -603,23 +635,54 @@ This field only applies to users. It is the width measurement that is recorded f
 \subparagraph{scaleH}
 This field only applies to users. It is the height measurement that is recorded from the size registration page, and is used to ensure that every element on a training page is displayed with proper proportion, regardless of the monitorÕs screen size or resolution. 
 
-\subparagraph{current position}
+
+\subsection{t\_user}
+This table holds all of the account information for a given user. A detailed look at the fields is given below.
+
+\subparagraph{User\_ID}
+This is the identification that the user provides to the login screen in order to access the experiment.
+
+\subparagraph{Admin\_ID}
+This is the user name of the administrator that created the user.  Administrator's will only have access to the users that they have created.
+
+\subparagraph{Email}
+This is the email account associated with the user's account.  This is used for resetting the passwords of users through the \textbf{Participant Manager} screen.
+
+\subparagraph{MemoryAllocation}
+This represents how much storage space administrators have for uploading all of their assets.  This value is in MB.
+
+\subparagraph{County\_ID}
+Lists the current county of the user. This field is currently not used. 
+
+\subparagraph{UPassword}
+No longer in use. %Legacy
+
+\subparagraph{PasswordHash}
+This is the password for the user account.  These values are hashed for security reasons, and there is no direct way to determine the value of the password from an administrative standpoint.  They only way to change a user's password is to use the reset functionality available from the \textbf{Participant Manager} screen.
+
+\subparagraph{User\_Type}
+This specifies the role of the account. An "A" designates the account as an adminis.trator. If this is true, they will automatically taken to the administrator page on login. A "U" designates the account as user, and an "M" designates a user as a Mechanical Turk user. On login these individuals will be taken to the experiment they are participating in. They should not have access to any of the editors or administrator page. 
+
+\subparagraph{Name}
+Real name of the user. 
+
+\subparagraph{ScaleProfileID}
+This gives the identification number of the scale profile that should be associated with a user when they log in to perform an experiment.
+
+\subparagraph{current\_position}
 This field only applies to users. It determines where in an experiment the user should be, should they log out and try to log back in before the completion of the experiment. It should also prevent users from trying to back track in an experiment, though this behavior may vary from browser to browser. 
 
 \subparagraph{experiment}
 This field only applies to users. It determines which experiment will be displayed for a user when they log into the system. The value must be one of the Experiment Short Name entries listed in the t experiments table. 
 
-\subparagraph{FORECAST}
-Determines whether or not the user should be able to click on the row of forecast buttons in the map legend window. A value of 0 means that the user will not be able to access this information, while a value of 1 means that they will. 
+\subparagraph{Current\_Experiment\_ID}
+This field only applies to users. It determines which experiment will be displayed for a user when they log into the system. The value must be one of the experiment ID entries listed in the \texttt{t\_experiments }table. 
 
-\subparagraph{PAST TRACK}
-Determines whether or not the user should be able to click on the row of past track buttons in the map legend window. A value of 0 means that the user will not be able to access this information, while a value of 1 means that they will. 
+\subparagraph{ResetToken}
+The reset token is generated when an administrator resets a user's password through the \textbf{Participant Manager} screen.  The link in the email redirects the user to DynaSearch and passes the token, which allows the user to reset their password.
 
-\subparagraph{CONE}
-Determines whether or not the user should be able to click on the row of cone of uncertainty buttons in the map legend window. A value of 0 means that the user will not be able to access this information, while a value of 1 means that they will. 
-
-\subparagraph{CURRENT}
-Determines whether or not the user should be able to click on the current location button in the map legend window. A value of 0 means that the user will not be able to access this information, while a value of 1 means that they will.
+\subparagraph{TokenExpiration}
+This indicates the expiration date of the assocaited \texttt{ResetToken}.
 
 \section{Appendix B: Filesystem Information}
 The file system is separated into five sections. These are the main files, experiment files, experiment resources, user data, and other assets. Each of these is detailed below.
