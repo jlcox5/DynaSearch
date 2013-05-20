@@ -593,15 +593,6 @@ This is the user name of the administrator that created the experiment.  Adminis
 \subparagraph{ScaleProfileID}
 The ScaleProfileID field is used to determine which scale profile should be used for an experiment.  These scale profiles are stored in the database table \texttt{t\_scale\_profiles}.
 
-\subparagraph{Custom Scaling}
-%Legacy?
-
-\subparagraph{ScaleW}
-%Legacy?
-
-\subparagraph{ScaleH}
-%Legacy?
-
 \subparagraph{ExperimentString}
 This field contains a string which represent the experiment referenced. Most of it is stored in hexadecimal characters, and is therefore unreadable by itself. This informa.tion should only ever be accessed through the Experiment Editor. This string keeps track of the order of the pages, as well as the names of the files that correspond to each page in the experimentÕs folder. 
 
@@ -654,9 +645,6 @@ This represents how much storage space administrators have for uploading all of 
 \subparagraph{County\_ID}
 Lists the current county of the user. This field is currently not used. 
 
-\subparagraph{UPassword}
-No longer in use. %Legacy
-
 \subparagraph{PasswordHash}
 This is the password for the user account.  These values are hashed for security reasons, and there is no direct way to determine the value of the password from an administrative standpoint.  They only way to change a user's password is to use the reset functionality available from the \textbf{Participant Manager} screen.
 
@@ -698,44 +686,46 @@ The main DynaSearch directory contains the files that are used during interactio
 
 \paragraph{editor.php} - This is the page where the Training Page Editor loads
 
-\paragraph{instructions.php} -This is the page that is used to display instructions to the users 
+\paragraph{instructions.php} - This is the page that is used to display instructions to the users 
 
-\paragraph{questDisplay.php} -This page is used to implement the Questionnaire Viewer
+\paragraph{questDisplay.php} - This page is used to implement the Questionnaire Viewer
 
-\paragraph{questEditor.php} -This page is used to implement the Questionnaire Editor 
+\paragraph{questEditor.php} - This page is used to implement the Questionnaire Editor 
 
-\paragraph{question.php} -This page is used to display questionnaires to users 
+\paragraph{question.php} - This page is used to display questionnaires to users 
 
-\paragraph{randQuestEditor.php} -This page is used to implement the Questionnaire Catalog 
+\paragraph{randQuestEditor.php} - This page is used to implement the Questionnaire Catalog 
 
-\paragraph{survey setup.php} -This page is used to implement the Experiment Editor
+\paragraph{survey\_setup.php} - This page is used to implement the Experiment Editor
 
-\subsection{Experiment Files}
-Inside the directory DynaSearch/hurricane data is a folder for every experi.ment that has been created. Inside these folders are files that correspond to each of the pages of the experiment. This means that for each instruction page, each training page, and each questionnaire, there will be one file in the experiment's folder that cor.responds to it. Instruction and questionnaire pages will be displayed as HTML, while the training pages are encoded as hexadecimal characters.
+\subsection{Administrator Filesystem}
+A folder is created for each administrator that is used for storage and organizational purposes.  These folders are located in the \texttt{DynaSearch/admins} directory.  The name of the each folder corresponds to the username of the administrator that owns it.  Currently, these directories are only used to store the assets uploaded by the administrators.
 
-\subsection{Experiment Resources}
-The folder DynaSearch/expResources contains a number of sub-folders which store the information needed to create the various instruction and training pages. The purpose of these folders is detailed below.
+The base folder that contains all of the assets for each administrator is located in the \texttt{DynaSearch/admins/[admin\_username]/assets} directory, where [admin\_username] is the username of the administrator that owns the folder.  The folders found in this directory as well as their purpose are listed below.
 
-\paragraph{advisory}
-This directory contains a copy of all of the training pages that have been created. The contents are displayed in hexadecimal characters, and are only utilized inside the Dy.naSearch framework.
+\paragraph{applets}
+This directory contains all of the applets that have been uploaded by the administrator.  These can range from Java applets, Processing or D3 files, or HTML 5 files that have embeded scripings, such as WebGL.
 
 \paragraph{images}
-This directory contains copies of all the images that can be used in the training pages, along with files that contain the geographic information for each image.
-
-\paragraph{instructPages}
-This directory contains all of the instruction pages that can be used in an experiment. Though they all have the .txt extension, the contents are just the HTML that would be found between the <body> tags in a standard HTML file. 
+This directory contains all of the image assets loaded by the administrators.  DynaSearch supports most major image formats.
 
 \paragraph{tables}
 This directory contains all of the files containing table information which can be used in the training pages.
 
-\paragraph{tracking}
-This directory contains all of the files that hold hurricane tracking information which can be used in the training pages.
+\paragraph{image\_tables}
+This directory contains all of the image table files which are used in the training pages for chaging the images an image window displays based on the grid cell in the table that is clicked.
 
-\subsection{User Data}
-This folder holds the user responses for each survey that a user participates in, as well as their window scaling information. Every value is comma separated, and commas that users type in the free response questions are replaced with a '. The files are named according to the user's user name.
+\paragraph{instructions}
+This directory holds all of the files used in the instruction pages.  They can be just straight text or can contain HTML 5 and scripting elements.
+
+\paragraph{text}
+This directory holds all of the files that are used in the text boxes on the training screens.  These files should only contain text, and should be clear of any code or scripts.
+
+\paragraph{training}
+No longer in use %Legacy?
 
 \subsection{Other Assets}
-The DynaSearch/assets directory hold all of the background scripts and files that are used to make the DynaSearch system work. Below is a list of the subdirectories and any major files that are located in each.
+The \texttt{DynaSearch/assets} directory hold all of the background scripts and files that are used to make the DynaSearch system work. Below is a list of the subdirectories and any major files that are located in each.
 
 \paragraph{images}
 This directory holds all of the images utilized by DynaSearch.
