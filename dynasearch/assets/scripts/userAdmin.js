@@ -231,3 +231,81 @@ var showEmailPopup = function() {
 
 }
 
+
+var add_participant = function() {
+   var form = new Element('form');
+   form.action = 'userAdmin.php';
+   form.style.visibility = 'hidden';
+   form.method = 'POST';
+
+   var op = new Element('input');
+   op.name = 'op';
+   op.value = 'add';
+   form.adopt(op);
+
+   var qId = new Element('input');
+   qId.name = 'pId';
+   qId.value = -1;
+   form.adopt(qId);
+
+   document.body.adopt(form);
+   form.submit();
+}
+
+var load_participant = function() {
+   var loadBox = new mBox.Modal({
+      title   : 'Load Participant',
+      content : 'load-participant',
+      /*width   : '800px',
+      height  : '450px',*/
+      overlay : true,
+      closeOnBodyClick : false,
+      buttons : [
+         { title : 'Cancel' },
+         { title : 'Load' ,
+           event : function() {
+              this.close();
+              var pSelect = $("aParticipants");
+              var form = new Element('form');
+              form.action = 'userAdmin.php';
+              form.style.visibility = 'hidden';
+              form.method = 'POST';
+
+              var op = new Element('input');
+              op.name = 'op';
+              op.value = 'load';
+              form.adopt(op);
+
+              var qId = new Element('input');
+              qId.name = 'pId';
+              qId.value = pSelect.value;
+              form.adopt(qId);
+
+              document.body.adopt(form);
+              form.submit();
+
+           },
+           addClass : 'button-green' }
+      ],
+   }).open();
+}
+
+var delete_participant = function() {
+   var form = new Element('form');
+   form.action = 'userAdmin.php';
+   form.style.visibility = 'hidden';
+   form.method = 'POST';
+
+   var op = new Element('input');
+   op.name = 'op';
+   op.value = 'delete';
+   form.adopt(op);
+
+   form.adopt( $('pId') );
+
+   document.body.adopt(form);
+   form.submit();
+}
+
+
+

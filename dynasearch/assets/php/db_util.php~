@@ -51,7 +51,7 @@ function query_db($query)
       }
  
       //echo $row[$ret];
-      //echo json_encode($ret);
+      echo json_encode($ret);
       //echo $params[0];
       //return false;
    }

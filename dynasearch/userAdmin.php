@@ -28,7 +28,7 @@
    {
       $pId = $_POST['pId'];
 
-     if( isset($_POST["add"]) )
+     if( $op == 'add' )
       {
 
          // Add participant
@@ -137,6 +137,13 @@
       mysql_query($query);
       break;
 
+   case 'delete' : // Delete
+
+      $query  = "DELETE FROM t_user WHERE User_ID='$pId';";
+      mysql_query($query);
+      $pId = null;
+      break;
+
    default :
       break;
    }
@@ -156,6 +163,36 @@
 ?>
 
 <body id="body">
+
+   <!-- Load Participant Popup -->
+   <div id="load-participant"  style="display:none;">
+      My Participants
+   <?php
+      $aParticipants = getAdminParticipants($username);
+      echo '<select id="aParticipants" >';
+      foreach($aParticipants as $key => $value)
+      {
+         if ($key == $qId)
+         {
+            $selected = 'selected="selected"';
+         }
+         else
+         {
+            $selected = '';
+         }
+
+         echo '<option value="' . $key . '" ' . $selected . '>' .
+                 $value . ' (' . $key . ')' .
+              '</option>';
+      }
+      echo '</select>';
+   ?>
+<!--
+      <div class="warning">
+         <b>If you load another questionnaire,<br/>
+         all current unsaved changes will be lost.</b>
+      </div>-->
+   </div>
 
    <!-- Email Popup Box -->
    <div id="emailBox" style="display:none;">
@@ -233,38 +270,19 @@
          <h1>My Participants</h1><br/>
          <br/>
 
-         <!-- User Select -->
-         <form action="userAdmin.php" method="post">
-            <select name="pId">
-   <?php 
-      // Retrieve Admin's users
-      $query  = "SELECT * FROM t_user WHERE Admin_ID='$username';";
-      $result = mysql_query($query);
-      while( $row = mysql_fetch_array($result, MYSQL_BOTH) )
-      {
-         $optionUserId   = $row['User_ID'];
-         $optionUserName = $row['Name'];
 
-         if ($optionUserId == $pId)
-         {
-            $selected = 'selected="selected"';
-         }
-         else
-         {
-            $selected = '';
-         }
+         <!-- Buttons -->
+         <button data-confirm-action="add_participant();"
+                 data-confirm="Are you sure you wish to add a new participant?<br/>All unsaved changes will be lost." >Add</button>	
+         <!--<button id="saveBtn"   onClick="save_quest();"    <?php echo ( ($qId > 0) ? ('') : ('disabled="disabled"') ); ?>  >Save</button>-->
+         <button data-confirm-action="load_participant();"
+                 data-confirm="Are you sure you wish to load a participant?<br/>All unsaved changes will be lost."
+                 <?php echo ( (sizeof($aParticipants) > 0) ? ('') : ('disabled="disabled"') ); ?>                     >Load...</button>
+         <button id="deleteBtn" data-confirm-action="delete_participant();"
+                 data-confirm="Are you sure you wish to delete this participant?<br/>This action cannot be undone."
+                 <?php echo ( ($pId != '') ? ('') : ('disabled="disabled"') ); ?>                                     >Delete</button>
+	
 
-         echo '<option value="' . $optionUserId . '" ' . $selected . ' >' .
-                 $optionUserName . ' (' . $optionUserId . ')' .
-              '</option>';
-      }
-
-   ?>
-            </select>
-
-            <input class="button" type="submit" name="load" value="Load"/>
-            <input class="button" type="submit" name="add" value="Add"/>
-         </form>
          <br/>
          <br/>
 
@@ -282,7 +300,7 @@
          echo '<tr>' .
                  '<td class="label">Login :</td>' . 
                  '<td colspan="2"><input id="pId" type="text" name="pId" value="' .$pId . '" required="required" onchange="checkAvailability();" ';
-         if( isset($_POST["add"]) )
+         if( $op == 'add' )
          {
             echo '/>' .
                  '<span id="availabilityTag"></span>';
@@ -311,7 +329,7 @@
 
 
          // Change Password
-         if( !isset($_POST["add"]) )
+         if( $op != 'add' )
          {
             echo '<tr>' .
                     '<td class="label">Password :</td>' .
@@ -342,7 +360,7 @@
 
 
          // Experiment Progress
-         if( !isset($_POST["add"]) )
+         if( $op != 'add' )
          {
             echo '<tr>' .
                     '<td class="label">Experiment Progress :</td>';

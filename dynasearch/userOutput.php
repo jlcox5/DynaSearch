@@ -8,6 +8,35 @@
    mysql_select_db($DB_NAME) or die("Unable to select database.");
 
 
+function formatQuestResults( $qDOM, $type )
+{
+   $qStr = '';
+   foreach ( $qDOM->childNodes as $node ) {
+      $tag = $node->nodeName;
+
+      switch ( $type )
+      {
+      case 'txt' :
+
+         $qStr .= '\n';
+         break;
+
+      case 'csv' :
+         break;
+
+      case 'excel'  :
+         break;
+
+      default :
+         echo 'ERROR : Unknown file type [' . $type . ']';
+         break;
+      }
+
+   }
+   return $qStr; 
+}
+
+
    // Download Data
    if( isset($_POST["download"]) )
    {
@@ -63,11 +92,11 @@
       exit;
    }
 
-   $page_title = "Manage Participant Data";
+   $page_title = "Participant Results";
    $username = $_SESSION['username'];
 
-   $template_style_array  = array("style.css", "userOutput.css");
-   $template_script_array = array("ajax-core.js", "userOutput.js");
+   $template_style_array  = array("style.css", "mBoxCore.css", "mBoxModal.css", "mBoxNotice.css", "userOutput.css");
+   $template_script_array = array("ajax-core.js", "mBox.All.min.js", "userOutput.js");
    
 
    // View Mode
@@ -81,39 +110,16 @@
    }
 
    // Load Admin's Participants
-   $adminUsers = array();
-   $query = "SELECT * FROM t_user WHERE Admin_ID='$username';";
-   $result = mysql_query($query);
-   while( $row = mysql_fetch_array($result, MYSQL_BOTH) )
-   {
-      $optionUserId   = $row['User_ID'];
-      $optionUserName = $row['Name'];
-
-      $adminUsers[$optionUserId] = $optionUserName;
-   }
+   $adminUsers = getAdminParticipants( $username );
 
    // Load Admin's Experiments
-   $adminExps = array();
-   $query = "SELECT * FROM t_experiments WHERE Admin_ID='$username';";
-   $result = mysql_query($query);
-   while( $row = mysql_fetch_array($result, MYSQL_BOTH) )
-   {
-      $optionExpId   = $row['id'];
-      $optionExpName = $row['ExperimentName'];
-
-      $adminExps[$optionExpId] = $optionExpName;
-   }
+   $adminExps = getAdminExps( $username );
 
 
 
    if( isset($_POST['pId']) )
    {
       $pId = $_POST['pId'];
-      $query = "SELECT * FROM t_user WHERE User_ID='$pId';";
-      $result = mysql_query($query);
-      $row = mysql_fetch_array($result, MYSQL_BOTH);
-
-      $pName = $row['Name'];
    }
    else
    {
@@ -123,51 +129,43 @@
    }
 
 
-   if( isset($_POST['expId']) )
+   if ( isset($_POST['pId']) and isset($_POST['expId']) )
    {
+      $pId   = $_POST['pId'];
       $expId = $_POST['expId'];
-      $query = "SELECT * FROM t_experiments WHERE id='$expId';";
+
+      $query = "SELECT * FROM t_user_output WHERE User_ID='$pId' AND Experiment_ID='$expId';";
       $result = mysql_query($query);
-      $row = mysql_fetch_array($result, MYSQL_BOTH);
+      if ( $row = mysql_fetch_array($result, MYSQL_BOTH) )
+      {
+         $rId          = $row['ID'];
+         $questResults = $row['QuestOutput'];
+         $clickResults = $row['ClickOutput'];
+      }
+      else
+      {
+         $rId          = -1;
+         $questResults = '';
+         $clickResults = '';
+      }
+   }
 
-      $expName = $row['ExperimentName'];
-   }
-   else
-   {
-      reset($adminExps);
-      $expId = key($adminExps);
-      $expName = $adminExps[ $expId ];
-   }
-
-   $query = "SELECT * FROM t_user_output WHERE User_ID='$pId' AND Experiment_ID='$expId';";
-   $result = mysql_query($query);
-   if ( $row = mysql_fetch_array($result, MYSQL_BOTH) )
-   {
-      $questResults = $row['QuestOutput'];
-      $clickResults = $row['ClickOutput'];
-   }
-   else
-   {
-      $questResults = '';
-      $clickResults = '';
-   }
+   $questResults = '<questResults>' . $questResults . '</questResults>';
+   
 
    include('assets/php/standard.php');
 ?>
 
 <body id="body">
-   <div id="maincontainer">
-      <div id="wrapper" style="width:70%; margin: auto auto;">
-   
-         <h1>Participant Results</h1><br/>
-         <br/>
 
-         <form id="outputForm" action="userOutput.php" method="post">
-
-            <!-- View Mode Select-->
+   <!-- Download Results Popup -->
+   <div id="results-popup" style="display:none;">
+         <table>
+            <tr>
+               <td>
    <?php
 
-      echo '<select id="viewMode" name="viewMode" onchange="loadForm();">';
+      echo '<select id="viewMode" name="viewMode" onchange="change_view_mode();">';
       if( $viewMode == "participant" )
       {
          echo '<option value="participant" selected="selected">Participant</option>' .
@@ -180,163 +178,178 @@
       }
       echo '</select>';
    ?>
+               </td>
+               <td id="main-select"></td>
+            </tr>
+            <tr>
+               <td id="sub-tag"></td>
+               <td id="sub-select"></td>
+            </tr>
+         </table>
+         <br/>
+   </div>
 
-
-            <!-- Participant Select-->
+   <!-- Download Results Popup -->
+   <div id="download"  style="display:none;">
    <?php
-      if( $viewMode == "participant" )
-      {
-         echo '<select id="userSelect" name="pId" onchange="loadForm();">';
+      echo '<input id="questResults" hidden="hidden" value="' . htmlspecialchars($questResults) . '">';
+      echo '<input id="clickResults" hidden="hidden" value="' . htmlspecialchars($clickResults) . '">';
+         // Download
+         echo '<br/>';
+         //echo '<input type="text" name="questResults" value="' . $questResults . '" hidden="hidden" />' .
+         //     '<input type="text" name="clickResults" value="' . $clickResults . '" hidden="hidden" />';
 
-         foreach($adminUsers as $key => $value)
-         {
-            if ($key == $pId)
-            {
-               $selected = 'selected="selected"';
-            }
-            else
-            {
-               $selected = '';
-            }
+         echo 'Download: <select name="resultType">' .
+                 ( empty($questResults) ? ('') : ('<option value="quest">Questionaire Results</option>') ) .
+                 ( empty($clickResults) ? ('') : ('<option value="click">Click Results</option>') ) .
+              '</select>';
 
-            echo '<option value="' . $key . '" ' . $selected . '>' .
-                    $value . ' (' . $key . ')' .
-                 '</option>';
-         }
-         echo '</select>' .
-              '<br/><br/>';
+         echo '<br/>';
+         echo ' Please select a format <select name="fileType">';
 
-         echo '<h2>Participant Name : ' . $pName . '</h2>' .
-              '<br/>';
+         echo '<option value="' . 'txt' . '">' .
+                 'Plain Text (.' . 'txt' . ')' .
+              '</option>';
 
-         echo '<h2>Participant Experiments : ' .
-                 '<select name="expId" onchange="loadForm();">';
+         echo '<option value="' . 'csv' . '">' .
+                 'Comma-Seperated Values (.' . 'csv' . ')' .
+              '</option>';
 
-         $query = "SELECT * FROM t_user_output WHERE User_ID='$pId';";
-         $result = mysql_query($query);
-         while( $row = mysql_fetch_array($result, MYSQL_BOTH) )
-         {
-            $optionExpId = $row['Experiment_ID'];
-            $optionExpName = $adminExps[$optionExpId];
+         echo '<option value="' . 'xls' . '">' .
+                 'MS Excel (.' . 'xls' . ')' .
+              '</option>';
 
-            if ($optionExpId == $expId)
-            {
-               $selected = 'selected="selected"';
-            }
-            else
-            {
-               $selected = '';
-            }
-
-            echo '<option value="' . $optionExpId . '" ' . $selected .'>' .
-                    $optionExpName . ' (' . $optionExpId . ')' .
-                 '</option>';
-         }
-
-         echo    '</select>' . 
-              '</h2>';
-
-      }
+         echo '</select>';
+         echo '<br/>';
    ?>
+   </div>
 
-            <!-- Experiment Select-->
+   <!-- Select Prototypes -->
+   <div style="display:none;">
    <?php
-      if( $viewMode == "experiment" )
+      echo '<select id="pIdProto">';
+      foreach($adminUsers as $key => $value)
       {
-         echo '<select id="expSelect" name="expId" onchange="loadForm();">';
-
-
-         foreach($adminExps as $key => $value)
+         if ($key == $pId)
          {
-            if ($key == $expId)
-            {
                $selected = 'selected="selected"';
-            }
-            else
-            {
-               $selected = '';
-            }
-
-            echo '<option value="' . $key . '" ' . $selected . '>' .
-                    $value . ' (' . $key . ')' .
-                 '</option>';
          }
-         echo '</select>' .
-              '<br/><br/>';
-
-         echo '<h2>Experiment Name : ' . $expName . '</h2>' .
-              '<br/>';
-
-         echo '<h2>Experiment Participants : ' .
-                 '<select name="pId" onchange="loadForm();">';
-
-         $query = "SELECT * FROM t_user_output WHERE Experiment_ID='$expId';";
-         $result = mysql_query($query);
-         while( $row = mysql_fetch_array($result, MYSQL_BOTH) )
+         else
          {
-            $optionUserId = $row['User_ID'];
-            $optionUserName = $adminUsers[$optionUserId];
-
-            if ($optionUserId == $pId)
-            {
-               $selected = 'selected="selected"';
-            }
-            else
-            {
-               $selected = '';
-            }
-
-            echo '<option value="' . $optionUserId . '" ' . $selected .'>' .
-                    $optionUserName . ' (' . $optionUserId . ')' .
-                 '</option>';
+            $selected = '';
          }
 
-         echo    '</select>' . 
-              '</h2>';
+         echo '<option value="' . $key . '" ' . $selected . '>' .
+                 $value . ' (' . $key . ')' .
+              '</option>';
       }
+      echo '</select>';
+
+      echo '<select id="expIdProto">';
+      foreach($adminExps as $key => $value)
+      {
+         if ($key == $expId)
+         {
+            $selected = 'selected="selected"';
+         }
+         else
+         {
+            $selected = '';
+         }
+
+         echo '<option value="' . $key . '" ' . $selected . '>' .
+                 $value . ' (' . $key . ')' .
+              '</option>';
+      }
+      echo '</select>';
    ?>
+   </div>
 
-            <br/>
+   <div id="maincontainer">
+      <div id="wrapper" style="width:70%; margin: auto auto;">
+   
+         <h1>Participant Results</h1><br/>
+         <br/>
 
+         <button id="displayBtn"  type="button" onClick="display_results();" >Display...</button>
+         <button id="downloadBtn" type="button" onClick="download_results();"    <?php echo ( (true) ? ('') : ('disabled="disabled"') ); ?>  >Download...</button>
+
+
+         <form id="outputForm" action="userOutput.php" method="post">
+         <br/>
 
             <!-- Results -->
    <?php
 
          echo '<br/>';
 
+function constructQuestResults( $qDOM )
+{
+   $qStr = '';
+   foreach ( $qDOM->childNodes as $node ) {
+      $tag = $node->nodeName;
 
-         // Results
-      if( !empty($questResults) )
+      switch ( $tag )
       {
-         echo '<h2>Questionaire Results :</h2>';
-         //echo $questResults;
-         $pages = preg_split('@&@', $questResults, NULL, PREG_SPLIT_NO_EMPTY);
+      case 'section' :
+         $sectionName = $node->getAttribute('title');
+         $qStr .= '<div class="quest-section">' .
+                     '<h2>' . $sectionName . '</h2><br/>' .
+                     constructQuestResults( $node ) .
+                  '</div>';
+         break;
 
-         for( $i = 0; $i < count($pages); ++$i )
-         {
-            $pageTitle = strtok($pages[$i], ":");
+      case 'radioquestion' :
+      case 'textquestion'  :
+         $question = $node->getAttribute('question');
+         $answer   = $node->getAttribute('answer');
+         $qStr .= $question . '<br/>' .
+                  '<b>' . $answer . '</b>';
+         break;
 
-            echo '<table>' . 
-                    '<tr>' .
-                       '<th colspan="2">' . $pageTitle . '</th>' .
-                    '</tr>';
-
-            $questNum = 1;
-            while( ($content = strtok(",")) )
-            {
-               echo '<tr><td>' . $questNum . '</td><td>' . $content . '</td></tr>';
-               ++ $questNum;
-            }
-            echo '</table>';
-         }
-
-         echo '<br/>';
+      default :
+         echo 'ERROR : Unknown questionnaire item [tag - ' . $tag . ']';
+         break;
       }
+      $qStr .= '<br/>';
+   }
+   return $qStr; 
+}
 
+      if ( $rId > 0 )
+      {
+
+      // Results
+
+      echo '<h2>Questionaire Results :</h2>';
+      $qResultDOM = new DOMDocument();
+      $qResultDOM->loadXML($questResults);
+      $root = $qResultDOM->documentElement;
+
+      if( $root->childNodes->length > 0 )
+      {
+
+         echo '<div id="quest-accordion">';
+         foreach ( $root->childNodes as $node ) {
+            echo '<div class="toggle">' . $node->getAttribute('page') . '</div>' .
+                 '<div class="content">' .
+                    constructQuestResults($node) . '<br/>' .
+                 '</div>';
+         }
+         echo '</div>';
+      }
+      else
+      {
+         echo '<i>No Results Found</i><br/>';
+      }
+      echo '<br/>';
+
+
+      echo '<h2>Click Results :</h2>';
 
       if( !empty($clickResults) )
       {
-         echo '<h2>Click Results :</h2>';
+
          //echo $clickResults;
          $pages = preg_split('@&@', $clickResults, NULL, PREG_SPLIT_NO_EMPTY);
 
@@ -363,48 +376,28 @@
          }
          echo '<br/>';
       }
-
-      if( !(empty($questResults) && empty($clickResults)) )
+      else
       {
-         // Download
-         echo '<br/>';
-         echo '<input type="text" name="questResults" value="' . $questResults . '" hidden="hidden" />' .
-              '<input type="text" name="clickResults" value="' . $clickResults . '" hidden="hidden" />';
+         echo '<i>No Results Found</i><br/>';
+      }
 
-         echo 'Download: <select name="resultType">' .
-                 ( empty($questResults) ? ('') : ('<option value="quest">Questionaire Results</option>') ) .
-                 ( empty($clickResults) ? ('') : ('<option value="click">Click Results</option>') ) .
-              '</select>';
-
-
-         echo ' as <select name="fileType">';
-
-         echo '<option value="' . 'txt' . '">' .
-                 'Plain Text (.' . 'txt' . ')' .
-              '</option>';
-
-         echo '<option value="' . 'csv' . '">' .
-                 'Comma-Seperated Values (.' . 'csv' . ')' .
-              '</option>';
-
-         echo '<option value="' . 'xls' . '">' .
-                 'MS Excel (.' . 'xls' . ')' .
-              '</option>';
-
-         echo '</select>' .
-              '<input type="submit" name="download" value="Download">';
-         echo '<br/>';
       }
 
    ?>
 
             <br/>
-            <!-- <input type="submit" name="load" value="Load">-->
 
          </form>
 
+         <div id="quest-results">
+         </div>
+
       </div>
    </div>
-   
+   <script type="text/javascript">
+      var QUEST_RESULTS = <?php echo json_encode($questResults); ?>,
+          ADMIN_USERS   = <?php echo json_encode($adminUsers); ?>,
+          ADMIN_EXPS    = <?php echo json_encode($adminExps); ?>;
+   </script>
 </body>
 </html>

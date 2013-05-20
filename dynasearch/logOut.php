@@ -35,8 +35,7 @@
 
 <body>
    <div id="maincontainer">
-      <!--<center><h1>DynaSearch</h1></center>-->
-      <h1>DynaSearch</h1>
+      <center><h1>DynaSearch</h1></center>
       <br/>
       <table id="two_column_opening"> <!-- Begin main page columns  -->
          <td width="50%">
@@ -63,6 +62,8 @@
                </table>
             </form>
             <br/><br/>
+
+<a href='login.php'>Login</a>
 
          </td>
       </table> <!-- End main page columns  -->

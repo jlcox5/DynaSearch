@@ -223,7 +223,7 @@
          }
       }
 
-/*
+/* */
       // Mechanical Turk Login
       if($_POST['user_action'] == 'mt_login')
       {		
@@ -267,13 +267,13 @@
          $row = mysql_fetch_array($result);
 
          // Load & Log In MT Participant
-         load_user( $pId, $row );
+         load_user_session( $pId, $row );
          $_SESSION['logged_in'] = 'true';
          redirect('../../director.php');
 
       }
 
-*/
+
    }
 
 ?>

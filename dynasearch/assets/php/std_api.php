@@ -118,6 +118,22 @@ function getAdminExps( $username )
    return $adminExps;
 }
 
+// Get Admin's Participants
+function getAdminParticipants( $username )
+{
+   $adminParticipants = array();
+   $query = "SELECT * FROM t_user WHERE Admin_ID='$username';";
+   $result = mysql_query($query);
+   while( $row = mysql_fetch_array($result, MYSQL_BOTH) )
+   {
+      $optionUserId   = $row['User_ID'];
+      $optionUserName = $row['Name'];
+
+      $adminParticipants[$optionUserId] = $optionUserName;
+   }
+   return $adminParticipants;
+}
+
 // Get Admin's Questionnaires
 function getAdminQuests( $username )
 {

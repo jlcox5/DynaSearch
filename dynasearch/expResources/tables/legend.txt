@@ -1,3 +1,0 @@
-Past Track, 1 Day, 2 Day, 3 Day, 4 Day, 5 Day,
-Forecast Track, 1 Day, 2 Day, 3 Day, 4 Day, 5 Day,
-Uncertainty Cone, 1 Day, 2 Day, 3 Day, 4 Day, :),

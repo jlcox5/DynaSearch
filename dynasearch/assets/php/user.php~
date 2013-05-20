@@ -71,7 +71,6 @@
                $result = mysql_query($query);  
 
             }
-exit;
 
          }
          else
@@ -224,7 +223,7 @@ exit;
          }
       }
 
-/*
+/**/
       // Mechanical Turk Login
       if($_POST['user_action'] == 'mt_login')
       {		
@@ -274,7 +273,7 @@ exit;
 
       }
 
-*/
+
    }
 
 ?>

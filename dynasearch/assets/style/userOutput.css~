@@ -1,5 +1,6 @@
 table {
    display : inline-block;
+   vertical-align : top;
    margin : 10px;
    border-collapse : collapse;
 }
@@ -18,4 +19,27 @@ tr:nth-child(odd) {
 
 tr:nth-child(even) {
    background-color:#cdcdcd;
+}
+
+.quest-section {
+   margin-left : 10px;
+}
+
+/* Accordion */
+#quest-accordion {
+   margin : 20px 0px 0px;
+}
+
+#quest-accordion .toggle {
+   background: #555;
+   color: white;
+   cursor: pointer;
+   font: 24px Raleway, Arial, sans-serif;
+   line-height: 32px;
+   margin: 0 0 4px 0;
+   padding: 3px 5px 1px;
+}
+
+#quest-accordion .content {
+
 }

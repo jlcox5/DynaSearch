@@ -1,5 +1,0 @@
-Parameter,25%,50%,75%,
-Wind Speed,120mph,150mph,200mph,
-Surge Height,15feet,12feet,10feet,
-Estimated Time of Arrival,1:00AM,12:00AM,11:00PM,
-Evacuation Time Estimate,12hr,15hr,16hr,
