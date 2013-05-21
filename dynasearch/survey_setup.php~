@@ -7,8 +7,8 @@
 
    $page_title = "Survey Page Layout Editor";
 
-   $template_style_array  = array("style.css", "survey_setup.css");
-   $template_script_array = array("ajax-core.js", "survey_setup_js.js");
+   $template_style_array  = array("style.css", "mBoxCore.css", "mBoxModal.css", "mBoxNotice.css", "survey_setup.css");
+   $template_script_array = array("ajax-core.js", "mBox.All.min.js", "survey_setup_js.js");
 
    include('assets/php/db_util.php');
 /*
@@ -122,21 +122,10 @@ function redirect($page_name)
 ?>
 
 <body id="body">
-   <div id="maincontainer">
-      <div id="wrapper" style="width:70%; margin: auto auto;">
-	
-         <h1>Experiment Editor</h1><br/>
 
-         <br/>
-
-         <h1 style="display:none;" id="exp_short_name"><?php echo $expShortName; ?></h1>
-	
-         <!-- Buttons -->
-         <button onClick="prompt_new_experiment();">New</button>	
-         <button onClick="save_experiment();" <?php echo ( ($expId > 0) ? ('') : ('disabled="disabled"') ); ?> >Save</button>
-         <button onClick="save_experiment_as();">Save As...</button>
-         <button onClick="delete_experiment();" <?php echo ( ($expId > 0) ? ('') : ('disabled="disabled"') ); ?> >Delete</button>
-         <br/>
+   <!-- Load Experiment Popup -->
+   <div id="load-exp"  style="display:none;">
+      My Experiments
    <?php
       $adminExps = getAdminExps($username);
       echo '<select id="expId" >';
@@ -157,35 +146,44 @@ function redirect($page_name)
       }
       echo '</select>';
    ?>
+<!--
+      <div class="warning">
+         <b>If you load another questionnaire,<br/>
+         all current unsaved changes will be lost.</b>
+      </div>-->
+   </div>
 
-         <!--<select id="load_select_list">
-         <?php
-             
-            $query = "SELECT * FROM t_experiments where Admin_ID='$username'";
+   <div id="maincontainer">
+      <div id="wrapper" style="width:70%; margin: auto auto;">
+	
+         <h1>Experiment Editor</h1><br/>
 
-            $exps = query_db($query);
-            while($row = mysql_fetch_array($exps, MYSQL_BOTH))
-            {
-               //var_dump($row);
-               echo '<option value="'. $row['ExperimentShortName'] .'">'. $row['ExperimentName'] .'</option>';
-            }
-         ?>
-         </select>-->
-
-         <button onClick="if(confirm('Are you sure you would like to discard all changes since the last save and load a new file?')){load_file();}">Load</button>
          <br/>
+	
+         <!-- Buttons -->
+         <button onClick="prompt_new_experiment();">New</button>	
+         <button onClick="save_experiment();" <?php echo ( ($expId > 0) ? ('') : ('disabled="disabled"') ); ?> >Save</button>
+         <button onClick="save_experiment_as();">Save As...</button>
+         <button onClick="delete_experiment();" <?php echo ( ($expId > 0) ? ('') : ('disabled="disabled"') ); ?> >Delete</button>
+         <button id="deleteBtn" data-confirm-action="delete_experiment();"
+                 data-confirm="Are you sure you wish to delete this experiment?<br/>This action cannot be undone."
+                 <?php echo ( ($expId > 0) ? ('') : ('disabled="disabled"') ); ?>                                            >Delete</button>
+         <button data-confirm-action="load_experiment();"
+                 data-confirm="Are you sure you wish to load an experiment?<br/>All unsaved changes will be lost."
+                 <?php echo ( (sizeof($adminExps) > 0) ? ('') : ('disabled="disabled"') ); ?>                            >Load...</button>	
          <br/>
 
+         <br/>
 
-         <h2>Currently Editing: 
-            <span id="survey_name"/><?php echo $expName; ?></span>
-            <!--<input type="text" id="survey_name" value="<?php echo $expName; ?>" />-->
-            <input id="exp_id" value="<?php echo $expId; ?>"  style="display:none;" />
-         </h2>
+         <div id="quest_editor" <?php echo ( ($qId > 0) ? ('') : ('style="display:none;"') ); ?>>
 
-         <!-- Scale Profile -->
-         <!--<input type="checkbox" id="customScaling" <?php echo $expCustomScaling ? 'checked="checked"' : ''; ?> />-->
-         Scale Profile : 
+            <h2>Currently Editing: 
+               <span id="survey_name"/><?php echo $expName; ?></span>
+               <!--<input type="text" id="survey_name" value="<?php echo $expName; ?>" />-->
+               <input id="exp_id" value="<?php echo $expId; ?>"  style="display:none;" />
+            </h2>
+            <br/>
+            Scale Profile : 
 
    <?php
       $admSizeProfiles = getAdminSizeProfiles( $username );
@@ -203,21 +201,21 @@ function redirect($page_name)
    ?>
 
 
-         <!-- To add items to the list -->
-         <br/><br/>
-         <a href="#" onClick="add_info_page('','');">
-            <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;">
-            Add Information Page
-         </a>
-         <a href="#" onClick="add_training_page('','');">
-            <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;">
-            Add Training Screen
-         </a>
-         <a href="#" onClick="add_survey_page('','','');">
-            <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;">
-            Add Survey Screen
-         </a>
-         <p></p>
+            <!-- To add items to the list -->
+            <br/><br/>
+            <a href="#" onClick="add_info_page('','');">
+               <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;">
+               Add Information Page
+            </a>
+            <a href="#" onClick="add_training_page('','');">
+               <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;">
+               Add Training Screen
+            </a>
+            <a href="#" onClick="add_survey_page('','','');">
+               <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;">
+               Add Survey Screen
+            </a>
+            <p></p>
 
 
          <!-- Invisible selects. These are cloned to create drop downs for each list item-->
@@ -272,6 +270,7 @@ function redirect($page_name)
          <!--- Our Sortables List --->
          <div id="page_list"></div>
 	
+         </div>
       </div>
    </div>
 	
@@ -305,7 +304,7 @@ function redirect($page_name)
                {
                   $survName = 'undefined';
                }
-               echo 'add_survey_page("'. $pageTitle .'","'. $pageSource .'","'.$survName.'");';
+               echo 'add_survey_page("'. $pageTitle .'","'. $pageSource .'");';
                break;
          }
       }

@@ -425,6 +425,47 @@ var delete_experiment = function()
 };
 
 
+var load_experiment = function()
+{
+
+   var loadExpBox = new mBox.Modal({
+      title   : 'Load Experiment',
+      content : 'load-exp',
+      /*width   : '800px',
+      height  : '450px',*/
+      overlay : true,
+      closeOnBodyClick : false,
+      buttons : [
+         { title : 'Cancel' },
+         { title : 'Load' ,
+           event : function() {
+              this.close();
+
+              var form = new Element('form');
+              form.action = 'survey_setup.php';
+              form.style.visibility = 'hidden';
+              form.method = 'POST';
+
+              var fo = new Element('input');
+              fo.name = 'fileop';
+              fo.value = 'load';
+              form.adopt(fo);
+
+              var expId = new Element('input');
+              expId.name = 'expId';
+              expId.value = $("expId").value;
+              form.adopt(expId);
+
+              document.body.adopt(form);
+              form.submit();
+           },
+           addClass : 'button-green' }
+      ],
+   }).open();
+
+
+}
+
 var load_file = function()
 {
 
