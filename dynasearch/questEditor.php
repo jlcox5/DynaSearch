@@ -15,8 +15,7 @@
    $template_style_array  = array($style_file, "questEditor.css", "accordian.css", "mBoxCore.css", "mBoxModal.css", "mBoxNotice.css");
    $template_script_array = array("accordian.js", "mBox.All.min.js","questionnaire.js", "questEditor.js");
 	
-   include("assets/php/standard.php");
-
+   
    if( isset($_POST['op']) )
    {
       $op = $_POST['op'];
@@ -26,18 +25,14 @@
       $op = '';
    }
 
-   $qId   = -1;
-   $qName = 'untitled';
-   $qData = '';
+   $qId   = ifSetElse( $_REQUEST['qId'], -1 );
+   $qName = ifSetElse( $_REQUEST['qName'] );
+   $qData = ifSetElse( $_REQUEST['qData'] );
 
+   $op = ifSetElse( $_REQUEST['op'] );   
    switch( $op )
    {
    case 'save' : // Save
-
-      $qId   = $_POST['qId'];
-      $qName = $_POST['qName'];
-      $qData = $_POST['qData'];
-
       $sqlName = mysql_real_escape_string( $qName );
       $sqlData = mysql_real_escape_string( $qData );
 
@@ -46,26 +41,24 @@
          $query = "UPDATE sur_question " .
                   "SET Admin_ID='$username', Name='$sqlName', Value='$sqlData' " .
                   "WHERE id=$qId;";
-         query_db($query);
+         mysql_query($query);
       }
       else
       {
          $query = "INSERT INTO sur_question " .
                   "(Admin_ID, Name, Value) " .
                   "VALUES ('$username', '$sqlName', '$sqlData');";
-         query_db($query);
+         mysql_query($query);
          $qId = mysql_insert_id();
+         redirect( 'questEditor.php?op=load&qId=' . $expId );
       }
       break;
 
    case 'load' : // Load
-
-      $qId   = $_POST['qId'];
-
       $query = "SELECT * FROM sur_question " .
                "WHERE id=$qId;";
 
-      $res = query_db( $query );
+      $res = mysql_query( $query );
 				
       if( is_string($res) ) 
       {  
@@ -82,12 +75,11 @@
       break;
 
    case 'delete' : // Delete
-      $qId   = $_POST['qId'];
 
       $query = "DELETE FROM sur_question " .
                "WHERE id=$qId;";
 
-      $res = query_db( $query );
+      $res = mysql_query( $query );
 	/*			
       if( is_string($res) ) 
       {  
@@ -104,7 +96,6 @@
       break;
    }
 
-	
    include('assets/php/standard.php');
 
 ?>
@@ -192,7 +183,6 @@
 
    <div id="maincontainer">
       <center><h1>Questionnaire Editor</h1></center>
-      <br/>
       <table id="two_column_opening"> <!-- Begin main page columns  -->
          <td width="50%">
             From this screen you can create questionnaires that can be used in surveys created from the Experiment Editor.
@@ -208,10 +198,11 @@
             <button id="deleteBtn" data-confirm-action="delete_quest();"
                     data-confirm="Are you sure you wish to delete this questionnaire?<br/>This action cannot be undone."
                     <?php echo ( ($qId > 0) ? ('') : ('disabled="disabled"') ); ?>                                            >Delete</button>
-            <button data-confirm-action="load_quest();"
+            <button id="loadBtn" data-confirm-action="load_quest();"
                     data-confirm="Are you sure you wish to load a questionnaire?<br/>All unsaved changes will be lost."
                     <?php echo ( (sizeof($adminQuests) > 0) ? ('') : ('disabled="disabled"') ); ?>                            >Load...</button>	
-            <button onClick="append_quest();"  <?php echo ( (sizeof($adminQuests) > 0) ? ('') : ('disabled="disabled"') ); ?> >Append...</button>	
+            <button id="appendBtn" onClick="append_quest();"  
+                    <?php echo ( ($qId > 0) ? ('') : ('disabled="disabled"') ); ?>                            >Append...</button>	
 
             <br/>
             <br/>
@@ -249,10 +240,11 @@
          </td>
       </table> <!-- End main page columns  -->
    </div>
-   <?php
-      echo '<script type="text/javascript">
-               ADMIN_ID = "' . $username . '";
-            </script>';
-   ?>
+   <script type="text/javascript">
+      var ADMIN_ID = <?php echo json_encode($username); ?>,
+          Q_ID     = <?php echo json_encode($qId); ?>,
+          Q_NAME   = <?php echo json_encode($qName); ?>,
+          Q_DATA   = <?php echo json_encode($qData); ?>;
+   </script>
 </body>
 </html>

@@ -50,6 +50,8 @@ var new_quest = function() {
    $('saveBtn').set('disabled', 'disabled');
    $('saveAsBtn').set('disabled', '');
    $('deleteBtn').set('disabled', 'disabled');
+   $('appendBtn').set('disabled', $('loadBtn').get('disabled'));
+
    theQuest = new Questionnaire();
    Update();
 };
@@ -57,9 +59,6 @@ var new_quest = function() {
 
 var save_quest = function()
 {
-   $('qData').value = theQuest.genString();
-   //alert( theQuest.genString() );
-
    var form = new Element('form');
    form.action = 'questEditor.php';
    form.style.visibility = 'hidden';
@@ -70,9 +69,20 @@ var save_quest = function()
    op.value = 'save';
    form.adopt(op);
 
-   form.adopt( $('qId') );
-   form.adopt( $('qName') );
-   form.adopt( $('qData') );
+   var id = new Element('input');
+   id.name = 'qId';
+   id.value = Q_ID;
+   form.adopt(id);
+   
+   var name = new Element('input');
+   name.name = 'qName';
+   name.value = Q_NAME;
+   form.adopt(name);
+
+   var data = new Element('input');
+   data.name = 'qData';
+   data.value = theQuest.genString();
+   form.adopt(data);
 
    document.body.adopt(form);
    form.submit();
@@ -145,7 +155,10 @@ var delete_quest = function()
    op.value = 'delete';
    form.adopt(op);
 
-   form.adopt( $('qId') );
+   var id = new Element('input');
+   id.name = 'qId';
+   id.value = Q_ID;
+   form.adopt(id);
 
    document.body.adopt(form);
    form.submit();
@@ -341,9 +354,8 @@ var remove_radio_answer = function(button) {
 window.addEvent(
    'domready',
    function() {
-      alert('hello!');
  
-      var questStr = $('qData').value.trim();
+      var questStr = Q_DATA.trim();
       if ( questStr != '' ){
          //var root = parseQuestionnaireString(questStr);
          theQuest = new Questionnaire();

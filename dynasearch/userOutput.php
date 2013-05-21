@@ -117,23 +117,16 @@ function formatQuestResults( $qDOM, $type )
 
 
 
-   if( isset($_POST['pId']) )
-   {
-      $pId = $_POST['pId'];
-   }
-   else
-   {
-      reset($adminUsers);
-      $pId = key($adminUsers);
-      $pName = $adminUsers[ $pId ];
-   }
+   $pId   = ifSetElse( $_POST['pId'] );
+   $expId = ifSetElse( $_POST['expId'], -1 );
 
 
-   if ( isset($_POST['pId']) and isset($_POST['expId']) )
+   $rId          = -1;
+   $questResults = '';
+   $clickResults = '';
+         
+   if ( !empty($pId) and ($expId > 0) )
    {
-      $pId   = $_POST['pId'];
-      $expId = $_POST['expId'];
-
       $query = "SELECT * FROM t_user_output WHERE User_ID='$pId' AND Experiment_ID='$expId';";
       $result = mysql_query($query);
       if ( $row = mysql_fetch_array($result, MYSQL_BOTH) )
@@ -141,12 +134,6 @@ function formatQuestResults( $qDOM, $type )
          $rId          = $row['ID'];
          $questResults = $row['QuestOutput'];
          $clickResults = $row['ClickOutput'];
-      }
-      else
-      {
-         $rId          = -1;
-         $questResults = '';
-         $clickResults = '';
       }
    }
 
@@ -271,8 +258,9 @@ function formatQuestResults( $qDOM, $type )
          <h1>Participant Results</h1><br/>
          <br/>
 
-         <button id="displayBtn"  type="button" onClick="display_results();" >Display...</button>
-         <button id="downloadBtn" type="button" onClick="download_results();"    <?php echo ( (true) ? ('') : ('disabled="disabled"') ); ?>  >Download...</button>
+         <button id="displayBtn"  type="button" onClick="display_results();"     >Display...</button>
+         <button id="downloadBtn" type="button" onClick="download_results();"
+                 <?php echo ( ($rId > 0) ? ('') : ('disabled="disabled"') ); ?>  >Download...</button>
 
 
          <form id="outputForm" action="userOutput.php" method="post">

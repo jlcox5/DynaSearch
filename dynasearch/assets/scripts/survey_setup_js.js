@@ -1,6 +1,17 @@
 
 var so = null;
 
+var resetValues = function( el )
+{
+
+   var inputs = el.getElements( 'input' );
+   for ( var i = 0; i < inputs.length; i += 1 ) {
+      if ( inputs[i].defaultValue != undefined ) {
+        inputs[i].value = inputs[i].defaultValue;
+     }
+   }
+}
+
 var str_to_hex = function(s)
 {
    var output = '';
@@ -22,14 +33,211 @@ var hex_to_str = function(s)
    return output;
 }
 
-var prompt_new_experiment = function()
+
+var new_experiment = function()
 {
+   EXP_ID = -1;
+   EXP_NAME = 'untitled';
+   //$('qName').fireEvent('change');
+   $('expName').set('html','<i>untitled</i>');
+   //$('qData').value = '';
+
+   $('exp_editor').setStyle('display', 'inline');
+   $('saveBtn').set('disabled', 'disabled');
+   $('saveAsBtn').set('disabled', '');
+   $('deleteBtn').set('disabled', 'disabled');
+   
    // Destroy all the page bars. New == Reset.
-   var resp = confirm('This action will discard all changes since the last save. Are you sure?');
-   if(resp)
-   { window.location.reload(); /*$$('.page_bar').destroy();*/ }
-   else return;
+   $$('.page_bar').destroy();
 }
+
+
+var save_experiment = function()
+{
+   var form = new Element('form');
+   form.style.visibility = 'hidden';
+   form.method = 'POST';
+   
+   var mode = new Element('input');
+   mode.name = 'fileop';
+   mode.value = 'save';
+   form.adopt(mode);
+   
+   var id = new Element('input');
+   id.name = 'expId';
+   id.value = EXP_ID;
+   form.adopt(id);
+   
+   var name = new Element('input');
+   name.name = 'expName';
+   name.value = EXP_NAME;
+   form.adopt(name);
+   
+   var scaleProfile = new Element('input');
+   scaleProfile.name = 'scaleProfileId';
+   scaleProfile.value = $('scaleProfileId').get('value');
+   form.adopt(scaleProfile);
+
+   var data = new Element('input');
+   data.name = 'expData';
+   data.value = construct_exp_string();
+   form.adopt(data);
+   
+   form.action = "survey_setup.php";
+   document.body.adopt(form);
+   form.submit();
+
+};
+
+
+var save_experiment_as = function()
+{
+
+   var saveAsBox = new mBox.Modal({
+      title   : 'Save Experiment',
+      content : 'save-as-popup',
+      /*width   : '800px',
+      height  : '450px',*/
+      overlay : true,
+      closeOnBodyClick : false,
+      buttons : [
+         { title : 'Cancel',
+         event : function() {
+            saveAsBox.close();
+           resetValues( saveAsBox.content );
+         }
+       },
+         { title : 'Save' ,
+           event : function() {
+
+              var expName = $('expSaveName').get( 'value' );
+
+              if ( expName ) {
+                 var params = new Array('ExperimentName', expName,
+                                        'Admin_ID', ADMIN_ID);
+                 var request = new Request({
+                    method    : 'post',
+                    url       : './assets/php/db_util.php',
+                    data      : {
+                       'query'  : 'select',
+                       'table'  : 't_experiments',
+                       'params' : params
+                    },
+                    onSuccess : function(response) {
+
+                       var arr    = JSON.decode(response);
+                       if (arr.length > 0) {
+                          // Experiment Name exists, not available
+                         alert('This experiment name is already in use. Please save under a unique name.');
+                         //save_experiment_as();
+
+                       } else {
+                          // Save Experiment
+                          saveAsBox.close();
+                          EXP_ID   = -1;
+                          EXP_NAME = expName;
+                          //$('qName').value = qName;
+                          //$('qName').set('html', expName);
+                          save_experiment();
+                       } 
+                    }
+                 }).send();
+              }
+           },
+           addClass : 'button-green' }
+      ],
+   }).open();
+
+};
+
+
+var delete_experiment = function()
+{
+   // Delete Experiment
+   var form = new Element('form');
+   form.style.visibility = 'hidden';
+   form.method = 'POST';
+
+   var id = new Element('input');
+   id.name = 'expId';
+   id.value = EXP_ID;
+   form.adopt(id);
+   
+   var mode = new Element('input');
+   mode.name = 'fileop';
+   mode.value = 'delete';
+   form.adopt(mode);
+
+   form.action = "survey_setup.php";
+   document.body.adopt(form);
+   form.submit();
+};
+
+
+var load_experiment = function()
+{
+
+   var loadExpBox = new mBox.Modal({
+      title   : 'Load Experiment',
+      content : 'load-exp',
+      /*width   : '800px',
+      height  : '450px',*/
+      overlay : true,
+      closeOnBodyClick : false,
+      buttons : [
+         { title : 'Cancel' },
+         { title : 'Load' ,
+           event : function() {
+              this.close();
+
+              var form = new Element('form');
+              form.action = 'survey_setup.php';
+              form.style.visibility = 'hidden';
+              form.method = 'POST';
+
+              var fo = new Element('input');
+              fo.name = 'fileop';
+              fo.value = 'load';
+              form.adopt(fo);
+
+              var expId = new Element('input');
+              expId.name = 'expId';
+              expId.value = $("expId").value;
+              form.adopt(expId);
+
+              document.body.adopt(form);
+              form.submit();
+           },
+           addClass : 'button-green' }
+      ],
+   }).open();
+
+
+}
+
+var load_file = function()
+{
+
+   var form = new Element('form');
+   form.action = 'survey_setup.php';
+   form.style.visibility = 'hidden';
+   form.method = 'POST';
+
+   var fo = new Element('input');
+   fo.name = 'fileop';
+   fo.value = 'load';
+   form.adopt(fo);
+
+   var expId = new Element('input');
+   expId.name = 'expId';
+   expId.value = $("expId").value;
+   form.adopt(expId);
+
+   document.body.adopt(form);
+   form.submit();
+
+}
+
 
 
 
@@ -309,187 +517,6 @@ var construct_exp_string = function() {
 
    return final_str;
 }
-
-
-var save_experiment = function()
-{
-   var expId   = $('exp_id').value;
-   var expName = $('survey_name').get('html');
-   var short_name = expName.replace( /[^\w]/gi ,'');   // Get rid of spaces and weird symbols
-
-   // Save Experiment
-   var form = new Element('form');
-   form.style.visibility = 'hidden';
-   form.method = 'POST';
-
-   var scaleProfile = new Element('input');
-   scaleProfile.name = 'scaleProfile';
-   scaleProfile.value = $('scaleProfile').value;
-   form.adopt(scaleProfile);
-
-   var data = new Element('input');
-   data.name = 'data';
-   data.value = construct_exp_string();
-   form.adopt(data);
-
-   var id = new Element('input');
-   id.name = 'expId';
-   id.value = expId;
-   form.adopt(id);
-
-   var shortname = new Element('input');
-   shortname.name = 'shortname';
-   shortname.value = short_name;
-   form.adopt(shortname);
-   
-   var fullname = new Element('input');
-   fullname.name = 'fullname';
-   fullname.value = expName;
-   form.adopt(fullname);
-   
-   var mode = new Element('input');
-   mode.name = 'fileop';
-   mode.value = 'save';
-   form.adopt(mode);
-
-   form.action = "survey_setup.php";
-   document.body.adopt(form);
-   form.submit();
-
-};
-
-
-var save_experiment_as = function()
-{
-
-   var expName = prompt("Please enter a name for the experiment:");
-
-   if (expName) {
-      var params    = new Array('ExperimentName', expName,
-                             'Admin_ID',       ADMIN_ID);
-      var request = new Request({
-         method    : 'post',
-         url       : './assets/php/db_util.php',
-         data      : {
-            'query'  : 'select',
-            'table'  : 't_experiments',
-            'params' : params
-         },
-         onSuccess : function(response) {
-
-            var arr    = JSON.decode(response);
-            if (arr.length > 0) {
-               // Experiment Name exists, not available
-              alert('This experiment name is already in use. Please save under a unique name.');
-              save_experiment_as();
-
-            } else {
-               // Save Experiment
-               $('exp_id').value      = -1;
-               $('survey_name').set('html', expName);
-               save_experiment();
-            } 
-         }
-      }).send();
-   }
-
-};
-
-
-var delete_experiment = function()
-{
-
-   if ( confirm("Are you sure you want to delete this experiment?\n(This action cannot be undone)") ) {
-
-      var expId   = $('exp_id').value;
-
-      // Delete Experiment
-      var form = new Element('form');
-      form.style.visibility = 'hidden';
-      form.method = 'POST';
-
-      var id = new Element('input');
-      id.name = 'expId';
-      id.value = expId;
-      form.adopt(id);
-   
-      var mode = new Element('input');
-      mode.name = 'fileop';
-      mode.value = 'delete';
-      form.adopt(mode);
-
-      form.action = "survey_setup.php";
-      document.body.adopt(form);
-      form.submit();
-   }
-};
-
-
-var load_experiment = function()
-{
-
-   var loadExpBox = new mBox.Modal({
-      title   : 'Load Experiment',
-      content : 'load-exp',
-      /*width   : '800px',
-      height  : '450px',*/
-      overlay : true,
-      closeOnBodyClick : false,
-      buttons : [
-         { title : 'Cancel' },
-         { title : 'Load' ,
-           event : function() {
-              this.close();
-
-              var form = new Element('form');
-              form.action = 'survey_setup.php';
-              form.style.visibility = 'hidden';
-              form.method = 'POST';
-
-              var fo = new Element('input');
-              fo.name = 'fileop';
-              fo.value = 'load';
-              form.adopt(fo);
-
-              var expId = new Element('input');
-              expId.name = 'expId';
-              expId.value = $("expId").value;
-              form.adopt(expId);
-
-              document.body.adopt(form);
-              form.submit();
-           },
-           addClass : 'button-green' }
-      ],
-   }).open();
-
-
-}
-
-var load_file = function()
-{
-
-   var form = new Element('form');
-   form.action = 'survey_setup.php';
-   form.style.visibility = 'hidden';
-   form.method = 'POST';
-
-   var fo = new Element('input');
-   fo.name = 'fileop';
-   fo.value = 'load';
-   form.adopt(fo);
-
-   var expId = new Element('input');
-   expId.name = 'expId';
-   expId.value = $("expId").value;
-   form.adopt(expId);
-
-   document.body.adopt(form);
-   form.submit();
-
-}
-
-
 
 
 var edit_advisory_number = function(bar)

@@ -72,17 +72,7 @@
       break;
 
    case 'resetPassword' : // Reset Password
-      $resetToken = randString();
-      $tokenExpiration = date('Y/m/d H:i:s', time() + (60 * 60));
-      $uri = 'http://'. $_SERVER['HTTP_HOST'] ;
-      $resetUrl = $uri . '/reset.php?token=' . $resetToken;
-//echo $tokenUrl;
-//ocalhost/dynasearch/dynasearch
-      $query = "UPDATE t_user " .
-               "SET ResetToken='$resetToken', TokenExpiration='$tokenExpiration' " .
-               "WHERE User_ID='$pId'; ";
-      mysql_query($query);
-
+      $resetUrl = genPasswordResetUrl($pId);
       $emailStr .= "Your DynaSearch password has been reset.\n" .
                    "\nLogin ID : $pId\n\n" . 
                    "Please follow this link to set up a new password:\n" .

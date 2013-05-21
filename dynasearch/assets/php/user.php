@@ -137,6 +137,65 @@
    if(isset($_POST['user_action'])) // Are we performing a user action?
    {
 
+      // Password Reset Request
+      if($_POST['user_action'] == 'resetRequest') 
+      {
+         if ( validateCaptcha() )
+         {
+            // Captcha Validation Success
+            $username = ifSetElse( $_REQUEST['username'] );
+            $email    = ifSetElse( $_REQUEST['email'] );
+
+            $sqlUsername = mysql_real_escape_string( $username );
+            $query = "SELECT * FROM t_user WHERE User_ID='$sqlUsername';";
+            $result = mysql_query( $query );
+            if ( $row = mysql_fetch_array($result) )
+            {
+               // User exists
+               if ( $email == $row['Email'] )
+               {
+                  // Email matches
+                  $resetUrl = genPasswordResetUrl( $username );
+               
+                  // Send Email
+                  $recipient = $email;
+                  $subject   = 'DynaSearch Password Reset';
+                  $message   = $_POST['message'];
+                  $sender    = ''; // TODO
+                  $headers   = "From:" . $sender;
+                  if( mail($recipient, $subject, $message, $headers) )
+                  {
+                     //redirect('../../reset.php?msg=request_success');
+                  }
+                  else
+                  {
+                     //redirect('../../reset.php?msg=request_fail');
+                  }
+                  exit;
+               
+               }
+               else
+               {
+                  // Email Does Not Match
+                  redirect('../../reset.php?msg=wrong_email');
+                  exit;
+               } 
+            }
+            else
+            {
+               // User Does Not Exist
+               redirect('../../reset.php?msg=user_dne');
+               exit;
+            }
+         }
+         else
+         {
+            // Captcha Validation Failed
+            redirect('../../reset.php?msg=captcha_error');
+            exit;
+         }
+      }
+   
       // Password Reset
       if($_POST['user_action'] == 'reset') 
       {
@@ -156,20 +215,20 @@
 
             if( $resetToken != $validToken )
             {
-               redirect('../../reset.php?error=invalid_token');
+               redirect('../../reset.php?msg=invalid_token');
             }
 
             // Check if token has expired
             if( time() > strtotime($tokenTimestamp) )
             {
-               redirect('../../reset.php?error=expired_token');
+               redirect('../../reset.php?msg=expired_token');
             }
 
             $password = $_POST['password'];
             $passwordHash = create_hash( $password );
 
             // Securimage Captcha Validation
-            include_once '../securimage/securimage.php';
+            include_once( '../securimage/securimage.php' );
             $securimage = new Securimage();
             if ($securimage->check($_POST['captcha_code']) == false) {
               // the code was incorrect

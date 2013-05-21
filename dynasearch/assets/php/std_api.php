@@ -64,7 +64,57 @@ function hexToStr($hex)
 }
 
 
+function randString( $length = 32,
+                     $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+                   )
+{
+   $size = strlen( $chars );
+   $str  = '';
 
+   for( $i = 0; $i < $length; $i++ )
+   {
+      $str .= $chars[ rand(0, $size - 1) ];
+   }
+
+   return $str;
+}
+
+
+function ifSetElse( &$var, $val = '' )
+{
+   if ( isset($var) ) {
+      return $var;
+   }
+   else
+   {
+      return $val;
+   }
+}
+
+
+// Reset User Password
+function genPasswordResetUrl( $userId, $lifetime = 360 )
+{
+   $resetToken = randString();
+   $tokenExpiration = date('Y/m/d H:i:s', time() + $lifetime);
+   $query = "UPDATE t_user " .
+            "SET ResetToken='$resetToken', TokenExpiration='$tokenExpiration' " .
+            "WHERE User_ID='$userId'; ";
+   mysql_query($query); 
+   $host  = $_SERVER['HTTP_HOST'];
+   $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+   $resetUrl = 'http://' . $host . $uri . '/reset.php?token=' . $resetToken;
+   return $resetUrl;
+}
+
+// Securimage Captcha Validation
+function validateCaptcha( $captchaCode = 'captcha_code' )
+{       
+   include_once( '../securimage/securimage.php' );
+   $securimage = new Securimage();
+   $validation = $securimage->check( $_POST[$captchaCode] );
+   return $validation;
+}
 
    /** 
     * Parses the hex encoded experiment string into an array where each 
@@ -77,28 +127,31 @@ function hexToStr($hex)
    function parseExperimentData( $expData )
    {
       $expArray = array();
-
-      // Split experiment string up by page
-      $expPages = explode('$',$expData);
-      for($i=0; $i<count($expPages);$i++)
-      {
-         // Split page into page's properties
-         $expProperties = explode('&', $expPages[$i]);
-         $propertyArray = array();
-
-         for($j=0;$j < count($expProperties);$j++)
+	  
+	  if ( !empty($expData) )
+	  {
+	     // Split experiment string up by page
+         $expPages = explode('$',$expData);
+         for($i=0; $i<count($expPages);$i++)
          {
-            // Pull out key and value from property
-            $item = explode('=',$expProperties[$j]);
-            $key   = $item[0];
-            $value = ( ($key == "page") ? ($item[1]) : (hexToStr($item[1])) );
-            $propertyArray[$key] = $value;
+            // Split page into page's properties
+            $expProperties = explode('&', $expPages[$i]);
+            $propertyArray = array();
+
+            for($j=0;$j < count($expProperties);$j++)
+            {
+               // Pull out key and value from property
+               $item = explode('=',$expProperties[$j]);
+               $key   = $item[0];
+               $value = ( ($key == "page") ? ($item[1]) : (hexToStr($item[1])) );
+               $propertyArray[$key] = $value;
+            }
+
+            $expArray[ $i ] = $propertyArray;
+
          }
-
-         $expArray[ $i ] = $propertyArray;
-
-      }
-
+	  }
+	  
       return $expArray;
    }
 
@@ -174,7 +227,7 @@ function getAdminSizeProfiles( $username )
 
 
 // TODO : the following should be worked out
-
+/*
 function getExpPageArray($index) {
    $username = $_SESSION['username'];
    // Pull user data from database
@@ -257,22 +310,8 @@ function getExpPageProperties($index)
 
    // If key was not found, return null
    return $ret;
-}
+}*/
 
-
-function randString( $length = 32,
-                     $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-                   )
-{
-   $size = strlen( $chars );
-
-   for( $i = 0; $i < $length; $i++ )
-   {
-      $str .= $chars[ rand(0, $size - 1) ];
-   }
-
-   return $str;
-}
 
 
 ?>

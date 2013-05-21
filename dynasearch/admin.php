@@ -13,7 +13,7 @@
    }
    
    
-   $page_title = "Dynaview";
+   $page_title = "DynaSearch";
    $style_file = "style.css";
 
    $template_style_array  = array($style_file);
