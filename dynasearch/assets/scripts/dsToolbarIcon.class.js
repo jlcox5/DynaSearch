@@ -10,11 +10,12 @@ var ToolbarIcon = new Class({
       description : '',
    },
 
-	initialize : function( options ) {
+	initialize : function( page, options ) {
 		
       this.setOptions( options );
       
 		// Setup the image
+      this.page = page;
       this.description = this.options.description;
 		this.icon = 'assets/images/' + DSTOOLBARICON_DIR + this.options.image;
 	},
@@ -25,9 +26,9 @@ var ToolbarIcon = new Class({
       self.toolbar = toolbar;
    },*/
    
-   addWindowFunction : function () {
+   /*addWindowFunction : function () {
      alert('unimplemented');
-   },
+   },*/
    
    setPage : function( page ) {
       this.page = page;
@@ -46,7 +47,8 @@ var ToolbarIcon = new Class({
       //alert( event );
       
       win.setPosition(event.page.x, event.page.y);
-      this.addWindowFunction( win );
+      //this.addWindowFunction( win );
+      this.page.addWindow( win );
       
       win.startDrag( event );
       
@@ -134,6 +136,26 @@ var TrashbinToolbarIcon = new Class({
 });
 
 
+
+var ClockWindowToolbarIcon = new Class({
+	Extends: ToolbarIcon,
+   options    : {
+      page        : null,
+      image       : 'glyph_clock.png',
+      description : 'Create Clock',
+   },
+   
+	initialize: function( options ) {
+		this.parent( options );
+	},
+   
+   getWindow : function() {
+      return new ClockWindow( this.page );
+   },
+});
+
+
+
 var TextWindowToolbarIcon = new Class({
 	Extends: ToolbarIcon,
    options    : {
@@ -147,7 +169,8 @@ var TextWindowToolbarIcon = new Class({
 	},
    
    getWindow : function() {
-      return new TextWindow();
+     //return new TextWindow({ page : this.page });
+      return new TextWindow( this.page );
    },
    
    //onClick : function( event ) {
@@ -173,7 +196,7 @@ var ImageWindowToolbarIcon = new Class({
 	},
    
    getWindow : function() {
-      return new ImageWindow();
+      return new ImageWindow( this.page);
    },
 });
 
@@ -189,39 +212,6 @@ var ToolbarIcon_TextWindow_NoHide = new Class({
 });*/
 
 
-var ClockWindowToolbarIcon = new Class({
-	Extends: ToolbarIcon,
-   options    : {
-      page        : null,
-      image       : 'glyph_clock.png',
-      description : 'Create Clock',
-   },
-   
-	initialize: function( options ) {
-		this.parent( options );
-	},
-   
-   getWindow : function() {
-      return new ClockWindow();
-   },
-});
-
-var ObjectWindowToolbarIcon = new Class({
-	Extends: ToolbarIcon,
-   options    : {
-      page        : null,
-      image       : 'glyph_object.png',
-      description : 'Create HTML5/Java/SWF Object',
-   },
-   
-	initialize: function( options ) {
-		this.parent( options );
-	},
-   
-   getWindow : function() {
-      return new ObjectWindow();
-   },
-});
 
 
 var TableWindowToolbarIcon = new Class({
@@ -237,10 +227,32 @@ var TableWindowToolbarIcon = new Class({
 	},
    
    getWindow : function() {
-      return new TableWindow();
+      return new TableWindow( this.page );
    },
 });
 
+
+
+var AppletWindowToolbarIcon = new Class({
+	Extends: ToolbarIcon,
+   options    : {
+      page        : null,
+      image       : 'glyph_object.png',
+      description : 'Create HTML5/Java/SWF Applet',
+   },
+   
+	initialize: function( options ) {
+		this.parent( options );
+	},
+   
+   getWindow : function() {
+      return new AppletWindow( this.page );
+   },
+});
+
+
+
+/*
 
 var ToolbarIcon_ext_TableWindow = new Class({
 	Extends: ToolbarIcon,
@@ -253,4 +265,4 @@ var ToolbarIcon_ext_TableWindow = new Class({
 	initialize: function( options ) {
 		this.parent( options );
 	}
-});
+});*/

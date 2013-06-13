@@ -6,23 +6,23 @@ var DS_CUSTOMPAGE_OPTIONS     = {};
 
 // Custom Page Class
 
-var DS_WINDOW_CONSTRUCTOR = function( options ) {
+var DS_WINDOW_CONSTRUCTOR = function( page, options ) {
    switch( options.type ) {
    
       case 'clock' :
-         return new ClockWindow( options );
+         return new ClockWindow( page, options );
          
       case 'text' :
-         return new TextWindow( options );
+         return new TextWindow( page, options );
          
       case 'image' :
-         return new ImageWindow( options );
+         return new ImageWindow( page, options );
          
       case 'table' :
-         return new TableWindow( options );
+         return new TableWindow( page, options );
          
       case 'applet' :
-         return new AppletWindow( options );
+         return new AppletWindow( page, options );
          
       default :
          alert('ERROR : Undefined window type!');
@@ -79,12 +79,9 @@ var CustomPage = new Class({
 		add_updatable(this);*/
       
       // Check for windows to load
-      //alert(this.options.windows[0].type);
       var self = this;
       this.options.windows.each( function( winData ) {
-         //alert('adding window');
-         //alert(winData.type);
-         var win = DS_WINDOW_CONSTRUCTOR( winData );
+         var win = DS_WINDOW_CONSTRUCTOR( self, winData );
          self.addWindow( win );
       });
       
@@ -96,20 +93,23 @@ var CustomPage = new Class({
    //alert('tb');
       var self = this;
    
-      self.toolbar = new Toolbar({
-         page : self,
-         width  : (320 / WINDOW_SCALE_X),
-         height : (180 / WINDOW_SCALE_Y),
-      });
-      self.toolbar.addWindowFunction = self.addWindow.bind(self);
+      self.toolbar = new Toolbar(
+         self,
+         {
+            width  : (320 / WINDOW_SCALE_X),
+            height : (180 / WINDOW_SCALE_Y),
+         }
+      );
+      //self.toolbar.addWindowFunction = self.addWindow.bind(self);
       
-   	self.toolbar.addIcon( new TrashbinToolbarIcon() );
-      self.toolbar.addIcon( new ClockWindowToolbarIcon() );
-   	self.toolbar.addIcon( new TextWindowToolbarIcon() );
+   	self.toolbar.addIcon( new TrashbinToolbarIcon()           );
+      self.toolbar.addIcon( new ClockWindowToolbarIcon(  self ) );
+   	self.toolbar.addIcon( new TextWindowToolbarIcon(   self ) );
+      self.toolbar.addIcon( new ImageWindowToolbarIcon(  self ) );
+      self.toolbar.addIcon( new TableWindowToolbarIcon(  self ) );
+   	self.toolbar.addIcon( new AppletWindowToolbarIcon( self ) );
+      
       //tb.addIcon( new ToolbarIcon_TextWindow_NoHide() );
-      self.toolbar.addIcon( new ImageWindowToolbarIcon() );
-      self.toolbar.addIcon( new TableWindowToolbarIcon() );
-   	self.toolbar.addIcon( new ObjectWindowToolbarIcon() );
    	//self.toolbar.addIcon( new ToolbarIcon_ext_TableWindow() );
       
       self.btnNew    = self.toolbar.addActionBtn( 'New',       self.newPage.bind(self)    );
@@ -128,9 +128,15 @@ var CustomPage = new Class({
       }
    },
    
+   /*
+   constructWindow : function( constructor ) {
+      // Associate window with this page
+      win = constructor();
+   },*/
+   
    addWindow : function( win ) {
       // Associate window with this page
-      win.setPage( this );
+      //win.setPage( this );
       
       //win.editable = this.editMode;
       
@@ -139,6 +145,7 @@ var CustomPage = new Class({
       
       // Add window DOM element to page
       this.el.adopt( win.getElement( this.options.editMode ) );
+      //this.update();
    },
    
    removeWindow : function( win ) {
@@ -163,6 +170,19 @@ var CustomPage = new Class({
       this.btnDelete.set('disabled', 'disabled');
    },
    
+   getWindow : function( id ) {
+      var returnWin;
+      //alert(id);
+      this.windows.each( function( win ) {
+         if ( win.id == id ) {
+            returnWin = win;
+         }
+         //alert(win.id);
+      });
+
+      return returnWin;
+   },
+   
    savePage : function() {
       
       // Generate Page Data
@@ -182,7 +202,7 @@ var CustomPage = new Class({
       });
       
       var dataStr = JSON.stringify( data );
-      alert( dataStr );
+      //alert( dataStr );
       //this.data = dataStr;
       // Clip off the last extra '&'
 	   //dataStr = dataStr.substring( 0, dataStr.length - 1 );
@@ -382,6 +402,7 @@ var CustomPage = new Class({
          var position  = win.el.getPosition();
          var vertSpace = size.y + position.y;
          //alert(size.y);
+         //alert(vertSpace);
          
          if ( vertSpace > height ) {
             height = vertSpace;

@@ -575,7 +575,7 @@ var save_function = function( id, name, data ) {
          }
       )
    );
-   
+   //alert(data);
    document.body.adopt( form );
    form.submit();
 }

@@ -33,8 +33,8 @@ var dsGetSize = function(obj) {
 var Window = new Class({
    Implements : [Options],
    options : {
-      page            : null,
       title           : 'Untitled',
+      id              : 'window',
    
       showTitle       : true,
       editable        : true,
@@ -48,11 +48,13 @@ var Window = new Class({
       height          : null,
    },
 
-	initialize: function( options ) {
-   
+	initialize: function( page, options ) {
+      // Load Options
       this.setOptions( options );
 		
+      this.page      = page;
       this.title     = this.options.title;
+      this.id        = this.createValidId( this.options.id );
       this.showTitle = this.options.showTitle;
       this.editable  = this.options.editable;
       this.draggable = this.options.draggable;
@@ -71,7 +73,7 @@ var Window = new Class({
       } else {
          this.height = 180;
       }
-//alert(this.options.width);
+//alert(this.options.x);
       //this.manageAspectRatio();
       //this.manageAspectRatio();
       
@@ -80,6 +82,25 @@ var Window = new Class({
 		
 		add_updatable(this);*/
 	},
+   
+   isValidId : function ( id ) {
+      var win = this.page.getWindow( id );
+      //alert(win);
+      
+      return ( !win ) || (win == this);
+   },
+   
+   createValidId : function( id ) {
+      var newId = id;
+      var inc = 1;
+      while ( !this.isValidId( newId ) ) {
+      //alert('no see');
+         inc ++;
+         newId = id + inc;
+      }
+      //alert('found valid id : '  + newId);
+      return newId;
+   },
    
    setPage : function( page ) {
       this.page = page;
@@ -321,11 +342,28 @@ var Window = new Class({
       );
       lbl.adopt(self.showTitleInput);
       div.adopt( lbl );
+      
+      // Creat ID Input
+      this.editIdInput = new Element(
+         'input',
+         {
+            'type'  : 'text',
+            'value' : self.id
+         }
+      );
+      // Create ID label
+      lbl = new Element(
+         'label',
+         { html : 'Window ID : ' }
+      );
+      lbl.adopt(self.editIdInput);
+      div.adopt( lbl );
    },
    
    edit : function() {
       this.title     = this.editTitleInput.get('value');
       this.showTitle = this.showTitleInput.get('value');
+      this.id        = this.editIdInput.get('value');
    },
    
    editAction : function() {
@@ -350,16 +388,25 @@ var Window = new Class({
             {
                title : 'OK' ,
                event : function() {
-                  editDialog.close();
+                  // Check if ID is unique
+                  var id = self.editIdInput.get('value');
+                  if ( self.isValidId(id) ) {
+                     // Close dialog
+                     editDialog.close();
                   
-                  // Edit window data
-                  self.edit();
+                     // Edit window data
+                     self.edit();
                   
-                  // Update Window
-                  self.update();
-
-           },
-           addClass : 'button-green' }
+                     // Update Window
+                     self.update();
+                  } else {
+                     // Alert user and reset the ID input
+                     alert('This ID belongs to another window.');
+                     self.editIdInput.set('value', self.id);
+                  }
+               },
+               addClass : 'button-green'
+            }
          ],
       }).open();
    },
@@ -391,8 +438,10 @@ var Window = new Class({
      // alert(this.title)
       //alert('hi');
       //event.extra = 'test';
+      
+      // Default, records click object as window title
       event.stop();
-      this.page.onMouseDown( event, 'test' );
+      this.page.onMouseDown( event, this.id );
       
      /* var click = {
          'count'         : 0,
@@ -406,6 +455,7 @@ var Window = new Class({
    genData : function( data ) {
       //data.type = this.type;
       data.title = this.title;
+      data.id    = this.id;
       data.type  = this.options.type;
       
       data.x      = this.x      / WINDOW_SCALE_X;
@@ -430,8 +480,8 @@ var Toolbar = new Class({
       editable : false,
    },
    
-	initialize: function( options ) {
-      this.parent( options );
+	initialize: function( page, options ) {
+      this.parent( page, options );
       //alert(this.options.editable);
       
       this.icons   = [];
@@ -447,13 +497,13 @@ var Toolbar = new Class({
 	},
    
       
-   addWindowFunction : function() {
+   /*addWindowFunction : function() {
       alert('Toolbar: not implemented');
-   },
+   },*/
    
 	addIcon : function( icon ) {
       var self = this;
-      icon.addWindowFunction = self.addWindowFunction;
+      //icon.addWindowFunction = self.addWindowFunction;
       self.icons.push( icon );
    },
    
@@ -514,18 +564,19 @@ var ClockWindow = new Class({
    options : {
       type             : 'clock',
       title            : 'Clock',
+      id               : 'clock',
       enforceTimeLimit : true,
-      time             : 20,
+      time             : 600,
       
-      trashable        : false,
+      //trashable        : false,
    },
    
-	initialize: function( options ) {
+	initialize: function( page, options ) {
    	//alert("Initializing clock!");
 		//this.type='clock';
       
 		//this.id = 'clockX_X';
-		this.parent( options );
+		this.parent( page, options );
       
       this.time             = this.options.time;
       this.enforceTimeLimit = this.options.enforceTimeLimit;
@@ -645,12 +696,13 @@ var TextWindow = new Class({
    options : {
       type  : 'text',
       title : 'Text Window',
+      id    : 'text',
       text  : 'This is some sample text. Press the Info Button to edit me.'
    },
    
-	initialize: function( options ) {
+	initialize: function( page, options ) {
 
-      this.parent( options );
+      this.parent( page, options );
       
       this.text = this.options.text;
    /*
@@ -756,13 +808,14 @@ var ImageWindow = new Class({
    options : {
       type  : 'image',
       title : 'Image Window',
+      id    : 'image',
       file : '',
    },
    
-	initialize: function( options ) {
+	initialize: function( page, options ) {
 
    //alert(ntableLink);
-      this.parent( options );
+      this.parent( page, options );
       
       //this.src = DS_ADMIN_ASSET_DIR + this.img;
       //this.type='image';
@@ -948,14 +1001,15 @@ var TableWindow = new Class(
    options : {
       type  : 'table',
       title : 'Table Window',
+      id    : 'Table',
       file  : 'tables/advisory1.txt',
    },
    
-   initialize: function( options )
+   initialize: function( page, options )
    {
       //his.file = file == null ? 'tables/advisory1.txt' : file;
       //this.type='table';
-      this.parent( options );
+      this.parent( page, options );
       //alert( this.options.src ); alert( DS_ADMIN_ASSET_DIR );
       this.src = DS_ADMIN_ASSET_DIR + this.options.file;
       this.parseTable();
@@ -1007,9 +1061,13 @@ var TableWindow = new Class(
             //tr.style.fontSize = 16*(window.scaleW/55.0);
 				
          for ( var j = 0; j < self.tableData[i].length; j++ ) {
+            // Construct ID string
+            var cellId = this.id + '_r' + (i + 1) + '_c' + (j + 1);
+            
             var td = new Element(
                'td',
                {
+                  id   : cellId,
                   html : '<center>' + self.tableData[i][j] + '</center>',
                }
             );
@@ -1082,6 +1140,23 @@ var TableWindow = new Class(
       this.parseTable();
       this.createTable();
       this.contentDiv.adopt( this.table );
+   },
+   
+   handleClick : function( event ) {
+      var el = event.target;
+      
+      // Check if a cell was clicked
+      var tag = el.get('tag');
+      if ( tag == 'td' ) {
+         // Stop Propagation
+         event.stop();
+         
+         // Use cell id as click object id
+         this.page.onMouseDown( event, el.get('id') );
+      } else {
+         // Call default window click handler
+         this.parent( event );
+      }
    },
    
    genData : function( data ) {
@@ -1171,11 +1246,12 @@ var DS_APPLETS = {
 };*/
 
 
-var ObjectWindow = new Class({
+var AppletWindow = new Class({
 	Extends: Window,
    options : {
       type       : 'applet',
-      title      : 'Object Window',
+      title      : 'Applet Window',
+      id         : 'applet',
       appletType : '',
       source     : '',
       //applet : {
@@ -1184,11 +1260,11 @@ var ObjectWindow = new Class({
       //},
    },
    
-	initialize: function( options ) {
+	initialize: function( page, options ) {
 
   //    this.experiment = experiment;
 //		this.type='object';
-		this.parent( options );
+		this.parent( page, options );
 		//this.trashable = false;
       
       this.appletType = this.options.appletType;
