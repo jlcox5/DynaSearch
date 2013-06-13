@@ -94,11 +94,11 @@
                            .    '<ul>'
                            .       '<li><a href="admin.php" onclick="handleExit();">Home</a></li>'
                            .       '<li><a href="custom_editor.php" onclick="handleExit();">Custom Page Editor</a></li>'
-                           .       '<li><a href="questEditor.php" onclick="handleExit();">Questionaire Editor</a></li>'
-                           .       '<li><a href="survey_setup.php" onclick="handleExit();">Experiment Builder</a></li>'
-                           .       '<li><a href="adminAssets.php" onclick="handleExit();">My Assets</a></li>'
-                           .       '<li><a href="userAdmin.php" onclick="handleExit();">My Participants</a></li>'
-                           .       '<li><a href="userOutput.php" onclick="handleExit();">Participant Results</a></li>'
+                           .       '<li><a href="quest_editor.php" onclick="handleExit();">Questionaire Editor</a></li>'
+                           .       '<li><a href="exp_builder.php" onclick="handleExit();">Experiment Builder</a></li>'
+                           .       '<li><a href="admin_assets.php" onclick="handleExit();">My Assets</a></li>'
+                           .       '<li><a href="admin_participants.php" onclick="handleExit();">My Participants</a></li>'
+                           .       '<li><a href="admin_results.php" onclick="handleExit();">Experiment Results</a></li>'
                            .    '</ul>'
                            . '</li>';
 
@@ -121,6 +121,10 @@
 
    }
    $logout_str .= '<li><a href="assets/php/user.php?logout=1" onclick="handleExit();">Logout</a></li></ul></li>';
+   
+   $bug_str = '<li>' .
+                 '<a class="debug-icon"></a>' .
+              '</li>';
 
    $help_frame_html = '<div><a id="help_frame_exit_button" href="" onclick="closeHelpFrame();return false;">[close]</img><iframe id="help_frame_inner" src="UserManual.pdf"/></div>';
    echo'
@@ -128,7 +132,7 @@
    window.addEvent(\'domready\',function(){
       var user_nav = new Element("div");
       user_nav.setAttribute("class","user_nav_div");
-      user_nav.innerHTML = \'<ul>' . $expuserpage_str . $useradmin_str . $logout_str . '</ul>\';
+      user_nav.innerHTML = \'<ul>' . $expuserpage_str . $useradmin_str . $logout_str . $bug_str . '</ul>\';
       document.body.adopt(user_nav);
 
       var help_frame = new Element("div");

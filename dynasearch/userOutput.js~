@@ -1,4 +1,0 @@
-var changeViewMode = function() {
-   var viewMode = $("viewMode").getSelected();
-alert(viewMode);
-}

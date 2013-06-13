@@ -1,14 +1,25 @@
-
+/**
+ * A global variable, that will hold this pages instance of the
+ * CustomPage class to manage windows and click data.
+ */
 var theCustomPage;
 
+
+
+/**
+ * Creates and submits a form with the the variable 'results'
+ * containing a JSON string of the Custom Page's recorded
+ * click data.
+ */
 submit_page = function() {
+   // Get click results
    var clickResults = theCustomPage.getClickResults();
    
+   // Create result object for page and stringify
    var results = {
       name   : PAGE_NAME,
       clicks : clickResults,
    };
-   
    var resultString  = JSON.stringify( results );
 
    //alert(resultString);
@@ -19,7 +30,6 @@ submit_page = function() {
       'form',
       {
          'method' : 'post',
-         'action' : 'custom_page.php',
          'hidden' : 'hidden',
       }
    );
@@ -40,48 +50,25 @@ submit_page = function() {
    form.submit();
 };
 
+
+
+/**
+ * Add 'domready' function to the window to create the CustomPage
+ * class based on the options set up by the administrator.
+ */
 window.addEvent('domready', function()
 {
-
-
-	var ifr = document.createElement("div");
-	ifr.style.display = 'none';
-	ifr.innerHTML = '<img id="HM" src="assets/images/hurricane_map_1.png" />';
-	document.body.appendChild(ifr);
-
-   //alert(CP_DATA);
-   //var options = JSON.parse( CP_DATA );
-   //alert(options);
+   // Merge the JSON data with parameters for running experiment
    var options = Object.merge(  
       JSON.parse( CP_DATA ),
       {
-         id             : CP_ID,
-         name           : CP_NAME,
-         editMode       : false,
-         //saveFunction   : save_function,
-         //loadFunction   : load_function,
-         //deleteFunction : delete_function,
+         id              : CP_ID,
+         name            : CP_NAME,
+         editMode        : false,
          timeoutFunction : submit_page,
       }
    );
    
-   //alert(options.windows[0].type);
-   
-   //Object.each(options, function(opt) { alert(opt) });
-   
-   //options.append();
-   theCustomPage = new CustomPage(options);
-   //customPage.addWindow();
-   //$('test').addEvent('click', function() { customPage.newPage(); } );
-   
-	
-   
-   // Take away the resizing and dragging if not in edit mode
-	/*for(var i=0;i<updatables.length;++i)
-	{
-	   if(updatables[i].type != 'toolbar'){
-   	   updatables[i].dragobj.droppables[0] = document.getElementById('trashBinToDeleteWindows_55555');
-	   }			
-	}*/
-   
+   // Create the CustomPage instance
+   theCustomPage = new CustomPage( options );
 }); 

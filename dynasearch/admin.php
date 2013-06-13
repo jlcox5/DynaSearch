@@ -10,8 +10,8 @@
    $result = query_db('select User_Type from t_user where User_ID=\''.$username.'\'');
    $row = mysql_fetch_array($result, MYSQL_BOTH);
    if($row['User_Type'] != 'A'){
-      //redirect('assets/php/user.php?logout=true');
-      echo("not admin!");
+      redirect('assets/php/user.php?logout=true');
+      //echo("not admin!");
    }
    
    
@@ -41,10 +41,10 @@
                <tr>
                   <td class="cell-left">Manage the building blocks for your experiment.</td>
                   <td>
-                     <a href="adminAssets.php" tooltip-data="Upload, edit, and manage your images, scripts, and more!">Asset Manager</a><br/>
+                     <a href="admin_assets.php" tooltip-data="Upload, edit, and manage your images, scripts, and more!">Asset Manager</a><br/>
                      <!--<div id="test" style="display:none;">Here is one tip</div>-->
                      <a href="custom_editor.php" tooltip-data="Create Custom pages, where participant clicks will be rcorded.">Custom Page Editor</a><br/>
-                     <a href="questEditor.php" tooltip-data="Create questionnaires to collect information in your experiments.">Questionnaire Editor</a><br/>
+                     <a href="quest_editor.php" tooltip-data="Create questionnaires to collect information in your experiments.">Questionnaire Editor</a><br/>
                   </td>
                </tr>
             </table>
@@ -55,7 +55,7 @@
                <tr>
                   <td class="cell-left">Create custom experiments, utilizing the elements you have uploaded and created.</td>
                   <td>
-                     <a href="survey_setup.php"tooltip-data="Organize your data into experiments to be completed by your participants.">Experiment Builder</a><br/>
+                     <a href="exp_builder.php"tooltip-data="Organize your data into experiments to be completed by your participants.">Experiment Builder</a><br/>
                   </td>
                </tr>
             </table>
@@ -66,8 +66,8 @@
                <tr>
                   <td class="cell-left">Manage your participants, assign experiments to run, and collect the results.</td>
                   <td>
-                     <a href="userAdmin.php" tooltip-data="Manage the user accounts for your participants.">Participant Manager</a><br/>
-                     <a href="userOutput.php" tooltip-data="View and download the results of your experiments.">View Results</a><br/>
+                     <a href="admin_participants.php" tooltip-data="Manage the user accounts for your participants.">Participant Manager</a><br/>
+                     <a href="admin_results.php" tooltip-data="View and download the results of your experiments.">View Results</a><br/>
                   </td>
                </tr>
             </table>

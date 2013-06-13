@@ -139,6 +139,14 @@ input {
 	/*color: #3d93f6;;*/
 }
 
+.user_nav_div .debug-icon {
+	/*background-image : url('./images/bug-icon.png');*/
+   /*display : inline-block;*/
+   height : 25px;
+   width : 25px;
+   background-color:#3d93f6;
+}
+
 .help_frame_invisible {
    display: none;
 }

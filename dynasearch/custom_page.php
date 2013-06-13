@@ -13,9 +13,7 @@
       redirect('assets/php/user.php?logout=true');
    }
    
-	//Button hit
-	//var done = $post['pageFinished'];
-	//$_POST['pageFinished'] == 'true'
+   // The Basics
    $username  = $_SESSION['username'];
    $userExpId = $_SESSION['userExpId'];
    $results   = ifSetElse( $_POST['results'] );
@@ -69,35 +67,12 @@
 <!-- <body id="body" onmousedown="startTimer(event)" onmouseup="endTimer(event)"> -->
 <body id="body">
 
-<?php
-/*
-if(isset($_SESSION['scaleW'])){
- echo '<script language="javascript"> <!--
-		window.scaleW = '.$_SESSION['scaleW'].'; //--></script>';
-}
-
-if(isset($_SESSION['scaleH'])){
- echo '<script language="javascript"> <!--
-		window.scaleH = '.$_SESSION['scaleH'].'; //--></script>';
-}	
-*/ 
-?>
-
-
    <div id='maincontainer'>
       <div id='custom-page'></div>
       <br/>
       
       <button id="doneWithPage" onClick="submit_page();">Done</button>
-     <!-- <form id="main_editor" name="main_editor" method="post" action="dynaview.php">
-         <div id="test"></div>
-                     <tr><td><div id="timerInfo"></div></td></tr>
-                     <tr><td><div id="clickData"></div></td></tr>
-                     <tr><td><div id="totalClicks"></div></td></tr>
-                     <input name="advance" style="visibility:hidden;" value="true"/>
-                     <input name="pageFinished" id="pageFinished" style="visibility:hidden;" value="false"/>
-                     <tr><td><input type="button" id="doneWithPage" name="doneWithPage" value="Done" onClick="submitPageWithInput();" style="position:absolute;" /></td></tr>
-       </form>-->
+    
    </div>
 
    <script type="text/javascript">

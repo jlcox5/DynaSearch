@@ -63,7 +63,7 @@
             </form>
             <br/><br/>
 
-<a href='login.php'>Return to login</a>
+            <a href='login.php'>Return to login screen</a>
 
          </td>
       </table> <!-- End main page columns  -->
