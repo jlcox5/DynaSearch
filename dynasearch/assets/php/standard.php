@@ -50,8 +50,8 @@
             function handleExit(){ 
                switch("'.$page_title.'"){
                   case "Editor":
-                     if(confirm("Would you like to save your changes?"))
-                        save_all();
+                     //if(confirm("Would you like to save your changes?"))
+                        //save_all();
                      break;
                }
             }
@@ -87,17 +87,20 @@
    */
          $useradmin_str;
          $expuserpage_str = '';
-         $logout_str = '<li>' . $_SESSION['username'] . '<ul>';
+         $logout_str = '<li>' . $_SESSION['full_name'] . '<ul>';
 
          if( $_SESSION['UserType'] == 'A' ){
-            $useradmin_str = '<li>[Admin]<ul><li><a href="admin.php" onclick="handleExit();">Admin Page</a></li>'
-                           .                '<li><a href="editor.php" onclick="handleExit();">--Training Page Editor</a></li>'
-                           .                '<li><a href="questEditor.php" onclick="handleExit();">--Questionaire Editor</a></li>'
-                           .                '<li><a href="survey_setup.php" onclick="handleExit();">--Experiment Editor</a></li>'
-                           .                '<li><a href="adminAssets.php" onclick="handleExit();">My Assets</a></li>'
-                           .                '<li><a href="userAdmin.php" onclick="handleExit();">My Participants</a></li>'
-                           .                '<li><a href="userOutput.php" onclick="handleExit();">Participant Results</a></li>'
-                           .           '</ul></li>';
+            $useradmin_str = '<li>My Account'
+                           .    '<ul>'
+                           .       '<li><a href="admin.php" onclick="handleExit();">Home</a></li>'
+                           .       '<li><a href="custom_editor.php" onclick="handleExit();">Custom Page Editor</a></li>'
+                           .       '<li><a href="questEditor.php" onclick="handleExit();">Questionaire Editor</a></li>'
+                           .       '<li><a href="survey_setup.php" onclick="handleExit();">Experiment Builder</a></li>'
+                           .       '<li><a href="adminAssets.php" onclick="handleExit();">My Assets</a></li>'
+                           .       '<li><a href="userAdmin.php" onclick="handleExit();">My Participants</a></li>'
+                           .       '<li><a href="userOutput.php" onclick="handleExit();">Participant Results</a></li>'
+                           .    '</ul>'
+                           . '</li>';
 
             $logout_str .= '<li><a href="adminSettings.php" onclick="handleExit();">Settings</a></li>';
          }
@@ -108,73 +111,13 @@
             //$expuserpage_str = '<li>[Page]'
              //                . '   <ul>';
 
-//TODO : get all pages and put them in the list
-      // Load up experiment
-/*
-      $result = query_db('select * from t_user where User_ID=\''. $username .'\'');
-      $row = mysql_fetch_array($result, MYSQL_BOTH);
-      $current_position = (int)$row['current_position'];
-      $result = query_db('select * from t_experiments where ExperimentShortName=\''. $row['experiment'] .'\'');
-      $row = mysql_fetch_array($result, MYSQL_BOTH);   
-      $expstr = $row['ExperimentString'];
-      $exparr = explode('$',$expstr);
-
-      for($i=0; $i<count($exparr);$i++)
-      {
-         $properties = explode('&', $exparr[$i]);
-         
-         for($j=0;$j < count($properties);$j++)
-         {
-            $item = explode('=',$properties[$j]);
-            
-            // Find Page Number
-            if($item[0] == 'page')
-            {
-               $pagenum = ((int)$i) + 1;
-               // Set Current Page
-               //$username = $_SESSION['username'];
-               //query_db('update t_user set current_position='. $pagenum .' where User_ID=\''. $username .'\'');
-               //exit();
-               // Find page type
-               for($k=0;$k<count($properties);$k++)
-               {
-                  $item2 = explode('=',$properties[$k]);            
-                  if($item2[0] == 'type')
-                  {
-                     $item2[1] = hexToStr($item2[1]);
-                     if($item2[1] == 'Information Page')
-                     { 
-                        $page = 'instructions.php';
-                     }
-                     if($item2[1] == 'Survey Page')
-                     { 
-                        $page = 'question.php';
-                     }
-                     if($item2[1] == 'Training Screen')
-                     { 
-                        $page = 'dynasearch.php';
-                     //$item3 = explode('=',$properties[4]);
-                     //$_SESSION['advNum'] = hexToStr($item3[1]);
-                          //echo $_SESSION['advNum'];
-                     //redirect('dynasearch.php'); 
-                     }
-                  }
-               }
-         $pagename = 'Page 1'  . $pagenum;
-         $expuserpage_str = $expuserpage_str
-                          . '      <li><a href="' . $page . '" onclick="handleExit();">' . $pagename . '</a></li>';
-            
-            }
-         }
-      }
-*/
-      $pagename = hexToStr( getExpPageProperty(0,'type') );
+      /*$pagename = hexToStr( getExpPageProperty(0,'type') );
       $expuserpage_str = $expuserpage_str
                        . '      <li><a href="' . '" onclick="handleExit();">' . $pagename . '</a></li>';
 
       $expuserpage_str = $expuserpage_str
                        . '   </ul>'
-                       . '</li>';
+                       . '</li>';*/
 
    }
    $logout_str .= '<li><a href="assets/php/user.php?logout=1" onclick="handleExit();">Logout</a></li></ul></li>';
@@ -196,7 +139,6 @@
    });
    </script>
    ';
-   //OLD: user_nav.innerHTML = \'<ul> <li>foo<ul><li><a>foo1</a></li><li><a>foo2</a></li><li><a>foo3</a></li></ul></li> <li>bar<ul><li><a>bar1</a></li><li><a>bar2</a></li></ul></li> </ul>\';
    }}
    
    // Input every templated javascript file
@@ -209,5 +151,44 @@
 
    </head>
    ';
+   
+  /* function addDomAttributes( $dom, $el, $attrs )
+   {
+      foreach ( $attrs as $key => $value )
+      {
+         $attribute = $dom->createAttribute( $key );
+         $attribute->value = $value;
+         $el->appendChild( $attribute );
+      }
+   }
+   
+   $dom = new DOMDocument( '1.0' );
+   //echo "<link href='http://fonts.googleapis.com/css?family=Josefin+Sans:300,400,700' rel='stylesheet' type='text/css'>";
+
+   $head = $dom->createElement('head');
+   
+   $font = $dom->createElement('link');
+   addDomAttributes( $dom, $font, Array( 'href' => 'http://fonts.googleapis.com/css?family=Josefin+Sans:300,400,700', 'rel' => 'stylesheet', 'type' => 'text/css') );
+   
+   // Input every templated CSS file
+   if ( isset($template_style_array) )
+   {
+      foreach($template_style_array as $file)
+      {
+         $style = $dom->createElement('link');
+         addDomAttributes(
+            $dom,
+            $style,
+            Array(
+               'href' => 'assets/style/' . $file, 
+               'rel'  => 'stylesheet',
+               'type' => 'text/css'
+            )
+         );
+      }
+   }
+   
+   $dom->appendChild( $head );*/
+   //echo $dom->saveHTML();
    
 ?>

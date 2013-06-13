@@ -1,6 +1,5 @@
 <?php 
 
-
    function valid_email( $emailAddr )
    {
 
@@ -71,32 +70,30 @@
 
 //ini_set('display_errors',1);
 
-
-   if( $_POST['emailOp'] )
+   $emailOp = ifSetElse( $_POST['emailOp'] );
+   switch( $_POST['emailOp'] )
    {
-      switch( $_POST['emailOp'] )
+   case 'send' :
+      $recipient = $_POST['recipient'];
+      $subject   = $_POST['subject'];
+      $message   = $_POST['message'];
+      $sender    = $_POST['sender'];
+      $headers   = "From:" . $sender;
+      if( mail($recipient, $subject, $message, $headers) )
       {
-      case 'send' :
-         $recipient = $_POST['recipient'];
-         $subject   = $_POST['subject'];
-         $message   = $_POST['message'];
-         $sender    = $_POST['sender'];
-         $headers   = "From:" . $sender;
-         if( mail($recipient, $subject, $message, $headers) )
-         {
-            echo "Success";
-         }
-         else
-         {
-            echo "Failed";
-         }
-         break;
-
-      default :
-         echo "Invalid Op";
-         break;
+         echo "Success";
       }
+      else
+      {
+         echo "Failed";
+      }
+      break;
+
+   default :
+      //echo "Invalid Op";
+      break;
    }
+ 
 
 
 

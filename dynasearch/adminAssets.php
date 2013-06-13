@@ -11,7 +11,7 @@
    $username = $_SESSION['username'];
 
    $template_style_array  = array("style.css", "mBoxCore.css", "mBoxModal.css", "mBoxNotice.css", "mBoxTooltip.css",
-                                  "themes/mBoxTooltip-Black.css", "themes/mBoxTooltip-BlackGradient.css", "adminAssets.css");
+                                     "themes/mBoxTooltip-Black.css", "themes/mBoxTooltip-BlackGradient.css", "adminAssets.css");
    $template_script_array = array("ajax-core.js", "mBox.All.min.js", "adminAssets.js");
 
    include('assets/php/admin_dir.php');
@@ -33,6 +33,7 @@
 //echo "here";
       if( $_FILES["assetFile"]["error"] > 0 )
       {
+      echo 'hello';
         if( $DEBUG )
          {
             echo "Error: " . $_FILES["assetFile"]["error"] . "<br>";
@@ -46,10 +47,20 @@
          $assetType = $_POST['assetType'];
 		 // Modified by Jon 21JAN13
          //$assetFilepath = $assetDirs[$assetType] . "/" . $_FILES["assetFile"]["name"];
-		 $assetFilepath =  $assetBaseDir . $assetType . "/" . $_FILES["assetFile"]["name"];
-
-         move_uploaded_file($_FILES["assetFile"]["tmp_name"],
+		   $assetFilepath =  $assetBaseDir . $assetType . "/" . $_FILES["assetFile"]["name"];
+         
+         echo 'Admin Dir Size : ' . $adminDirSize . '<br/>' .
+              'File Size      : ' . ($_FILES["assetFile"]["size"]) . '<br/>' .
+              'Admin Max Size : ' . $adminMaxSize . '<br/>';
+         
+         if ( ($adminDirSize + $_FILES["assetFile"]["size"]) <= $adminMaxSize) {
+            move_uploaded_file($_FILES["assetFile"]["tmp_name"],
                             $assetFilepath);
+         } else {
+            echo 'over cap';
+         }
+       
+         
 
          if( $DEBUG )
          {
@@ -65,7 +76,7 @@
       if( ! $DEBUG )
       {
          // Added so assets automatically show in list after uploaded.  Need to comment out for debugging. - Jon 22JAN13
-         redirect('adminAssets.php?assetType=' . $assetType);
+         redirect('adminAssets.php#' . $assetType);
       }
    }
    
@@ -79,7 +90,7 @@
       $fh = fopen($assetFile, 'w') or die("can't open file");
       fclose($fh);
       unlink($assetFile);
-      redirect('adminAssets.php?assetType=' . $assetType);
+      redirect('adminAssets.php?#' . $assetType);
    }
 
    include('assets/php/standard.php');
@@ -93,11 +104,11 @@
       <div id="wrapper" style="width:70%; margin: auto auto;">
    
          <!-- Capacity Info-->
-         <div class="allocation-info">
+         <div class="rounded-box allocation-info">
    <?php 
       //$adminMaxSize = 1048576;
 
-      echo '<h3>My Allocation</h3>';
+      //echo '<h3>My Allocation</h3>';
 
       echo fileSizeStr($adminDirSize) . ' of ' . fileSizeStr($adminMaxSize) . '<br/>' .
            ' (' . fileSizeStr($adminMaxSize - $adminDirSize) . ' remaining) <br/>';
@@ -124,14 +135,13 @@
 
       // I added the minus 1 because training pages should never be uploaded, always created through the editor.  If this ever changes,
 	  // then it can be removed.  - Jon 22JAN13
-      for($i = 0; $i < count($assets)-1; $i++)
+      for($i = 0; $i < count($assets); $i++)
       {
          $currAsset = &$assets[$i];
 
          echo '<div hash-link="#' . $currAsset["Tag"] . '" class="toggle">' . $currAsset["Name"] . '</div>' .
               '<div class="content">'. 
                  '<form class="asset-panel" action="adminAssets.php" method="post">';
-
          if( $currAsset["Tag"] == $assetType )
          {
             $currentSlice = $i;
@@ -139,6 +149,88 @@
 
          $assetOptions = &$currAsset["Options"];
          $assetOptionCount = count($assetOptions);
+         
+         //echo '<div class="asset-manager">';
+
+         // Create Control Panl with asset list
+         echo '<div class="control-pane">';
+         
+         echo '<select class="asset-list" id="' . $currAsset["Tag"] .'Select" ' .
+                         'name="asset" size="' . ( $assetOptionCount + 2) . '" >';
+            
+         foreach($assetOptions as $key => $value)
+         {
+            $selected = '';
+            //if ($key == $pId)
+            //{
+            //   $selected = 'selected="selected"';
+            //}
+            //else
+            //{
+            //   $selected = '';
+            //}
+
+            echo '<option value="' . $key . '" ' . $selected . '>' .
+                    $value .
+                 '</option>';
+         }
+         echo '</select>';
+         echo '<br/>';
+
+         // Control Buttons
+         echo '<input type="button" value="Upload" onclick="uploadAsset(\'' . $currAsset["Tag"] . '\');"> ';
+         echo '<input type="button" value="Preview" onclick="previewAsset(\'' . $currAsset["Tag"] . '\');"> ';
+         echo '<input type="submit" name="delete" value="Delete" onclick="return confirmDelete();">';
+
+         echo '</div>';
+
+         // Create Preview Pane
+         echo '<div class="preview-pane">';
+
+         echo '<input type="text" name="assetType" value="' . $currAsset["Tag"] . '" style="display:none;"/>';
+         echo '<input type="text" id="' . $currAsset["Tag"] . 'SelectedAsset" name="selectedAsset" style="display:none;"/>';
+         
+         echo '<div class="preview-box rounded-box">';
+         if($currAsset["Tag"] != 'images') {
+         
+            // Buttons
+            echo '<div style="display:table-row;">';
+            echo '<input type="button" value="New" ' .
+                        'onclick="newAsset(\'' . $currAsset["Tag"] . '\');" /> ' .
+                 '<input type="button" id="' . $currAsset["Tag"] . 'SaveBtn" value="Save" ' .
+                        'onclick="saveAsset(\'' . $currAsset["Tag"] . '\');" disabled="disabled" /> ';
+            echo '<input type="button" id="' . $currAsset["Tag"] . 'SaveAsBtn"value="Save As.." ' .
+                        'onclick="saveAssetAs(\'' . $currAsset["Tag"] . '\');" disabled="disabled">';
+                        
+            // Details
+            echo '<h3>File Name : <span id="' . $currAsset["Tag"] . 'FileName"></span></h3>';
+            echo '<h3>File Size : <span id="' . $currAsset["Tag"] . 'FileSize"></span></h3>';
+            echo '</div>';
+                        
+            echo '<div style="display:table-cell; height:100%;">';
+            echo '<textarea id="' . $currAsset["Tag"] . 'Preview" class="text-preview" disabled="disabled"></textarea>';
+            echo '</div>';
+         }
+         else
+         {
+            // Details
+            echo '<div style="display:table-row;">';  
+            echo '<h3>File Name : <span id="' . $currAsset["Tag"] . 'FileName"></span></h3>';
+            echo '<h3>File Size : <span id="' . $currAsset["Tag"] . 'FileSize"></span></h3>';
+            echo '</div>';
+         
+            //echo '<div style="height:100%;">';
+            echo '<img id="' . $currAsset["Tag"] . 'Preview" class="img-preview"></img>';
+            //echo '</div>';
+         }
+         echo '</div>';
+         echo '</div>';
+
+         
+         echo '</form>';
+         echo '</div>';
+         
+         /*
          if ( $assetOptionCount > 0)
          {
 
@@ -148,10 +240,28 @@
             echo '<div class="control-pane">';
             echo '<select class="asset-list" id="' . $currAsset["Tag"] .'Select" ' .
                          'name="asset" size="'.($assetOptionCount + 1).'" >';
-            for ($j = 0; $j < $assetOptionCount; $j++)
+            
+            foreach($assetOptions as $key => $value)
             {
-               echo $assetOptions[$j];
+            $selected = '';
+               //if ($key == $pId)
+               //{
+               //   $selected = 'selected="selected"';
+               //}
+               //else
+               //{
+               //   $selected = '';
+               //}
+
+               echo '<option value="' . $key . '" ' . $selected . '>' .
+                       $value . ' (' . $key . ')' .
+                    '</option>';
             }
+            
+            //for ($j = 0; $j < $assetOptionCount; $j++)
+            //{
+            //   echo $assetOptions[$j];
+            //}
             echo '</select>';
 
             echo '<br/>';
@@ -204,9 +314,10 @@ echo '</div>';
 
          echo    '</form>' .
               '</div>';
+              */
       }
 
-      echo '</div>';
+      //echo '</div>';
 
       echo '<script type="text/javascript">assetDir = "' . $assetBaseDir . '"; CURRENT_SLICE = ' . $currentSlice . ';</script>';
 
@@ -227,7 +338,7 @@ echo '</div>';
    
       // I added the minus 1 because training pages should never be uploaded, always created through the editor.  If this ever changes,
 	  // then it can be removed.  - Jon 22JAN13
-      for($i = 0; $i < count($assets)-1; $i++)
+      for($i = 0; $i < count($assets); $i++)
       {
          $currAsset = &$assets[$i];
          echo '<option value="'. $currAsset["Tag"] .'">'. $currAsset["Name"] .'</option>';

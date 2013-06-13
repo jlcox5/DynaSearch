@@ -5,11 +5,6 @@
    mysql_connect($DB_HOST, $DB_USER, $DB_PASS) or die("Unable to connect.");
    mysql_select_db($DB_NAME) or die("Unable to select database.");
 
-$page_title = "DynaSearch";
-
-$template_style_array  = array("style.css", "editor.css");
-$template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js", "timer.js", "hurricane-unisys-parser.js", "editor.js", "canvas3dapi/c3dapi.js");
-
 	  
 	//Button hit
 	//var done = $post['pageFinished'];
@@ -79,66 +74,35 @@ $template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js"
 	$admin = $row['Admin_ID'];
 	$current_position = $row['current_position'];
 
-      $expArray = getExpPageProperties($current_position - 1);
-      $myFile = "./admins/" . $admin . "/assets/training/" . $expArray['src']; 
-      $adv_num = $_SESSION['advNum'];
-      $fh = fopen($myFile, 'r');
-      $page_content = fread($fh, filesize($myFile));
-      $page_content = hexToStr($page_content);
-      echo $myFile;
-      fclose($fh);
+   // Get Experiment Data
+   $expData = $_SESSION['expData'];
+   $expPageData = $expData[ $current_position-1 ];
+   $pageTitle = $expPageData['title'];
+   
+   // Load the Custom Page Data from database
+   $cpId = $expPageData['source'];
+   $query = "SELECT * FROM t_custom_pages WHERE id='$cpId';";
+   $res = mysql_query( $query );
+   $row = mysql_fetch_array($res, MYSQL_BOTH);
+            
+   if( $row ) 
+   {  
+      $cpName = $row['Name'];
+      $cpData = $row['Data'];
+      //$scaleProfileId = $res['ScaleProfileID'];
+      
+   }
+   else 
+   {
+      if( $DEBUG ) { echo "FileOp ERROR : LOAD --- Exp not found in database<br/>"; }
+   }
 
-/*
-	$expshortname = $row['experiment'];
-	// Find out where we should go now.
-	$result = query_db('select * from t_experiments where ExperimentShortName=\''. $expshortname .'\'');
-	$row = mysql_fetch_array($result, MYSQL_BOTH);
+   
 
-	$expstr = $row['ExperimentString'];
-
-	$exparr = explode('$',$expstr);
-	for($i=0; $i<count($exparr);$i++)
-	{
-		$properties = explode('&', $exparr[$i]);
-	
-		for($j=0;$j < count($properties);$j++)
-		{
-			$item = explode('=',$properties[$j]);
-			// Match up with the page we should be on.
-			if($item[0] == 'page')
-			{
-				$pagenum = (int)$item[1];
-				if($pagenum == $current_position-1)
-				{
-					for($k=0;$k<count($properties);$k++)
-					{
-						$item2 = explode('=',$properties[$k]);
-						if($item2[0] == 'title')
-						{
-							$exp_page_title = hexToStr($item2[1]);
-						}
-						elseif($item2[0] == 'src')
-						{
-   						//echo " here again! ";
-						    $myFile = "./admins/" . $admin . "/assets/training/" . hexToStr($item2[1]);
-							//$myFile = './'. $expshortname . '/'. hexToStr($item2[1]);
-							//$myFile = hurricane_data\' . $expshortname . '\' . hexToStr($(item2[1]));
-							$adv_num = $_SESSION['advNum'];
-							$fh = fopen($myFile, 'r');
-							$page_content = fread($fh, filesize($myFile));
-							$page_content = hexToStr($page_content);
-							echo $myFile;
-							fclose($fh);
-						}
-					}
-				}				
-			}
-		}
-	}
-*/
-	/////////////////////////////////////////////////
-
-include('assets/php/standard.php');
+   $page_title = "DynaSearch";
+   $template_style_array  = array("style.css", "editor.css");
+   $template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js", "timer.js", "hurricane-unisys-parser.js", "editor.js", "canvas3dapi/c3dapi.js");
+   include('assets/php/standard.php');
 ?>
 
 <body id="body" onmousedown="startTimer(event)" onmouseup="endTimer(event)">
@@ -155,27 +119,10 @@ if(isset($_SESSION['scaleH'])){
 }	 
 ?>
 
-<?php
-   // Get user info for tracking display
-   //echo('Username:'.$username);
-   $result = mysql_query("SELECT FORECAST, PAST_TRACK, CONE, CURRENT FROM t_user WHERE User_ID='$username';");
-   //echo('Result: '.$result);
-   $toTest = mysql_fetch_array($result);
-   echo '<script language="javascript"> <!--
-      window.FORECAST = '.$toTest['FORECAST'].'; //--></script>';
-   echo '<script language="javascript"> <!--
-      window.PAST_TRACK = '.$toTest['PAST_TRACK'].'; //--></script>';
-   echo '<script language="javascript"> <!--
-      window.CONE = '.$toTest['CONE'].'; //--></script>';
-   echo '<script language="javascript"> <!--
-      window.CURRENT = '.$toTest['CURRENT'].'; //--></script>';
-   //echo("alert('fc: ' + window.FORECAST + ' pt: ' + window.PAST_TRACK + ' cone: ' + window.CONE  ' cur: ' + window.CURRENT);");
-   
-?>
-
-<div id='maincontainer'>
-<div id='holdCanvas'></div>
-<form id="main_editor" name="main_editor" method="post" action="dynasearch.php">
+   <div id='maincontainer'>
+      <div id='holdCanvas'></div>
+      
+      <form id="main_editor" name="main_editor" method="post" action="dynasearch.php">
 <div id="test"></div>
                      <tr><td><div id="timerInfo"></div></td></tr>
                      <tr><td><div id="clickData"></div></td></tr>
@@ -186,8 +133,8 @@ if(isset($_SESSION['scaleH'])){
 <?php
    echo'<script type="text/javascript" src="assets/scripts/editor.js"></script><script type="text/javascript" >load_all("'.$myFile.'");</script>';
 ?>
-</font>
-</form>
-</div>
+         </font>
+      </form>
+   </div>
 </body>
 </html>

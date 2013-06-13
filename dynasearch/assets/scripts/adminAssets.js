@@ -25,9 +25,10 @@ var previewAsset = function(type) {
 
    var asset        = $(type + "Select").value;
    var assetPreview = $(type + "Preview");
+   var assetFileName = $(type + "FileName");
    var assetFileSize = $(type + "FileSize");
    $(type + "SelectedAsset").value = asset;
-
+//alert(asset);
    switch (type) {
    case "images" :
       assetPreview.setProperty('src', assetDir + asset);
@@ -41,6 +42,8 @@ var previewAsset = function(type) {
          onSuccess : function(response) {
             var arr = JSON.decode(response);
             //alert(arr['fileSize']);
+            
+            assetFileName.set('html', asset );
             assetFileSize.set('html', makeFileSizeStr( arr['fileSize'] ) );
          }
       }).send();
@@ -59,6 +62,7 @@ var previewAsset = function(type) {
             var arr = JSON.decode(response);
             //alert(response);
             //alert(arr['fileSize']);
+            assetFileName.set('html', asset );
             assetFileSize.set('html', makeFileSizeStr( arr['fileSize'] ) );
             assetPreview.value = arr['fileContent'];
             assetPreview.setProperty('disabled', '');
@@ -142,7 +146,7 @@ var saveAssetAs = function(type) {
             } else {
                $(type + "SelectedAsset").value = type + '/' + newAsset;
                saveAsset(type);
-               window.location.reload()
+               //window.location.reload()
             }
          }
       }).send();

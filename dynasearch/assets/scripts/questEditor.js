@@ -127,9 +127,12 @@ var save_quest_as = function()
                        } else {
                           // Save Questionnaire
                           saveAsQuestBox.close();
-                          $('qId').value   = -1;
+                          //$('qId').value   = -1;
                           //$('qName').value = qName;
                           //$('qName').set('html', expName);
+                          
+                          Q_ID   = -1;
+                          Q_NAME = qName;
                           save_quest();
                        } 
                     }

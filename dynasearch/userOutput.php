@@ -131,13 +131,87 @@ function formatQuestResults( $qDOM, $type )
       $result = mysql_query($query);
       if ( $row = mysql_fetch_array($result, MYSQL_BOTH) )
       {
-         $rId          = $row['ID'];
-         $questResults = $row['QuestOutput'];
-         $clickResults = $row['ClickOutput'];
+         $rId       = $row['ID'];
+         $questStr  = $row['QuestOutput'];
+         $clickStr  = $row['ClickOutput'];
+         $branchStr = $row['Branch'];
+         
+         // Handle Questionnaire Results
+function parseQuestions( $qDOM )
+{
+   $qArray = Array();
+   foreach ( $qDOM->childNodes as $node ) {
+      $tag  = $node->nodeName;
+      $item = Array( 'type' => $tag );
+
+      switch ( $tag )
+      {
+      case 'section' :
+         $item['title']     = $node->getAttribute('title');
+         $item['questions'] = parseQuestions( $node );
+         break;
+
+      case 'radioquestion' :
+      case 'textquestion'  :
+         $item['question'] = $node->getAttribute('question');
+         $item['answer']   = $node->getAttribute('answer');
+         break;
+
+      default :
+         echo 'ERROR : Unknown questionnaire item [tag - ' . $tag . ']';
+         break;
+      }
+      $qArray[] = $item;
+   }
+   return $qArray; 
+}
+         $questResults = Array();
+         $questStr = '<questResults>' . $questStr . '</questResults>';
+         $qResultDOM   = new DOMDocument();
+         $qResultDOM->loadXML($questStr);
+         $root = $qResultDOM->documentElement;
+         foreach ( $root->childNodes as $node ) {
+            $page = Array(
+               'name'      => $node->getAttribute('page'),
+               'questions' => parseQuestions($node),
+            );
+            
+            $questResults[] = $page;
+         }
+
+         
+         // Handle Click Results
+         $clickJsonString = '[' . substr($clickStr, 0, -1) . ']';
+         $clickResults    = json_decode( $clickJsonString, true );
+         
+         // Handle Branch Results
+         $branchResults = Array();
+         $arr = preg_split('@,@', $branchStr, NULL, PREG_SPLIT_NO_EMPTY);
+         foreach ( $arr as $branch )
+         {
+            $temp            = explode( ':', $branch );
+            $branchResults[ $temp[0] ] = $temp[1];
+         }
+      }
+      
+      // Get Particiant Name
+      $query = "SELECT * FROM t_user WHERE User_ID='$pId';";
+      $result = mysql_query($query);
+      if ( $row = mysql_fetch_array($result, MYSQL_BOTH) )
+      {
+         $pName = $row['Name'];
+      }
+      
+      // Get Experiment Name
+      $query = "SELECT * FROM t_experiments WHERE id='$expId';";
+      $result = mysql_query($query);
+      if ( $row = mysql_fetch_array($result, MYSQL_BOTH) )
+      {
+         $expName = $row['ExperimentName'];
       }
    }
 
-   $questResults = '<questResults>' . $questResults . '</questResults>';
+   
    
 
    include('assets/php/standard.php');
@@ -271,7 +345,7 @@ function formatQuestResults( $qDOM, $type )
 
          echo '<br/>';
 
-function constructQuestResults( $qDOM )
+/*function constructQuestResults( $qDOM )
 {
    $qStr = '';
    foreach ( $qDOM->childNodes as $node ) {
@@ -302,22 +376,84 @@ function constructQuestResults( $qDOM )
       $qStr .= '<br/>';
    }
    return $qStr; 
+}*/
+function constructQuestResults( $qArray )
+{
+   $qStr = '';
+   foreach ( $qArray as $item ) {
+      switch ( $item['type'] )
+      {
+         case 'section' :
+            $qStr .= '<div class="quest-section">' .
+                        '<span class="quest-section-header">' . $item['title'] . '</span><br>' .
+                        constructQuestResults( $item['questions'] ) .
+                     '</div>';
+            break;
+
+         case 'radioquestion' :
+         case 'textquestion'  :
+            $qStr .= $item['question'] . '<br/>' .
+                     '<b>' . $item['answer'] . '</b>';
+            break;
+
+      default :
+         echo 'ERROR : Unknown questionnaire item [tag - ' . $item['type'] . ']';
+         break;
+      }
+      $qStr .= '<br/>';
+   }
+   return $qStr; 
 }
 
       if ( $rId > 0 )
       {
-
-      // Results
-
+      
+      echo '<div class="rounded-box">';
+      echo '<h2>Name : ' . $pName . ' (' . $pId . ')</h2>';
+      echo '<h2>Experiment : ' . $expName . ' (' . $expId . ')</h2>';
+      
+      // Branch Results
+      if ( $branchResults )
+      {
+         echo '<br/>';
+         echo '<h3>Between Subjects Branching :</h3>';
+         
+         foreach ( $branchResults as $condition => $level)
+         {
+            echo $condition . ' : ' . $level . '<br/>';
+         }
+      }
+      echo '</div>';
+      
+      
+      // Questionnaire Results
+      echo '<div class="rounded-box">';
       echo '<h2>Questionaire Results :</h2>';
-      $qResultDOM = new DOMDocument();
+      if( !empty($questResults) )
+      {
+         echo '<div class="accordion">';
+         foreach ( $questResults as $page )
+         {
+            echo '<div class="toggle">' . $page['name'] . '</div>' .
+                 '<div class="content">' .
+                    constructQuestResults( $page['questions'] ) .
+                 '</div>';
+         }
+         echo '</div>';
+         
+      }
+      else
+      {
+         echo '<i>No Results Found</i><br/>';
+      }
+      /*$qResultDOM = new DOMDocument();
       $qResultDOM->loadXML($questResults);
       $root = $qResultDOM->documentElement;
 
       if( $root->childNodes->length > 0 )
       {
 
-         echo '<div id="quest-accordion">';
+         echo '<div class="accordion" id="quest-accordion">';
          foreach ( $root->childNodes as $node ) {
             echo '<div class="toggle">' . $node->getAttribute('page') . '</div>' .
                  '<div class="content">' .
@@ -329,45 +465,62 @@ function constructQuestResults( $qDOM )
       else
       {
          echo '<i>No Results Found</i><br/>';
-      }
-      echo '<br/>';
-
-
+      }*/
+      echo '</div>';
+      
+      
+      // Click Results Pane
+      echo '<div class="rounded-box">';
       echo '<h2>Click Results :</h2>';
 
       if( !empty($clickResults) )
       {
-
          //echo $clickResults;
-         $pages = preg_split('@&@', $clickResults, NULL, PREG_SPLIT_NO_EMPTY);
-
-         for( $i = 0; $i < count($pages); ++$i )
+         echo '<div class="accordion">';
+         foreach ( $clickResults as $page )
          {
-            $pageTitle = strtok($pages[$i], ":");
-
-            echo '<table>' . 
-                    '<tr>' .
-                       '<th colspan="3">' . $pageTitle . '</th>' .
-                    '</tr>' .
-                    '<tr>' .
-                       '<th>#</th><th>Object</th><th>Duration</th>' .
-                    '</tr>';
-
-            $clickNum = 1;
-            while( ($content = strtok("$")) )
+            echo '<div class="toggle">' . $page['name'] . '</div>' .
+                 '<div class="content">';
+            
+            if ( count($page['clicks']) > 0 )
             {
-               $details = explode(",", $content);
-               echo '<tr><td>' . $clickNum . '</td><td>' . $details[0] . '</td><td>' . $details[1] . '</td></tr>';
+            echo '<table class="results">' .
+                    '<tr>' .
+                       '<th></th>' .
+                       '<th>Object ID</th>' .
+                       '<th>Duration (Seconds)</th>' .
+                       '<th>Start Position (x,y)</th>' .
+                       '<th>End Position (x,y)</th>' .
+                    '</tr>';
+                    
+            $clickNum = 1;
+            foreach ( $page['clicks'] as $click )
+            {
+               echo '<tr>' .
+                       '<td>' . $clickNum .                                               '</td>' .
+                       '<td>' . $click['id'] .                                            '</td>' .
+                       '<td>' . ($click['duration'] / 1000) .                             '</td>' .
+                       '<td>' . $click['startPos']['x'] . ',' . $click['startPos']['y'] . '</td>' .
+                       '<td>' . $click['endPos']['x'] .   ',' . $click['endPos']['y'] .   '</td>' .
+                    '</tr>';
                ++ $clickNum;
             }
             echo '</table>';
+            }
+            else
+            {
+               echo '<i>No Clicks Recorded</i>';
+            }
+            echo '</div>';
          }
-         echo '<br/>';
+         echo '</div>';
+         
       }
       else
       {
          echo '<i>No Results Found</i><br/>';
       }
+      echo '</div>';
 
       }
 

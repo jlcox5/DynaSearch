@@ -1,0 +1,86 @@
+.TableSorterLoadImage{
+	background: url('../images/loading.gif') no-repeat center;
+	height:150px;
+	width:50px;
+	/*margin:0 auto;*/
+}
+.DefaultTable{
+	margin:20px 0;
+	border-collapse:collapse;
+	color:#3F3F3F;
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:12px;
+}
+.zebra {
+	background:#F4F4F4;
+}
+.focusedColumn{
+	background-color:#F4F4F4;
+}
+.zebra .focusedColumn{
+	background-color:#E4E4E4;
+ }
+.upArrow{
+	width:14px;
+	height:14px;
+	margin-top:2px;
+	padding-right:2px;
+	float:left;
+	background:url('../images/arrow_up.png') no-repeat;
+}
+.downArrow{
+	width:14px;
+	height:14px;
+	margin-top:2px;
+	padding-right:2px;
+	float:left;
+	background:url('../images/arrow_down.png');
+}
+.MetaData{
+	text-align:right;
+	background:url('bg-panel-header.gif');
+	font-size:90%;
+}
+.DefaultTable a{color:#098ED1;cursor:pointer;}
+.DefaultTable a:hover{text-decoration:none;}
+.DefaultTable .alert{
+	background:#FFEBE6;
+}
+.DefaultTableHeader{
+	background:url('../images/bg-panel-header.gif');
+}
+.DefaultTable tr:hover{
+	background:#FFF9C3;
+}
+.DefaultTable tr.DefaultTableHeader:hover{
+	background:url('../images/bg-panel-header.gif');
+}
+.DefaultTable th{
+	font-size:110%;
+	text-align:left;
+	border-bottom: 1px solid #E1E9F8;
+	border-left: 1px solid #E1E9F8;
+	height:25px;
+	margin: 10px 0 10px 0;
+	padding:0 5px 0 5px;
+	cursor:pointer;
+}
+.DefaultTable th:first-child{
+	border-left: 1px solid #E1E9F8;
+	border-left: 0;
+}
+
+.DefaultTable tr:hover td.focusedColumn{
+	background:#FEF6AF;
+}
+.DefaultTable td{
+	padding:0 10px 0 5px;
+	height:30px;
+	border-bottom: 1px solid #E1E9F8;
+}
+.DefaultTable .Right{
+	text-align:right;
+}
+.TableSorterFloatLeft{
+	float:left;
+}

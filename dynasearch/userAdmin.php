@@ -64,10 +64,18 @@
    switch( $op )
    {
    case 'resetProgress' : // Reset Progress
+      // Set current position in t_user table to 0
       $query = "UPDATE t_user " .
                "SET current_position=0 " .
                "WHERE User_ID='$pId';" ;
       mysql_query($query);
+      
+      // Clear user output
+      $query = "UPDATE t_user_output " .
+               "SET QuestOutput='', ClickOutput='', Branch='' " .
+               "WHERE User_ID='$pId' AND Experiment_ID='$pExpId';" ;
+      mysql_query($query);
+      
       $pProgress = 0;
       break;
 
@@ -162,7 +170,7 @@
       echo '<select id="aParticipants" >';
       foreach($aParticipants as $key => $value)
       {
-         if ($key == $qId)
+         if ($key == $pId)
          {
             $selected = 'selected="selected"';
          }

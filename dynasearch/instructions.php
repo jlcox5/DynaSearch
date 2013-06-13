@@ -3,26 +3,6 @@
    include("assets/php/std_api.php");
    require_once("assets/php/db_util.php");
    
-/*
-   function strToHex($string)
-{
-    $hex='';
-    for ($i=0; $i < strlen($string); $i++)
-    {
-        $hex .= dechex(ord($string[$i]));
-    }
-    return $hex;
-}
-
-function hexToStr($hex)
-{
-    $string='';
-    for ($i=0; $i < strlen($hex)-1; $i+=2)
-    {
-        $string .= chr( hexdec($hex[$i].$hex[$i+1]) );
-    }
-	return $string;
-}*/
    
    // Are we supposed to be here?
    if(isset($_SESSION['page_sig'])) {
@@ -35,64 +15,31 @@ function hexToStr($hex)
    	redirect('assets/php/user.php?logout=true');
    }
    
-	/////////////////////////////////////////////////
-	// Get the title and content
-	/////////////////////////////////////////////////
+	// Main Variables
 	$username = $_SESSION['username'];
+   $admin    = $_SESSION['userAdmin'];
 	
 	// Get our current page.
 	$result = query_db('select * from t_user where User_ID=\''. $username .'\'');
 	$row = mysql_fetch_array($result, MYSQL_BOTH);
 	$current_position = $row['current_position'];
    
-   $expshortname = $row['experiment'];
- 	// Find out where we should go now.
-	$result = query_db('select * from t_experiments where ExperimentShortName=\''. $expshortname .'\'');
-	$row = mysql_fetch_array($result, MYSQL_BOTH);
-	
-	$expstr = $row['ExperimentString'];
-
-	$exparr = explode('$',$expstr);
-	for($i=0; $i<count($exparr);$i++)
-	{
-		$properties = explode('&', $exparr[$i]);
-		
-		for($j=0;$j < count($properties);$j++)
-		{
-			$item = explode('=',$properties[$j]);
-			
-			// Match up with the page we should be on.
-			if($item[0] == 'page')
-			{
-				$pagenum = (int)$item[1];
-				if($pagenum == $current_position-1)
-				{
-					for($k=0;$k<count($properties);$k++)
-					{
-						$item2 = explode('=',$properties[$k]);
-						
-						if($item2[0] == 'title')
-						{
-							$exp_page_title = hexToStr($item2[1]);
-						}
-						elseif($item2[0] == 'src')
-						{
-							$myFile = 'hurricane_data/'. $expshortname . '/'. hexToStr($item2[1]);
-							$fh = fopen($myFile, 'r');
-							$page_content = fread($fh, filesize($myFile));
-							fclose($fh);
-						}
-					}
-				}				
-			}
-		}
-	}
-	/////////////////////////////////////////////////
+   // Get Experiment Data
+   $expData     = $_SESSION['expData'];
+   $expPageData = $expData[ $current_position - 1 ];
+   $pageSource  = $expPageData['source'];
+   $pageTitle   = $expPageData['title'];
+   //$pageContent = '';
    
-   $page_title = "Dynaview";
-   $style_file = "style.css";
+   // Load Instruction File
+   $adminAssetDir = getAdminBaseDir($admin) . 'assets/';
+   $filename      = $adminAssetDir . $pageSource;
+   // '@' character supresses warnings if source not found
+   $pageContent   = @file_get_contents( $filename );
+   
+   $page_title = "DynaSearch";
 
-   $template_style_array  = array($style_file);
+   $template_style_array  = array("style.css");
    $template_script_array = array();
  
    include('assets/php/standard.php');
@@ -102,23 +49,35 @@ function hexToStr($hex)
 
 
 <body>
-    <div id="maincontainer">
-    <div id="wrapper" style="width:70%; margin: auto auto;">
-        <h1><?php echo $exp_page_title; ?></h1>
-    	<br/>
-        <?php
-		echo $page_content;	
-		?>
-    	<br/>
-		<p>
-		<form action="advance.php" method="post" >
-		<input name="advance" style="visibility:hidden;" value="true"/>
-		<button type="submit">Continue</button>
-		</form>
-		</p>
-        </div>
+   <div id="maincontainer">
+      <div id="wrapper" style="width:70%; margin: auto auto;">
+         <!-- Title -->
+         <h1><?php echo $pageTitle; ?></h1>
+    	   <br/>
+         
+         <!-- Content -->
+         <?php
+            if ( $pageContent )
+            {
+               echo $pageContent;
+            }
+            else
+            {
+               echo 'Uh oh! There seems to have been a problem... (Source file not found)<br/>' .
+                    'Try <a onclick="location.reload()">reloading</a> the page.<br/>' .
+                    'If the problem persists, please contact your experiment administrator.<br/>';
+               exit;
+            }
+         ?>
+    	   <br/>
+         
+         <!-- Content -->
+		   <form action="advance.php" method="post" >
+		      <input name="advance" style="visibility:hidden;" value="true"/>
+		      <button type="submit">Continue</button>
+		   </form>
+      </div>
        
-    </div>
-    </div>
+   </div>
 </body>
 </html>

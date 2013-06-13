@@ -105,7 +105,7 @@
 
    if( isset($_POST['deleteProfile']) )
    {
-      $selectedScaleId = $_POST['scaleProfile'];
+      $selectedScaleId = $_POST['scaleProfileId'];
       $query = "DELETE FROM t_scale_profiles " .
                "WHERE " .
                "Profile_ID='$selectedScaleId' AND Admin_ID='$username';";

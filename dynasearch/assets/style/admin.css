@@ -1,0 +1,13 @@
+
+.rounded-box {
+   width : 75%;
+}
+
+.rounded-box td  {
+   padding : 15px;
+}
+
+.rounded-box td.cell-left {
+   width        : 50%;
+   border-right : 1px solid #ccc;
+}

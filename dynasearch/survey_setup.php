@@ -8,7 +8,7 @@
    $page_title = "Survey Page Layout Editor";
 
    $template_style_array  = array("style.css", "mBoxCore.css", "mBoxModal.css", "mBoxNotice.css", "survey_setup.css");
-   $template_script_array = array("ajax-core.js", "mBox.All.min.js", "survey_setup_js.js");
+   $template_script_array = array("ajax-core.js", "mBox.All.min.js", 'mootools.tabpane.js', 'mootools.tabpane.extra.js', 'dsExpPage.class.js', 'dsExperiment.class.js', "survey_setup_js.js");
 
    include('assets/php/db_util.php');
 /*
@@ -29,7 +29,7 @@ function redirect($page_name)
    $username       = $_SESSION['username'];
    $expId          = ifSetElse( $_REQUEST['expId'], -1 );
    $expName        = ifSetElse( $_REQUEST['expName'] );
-   $expString      = ifSetElse( $_REQUEST['expData'] );
+   $expData        = ifSetElse( $_REQUEST['expData'], '{}');
    $scaleProfileId = ifSetElse( $_REQUEST['scaleProfileId'], -1 );
 
    $op = ifSetElse( $_REQUEST['fileop'] );   
@@ -53,7 +53,7 @@ function redirect($page_name)
       case 'save' :
       
          $sqlName = mysql_real_escape_string( $expName );
-         $sqlData = mysql_real_escape_string( $expString );
+         $sqlData = mysql_real_escape_string( $expData );
       
          if( $expId > 0 )
          {
@@ -92,7 +92,7 @@ function redirect($page_name)
              $res = mysql_fetch_array($res, MYSQL_BOTH);
                
              $expName        = $res['ExperimentName'];
-             $expString      = $res['ExperimentString'];
+             $expData        = $res['ExperimentString'];
              $scaleProfileId = $res['ScaleProfileID'];
           }		
 
@@ -103,7 +103,6 @@ function redirect($page_name)
    }
 
    include('assets/php/standard.php');
-
 ?>
 
 <body id="body">
@@ -197,68 +196,23 @@ function redirect($page_name)
                <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;">
                Add Information Page
             </a>
-            <a href="#" onClick="add_training_page('','');">
+            <a href="#" onClick="add_custom_page('','');">
                <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;">
-               Add Training Screen
+               Add Custom Page
             </a>
-            <a href="#" onClick="add_survey_page('','','');">
+            <a href="#" onClick="add_quest_page('','','');">
                <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;">
-               Add Survey Screen
+               Add Questionnaire Screen
             </a>
-            <p></p>
+            <a href="#" onClick="add_branch('','');">
+               <img src="assets/images/add.png"/ style="margin:auto 0; border-width:0px;">
+               Add Branch
+            </a>
+            <br/>
+            <br/>
 
-
-         <!-- Invisible selects. These are cloned to create drop downs for each list item-->
-         <?php
-            // List all active Questionnaires
-            $adminQuests = getAdminQuests($username);
-            //$_SESSION['SurveyList'] = '<select name="qChoice" id="qChoice" style="display:none;">';
-            $aQuests = '<select name="aQuests" id="aQuests" style="display:none;">';
-            foreach($adminQuests as $key => $value)
-            {
-               $aQuests .= '<option value="' . $key . '">' .
-                              $value . ' (' . $key . ')' .
-                           '</option>';
-               //$_SESSION['SurveyList'] = $_SESSION['SurveyList'].'<option value="'.$toPrint.'">'.$toPrint.'</option>';
-            }
-            //$_SESSION['SurveyList'] = $_SESSION['SurveyList'].'</select>';
-            $aQuests .= '</select>';
-
-            // Added by Jon - List all instruction pages
-            $instFiles = '<select name="instChoice" id="instChoice" style="display:none;">';
-            if($handle = opendir("./admins/" . $username . "/assets/instructions/"))
-            {
-               while(false !== ($file = readdir($handle)))
-               {
-                  if($file !== '.' && $file !== '..')
-                  {
-                     $instFiles = $instFiles.'<option value="'.$file.'">'.$file.'</option>';
-                  }
-               }
-            }
-            $instFiles = $instFiles.'</select>';
-
-            // Added by Jon - List all advisory pages
-            $advFiles = '<select name="advChoice" id="advChoice" style="display:none;">';
-            if($handle = opendir("./admins/" . $username . "/assets/training/"))
-            {
-               while(false !== ($file = readdir($handle)))
-               {
-                  if($file !== '.' && $file !== '..')
-                  {
-                     $advFiles = $advFiles.'<option value="'.$file.'">'.$file.'</option>';
-                  }
-               }
-            }
-            $advFiles = $advFiles.'</select>';
-         ?>
-
-         <p><?php echo($aQuests); echo($instFiles); echo($advFiles); ?> </p>
-
-
-
-         <!--- Our Sortables List --->
-         <div id="page_list"></div>
+            <!--- Our Sortables List --->
+            <div id="page_list"></div>
    
          </div>
       </div>
@@ -272,7 +226,7 @@ function redirect($page_name)
             window.addEvent(\'domready\', function(){
             ';
 
-     $expData = parseExperimentData( $expString );
+     /*$expData = parseExperimentData( $expString );
       for( $i = 0; $i < count($expData); ++$i )
       {
          $expPageData = $expData[ $i ];
@@ -299,12 +253,29 @@ function redirect($page_name)
                echo 'add_survey_page("'. $pageTitle .'","'. $pageSource .'");';
                break;
          }
-      }
+      }*/
 
 
 
       echo '});</script>';
    ?>
    
+   <?php
+      $infoPageOptions   = $assets[3]['Options'];
+      $customPageOptions = getAdminCustomPages( $username );
+      $questPageOptions  = getAdminQuests(      $username );
+   ?>
+   <script type="text/javascript">
+      //CP_ID   = <?php //echo json_encode($cpId); ?>;
+      //CP_NAME = <?php //echo json_encode($cpName); ?>;
+      EXP_DATA = <?php echo json_encode($expData); ?>;
+      
+      DS_ADMIN_ASSET_DIR      = <?php echo json_encode($assetBaseDir); ?>;
+     // DS_CUSTOMPAGE_OPTIONS   = <?php echo json_encode($customPageOptions); ?>;
+      
+      DS_EXP_INFO_PAGE_OPTIONS   = <?php echo json_encode($infoPageOptions,   JSON_FORCE_OBJECT); ?>;
+      DS_EXP_CUSTOM_PAGE_OPTIONS = <?php echo json_encode($customPageOptions, JSON_FORCE_OBJECT); ?>;
+      DS_EXP_QUEST_PAGE_OPTIONS  = <?php echo json_encode($questPageOptions,  JSON_FORCE_OBJECT); ?>;
+   </script>
 </body>
 </html>

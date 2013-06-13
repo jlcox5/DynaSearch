@@ -28,7 +28,6 @@ http://localhost/dynasearch/dynasearch/login.php?token=test
 
 
    include("assets/php/standard.php");
-
 ?>
 
 <body>
@@ -80,18 +79,22 @@ http://localhost/dynasearch/dynasearch/login.php?token=test
 
       if ( $resetToken )
       {
-         echo '<input name="username" type="text" placeholder="User ID" onKeyDown="if(event.keyCode == 13) $(\'reset_form\').submit();"/>' .
+         echo '<input name="username" type="text"     placeholder="User ID"      required="required" ' .
+                     'onKeyDown="if(event.keyCode == 13) $(\'reset_form\').submit();"/>' .
               '<br/>' .
-              '<input name="password" type="text" placeholder="New Password" onKeyDown="if(event.keyCode == 13) $(\'reset_form\').submit();"/>' .
+              '<input name="password" type="password" placeholder="New Password" required="required" ' .
+                     'onKeyDown="if(event.keyCode == 13) $(\'reset_form\').submit();"/>' .
               '<input type="hidden" name="user_action" value="reset" />' .
-              '<input type="hidden" name="token" value="<?php echo $resetToken; ?>" />';
+              '<input type="hidden" name="token" value="' . $resetToken . '" />';
 
       }
       else
       {
-         echo '<input name="username" type="text" placeholder="User ID" value="" onKeyDown="if(event.keyCode == 13) $(\'reset_form\').submit();"/>' .
+         echo '<input name="username" type="text" placeholder="User ID" value="" required="required" ' .
+                     'onKeyDown="if(event.keyCode == 13) $(\'reset_form\').submit();"/>' .
               '<br/>' .
-              '<input name="email"    type="text" placeholder="Email"   value="" onKeyDown="if(event.keyCode == 13) $(\'reset_form\').submit();"/>' .
+              '<input name="email"    type="text" placeholder="Email"   value="" required="required" ' .
+                     'onKeyDown="if(event.keyCode == 13) $(\'reset_form\').submit();"/>' .
               '<input type="hidden" name="user_action" value="resetRequest" />';
       }
    ?>
@@ -112,7 +115,7 @@ http://localhost/dynasearch/dynasearch/login.php?token=test
                         </a>
                         <br/>
                         <strong>Enter Code*:</strong><br />
-                        <input type="text" name="captcha_code" size="10" maxlength="6" />
+                        <input type="text" name="captcha_code" size="10" maxlength="6" required="required" />
                      </td>
                   </tr>
                </table>

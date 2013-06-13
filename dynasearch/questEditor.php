@@ -50,7 +50,7 @@
                   "VALUES ('$username', '$sqlName', '$sqlData');";
          mysql_query($query);
          $qId = mysql_insert_id();
-         redirect( 'questEditor.php?op=load&qId=' . $expId );
+         redirect( 'questEditor.php?op=load&qId=' . $qId );
       }
       break;
 
@@ -59,18 +59,17 @@
                "WHERE id=$qId;";
 
       $res = mysql_query( $query );
+      $row = mysql_fetch_array($res, MYSQL_BOTH);
 				
-      if( is_string($res) ) 
+      if( !$row ) 
       {  
          if( $DEBUG ) { echo "Op ERROR : LOAD --- Questionnaire not found in database<br/>"; }
       }
       else 
       {
           // Load the Questionnaire
-          $res = mysql_fetch_array($res, MYSQL_BOTH);
-					
-          $qName = $res['Name'];
-          $qData = $res['Value'];
+          $qName = $row['Name'];
+          $qData = $row['Value'];
       }
       break;
 

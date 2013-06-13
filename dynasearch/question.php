@@ -33,7 +33,7 @@
       // Get Experiment Data
       $expData = $_SESSION['expData'];
       $expPageData = $expData[ $current_position-1 ];
-      $qId = $expPageData['src'];
+      $qId = $expPageData['source'];
       $pageTitle = $expPageData['title'];
 
       // Current Questionaire
@@ -63,14 +63,11 @@
 
    //$_SESSION['curQ'] = "";
 	
+   // Page Header and Nav Bar Setup
    $page_title = "DynaSearch";
-   $style_file = "style.css";
-	
-   $template_style_array  = array($style_file, "accordian.css");
+   $template_style_array  = array('style.css', "accordian.css");
    $template_script_array = array("accordian.js", "questionnaire.js", "question.js");
-	
    include("assets/php/standard.php");
-
 ?>
 
 <body>

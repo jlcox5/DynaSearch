@@ -16,70 +16,163 @@ if(isset($_SESSION['timeout']) ) {
 $_SESSION['timeout'] = time();
 //$username = $_SESSION['username'];
 
+   // Global Variables to make standardization easier
+
+   $DS_EXP_INFO_PAGE_TAG   = 'info';
+   $DS_EXP_CUSTOM_PAGE_TAG = 'custom';
+   $DS_EXP_QUEST_PAGE_TAG  = 'quest';
+   $DS_EXP_BRANCH_TAG      = 'branch';
+
 
 // Helper Functions
 
-function redirect($page_name)
-{
-	$host  = $_SERVER['HTTP_HOST'];
-	$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-	header("Location: http://$host$uri/$page_name");	
-}
-
-
-function fileSizeStr($size)
-{
-   $i     = -1; 
-   $units = array('kB', 'MB', 'GB');
-   do
+   /*
+    * Generates the URL to the root of the DynaSearch system.
+    *
+    * @return string - URL of DynaSearch root.
+    */
+   function genBaseUrl()
    {
-      $size = $size / 1024;
-      ++$i;
-   }
-   while ($size >= 1024);
-
-   return (number_format($size, 1) . ' ' . $units[$i]);
-}
-
-
-function strToHex($string)
-{
-   $hex='';
-   for ($i=0; $i < strlen($string); $i++)
-   {
-      $hex .= dechex(ord($string[$i]));
-   }
-   return $hex;
-}
-
-
-function hexToStr($hex)
-{
-   $string='';
-   for ($i=0; $i < strlen($hex)-1; $i+=2)
-   {
-      $string .= chr( hexdec($hex[$i].$hex[$i+1]) );
-   }
-   return $string;
-}
-
-
-function randString( $length = 32,
-                     $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-                   )
-{
-   $size = strlen( $chars );
-   $str  = '';
-
-   for( $i = 0; $i < $length; $i++ )
-   {
-      $str .= $chars[ rand(0, $size - 1) ];
+      $host     = $_SERVER['HTTP_HOST'];
+	   $fullpath = str_replace( '\\', '/', dirname(dirname(dirname(__FILE__))) );
+      $basepath = $_SERVER['DOCUMENT_ROOT'];
+      $uri      = str_replace( $basepath, '', $fullpath );
+      $baseUrl  = 'http://' . $host . $uri;
+      return $baseUrl;
    }
 
-   return $str;
-}
+   
+   /*
+    * Creates a redirection header to a secified URI and terminates the calling
+    * script.
+    * 
+    * @param  string $page - The URI relative to the DynaSearch system root.
+    *
+    * @return string - URL of DynaSearch root.
+    */
+   function redirect( $page )
+   {
+      $baseUrl = genBaseUrl();
+	   //$host  = $_SERVER['HTTP_HOST'];
+	   //$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+	   header( "Location: $baseUrl/$page" );
+      exit;
+   }
+   
+   
+   /*
+    * Gets the base directory for and administrator ID
+    * 
+    * @param  string $adminId - Administrator ID
+    *
+    * @return string - Admin base directory URL
+    */
+   function getAdminBaseDir( $adminId )
+   {
+      $baseUrl = genBaseUrl();
+      $adminBaseDir = $baseUrl . '/admins/' . $adminId . '/';
+      return $adminBaseDir;
+   }
+
+   
+   /*
+    * Formats a given number of bytes to the appropriate size with an option to
+    * specify the number of decimal points
+    * 
+    * @param  int $size - File size in bytes.
+    * @param  int $dec  - [OPTIONAL] Number of decimal points. Default is 1.
+    *
+    * @return string - Formatted file size.
+    */
+   function fileSizeStr( $size, $dec = 1 )
+   {
+      $i     = -1; 
+      $units = array('kB', 'MB', 'GB');
+      do
+      {
+         $size = $size / 1024;
+         ++$i;
+      }
+      while ($size >= 1024);
+
+      return (number_format($size, $dec) . ' ' . $units[$i]);
+   }
+
+   
+   /*
+    * Converts a string to hexadecimal representation.
+    * 
+    * @param  string $string - String to convert.
+    *
+    * @return string - String in hexadecimal.
+    */
+   function strToHex( $string )
+   {
+      $hex='';
+      for ($i=0; $i < strlen($string); $i++)
+      {
+         $hex .= dechex(ord($string[$i]));
+      }
+      return $hex;
+   }
+
+   
+   /*
+    * Decodes a string from its hexadecimal represetnation.
+    * 
+    * @param  string $string - Hexadecimal represetnation.
+    *
+    * @return string - Decoded string.
+    */
+   function hexToStr( $hex )
+   {
+      $string='';
+      for ($i=0; $i < strlen($hex)-1; $i+=2)
+      {
+         $string .= chr( hexdec($hex[$i].$hex[$i+1]) );
+      }
+      return $string;
+   }
+
+   /*
+    * Constructs a random string of a specific length from a specified set of
+    * characters.
+    * 
+    * @param int    $length - [OPTIONAL] The length (in characters) of the
+    *                         string to be generated. Default is 32.
+    * @param string $chars  - The set of valid characters for the string.
+    *                         Default is all alphanumeric characters.
+    *
+    * @return string - A randomized string
+    */
+   function randString (
+      $length = 32,
+      $chars  = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+   )
+   {
+      $size = strlen( $chars );
+      $str  = '';
+
+      for( $i = 0; $i < $length; $i++ )
+      {
+         $str .= $chars[ rand(0, $size - 1) ];
+      }
+
+      return $str;
+   }
 
 
+   function getRequestField( $field, $val = '' )
+   {
+      if ( isset($_REQUEST[$field]) ) {
+         return $_REQUEST[$field];
+      }
+      else
+      {
+         return $val;
+      }
+   }
+   
 function ifSetElse( &$var, $val = '' )
 {
    if ( isset($var) ) {
@@ -93,64 +186,209 @@ function ifSetElse( &$var, $val = '' )
 
 
 // Reset User Password
-function genPasswordResetUrl( $userId, $lifetime = 360 )
+function genExpiration( $lifetime = 360 )
+{
+   //$expiration = date('Y/m/d H:i:s', time() + $lifetime);
+   return time() + $lifetime;
+}
+
+// Reset User Password
+function genPasswordResetUrl( $userId, $expiration = null )
 {
    $resetToken = randString();
-   $tokenExpiration = date('Y/m/d H:i:s', time() + $lifetime);
+   if ( !isset($expiration) )
+   {
+      $expiration = genExpiration();
+   }
+   $tokenExpiration = date('Y/m/d H:i:s', $expiration);
    $query = "UPDATE t_user " .
             "SET ResetToken='$resetToken', TokenExpiration='$tokenExpiration' " .
             "WHERE User_ID='$userId'; ";
    mysql_query($query); 
-   $host  = $_SERVER['HTTP_HOST'];
-   $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-   $resetUrl = 'http://' . $host . $uri . '/reset.php?token=' . $resetToken;
+   
+   $baseUrl  = genBaseUrl();
+   $resetUrl = $baseUrl . '/reset.php?token=' . $resetToken;
    return $resetUrl;
 }
 
 // Securimage Captcha Validation
-function validateCaptcha( $captchaCode = 'captcha_code' )
-{       
+function validateCaptcha( $captchaCode = null )
+{
+   if ( !isset($captchaCode) )
+   {
+      $captchaCode = $_POST['captcha_code'];
+   }
    include_once( '../securimage/securimage.php' );
    $securimage = new Securimage();
-   $validation = $securimage->check( $_POST[$captchaCode] );
+   $validation = $securimage->check( $captchaCode );
    return $validation;
 }
 
+
+   /** 
+    * Resolves a participant to a specific branch of a specific
+    * condition.
+    *
+    * The database is checked to see if the participant has already
+    * been designated to specific branches.
+    *
+    * If the participant is not already assigned branches, the current
+    * distribution for the branch is evaluated and assigned. 
+    *
+    * @param array $branches - branches for this condition
+    *
+    * @return array - the array for the designated branch
+    */
+   function pickBranch( $page )
+   {
+      $condition    = $page['condition'];
+      $branches     = $page['levels'];
+      $weights      = Array();
+      $lowestWeight = NULL;
+      
+      $pId       = $_SESSION['username'];
+      $expId     = $_SESSION['userExpId'];
+      
+      foreach ( $branches as $branch )
+      {
+         // Get branch info from database
+         $query = 'SELECT * FROM t_branches ' .
+                  'WHERE Experiment_ID=' . $expId . ' AND `Condition`="' . $condition . '" AND Level="' . $branch['title'] . '";';
+         //echo 'query : ' . $query . '<br/>';
+         if ( $result = mysql_query( $query ) )
+         {
+            // Row exists in database
+            $row = mysql_fetch_array($result, MYSQL_BOTH);
+            $participantList = $row['Participants'];
+         
+            if ( empty($participantList) )
+            {
+               // No participants yet in this branch
+               $weights[]    = 0;
+               $lowestWeight = 0;
+            }
+            else
+            {
+               // Split up list string
+               $branchParticipants = preg_split('@,@', $participantList, NULL, PREG_SPLIT_NO_EMPTY);// explode(',', $participantList);
+            
+               // Check if participant is in this branch
+               if ( in_array( $pId, $branchParticipants) )
+               {
+                  return $branch;
+               }
+            
+               // Set branch weight
+               $weight = count( $branchParticipants );
+               if ( ($lowestWeight === NULL) or ($weight < $lowestWeight) )
+               {
+                  $lowestWeight = $weight;
+               }
+               $weights[] = $weight;
+            }
+         }
+         else
+         {
+            // Row does not yet exist in database - insert it
+            $query = 'INSERT INTO t_branches ' .
+                     '(Experiment_ID, `Condition`, Level) ' .
+                     'VALUES(' . $expId . ',"' . $condition . '","' . $branch['title'] . '");';
+            //echo 'query : ' . $query . '<br/>';
+            $weights[]    = 0;
+            $lowestWeight = 0;
+            mysql_query( $query )or die(mysql_error());
+         }
+      }
+            
+      // Select a branch based on weighting
+      
+      //    Create array of lowest weight
+      $lowIndexes   = Array();
+      for( $i = 0; $i < count($weights); $i++ )
+      {
+         if ( $weights[$i] <= $lowestWeight )
+         {
+            $lowIndexes[] = $i;
+         }
+      }
+      //print_r($lowIndexes);
+      //    Randomly select one of the lowest weighted items
+      $numOptions  = count( $lowIndexes );
+      $index       = rand( 0, $numOptions - 1 );
+      $branchIndex = $lowIndexes[ $index ];
+      $selectedBranch      = $branches[ $branchIndex ];
+      //echo 'picked branch ' . $branchIndex . '<br/>';
+      $selectedBranchCount = $lowestWeight;
+      
+      // Add participant to branch list
+      //if( $selectedBranchCount > 0 )
+      //{
+        // $pId = ',' . $pId;
+      //}
+      $query = 'UPDATE t_branches ' .
+               'SET Participants = IFNULL( CONCAT(Participants, "' . $pId . ',"), "' . $pId . '," )' .
+               'WHERE Experiment_ID=' . $expId . ' AND `Condition`="' . $condition . '" AND Level="' . $selectedBranch['title'] . '";';
+      $result = mysql_query( $query );
+      
+      // Add participant to branch list
+      $branchStr = $condition . ':' . $selectedBranch['title'] . ',';
+      $query = 'UPDATE t_user_output ' .
+               'SET Branch = IFNULL( CONCAT(Branch, "' . $branchStr . '"), "' . $branchStr . '" )' .
+               'WHERE Experiment_ID=' . $expId . ' AND User_ID="' . $pId . '";';
+      $result = mysql_query( $query );
+      
+      return $selectedBranch;
+   }
+   
+   
+   /** 
+    * Takes page data array and flattens it to a linear array of pages
+    * representing the subjects specified branches.
+    *
+    * @param string $pages - and array of pages
+    *
+    * @return array - the pages with branches resolved
+    */
+   function loadExpPages( $pages )
+   {
+      
+      $expArray = Array();
+      
+      foreach( $pages as $page )
+      {
+         $type = $page['type'];
+         //echo 'type : ' . $type . '<br/>';
+         
+         if ( $type == 'branch' )
+         {
+            //$branches    = $page['levels'];
+            $branch      = pickBranch( $page );
+            $branchPages = loadExpPages( $branch['pages'] );
+            $expArray    = array_merge( $expArray, $branchPages);
+         }
+         else
+         {
+            $expArray[] = $page;
+         }
+      }
+	  
+      return $expArray;
+   }
+   
    /** 
     * Parses the hex encoded experiment string into an array where each 
     * index corresponds to a page, and contains an associated array of
     * that page's values
     *
     * @param string $expdata - the hex encoded experiment string
+    *
     * @return array - contains each page as an associated array
     */
    function parseExperimentData( $expData )
    {
-      $expArray = array();
-	  
-	  if ( !empty($expData) )
-	  {
-	     // Split experiment string up by page
-         $expPages = explode('$',$expData);
-         for($i=0; $i<count($expPages);$i++)
-         {
-            // Split page into page's properties
-            $expProperties = explode('&', $expPages[$i]);
-            $propertyArray = array();
-
-            for($j=0;$j < count($expProperties);$j++)
-            {
-               // Pull out key and value from property
-               $item = explode('=',$expProperties[$j]);
-               $key   = $item[0];
-               $value = ( ($key == "page") ? ($item[1]) : (hexToStr($item[1])) );
-               $propertyArray[$key] = $value;
-            }
-
-            $expArray[ $i ] = $propertyArray;
-
-         }
-	  }
+      $exp      = json_decode( $expData, true );
+      $pages    = $exp['pages'];
+      $expArray = loadExpPages( $pages );
 	  
       return $expArray;
    }
@@ -175,7 +413,7 @@ function getAdminExps( $username )
 function getAdminParticipants( $username )
 {
    $adminParticipants = array();
-   $query = "SELECT * FROM t_user WHERE Admin_ID='$username';";
+   $query = "SELECT * FROM t_user WHERE Admin_ID='$username' AND User_Type='U';";
    $result = mysql_query($query);
    while( $row = mysql_fetch_array($result, MYSQL_BOTH) )
    {
@@ -201,6 +439,22 @@ function getAdminQuests( $username )
       $adminQuests[$optionQuestId] = $optionQuestName;
    }
    return $adminQuests;
+}
+
+// Get Admin's Custom Pages
+function getAdminCustomPages( $username )
+{
+   $adminCustomPages = array();
+   $query = "SELECT * FROM t_custom_pages WHERE Admin_ID='$username';";
+   $result = mysql_query($query);
+   while( $row = mysql_fetch_array($result, MYSQL_BOTH) )
+   {
+      $key   = $row['ID'];
+      $value = $row['Name'];
+
+      $adminCustomPages[$key] = $value;
+   }
+   return $adminCustomPages;
 }
 
 

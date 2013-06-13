@@ -63,22 +63,25 @@
 
       switch( $currentPage['type'] )
       {
-         case 'Information Page':
+         case $DS_EXP_INFO_PAGE_TAG:
             $_SESSION['page_sig'] = 'instructions.php';
             redirect('instructions.php');
             break;
+            
+         case $DS_EXP_CUSTOM_PAGE_TAG:
+            $_SESSION['page_sig'] = 'custom_page.php';
+            //$_SESSION['advNum'] = $currentPage['advNum'];
+            //if( $DEBUG ) { echo $_SESSION['advNum']; }
+            redirect('custom_page.php');
+            break;
 
-         case 'Survey Page':
+         case $DS_EXP_QUEST_PAGE_TAG:
             $_SESSION['page_sig'] = 'question.php';
             redirect('question.php');
             break;
 
-         case 'Training Screen':
-            $_SESSION['page_sig'] = 'dynaview.php';
-            $_SESSION['advNum'] = $currentPage['advNum'];
-            if( $DEBUG ) { echo $_SESSION['advNum']; }
-            redirect('dynasearch.php');
-            break;
+         default :
+            echo 'ERROR : Unknown Page Tag - [ ' . $currentPage['type'] . ']<br/>';
       }
 
    }

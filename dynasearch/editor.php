@@ -118,9 +118,9 @@ if(isset($_SESSION['scaleH'])){
       {
 
          echo '<select id="'. $currAsset["Tag"] .'PopupSelect">';
-         for ($j = 0; $j < $assetOptionCount; $j++)
+         foreach ($assetOptions as $key => $value)
          {
-            echo $assetOptions[$j];
+            echo '<option value="' . $key . '">' . $value . '</option>';
          }
          echo '</select>';
          $disable = '';

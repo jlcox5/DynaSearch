@@ -183,16 +183,26 @@ window.addEvent(
       change_view_mode();
 
       // Create Accordion
-      var questResultAcc = new Fx.Accordion(
+      /*var questResultAcc = new Fx.Accordion(
          $('quest-accordion'),
          '#quest-accordion .toggle',
          '#quest-accordion .content',
          {
             alwaysHide : true
          }
-      );
-
-      //var resultTable = new HtmlTable
+      );*/
+      
+      // Create Accordions
+      $$('.accordion').each( function( accordion ) {
+         new Fx.Accordion(
+            accordion,
+            accordion.getElements('.toggle'),
+            accordion.getElements('.content'),
+            {
+               alwaysHide : true
+             }
+         );
+      });
 
    }
 );

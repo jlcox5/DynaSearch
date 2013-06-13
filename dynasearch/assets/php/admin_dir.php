@@ -26,26 +26,28 @@
             "Extensions" => array(),
             "MaxFileSize" => 512,
             "Options" => array() ),
-			
-	  array("Name" => "Image Tables",
-            "Extensions" => array(),
-            "MaxFileSize" => 512,
-            "Options" => array() ),
-
+            
       array("Name" => "Applets",
             "Extensions" => array(),
             "MaxFileSize" => 512,
             "Options" => array() ),
+			
+	   /*array("Name" => "Image Tables",
+            "Extensions" => array(),
+            "MaxFileSize" => 512,
+            "Options" => array() ),*/
+
+      
 			
       array("Name" => "Instructions",
             "Extensions" => array(),
             "MaxFileSize" => 512,
             "Options" => array() ),
 			
-       array("Name" => "Training",
+      /*array("Name" => "Training",
             "Extensions" => array(),
             "MaxFileSize" => 512,
-            "Options" => array() )
+            "Options" => array() )*/
    );
 
    $username = $_SESSION['username'];
@@ -69,7 +71,8 @@
                if($file !== '.' && $file !== '..')
                {
                   $filePath = $currAsset["Tag"] . '/' . $file;
-                  $assetOptions[ $assetOptionCount ] = '<option value="' . $filePath . '">' . $file . '</option>';
+                  //$assetOptions[ $assetOptionCount ] = '<option value="' . $filePath . '">' . $file . '</option>';
+                  $assetOptions[ $filePath ] = $file;
                   $adminDirSize += filesize($currAsset["Path"] . '/' . $file);
                   ++$assetOptionCount;
                }

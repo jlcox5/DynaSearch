@@ -3,121 +3,59 @@
    session_start();
    require_once('config.php');
    require_once('std_api.php');
+   require_once('msg_templates.php');
    include('PasswordHash.php');
 
-   function load_user_session( $username, $array )
-   {
-      //$_SESSION['logged_in'] = 'true';
-      $_SESSION['username']  = $username;
-      $_SESSION['userAdmin'] = $array['Admin_ID'];
-      $_SESSION['UserType']  = $array['User_Type'];
-      $_SESSION['userExpId'] = $array['Current_Experiment_ID'];
-      $_SESSION['full_name'] = $array['Name'];
 
-      //$_SESSION['scaleProfileId'] = $array['ScaleProfileID'];
-
-      if( ($array['User_Type'] == 'U') || ($array['User_Type'] == 'M') )
-      {
-
-         $expId = $_SESSION['userExpId'];
-
-         if ( $expId > 0 )
-         {
-
-            // Pull experiment data from database
-            $query = "SELECT * FROM t_experiments WHERE id='$expId';";
-            $result = mysql_query($query);
-            if( ($row = mysql_fetch_array($result, MYSQL_BOTH)) === false)
-            {
-               redirect('../../logOut.php?error=exp_dne');
-               exit;
-            }
-
-            // Get Custom Scaling flag
-            //$_SESSION['customScaling'] = $row['CustomScaling'];
-
-            // Get Scaling Profile
-            $_SESSION['scaleProfileId'] = $row['ScaleProfileID'];
-
-            // Get Experiment Scale
-            //$_SESSION['scaleW'] = //$row['ScaleW'];
-            //$_SESSION['scaleH'] = //$row['ScaleH'];
-
-            // Pull Experiment string from experiment data
-            $expstr = $row['ExperimentString'];
-
-            // Parse experiment string and save as session variable
-            $_SESSION['expData'] = parseExperimentData( $expstr );
-
-            $query = "SELECT id FROM t_user_output WHERE User_ID='$username' AND Experiment_ID='$expId' LIMIT 1;";
-            $result = mysql_query($query);
-            if( mysql_fetch_array($result) !== false )
-            {
-
-               // User output has been started for this experiment
-               if( $array['User_Type'] == 'M' )
-               {
-                  // MT Logins are One-Time Use Only
-                  redirect('../../mturk.php?error=already_run');
-                  exit;
-               }
-            
-            }
-            else
-            {
-              // User ouput must be added to database
-               $query = "INSERT INTO t_user_output (User_ID, Experiment_ID) " .
-                           "VALUES ('$username', '$expId');";
-               $result = mysql_query($query);  
-
-            }
-
-         }
-         else
-         {
-
-            redirect('../../logOut.php?error=exp_unassigned');
-            exit;
-         }
-
-      }
-      else
-      {
-         $_SESSION['memMax'] = $array['MemoryAllocation'] * 1024;
-      }
-
-   }
-
-
-   # Return "True" on success, setting session variables "username", "full_name" and "logged_in"
-   # else returns "False"
+   /**
+    * Validates a user login to the database using a username and
+    * password.
+    *
+    * @param string $username - username corresponding to the field 
+    *    'User_ID' in the table 't_users'
+    * @param string $password - user password
+    *
+    * @return boolean - False if either parameter is empty, the username
+    *    is not found in the database, or password validation fails.
+    *    Otherwise returbs true.
+    */
    function user_signin($username, $password)
    {
+      if( empty($username) or empty($password) )
+      {
+         // Reject an attempt with an empty username or password.
+         return false;
+      }
+
+      // Connect to database
       global $DB_HOST;
       global $DB_NAME;
       global $DB_USER;
       global $DB_PASS;
-
-      // Reject an attempt with an empty username or password.
-      if( strlen($username) == 0 || strlen($password) == 0) { return "False"; }
-
       mysql_connect($DB_HOST, $DB_USER, $DB_PASS) or die("Unable to connect.");
       mysql_select_db($DB_NAME) or die("Unable to select database.");
 	
-      $result = mysql_query("SELECT * FROM t_user WHERE User_ID='$username';");
-      $row    = mysql_fetch_array($result);
+      $sqlUsername = mysql_real_escape_string( $username );
+      $result = mysql_query("SELECT * FROM t_user WHERE User_ID='$sqlUsername';");
+      
+      if ( !($row = mysql_fetch_array($result)) )
+      {
+         // User Does Not Exist
+         return false;
+      }
 	
       if( ($row['User_ID'] == $username) && 
           ( validate_password($password, $row['PasswordHash']) ) 
         )
       {
-         $_SESSION['logged_in'] = 'true';
-         load_user_session($username, $row);
-         return 'true';
+         // Password validation success
+         return true;
       }
       else
       {
-         return 'false';
+         // Password validation failed
+         echo 'here';
+         return false;
       }
    }
 
@@ -130,209 +68,296 @@
    if(isset($_GET['logout']))
    {
       session_destroy();
-      redirect('../../login.php');
+      redirect('login.php');
    }
 
-
-   if(isset($_POST['user_action'])) // Are we performing a user action?
+   $username = ifSetElse( $_POST['username'] );
+   $userAction = ifSetElse( $_POST['user_action'] );
+   switch ( $userAction )
    {
-
       // Password Reset Request
-      if($_POST['user_action'] == 'resetRequest') 
-      {
-         if ( validateCaptcha() )
+      case 'resetRequest':
+         if ( !(validateCaptcha() or $DEBUG) )
          {
-            // Captcha Validation Success
-            $username = ifSetElse( $_REQUEST['username'] );
-            $email    = ifSetElse( $_REQUEST['email'] );
-
-            $sqlUsername = mysql_real_escape_string( $username );
-            $query = "SELECT * FROM t_user WHERE User_ID='$sqlUsername';";
-            $result = mysql_query( $query );
-            if ( $row = mysql_fetch_array($result) )
+            // Captcha Validation Failed
+            redirect('reset.php?msg=captcha_error');
+         }
+         
+         $sqlUsername = mysql_real_escape_string( $username );
+         $query = "SELECT * FROM t_user WHERE User_ID='$sqlUsername';";
+         $result = mysql_query( $query );
+         if ( !($row = mysql_fetch_array($result)) )
+         {
+            // User Does Not Exist
+            redirect('reset.php?msg=user_dne');
+         }
+         
+         $email = ifSetElse( $_REQUEST['email'] );
+         if ( $email != $row['Email'] )
+         {
+            // Email Does Not Match
+            redirect('reset.php?msg=wrong_email');
+         }
+         
+         // Set expiration and create token
+         $expiration = genExpiration();
+         $resetUrl   = genPasswordResetUrl( $username, $expiration );
+         
+         // Send Email
+         $recipient = $email;
+         $subject   = 'DynaSearch Password Reset';
+         $message   = genMessage(
+                     'email_reset_request',
+                     array( 'name' => $row['Name'], 'url' => $resetUrl, 'exp' => $expiration ) 
+                  );
+         $sender    = 'jgestri@g.clemson.edu'; // TODO
+         $headers   = 'From: ' . $sender . '\r\n';//. 'Reply-to: ' . $sender;
+         if( mail($recipient, $subject, $message, $headers) )
+         {
+            // Email sent successfuly
+            if ( $DEBUG )
             {
-               // User exists
-               if ( $email == $row['Email'] )
-               {
-                  // Email matches
-                  $resetUrl = genPasswordResetUrl( $username );
-               
-                  // Send Email
-                  $recipient = $email;
-                  $subject   = 'DynaSearch Password Reset';
-                  $message   = $_POST['message'];
-                  $sender    = ''; // TODO
-                  $headers   = "From:" . $sender;
-                  if( mail($recipient, $subject, $message, $headers) )
-                  {
-                     //redirect('../../reset.php?msg=request_success');
-                  }
-                  else
-                  {
-                     //redirect('../../reset.php?msg=request_fail');
-                  }
-                  exit;
-               
-               }
-               else
-               {
-                  // Email Does Not Match
-                  redirect('../../reset.php?msg=wrong_email');
-                  exit;
-               } 
+               echo 'Email:<br/>' . $message;
             }
             else
             {
-               // User Does Not Exist
-               redirect('../../reset.php?msg=user_dne');
-               exit;
+               redirect('reset.php?msg=request_success');
             }
          }
          else
          {
-            // Captcha Validation Failed
-            redirect('../../reset.php?msg=captcha_error');
-            exit;
+            // Email failed to send
+            redirect('reset.php?msg=request_fail');
          }
-      }
-   
+         break;
+         
+         
       // Password Reset
-      if($_POST['user_action'] == 'reset') 
-      {
-         if(isset($_POST['username']) && isset($_POST['password']))
+      case 'reset' :
+
+         $resetToken = ifSetElse( $_POST['token'], 'test' );
+
+         if ( !(validateCaptcha() or $DEBUG) )
          {
-
-            $username = $_POST['username'];
-
-            // Check for valid token
-            $query = "SELECT * FROM t_user WHERE User_ID='$username';";
-            $result = mysql_query( $query );
-            $row = mysql_fetch_array($result);
-            $validToken     = $row['ResetToken'];
-            $tokenTimestamp = $row['TokenExpiration'];
-            $resetToken     = $_POST['token'];
-
-
-            if( $resetToken != $validToken )
-            {
-               redirect('../../reset.php?msg=invalid_token');
-            }
-
-            // Check if token has expired
-            if( time() > strtotime($tokenTimestamp) )
-            {
-               redirect('../../reset.php?msg=expired_token');
-            }
-
-            $password = $_POST['password'];
-            $passwordHash = create_hash( $password );
-
-            // Securimage Captcha Validation
-            include_once( '../securimage/securimage.php' );
-            $securimage = new Securimage();
-            if ($securimage->check($_POST['captcha_code']) == false) {
-              // the code was incorrect
-              // you should handle the error so that the form processor doesn't continue
- 
-              // or you can use the following code if there is no validation or you do not know how
-              echo "The security code entered was incorrect.<br /><br />";
-              echo "Please go <a href='javascript:history.go(-1)'>back</a> and try again.";
-              exit;
-            }
-
-            $passwordHashStr = mysql_escape_string( $passwordHash );
-            $query = "UPDATE t_user SET PasswordHash='$passwordHashStr' WHERE User_ID='$username';";
-            $result = mysql_query( $query );
-
-            // Continue to login
-            $_POST['user_action'] = 'login';
-           
+            // Captcha Validation Failed
+            redirect('reset.php?msg=captcha_error&token=' . $resetToken);
          }
-      }
+         
+         $sqlUsername = mysql_real_escape_string( $username );
+         $query = "SELECT * FROM t_user WHERE User_ID='$sqlUsername';";
+         $result = mysql_query( $query );
+         if ( !($row = mysql_fetch_array($result)) )
+         {
+            // User Does Not Exist
+            redirect('reset.php?msg=user_dne&token=' . $resetToken);
+         }
+         
+         // Get token and expiration
+         $validToken     = $row['ResetToken'];
+         $tokenTimestamp = $row['TokenExpiration'];
 
+         if( $resetToken != $validToken )
+         {
+            // Invalid token
+            redirect('reset.php?msg=invalid_token');
+         }
+
+         if( time() > strtotime($tokenTimestamp) )
+         {
+            // Token has expired
+            redirect('reset.php?msg=expired_token');
+         }
+
+         // Hash password and insert into database
+         $password = ifSetElse( $_POST['password'] );
+         $passwordHash = create_hash( $password );
+         $passwordHashStr = mysql_escape_string( $passwordHash );
+         $query = "UPDATE t_user SET PasswordHash='$passwordHashStr' WHERE User_ID='$sqlUsername';";
+         $result = mysql_query( $query );
+
+         // Login
+         $login = user_signin( $username, $password );
+         if( !$login )
+         {
+            // Login failed
+            if ( $DEBUG )
+            {
+               echo 'username : ' . $username . '<br/>' .
+                    'password : ' . $password . '<br/>' ;
+            }
+            else
+            {
+               // TODO should not get here, its a problem
+               redirect('login.php?error=wrong_pass');
+            }
+         }
+
+         break;
+
+         
       // User Login
-      if($_POST['user_action'] == 'login')
-      {		
-         if(isset($_POST['username']) && isset($_POST['password']))
+      case 'login' :
+         $password = ifSetElse( $_POST['password'] );
+         $login    = user_signin( $username, $password );         
+         if( !$login )
          {
-            $login = user_signin($_POST['username'], $_POST['password']);
-            if( 'true' == $login)
+            // Login failed
+            if ( $DEBUG )
             {
-               if($_SESSION['UserType'] == 'A')
-               {
-                  redirect('../../admin.php');
-                  exit;
-               }
-               else
-               {
-               //echo("user");
-               
-                  redirect('../../director.php');
-                  exit;
-               }
-            }
-            else if( 'false' == $login )
-            {
-               // Otherwise
-               redirect('../../login.php?error=wrong_pass');
+               echo 'username : ' . $username . '<br/>' .
+                    'password : ' . $password . '<br/>' ;
                exit;
-//echo 'username : ' . $_POST['username'] . '<br/>' .
-  //   'password : ' . $_POST['password'] . '<br/>' ;
+            }
+            else
+            {
+               redirect('login.php?error=wrong_pass&username=' . $username);
             }
          }
-      }
-
-/* */
+         break;
+         
+         
       // Mechanical Turk Login
-      if($_POST['user_action'] == 'mt_login')
-      {		
-
+      case 'mt_login' :
          $adminId  = $_POST['adminId'];
          $expId    = $_POST['expId'];
          $amazonId = $_POST['amazonId'];
 
-         //$query  = "SELECT * FROM t_user WHERE User_ID='$pId' AND Admin_ID='$adminId' LIMIT 1;";
          $query  = "SELECT * FROM t_mturk WHERE Admin_ID='$adminId' AND Amazon_ID='$amazonId' LIMIT 1;";
          $result = mysql_query($query);
 
-         if( ($row = mysql_fetch_array($result)) === false )
+         if ( $row = mysql_fetch_array($result) )
          {
-            // MT Participant must be created
+            // MT user found
+            $mtId = $row['MT_ID'];
+         }
+         else
+         {
+            // MT user must be created
             $query = "INSERT INTO t_mturk " .
                      "(Admin_ID, Amazon_ID) " .
                      "VALUES " .
                      "('$adminId', '$amazonId');";
             mysql_query($query);
             $mtId = mysql_insert_id();
+         }
 
+         $username = "mt_" . str_pad( $mtId, 12, '0', STR_PAD_LEFT );
+         $pName    = "MT_" . $amazonId;
+         $query    = "INSERT INTO t_user " .
+                     "(User_ID, Admin_ID, Name, User_Type, Current_Experiment_ID) " .
+                     "VALUES " .
+                     "('$username', '$adminId', '$pName', 'M', $expId) " .
+                     "ON DUPLICATE KEY UPDATE " .
+                     "Current_Experiment_ID=Values(Current_Experiment_ID)";
+         mysql_query($query);
+
+         break;
+         
+      default :
+         echo 'ERROR : Unknown User Action [' . $userAction . ']<br/>';
+         exit;
+         break;
+   }
+   
+   
+   // Set the universal session variables
+   $query = "SELECT * FROM t_user WHERE User_ID='$username' LIMIT 1;";
+   $result = mysql_query($query);
+   $row = mysql_fetch_array($result);
+         
+   $_SESSION['logged_in']      = 'true';
+   $_SESSION['username']       = $username;
+   $_SESSION['userAdmin']      = $row['Admin_ID'];
+   $_SESSION['email']          = $row['Email'];
+   $_SESSION['UserType']       = $row['User_Type'];
+   $_SESSION['full_name']      = $row['Name'];
+   $_SESSION['scaleProfileId'] = $row['ScaleProfileID'];
+   $_SESSION['userExpId']      = $row['Current_Experiment_ID'];
+   
+  
+
+   $userType = $_SESSION['UserType'];
+   switch ( $userType )
+   {
+      // President and Dictator-For-Life
+      case 'S':
+         redirect('../../backdoor.php');
+         break;
+         
+      
+      // Administrator
+      case 'A':
+         
+         $_SESSION['memMax'] = $row['MemoryAllocation'] * 1024;
+         redirect('admin.php');
+         break;
+         
+         
+      // Participant
+      case 'U' :
+      case 'M' :
+         $expId = $_SESSION['userExpId'];
+
+         if ( $expId <= 0 )
+         {
+            // Experiment unassigned
+            redirect('logOut.php?error=exp_unassigned');
+         }
+         
+         // Pull experiment data from database
+         $query = "SELECT * FROM t_experiments WHERE id='$expId';";
+         $result = mysql_query($query);
+         if( !($row = mysql_fetch_array($result, MYSQL_BOTH)) )
+         {
+            redirect('logOut.php?error=exp_dne');
+         }
+
+         // Pull Experiment string from experiment data
+         $expstr = $row['ExperimentString'];
+
+         // Parse experiment string and save as session variable
+         $_SESSION['expData'] = parseExperimentData( $expstr );
+         //print_r($_SESSION['expData']);
+         //exit;
+         
+         // Get Scale if set for the experiment
+         $scaleProfileId = $row['ScaleProfileID'];
+         $query  = "SELECT * FROM t_scale_profiles WHERE Profile_ID='$scaleProfileId' LIMIT 1;";
+         $result = mysql_query( $query );
+         $row    = mysql_fetch_array( $result );
+         if( $row )
+         {
+            $_SESSION['scaleW'] = $row['ScaleW'];
+            $_SESSION['scaleH'] = $row['ScaleH'];
+         }
+
+         $query = "SELECT id FROM t_user_output WHERE User_ID='$username' AND Experiment_ID='$expId' LIMIT 1;";
+         $result = mysql_query($query);
+         if( $row = mysql_fetch_array($result) )
+         {
+            // User output has been started for this experiment
+            if( $userType == 'M' )
+            {
+               // MT Logins are One-Time Use Only
+               redirect('mturk.php?error=already_run');
+            }
+            $_SESSION['resultId'] = $row['ID'];
          }
          else
          {
-            $mtId = $row['MT_ID'];
+            // User ouput must be added to database
+            $query = "INSERT INTO t_user_output (User_ID, Experiment_ID) " .
+                     "VALUES ('$username', '$expId');";
+            $result = mysql_query($query);  
+            $_SESSION['resultId'] = mysql_insert_id();
          }
-
-         $pId   = "mt_" . str_pad( $mtId, 12, '0', STR_PAD_LEFT );
-         $pName = "MT_" . $amazonId;
-         $query = "INSERT INTO t_user " .
-                  "(User_ID, Admin_ID, Name, User_Type, Current_Experiment_ID) " .
-                  "VALUES " .
-                  "('$pId', '$adminId', '$pName', 'M', $expId) " .
-                  "ON DUPLICATE KEY UPDATE " .
-                  "Current_Experiment_ID=Values(Current_Experiment_ID)";
-         mysql_query($query);
-
-         $query = "SELECT * FROM t_user WHERE User_ID='$pId' LIMIT 1;";
-         $result = mysql_query($query);
-         $row = mysql_fetch_array($result);
-
-         // Load & Log In MT Participant
-         load_user_session( $pId, $row );
-         $_SESSION['logged_in'] = 'true';
-         redirect('../../director.php');
-
-      }
-
-
+         redirect('director.php');
+         break;
+      
+      default :
+         echo 'ERROR : Unknown User Type [' . $userType . ']<br/>';
+         exit;
+         break;
    }
 
 ?>

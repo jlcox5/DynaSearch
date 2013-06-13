@@ -80,13 +80,12 @@ var save_experiment = function()
 
    var data = new Element('input');
    data.name = 'expData';
-   data.value = construct_exp_string();
+   data.value = theExp.saveExperiment();
    form.adopt(data);
    
    form.action = "survey_setup.php";
    document.body.adopt(form);
    form.submit();
-
 };
 
 
@@ -243,138 +242,29 @@ var load_file = function()
 
 var add_info_page = function(title, source)
 {
-   var newitem = new Element('div');
-   newitem.setAttribute('class', 'page_bar');
-   
-   // Handle
-   var cd = new Element('span');
-   cd.setAttribute('class', 'drag_handle');
-   cd.innerHTML = '';
-   newitem.adopt(cd);
-
-   // Type
-   var pagetype = new Element('span');
-   pagetype.setAttribute('class', 'page_bar_item');
-   pagetype.innerHTML = 'Information Page';
-   newitem.adopt(pagetype);
-   
-   // Content
-   var barc = new Element('span');
-   barc.setAttribute('class', 'content');
-
-   // Content - Title
-   var span = new Element('span');
-   span.setAttribute('class', 'page_bar_item');
-   var pageTitle = new Element('input');
-   pageTitle.setAttribute('type', 'text');
-   pageTitle.setAttribute('id', 'page_title');
-   pageTitle.setAttribute('value', title);
-   span.innerHTML = 'Title:<br>';
-   span.appendChild(pageTitle);
-   barc.appendChild(span);
-
-   // Content - Source Select
-   span = new Element('span');
-   span.setAttribute('class', 'page_bar_item');
-   var srcSelect = $('instChoice').clone();
-   srcSelect.setAttribute("id", "page_source");
-   srcSelect.setAttribute("style","display:inline;");
-   var selectedOption = srcSelect.getFirst('option[value=' + source + ']');
-   if (selectedOption != null) {
-      selectedOption.setAttribute('selected','selected');
-   }
-   span.innerHTML = 'Source:<br>';
-   span.appendChild(srcSelect);
-   barc.appendChild(span);
-
-   // Content - Delete Button
-   barc.innerHTML += '<span class="bar_button" onClick="this.getParent().getParent().destroy();" style="float:right"><img src="assets/images/delete.png"/></span>';
-
-   newitem.adopt(barc);
-   
-   $('page_list').adopt(newitem);
-   $('page_list').sortables_obj.addItems(newitem);
-
+   theExp.addPage( new ExpInfoPage() );
 };
 
 
-var add_survey_page = function(title, source)
+var add_custom_page = function()
 {
-   var newitem = new Element('div');
-   newitem.setAttribute('class', 'page_bar');
-   
-   // Handle
-   var cd = new Element('span');
-   cd.setAttribute('class', 'drag_handle');
-   cd.innerHTML = '';
-   newitem.adopt(cd);
+   theExp.addPage( new ExpCustomPage() );
+}
 
-   // Type
-   var pagetype = new Element('span');
-   pagetype.setAttribute('class', 'page_bar_item');
-   pagetype.innerHTML = 'Survey Page';
-   newitem.adopt(pagetype);
-   
-   // Content
-   var barc = new Element('span');
-   barc.setAttribute('class', 'content');
+var add_quest_page = function()
+{
+   theExp.addPage( new ExpQuestPage() );
+}
 
-   
-   //barc.innerHTML += '<span class="bar_button" onClick="edit_info_page_source_Name(this);" class="page_bar_item"><img src="assets/images/script_edit.png" title="Which questionairre do you want to use?" />(<span class="questionairre_name">'+survName+'</span>)</span>';
 
-   // Content - Title
-   var span = new Element('span');
-   span.setAttribute('class', 'page_bar_item');
-   var pageTitle = new Element('input');
-   pageTitle.setAttribute('type', 'text');
-   pageTitle.setAttribute('id', 'page_title');
-   pageTitle.setAttribute('value', title);
-   span.innerHTML = 'Title:<br>';
-   span.appendChild(pageTitle);
-   barc.appendChild(span);
 
-   // Content - Source Select
-   span = new Element('span');
-   span.setAttribute('class', 'page_bar_item');
-        var srcSelect = $('aQuests').clone();
-   srcSelect.setAttribute("id", "page_source");
-   srcSelect.setAttribute("style","display:inline;");
-   var selectedOption = srcSelect.getFirst('option[value=' + source + ']');
-   if (selectedOption != null) {
-      selectedOption.setAttribute('selected','selected');
-   }
-   span.innerHTML = 'Source:<br>';
-   span.appendChild(srcSelect);
-   barc.appendChild(span);
 
-   // Content - Survey Source Select
+
+
+var add_branch = function(title, source)
+{
+   theExp.addPage( new ExpBranch() );
 /*
-   span = new Element('span');
-   span.setAttribute('class', 'page_bar_item');
-        var srcSelect = $('qChoice').clone();
-   srcSelect.setAttribute("id", "page_source");
-   var selectedOption = srcSelect.getFirst('option[value=' + survName + ']');
-   if (selectedOption != null) {
-      selectedOption.setAttribute('selected','selected');
-   }
-   span.innerHTML = 'Survey:<br>';
-   span.appendChild(srcSelect);
-   barc.appendChild(span);
-*/
-   // Content - Delete Button
-   barc.innerHTML += '<span class="bar_button" onClick="this.getParent().getParent().destroy();" style="float:right"><img src="assets/images/delete.png"/></span>';
-
-   
-   newitem.adopt(barc);
-   
-   $('page_list').adopt(newitem);
-   $('page_list').sortables_obj.addItems(newitem);
-
-};
-
-
-var add_training_page = function(title, source)
-{
    var newitem = new Element('div');
    newitem.setAttribute('class', 'page_bar');
 
@@ -385,10 +275,15 @@ var add_training_page = function(title, source)
    newitem.adopt(cd);
 
    // Type
-   var pagetype = new Element('span');
-   pagetype.setAttribute('class', 'page_bar_item');
-   pagetype.innerHTML = 'Training Screen';
-   newitem.adopt(pagetype);
+   newitem.adopt(
+      new Element(
+         'span',
+         {
+            'class' : 'page_bar_item',
+            html    : 'Between Subjects Branch'
+         }
+      )
+   );
    
    // Content
    var barc = new Element('span');
@@ -426,7 +321,7 @@ var add_training_page = function(title, source)
    
    $('page_list').adopt(newitem);
    $('page_list').sortables_obj.addItems(newitem);
-
+*/
 };
 
 
@@ -524,8 +419,26 @@ var edit_advisory_number = function(bar)
    bar.getChildren('.advisory_number')[0].innerHTML = prompt('Please enter the number of the advisory.', bar.getChildren('.advisory_number')[0].innerHTML);
 };
 
+var theExp;
 
 window.addEvent('domready', function(){
-   so = $('page_list').sortables_obj = new Sortables( $('page_list_ol'), {clone:true, opacity: 0.5, handle:'.drag_handle'} );
+
+   var loadedOptions = JSON.parse( EXP_DATA );
+
+   var options = Object.merge(  
+      loadedOptions,
+      {
+         //id             : CP_ID,
+         //name           : CP_NAME,
+         //saveFunction   : save_function,
+         //loadFunction   : load_function,
+         //deleteFunction : delete_function,
+         container : 'page_list',
+      }
+   );
+
+   theExp = new Experiment( options );
+
+   //so = $('page_list').sortables_obj = new Sortables( $('page_list_ol'), {clone:true, opacity: 0.5, handle:'.drag_handle'} );
 });
 

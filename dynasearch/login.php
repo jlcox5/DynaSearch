@@ -23,40 +23,12 @@
 
 
          }
-/*
-         if( $_SESSION['User_Type'] == 'A' )
-         {
-            redirect('admin.php');
-         }
-         else
-         {
-            redirect('director.php');
-         }*/
+
       }
 
    }
-
-
-   // Check for password reset
-   if( isset($_GET['reset']) )
-   {
-      $resetToken = $_GET['reset'];
-      echo $resetToken;
-/*
-      if( $_SESSION['logged_in'] == 'true' )
-      {
-         if( $_SESSION['User_Type'] == 'A' )
-         {
-            redirect('admin.php');
-         }
-         else
-         {
-            redirect('director.php');
-         }
-      }
-*/
-
-   }
+   
+   $username = getRequestField( 'username' );
 
    include("assets/php/standard.php");
 	
@@ -104,19 +76,20 @@
       {
          if($_GET['error'] == 'wrong_pass')
          {
-            echo '<h3 style="color: red;">Incorrect Password.</h3>';
+            echo '<h3 style="color: red;">Incorrect username or password.</h3>';
          }
       }
    ?>
                <input type="hidden" name="user_action" value="login" />
-               <input name="username" type="text" placeholder="User ID" onKeyDown="if(event.keyCode == 13) $('login_form').submit();"/>
+               <input name="username" type="text" placeholder="User ID" value="<?php echo $username; ?>"
+                      onKeyDown="if(event.keyCode == 13) $('login_form').submit();"/>
                <input name="password" type="password" placeholder="Password" onKeyDown="if(event.keyCode == 13) $('login_form').submit();"/>
                <br/>
                <button class="button-blue" type="submit">Login</button>
                <br/>
                <br/>
                <!-- Commented out on 21JAN13 by Jon -->
-               <a href="#">Having trouble logging in?</a>
+               <a href="reset.php">Having trouble logging in?</a>
             </form>
 
             <br/>

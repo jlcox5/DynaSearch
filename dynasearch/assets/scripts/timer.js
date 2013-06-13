@@ -50,12 +50,13 @@ function stopPageTimer(){
 
 function startTimer(event){
    //alert("In function: startTimer");
+   //alert(event.win);
    if(runningExp == 0){
 	   event.preventDefault();
 	   var today = new Date();
 	   startTime = today.getTime();
 	   id = event.target.id;
-//alert(id);
+//alert(event.target.get('class'));
 	   id = (event.tdid==undefined)?event.target.id:event.tdid;
    }
 }
