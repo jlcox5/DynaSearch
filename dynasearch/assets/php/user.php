@@ -281,7 +281,7 @@
    {
       // President and Dictator-For-Life
       case 'S':
-         redirect('../../backdoor.php');
+         redirect('backdoor.php');
          break;
          
       

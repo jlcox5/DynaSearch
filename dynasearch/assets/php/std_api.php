@@ -24,8 +24,35 @@ $_SESSION['timeout'] = time();
    $DS_EXP_BRANCH_TAG      = 'branch';
 
 
-// Helper Functions
-
+   /*
+    * Log a status for debugging purposes
+    *
+    * @param int    $level   -
+    * @param string $message - 
+    * @param string $file    - 
+    * @param int    $line    - 
+    * @param mixed  $context - 
+    */
+   function statusLog( $level, $message, $file, $line, $context )
+   {
+      //echo "<b>Error:</b> [$level] $message<br>";
+      $error = Array(
+         'level'   => $level,
+         'message' => $message,
+         'file'    => $file,
+         'line'    => $line
+       //  'context' => $context,
+      );
+      $_SESSION['log'][] = $error;
+   }
+   /**
+    * Set the default error handler to be our logging
+    * mechanism
+    */
+   set_error_handler('statusLog');
+   
+   
+   
    /*
     * Generates the URL to the root of the DynaSearch system.
     *

@@ -3,7 +3,7 @@
    require_once('assets/php/config.php');
    require_once('assets/php/db_util.php');
    //require_once('assets/php/checkPage.php');
-
+   
    if(!isset($no_login_required))
    {
       // Check to see if they're logged in.
@@ -29,7 +29,15 @@
 
    // Fonts
    echo "<link href='http://fonts.googleapis.com/css?family=Josefin+Sans:300,400,700' rel='stylesheet' type='text/css'>";
-
+   
+   
+   // Standard Style CSS Files ( including mBox )
+   $std_styles = array("style.css", "mBoxCore.css", "mBoxModal.css", "mBoxNotice.css", "mBoxTooltip.css");
+   foreach ( $std_styles as $style )
+   {
+      echo '<link href="assets/style/'. $style  .'" rel="stylesheet" type="text/css">';
+   }
+   
    // Input every templated CSS file
    if(isset($template_style_array))
    {
@@ -39,14 +47,19 @@
       }
    }
 
-   echo '<link href="assets/style/style.css" rel="stylesheet" type="text/css">';
+   //echo '<link href="assets/style/style.css" rel="stylesheet" type="text/css">';
    
 
-   // Everyone gets mootools. It's awesome like that.
-   echo '<script type="text/javascript" src="assets/scripts/mootools-1.4.5-core.js"></script>
-         <script type="text/javascript" src="assets/scripts/mootools-more-1.4.0.1.js"></script>
-
-         <script>
+   // Standard Scripts ( Mootools, mBox, Bug Reporting )
+   $std_scripts = array("bugs.js", "mootools-1.4.5-core.js", "mootools-more-1.4.0.1.js", "mBox.All.min.js");
+   foreach ( $std_scripts as $script )
+   {
+      echo '<script type="text/javascript" src="assets/scripts/' . $script . '"></script>';
+   }
+   
+   
+ 
+   echo '<script>
             function handleExit(){ 
                switch("'.$page_title.'"){
                   case "Editor":
@@ -123,7 +136,7 @@
    $logout_str .= '<li><a href="assets/php/user.php?logout=1" onclick="handleExit();">Logout</a></li></ul></li>';
    
    $bug_str = '<li>' .
-                 '<a class="debug-icon"></a>' .
+                 '<div class="debug-icon" onclick="submit_bug_report();"></div>' .
               '</li>';
 
    $help_frame_html = '<div><a id="help_frame_exit_button" href="" onclick="closeHelpFrame();return false;">[close]</img><iframe id="help_frame_inner" src="UserManual.pdf"/></div>';
@@ -149,6 +162,7 @@
    if(isset($template_script_array))
       foreach($template_script_array as $script)
          echo '<script type="text/javascript" src="assets/scripts/' . $script . '"></script>';
+   
    
    echo '<title>'. $page_title .'</title>
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">

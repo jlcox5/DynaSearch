@@ -1,8 +1,10 @@
 <?php
-
    require_once('assets/php/std_api.php');
    include("assets/php/config.php");
    include('assets/php/db_util.php');
+   
+   // Create empty error log for the page
+   $_SESSION['log'] = Array();
 
    mysql_connect($DB_HOST, $DB_USER, $DB_PASS) or die("Unable to connect.");
    mysql_select_db($DB_NAME) or die("Unable to select database.");
@@ -10,8 +12,7 @@
    $page_title = "Manage Assets";
    $username = $_SESSION['username'];
 
-   $template_style_array  = array("style.css", "mBoxCore.css", "mBoxModal.css", "mBoxNotice.css", "mBoxTooltip.css",
-                                     "themes/mBoxTooltip-Black.css", "themes/mBoxTooltip-BlackGradient.css", "admin_assets.css");
+   $template_style_array  = array("themes/mBoxTooltip-Black.css", "themes/mBoxTooltip-BlackGradient.css", "admin_assets.css");
    $template_script_array = array(/*"ajax-core.js",*/ "mBox.All.min.js", "admin_assets.js");
 
    include('assets/php/admin_dir.php');

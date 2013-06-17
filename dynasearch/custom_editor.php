@@ -1,8 +1,10 @@
 <?php
-
    require_once('assets/php/std_api.php');
    include("assets/php/config.php");
    include('assets/php/admin_dir.php');
+   
+   // Create empty error log for the page
+   $_SESSION['log'] = Array();
 
    mysql_connect($DB_HOST, $DB_USER, $DB_PASS) or die("Unable to connect.");
    mysql_select_db($DB_NAME) or die("Unable to select database.");
@@ -110,7 +112,7 @@
 
    $page_title = "Editor";
    $template_style_array  = array("style.css", "mBoxCore.css", "mBoxModal.css", "editor.css");
-   $template_script_array = array("ajax-core.js", "wz_jsgraphics.js", "timer_bb.js", "timer.js", 'dsToolbarIcon.class.js', 'dsApplet.class.js', 'dsWindow.class.js',  'dsCustomPage.class.js', "custom_editor.js", "canvas3dapi/c3dapi.js", "mBox.All.min.js");
+   $template_script_array = array(/*"ajax-core.js", "wz_jsgraphics.js", "timer_bb.js", "timer.js", */'dsToolbarIcon.class.js', 'dsApplet.class.js', 'dsWindow.class.js',  'dsCustomPage.class.js', "custom_editor.js", "canvas3dapi/c3dapi.js", "mBox.All.min.js");
 
 //array_push($template_script_array, "dsCustomPage.js", "classWindow.js", "dsToolbarIcon.js", "custom_editor.js");
    include('assets/php/standard.php');

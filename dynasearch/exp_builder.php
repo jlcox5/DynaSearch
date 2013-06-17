@@ -1,14 +1,15 @@
 <?php
-
    include("assets/php/config.php");
    include("assets/php/std_api.php");
    mysql_connect($DB_HOST, $DB_USER, $DB_PASS) or die("Unable to connect.");
    mysql_select_db($DB_NAME) or die("Unable to select database.");
-
-   $page_title = "Survey Page Layout Editor";
-
-   $template_style_array  = array("style.css", "mBoxCore.css", "mBoxModal.css", "mBoxNotice.css", "exp_builder.css");
-   $template_script_array = array("ajax-core.js", "mBox.All.min.js", 'mootools.tabpane.js', 'mootools.tabpane.extra.js', 'dsExpPage.class.js', 'dsExperiment.class.js', "exp_builder.js");
+   
+   // Create empty error log for the page
+   $_SESSION['log'] = Array();
+   
+   $page_title = "Experiment Builder";
+   $template_style_array  = array("exp_builder.css");
+   $template_script_array = array('mootools.tabpane.js', 'mootools.tabpane.extra.js', 'dsExpPage.class.js', 'dsExperiment.class.js', "exp_builder.js");
 
    include('assets/php/db_util.php');
 /*
@@ -145,7 +146,7 @@ function redirect($page_name)
    <div id="maincontainer">
       <div id="wrapper" style="width:70%; margin: auto auto;">
    
-         <h1>Experiment Editor</h1>
+         <h1>Experiment Builder</h1>
          <br/>
          <br/>
    

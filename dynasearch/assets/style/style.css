@@ -101,6 +101,7 @@ input {
    display:       inline;
    position:      relative;
    vertical-align:middle;
+   overflow : show;
 }
 
 .user_nav_div ul li ul {
@@ -139,13 +140,41 @@ input {
 	/*color: #3d93f6;;*/
 }
 
+/*
+ * Debug Icon Styles
+ */
 .user_nav_div .debug-icon {
-	/*background-image : url('./images/bug-icon.png');*/
-   /*display : inline-block;*/
-   height : 25px;
-   width : 25px;
-   background-color:#3d93f6;
+	background-image : url('../images/bug-icon.png');
+   background-size  : 25px 25px;
+   position         : absolute;
+   top              : 0px;
+   left             : 50px;
+   height           : 25px;
+   width            : 25px;
 }
+
+.user_nav_div .debug-icon:hover {
+	background-image : url('../images/bug-icon-hover.png');
+}
+
+/**
+ *
+ */
+.bug-report-form select {
+   width          : 100%;
+	vertical-align : center;
+}
+
+.bug-report-form label {
+   display : block;
+	margin-bottom : 15px;
+}
+ 
+.bug-report-form textarea {
+	width  : 320px;
+   height : 180px;
+}
+
 
 .help_frame_invisible {
    display: none;
@@ -354,6 +383,7 @@ button,
 	padding:6px 24px;
 	text-decoration:none;
 	text-shadow:1px 1px 0px #ffffff;
+   margin : 2px;
 }
 input[type=submit]:hover,
 input[type=reset]:hover,

@@ -3,6 +3,8 @@
    include("assets/php/std_api.php");
    require_once("assets/php/db_util.php");
    
+   // Create empty error log for the page
+   $_SESSION['log'] = Array();
    
    // Are we supposed to be here?
    if(isset($_SESSION['page_sig'])) {

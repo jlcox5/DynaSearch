@@ -3,6 +3,9 @@
    include("assets/php/std_api.php");
    require_once("assets/php/db_util.php");
    
+   // Create empty error log for the page
+   $_SESSION['log'] = Array();
+   
    // Only admins allowed
    $username = $_SESSION['username'];
    $name     = $_SESSION['full_name'];
@@ -14,10 +17,9 @@
       //echo("not admin!");
    }
    
-   
    // Page Header Setup
    $page_title = "DynaSearch";
-   $template_style_array  = array("style.css", "mBoxCore.css", "mBoxTooltip.css", 'admin.css');
+   $template_style_array  = array('admin.css');
    $template_script_array = array('mBox.All.min.js');
    include('assets/php/standard.php');
 ?>
@@ -86,6 +88,8 @@
          attach : $$('*[tooltip-data]')
       });
    </script>
+   
+   
 </body>
 
 

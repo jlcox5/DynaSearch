@@ -4,7 +4,9 @@
    require_once("assets/php/db_util.php");
    mysql_connect($DB_HOST, $DB_USER, $DB_PASS) or die("Unable to connect.");
    mysql_select_db($DB_NAME) or die("Unable to select database.");
-
+   
+   // Create empty error log for the page
+   $_SESSION['log'] = Array();
    
    // Are we supposed to be here?
    $pageSignature = ifSetElse( $_SESSION['page_sig'] );

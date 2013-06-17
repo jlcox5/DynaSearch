@@ -2,6 +2,9 @@
    include("assets/php/config.php");
    include("assets/php/std_api.php");
    require_once('assets/php/db_util.php');
+   
+   // Create empty error log for the page
+   $_SESSION['log'] = Array();
 
    $username = $_SESSION['username'];
    $adminId  = $_SESSION['userAdmin'];

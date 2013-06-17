@@ -107,7 +107,7 @@ var Experiment = new Class({
          var page = element.obj;
          return page.serialize();
       });
-alert( JSON.stringify( data ) );
+      
       return JSON.stringify( data );
    },
    

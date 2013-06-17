@@ -1,9 +1,11 @@
 <?php
-
    require_once('assets/php/std_api.php');
    include("assets/php/config.php");
    include('assets/php/db_util.php');
    include('assets/php/PasswordHash.php');
+   
+   // Create empty error log for the page
+   $_SESSION['log'] = Array();
 
    mysql_connect($DB_HOST, $DB_USER, $DB_PASS) or die("Unable to connect.");
    mysql_select_db($DB_NAME) or die("Unable to select database.");

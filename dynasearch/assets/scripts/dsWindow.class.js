@@ -533,14 +533,18 @@ var Toolbar = new Class({
          );
          
          // Load Icons
+         var iconDiv = new Element('div');
          for ( var i = 0; i < self.icons.length; i++ ) {
-            content.adopt( self.icons[i].getElement() );
+            iconDiv.adopt( self.icons[i].getElement() );
          }
+         content.adopt( iconDiv );
          
          // Buttons
+         var btnDiv = new Element('div');
          for ( var i = 0; i < self.buttons.length; i++ ) {
-            content.adopt( self.buttons[i] );
+            btnDiv.adopt( self.buttons[i] );
          }
+         content.adopt( btnDiv );
 
          self.contentDiv = content;
       }

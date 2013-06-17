@@ -1,0 +1,36 @@
+body {
+
+}
+
+table {
+   /*border-left : 1px solid #ddd;*/
+   width : 100%;
+   /*table-layout : fixed;*/
+   border-collapse : collapse;
+}
+
+table th,
+table td {
+   border-left : 1px solid #ccc;
+   padding : 5px;
+   max-width: 100px;
+   overflow : hidden;
+   /*word-wrap : break-word;*/
+}
+
+table tr:hover td {
+   background-color : #3d93f6;
+   color            : #fff;
+}
+
+table tr:nth-child(odd) {
+   background-color : none;
+}
+
+table tr:nth-child(even) {
+   background-color:#ddd;
+}
+
+textarea {
+   width : 100%;
+}

@@ -51,8 +51,7 @@ function fireThreadHook(tname){
 
 var curAdvisory = 1;
 
-function dce(type){ return document.createElement(type); }
-
+/*
 var theSpy;
 {//Add spy applet
    var spysrc = "assets/applets/eventSpy.class";
@@ -80,41 +79,7 @@ var theSpy;
    //spyObj.style.width = spyObj.style.height = '50px';
    theSpy = spyObj;
 }
-
-
-
-function findPos(obj){
-   var left = !!obj.offsetLeft ? obj.offsetLeft : 0;
-   var top = !!obj.offsetTop ? obj.offsetTop : 0;
-
-   while(obj = obj.offsetParent){
-      left += !!obj.offsetLeft ? obj.offsetLeft : 0;
-      top += !!obj.offsetTop ? obj.offsetTop : 0;
-   }
-   return[left, top];
-}
-
-var str_to_hex = function(s)
-{
-	var output = '';
-	for(var i=0; i < s.length; i+=1)
-	{
-		output += s.charCodeAt(i).toString(16);
-	}
-	return output;
-}
-
-var hex_to_str = function(s)
-{
-	var output = '';
-	for(var i=0; i < s.length; i+=2)
-	{
-		var code = parseInt('0x' + s.charAt(i).toString() + s.charAt(i+1).toString() );
-		output += String.fromCharCode(code);
-	}
-
-	return output;
-}
+*/
 
 var mkProperTable = function(tab){
    if(tab.tabID === undefined)
@@ -225,306 +190,16 @@ var ext_table_parser = function(experiment, file, receiver)
 	}).send();
 }
 
-var load_all = function(file)
-{
-	var req = new Request({
-	url: file,
-	async: false,
-	onComplete: function(response)
-		{
-
-			var totalHeight = 0;
-			//alert(response);
-			var windows = response.split('&');
-			for(var i=0;i<windows.length;++i)
-			{
-				var attributes = windows[i].split(',');
-				var handle = '';
-				
-				// Figure out the type
-				var type = hex_to_str(attributes[0]);
-				if( type == 'text' || type == 'text_nohide')
-				{
-					handle = new TextWindow(type=='text_nohide');		
-					handle.set_trashable(true);	
-					handle.div.getElement('.handle').innerHTML = hex_to_str(attributes[1]);
-					
-					//Position and Size
-					var posx = ( hex_to_str(attributes[2]) );
-					var posy = ( hex_to_str(attributes[3]) );
-					var width = ( hex_to_str(attributes[4]) );
-					var height = ( hex_to_str(attributes[5]) );
-
-					handle.div.style.left = posx*window.scaleW+'px';
-					handle.div.style.top = posy*window.scaleH+'px';
-					//alert("style: " + handle.div.style.left + " " + handle.div.style.top);
-					handle.div.style.width = width*window.scaleW + 'px';
-					handle.div.style.height = height*window.scaleH + 'px';
-					
-					//alert(window.scaleW);
-					handle.div.style.fontSize = 16*(window.scaleW/55.0);
-					//alert(handle.div.style.fontSize);
-										
-					// Content
-					handle.div.getElement('.content').innerHTML = hex_to_str(attributes[6]);
-					var newId = handle.div.getElement('.handle').innerHTML.replace( /[^\w]/gi ,'');	// Get rid of spaces and weird symbols
-					handle.div.getElement('.content').id = newId;
-					handle.content.id = newId;
-					
-					var content = handle.content;
-					content.id = newId;
-					//alert("New id: " + newId);
-					if(typeof editing == 'undefined' && type == 'text_nohide')
-		      			{
-			 		   coverText(content.id,height);
-		      			}
-				}
-				else if( type == 'table' )
-				{
-					handle = new TableWindow(window.experiment_shortname, hex_to_str(attributes[6]) );
-					handle.set_trashable(true);				
-					handle.div.getElement('.handle').innerHTML = hex_to_str(attributes[1]);
-					
-					//Position and Size
-					var posx = ( hex_to_str(attributes[2]) );
-					var posy = ( hex_to_str(attributes[3]) );
-					var width = ( hex_to_str(attributes[4]) );
-					var height = ( hex_to_str(attributes[5]) );
-
-					handle.div.style.left = posx*window.scaleW+'px';
-					handle.div.style.top = posy*window.scaleH+'px';
-					handle.div.style.width = width*window.scaleW + 'px';
-					handle.div.style.height = height*window.scaleH + 'px';
-					handle.div.style.fontSize = 16*(window.scaleW/55.0);
-					
-					// Jon test stuff
-      			document.getElementById((i+1)+'_content').style.width = width*window.scaleW + 'px';
-      			document.getElementById((i+1)+'_content').style.height = (height*window.scaleH)-21 + 'px';
-      			document.getElementById((i+1)+'_content').style.fontSize = 16*(window.scaleW/55.0);
-					
-					if(typeof editing == 'undefined')
-		         {
-   		         //var pdh = this.parentNode.parentNode.getElement('.handle');
-   		      	var table_name = handle.div.getElement('.handle').innerHTML.replace( /[^\w]/gi ,'');	// Get rid of spaces and weird symbols
-   		      	//alert("Table Name: " + table_name);
-			 		   coverTable(	handle.table.id , handle.table.id+"_"+table_name+"_");
-		      	}
-				}
-				else if( type == 'ext_table' )
-				{
-					handle = new InteractiveTableWindow(window.experiment_shortname, hex_to_str(attributes[6]) );
-					handle.set_trashable(true);				
-					handle.div.getElement('.handle').innerHTML = hex_to_str(attributes[1]);
-					
-					//Position and Size
-					var posx = ( hex_to_str(attributes[2]) );
-					var posy = ( hex_to_str(attributes[3]) );
-					var width = ( hex_to_str(attributes[4]) );
-					var height = ( hex_to_str(attributes[5]) );
-
-					handle.div.style.left = posx*window.scaleW+'px';
-					handle.div.style.top = posy*window.scaleH+'px';
-					handle.div.style.width = width*window.scaleW + 'px';
-					handle.div.style.height = height*window.scaleH + 'px';
-					handle.div.style.fontSize = 16*(window.scaleW/55.0);
-					
-					// Jon test stuff
-      			document.getElementById((i+1)+'_content').style.width = width*window.scaleW + 'px';
-      			document.getElementById((i+1)+'_content').style.height = (height*window.scaleH)-21 + 'px';
-      			document.getElementById((i+1)+'_content').style.fontSize = 16*(window.scaleW/55.0);
-					
-				  if(typeof editing == 'undefined')
-		          {
-   		             //var pdh = this.parentNode.parentNode.getElement('.handle');
-   		      	     //var table_name = handle.div.getElement('.handle').innerHTML.replace( /[^\w]/gi ,'');	// Get rid of spaces and weird symbols
-                     var table_name = handle.tabID;
-   		      	     //alert("Table Name: " + table_name);
-			 		 //coverTable(	handle.table.id , handle.table.id+"_"+table_name+"_");
-                     attachTimerFuncs(handle,table_name);
-		      	  }
-				}
-				else if( type == 'image' ){
-               //alert(hex_to_str(attributes[7]));
-					handle = new ImageWindow(window.experiment_shortname, hex_to_str(attributes[6]), hex_to_str(attributes[7]) );
-					handle.set_trashable(true);				
-					handle.div.getElement('.handle').innerHTML = hex_to_str(attributes[1]);
-					
-					//Position and Size
-					var posx = ( hex_to_str(attributes[2]) );
-					var posy = ( hex_to_str(attributes[3]) );
-					var width = ( hex_to_str(attributes[4]) );
-					var height = ( hex_to_str(attributes[5]) );
-
-					handle.div.style.left = posx*window.scaleW+'px';
-					handle.div.style.top = posy*window.scaleH+'px';
-					handle.div.style.width = width*window.scaleW + 'px';
-					handle.div.style.height = height*window.scaleH + 'px';
-					handle.div.style.fontSize = 16*(window.scaleW/55.0);
-					
-					// Jon test stuff
-      			document.getElementById((i+1)+'_content').style.width = width*window.scaleW + 'px';
-      			document.getElementById((i+1)+'_content').style.height = (height*window.scaleH)-21 + 'px';
-      			document.getElementById((i+1)+'_content').style.fontSize = 16*(window.scaleW/55.0);
-					
-            }
-				else if( type == 'object' ){
-               handle = new ObjectWindow(window.experiment_shortname, hex_to_str(attributes[6]));
-               handle.set_trashable(true);
-					
-					//Position and Size
-					var posx = ( hex_to_str(attributes[2]) );
-					var posy = ( hex_to_str(attributes[3]) );
-					var width = ( hex_to_str(attributes[4]) );
-					var height = ( hex_to_str(attributes[5]) );
-
-					handle.div.style.left = posx*window.scaleW+'px';
-					handle.div.style.top = posy*window.scaleH+'px';
-					handle.div.style.width = width*window.scaleW + 'px';
-					handle.div.style.height = height*window.scaleH + 'px';
-					handle.div.style.fontSize = 16*(window.scaleW/55.0);
-					
-					// Jon test stuff
-      			document.getElementById((i+1)+'_content').style.width = width*window.scaleW + 'px';
-      			document.getElementById((i+1)+'_content').style.height = (height*window.scaleH)-21 + 'px';
-      			document.getElementById((i+1)+'_content').style.fontSize = 16*(window.scaleW/55.0);
-            }
-
-			else if( type == 'clock' ){
-   				if(typeof editing != 'undefined'){
-      				//Position and Size
-      				handle = new ClockWindow();
-					   handle.set_trashable(true);
-					   handle.time = attributes[6];
-					   
-					   var posx = ( hex_to_str(attributes[2]) );
-					   var posy = ( hex_to_str(attributes[3]) );
-					   var width = ( hex_to_str(attributes[4]) );
-					   var height = ( hex_to_str(attributes[5]) );
-
-					   handle.div.style.left = posx*window.scaleW+'px';
-					   handle.div.style.top = posy*window.scaleH+'px';
-	                   handle.div.style.width = width*window.scaleW + 'px';
-					   handle.div.style.height = height*window.scaleH + 'px';
-					   handle.div.style.fontSize = 16*(window.scaleW/55.0);
-				   }	
-   		      if(typeof editing == 'undefined'){
-      		      //Position and Size
-      				handle = new ClockWindow();
-					   handle.time = attributes[6];
-					   toSend =  handle.div.getElement('.content');
-					   for(i=0; i < updatables.length; i++){
-   					   if(updatables[i].type == 'clock'){ 
-      					   id = i; 
-      					   break;
-      					}
-					   }
-					   
-					   //startPageTimer(attributes[6], 0, toSend);
-					   
-					   var posx = ( hex_to_str(attributes[2]) );
-					   var posy = ( hex_to_str(attributes[3]) );
-					   var width = ( hex_to_str(attributes[4]) );
-					   var height = ( hex_to_str(attributes[5]) );
-
-					   handle.div.style.left = posx*window.scaleW+'px';
-					   handle.div.style.top = posy*window.scaleH+'px';
-	                   handle.div.style.width = width*window.scaleW + 'px';
-					   handle.div.style.height = height*window.scaleH + 'px';
-					   handle.div.style.fontSize = 16*(window.scaleW/55.0);
-					   startPageTimer(attributes[6], 0, id);
-			         //startPageTimer(attributes[6], 0);
-		         }
-	         }
-				
-				//Add it to the page
-				if(posy*window.scaleH + height*window.scaleH > totalHeight){
-				   totalHeight =  posy*window.scaleH + height*window.scaleH;
-			   }
-
-			}
-			
-			document.getElementById('main_editor').style.height = totalHeight+'px';
-						
-			if(typeof editing == 'undefined')
-			{
-   			document.getElementById('doneWithPage').style.top = totalHeight+'px';
-				// Take away the resizing and dragging if not in edit mode
-				for(var i=0;i<updatables.length;++i)
-				{
-					updatables[i].dragobj.detach();
-					updatables[i].resizeobj.detach();
-				}
-			}
-		   
-		}
-	}).send();
-}
-
-if (typeof Object.create !== 'function') {
-    Object.create = function (o) {
-        function F() {}
-        F.prototype = o;
-        return new F();
-    };
-}
-
-// Remove items from an array based on another list of items
-Array.prototype.removeItems = function(itemsToRemove) {
-
-    if (!/Array/.test(itemsToRemove.constructor)) {
-        itemsToRemove = [ itemsToRemove ];
-    }
-
-    var j;
-    for (var i = 0; i < itemsToRemove.length; i++) {
-        j = 0;
-        while (j < this.length) {
-            if (this[j] == itemsToRemove[i]) {
-                this.splice(j, 1);
-            } else {
-                j++;
-            }
-        }
-    }
-}
 
 
-//var timer = new BTimer(100, system_tick, []);
-var randab = function(a,b) { return a + (b-a)*Math.random(); };
-
-///////////////////////////////////////////////////////////////
-
-// Handle the total count of Toolbars
-var updatables = [];
-function add_updatable(e)
-{ updatables.push(e); }
-
-var ___ToolbarCount=0;
-function IncrementToolbarCount(d)
-{ ___ToolbarCount += 1; }
-function GetToolbarCount()
-{ return ___ToolbarCount; }
-
-
-//////////////////////////////////////////
-// ICONS
-//////////////////////////////////////////
-
-function addEventListenerRec(root, type, listener, useCapture){
-   root.addEventListener(type,listener,useCapture);
-   for(var i=0; i < root.childNodes.length; ++i)
-      addEventListenerRec(root.childNodes[i],type,listener,useCapture);
-}
-
-
-
-function update_stuff(el)
-{
-	var content = 'Location: ' + el.getPosition()['x'] + ' , ' + el.getPosition()['y'] + '<br/>';
-	content += 'Size: ' + el.getSize().x + ' , ' + el.getSize().y;
-}
-
-
+/**
+ * Creates and submits a form containig the op command
+ * 'save' and the ID, name, and data of the current Custom Page
+ *
+ * @param int    id   - The ID of the custom page to be saved
+ * @param string name - The name of the custom page to be saved
+ * @param string data - The data describing the custom page to be saved
+ */
 var save_function = function( id, name, data ) {
 
    var form = new Element(
@@ -581,6 +256,13 @@ var save_function = function( id, name, data ) {
 }
 
 
+
+/**
+ * Creates and submits a form containig the op command
+ * 'load' and the ID of a Custom Page in the database
+ *
+ * @param int id - The ID of the custom page to be deleted
+ */
 var load_function = function( id ) {
 
    var form = new Element(
@@ -617,6 +299,13 @@ var load_function = function( id ) {
 }
 
 
+
+/**
+ * Creates and submits a form containig the op command
+ * 'delete' and the ID of the current Custom Page
+ *
+ * @param int id - The ID of the custom page to be deleted
+ */
 var delete_function = function( id ) {
 
    var form = new Element(
@@ -652,21 +341,14 @@ var delete_function = function( id ) {
    form.submit();
 }
 
-/*Asset.javascript(
-   DS_SCRIPT_BASE_PATH + 'dsCustomPage.js',
-   {
-      onLoad : function() {
-  */  
+
   
-  
+/**
+ * Add a DOMReady event to the page which will create and instance
+ * of the Custom Page object described by the currrently loaded data.
+ */
 window.addEvent('domready', function()
 {
-
-
-	var ifr = document.createElement("div");
-	ifr.style.display = 'none';
-	ifr.innerHTML = '<img id="HM" src="assets/images/hurricane_map_1.png" />';
-	document.body.appendChild(ifr);
 
    //alert(CP_DATA);
    //var options = JSON.parse( CP_DATA );
